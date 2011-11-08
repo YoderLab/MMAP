@@ -136,8 +136,8 @@ from Bio import ExPASy
 handle = ExPASy.get_sprot_raw("XM_002866936")
 
 
+###################
 
-##############
 def qblast2(program, database, sequence,
        auto_format=None,composition_based_statistics=None,
        db_genetic_code=None,endpoints=None,entrez_query='(none)',
@@ -268,7 +268,7 @@ while True:
         previous = current + wait
     else:
         previous = current
-
+        
     request = urllib2.Request("http://blast.ncbi.nlm.nih.gov/Blast.cgi",
                               message,
                               {"User-Agent":"BiopythonClient"})
@@ -305,14 +305,14 @@ def _parse_qblast_ref_page(handle):
     else:
         j = s.find("\n", i)
         rid = s[i+len("RID ="):j].strip()
-
+        
     i = s.find("RTOE =")
     if i == -1:
         rtoe = None
     else:
         j = s.find("\n", i)
         rtoe = s[i+len("RTOE ="):j].strip()
-
+        
     if not rid and not rtoe:
         #Can we reliably extract the error message from the HTML page?
         #e.g.  "Message ID#24 Error: Failed to read the Blast query:
@@ -352,7 +352,6 @@ def _parse_qblast_ref_page(handle):
     elif not rtoe:
         #Can this happen?
         raise ValueError("No RTOE found in the 'please wait' page."    +                  " (although RID = %s)" % repr(rid))
-
     try:
         return rid, int(rtoe)
     except ValueError:
@@ -363,12 +362,15 @@ def _parse_qblast_ref_page(handle):
 
 
 
-a=10
+a=20
 if a>15:
-    if a>20:
+    if a>25:
         print "A";
     else:
         print("B");
+
+
+
 
 
 
