@@ -23,7 +23,7 @@ import scipy
 from hcluster import *
 from numpy.random import rand
 
-print __name__
+
 print numpy.__version__
 print scipy.__version__
 
@@ -169,9 +169,12 @@ def run_blast():
 
 
 def main():
-    test_hcluster()
-#    test_single()
+    print __name__;
+#    test_hcluster()
+    test_single()
 #    run_blast()
     
 if __name__ == "__main__":
     main()
+
+

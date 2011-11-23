@@ -1,6 +1,7 @@
 import re
-"""Collection of regular pattern"""
+"""Global class
+Collection of regular pattern"""
 
-multi_space = re.compile("\s{2,}")
-go_term_full = re.compile("\[GO:\d+.*?\]")
-go_term_exact = re.compile("(GO:\d+.*?) ")
+multi_space = re.compile(r"\s{2,}")
+go_term_full = re.compile(r"\[GO:\d+.*?\]")
+go_term_exact = re.compile(r"(GO:\d+.*?) ")

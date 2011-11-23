@@ -15,10 +15,17 @@ class Sequence(object):
         self.acc_ID, self.match_ID, self.e_value = [], [], []
 
         
-    def add(self, key, terms):
-        self.each_term[key] = terms
-        self.all_terms.update(terms)
+    def add(self, key, term):
+        '''append term, term must be a list (str doesnt work)'''
+        self.each_term[key] = term
+        self.all_terms.update(term)
     
+    def add_multi(self, key, *terms):
+        '''append multiple terms to the same key'''
+        for term in terms:
+            self.each_term[key] = term
+            self.all_terms.update(term)
+            
     def get_one_term(self, key):
         return self.each_term[key]
 
