@@ -6,13 +6,13 @@ Created on Nov 22, 2011
 import unittest
 import random
 #from ..src import sequence
-from src.sequence import Sequence
+from main.sequence import Sequence
+
 
 
 
 class TestSequence(unittest.TestCase):
 
-    
     def setUp(self):
         self.seq = range(10)
         self.s = Sequence("TEST")        
