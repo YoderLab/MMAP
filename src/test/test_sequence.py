@@ -1,13 +1,13 @@
 '''
 Created on Nov 22, 2011
 
-@author: sw167
+@author: Steven Wu
 '''
+
 import unittest
 import random
 #from ..src import sequence
-from main.sequence import Sequence
-
+from core.sequence import Sequence
 
 
 
@@ -22,6 +22,10 @@ class TestSequence(unittest.TestCase):
     def tearDown(self):
         pass
 
+    @unittest.skip("demonstrating skipping")
+    def test_nothing(self):
+        self.fail("shouldn't happen")
+        
     def test_Add(self):
         
         self.s.add(0,["term0"])
@@ -62,9 +66,9 @@ class TestSequence(unittest.TestCase):
         for element in random.sample(self.seq, 5):
             self.assertTrue(element in self.seq)
 
-#if __name__ == '__main__':
-#    unittest.main()
-print "====name====:",__name__
-#
+
+
+
+
 suite = unittest.TestLoader().loadTestsFromTestCase(TestSequence)
-unittest.TextTestRunner(verbosity=2).run(suite)
+#unittest.TextTestRunner(verbosity=2).run(suite)

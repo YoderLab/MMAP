@@ -1,3 +1,9 @@
+'''
+Created on Nov 22, 2011
+
+@author: Steven Wu
+'''
+
 from Bio.Blast import NCBIWWW
 from Bio.Blast import NCBIStandalone
 from Bio.Blast import NCBIXML

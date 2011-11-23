@@ -1,4 +1,9 @@
-"""String utility class"""
+'''
+
+@author: Steven Wu
+
+String utility class
+'''
 
 
 def substring(s, start, end, offset=0):

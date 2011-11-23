@@ -1,3 +1,9 @@
+'''
+
+@author: Steven Wu
+'''
+
+
 import re
 """Global class
 Collection of regular pattern"""

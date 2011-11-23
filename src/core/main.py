@@ -1,4 +1,7 @@
-"""
+'''
+
+@author: Steven Wu
+
 require Biopython - 1.58
 require numpy - 1.6.1
 require SciPy - 0.10.0
@@ -6,7 +9,7 @@ require hcluster - 0.2 http://code.google.com/p/scipy-cluster/
 require matplotlib - 1.1.0 http://matplotlib.sourceforge.net/ 
     matplotlib (and its dep) is only required to plot dendrogram (with "ipython -pylab") 
 
-"""
+'''
 import sys
 import os
 

@@ -1,4 +1,8 @@
-"""connect it AmiGoS
+"""
+
+@author: Steven Wu
+
+connect it AmiGoS
 TODO write unit test
 """
 

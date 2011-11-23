@@ -1,3 +1,9 @@
+'''
+
+@author: Steven Wu
+'''
+
+
 from Bio import Seq
 
 class Sequence(object):
