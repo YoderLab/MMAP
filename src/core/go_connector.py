@@ -1,10 +1,10 @@
-"""
+'''
 
 @author: Steven Wu
 
 connect it AmiGoS
 TODO write unit test
-"""
+'''
 
 
 import urllib, urllib2

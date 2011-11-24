@@ -35,6 +35,11 @@ class Sequence(object):
     def get_one_term(self, key):
         return self.each_term[key]
 
+    ## TODO: 
+    def cal_distance(self, method="s"):
+        if method == "s":
+            return 0
+
 ## test property    
     def get_web_page(self):
         return self.__web_page
