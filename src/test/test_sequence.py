@@ -8,6 +8,7 @@ import unittest
 import random
 #from ..src import sequence
 from core.sequence import Sequence
+import numpy
 
 
 
@@ -26,26 +27,66 @@ class TestSequence(unittest.TestCase):
     def test_nothing(self):
         self.fail("shouldn't happen")
         
-    def test_Add(self):
+    def test_add(self):
         
-        self.s.add(0,["term0"])
-        self.s.add(1,["term1"])
-        expect = ["term0","term1"]
-        self.assertEqual(self.s.each_term[0], [expect[0]])
-        self.assertEqual(self.s.each_term[1], [expect[1]])
-        self.assertEqual(self.s.all_terms, set(expect))
+        self.s.add(0,["term0", "term1"])
+        self.s.add(1,["term2", "term3"])
         
-        self.s.add(2,["term0"])
-        self.s.add(3,["term0"])
-        self.s.add(4,["term2"])
-        expect = ["term0","term1","term2"]
-        self.assertEqual(self.s.each_term[0], [expect[0]])
-        self.assertEqual(self.s.each_term[1], [expect[1]])
-        self.assertEqual(self.s.each_term[2], [expect[0]])
-        self.assertEqual(self.s.each_term[3], [expect[0]])
-        self.assertEqual(self.s.each_term[4], [expect[2]])
-        self.assertEqual(self.s.all_terms, set(expect))
+        expect0 = set(["term0","term1"])
+        expect1 = set(["term2","term3"])
+        expect01 = set(["term0","term1","term2","term3"])
+        
+        self.assertSetEqual(self.s.each_term.get(0), expect0)
+        self.assertSetEqual(self.s.each_term.get(1), expect1)
+        self.assertEqual(self.s.all_terms, expect01)
+        
+        self.s.add(2,set(["term0", "term1"]))
+        self.s.add(3,["term1", "term2"])
+        self.s.add(4,["term4", "term5"])
+        
+        expect2 = set(["term0","term1"])
+        expect3 = set(["term1","term2"])
+        expect4 = set(["term4","term5"])
+        expectAll = set(["term0","term1","term2","term3","term4","term5"])
+        
+        self.assertSetEqual(self.s.each_term.get(0), expect0)
+        self.assertSetEqual(self.s.each_term.get(1), expect1)
+        self.assertSetEqual(self.s.each_term.get(2), expect2)
+        self.assertSetEqual(self.s.each_term.get(3), expect3)
+        self.assertSetEqual(self.s.each_term.get(4), expect4)
 
+        self.assertEqual(self.s.all_terms, expectAll)
+
+
+    def test_combinations(self):
+        
+        self.s.add(0,["0", "t00", "t01", "t02", "t03", "t04"])
+        self.s.add(1,["1", "t01", "t01", "t02", "t03"])
+        self.s.add(2,["2", "t02", "t04", "t06"])
+        self.s.add(3,["3", "t03", "t06", "t07", "t08"])
+        self.s.add(4,["4", "t04", "t08", "t08", "t10"])
+       
+        k = 0
+        comb =  self.s.get_combinations()
+        for i in range(0,5):
+            for j in range(i+1,5):
+                self.assertTupleEqual( (j,i), comb[k][0])
+                self.assertSetEqual(self.s.each_term.get(i), comb[k][1])
+                self.assertSetEqual(self.s.each_term.get(j), comb[k][2])
+                k += 1
+
+        
+    def test_combinations2(self):
+        
+        self.s.add(0,["0", "t00", "t01", "t02", "t03"])
+        self.s.add(1,["1", "t01", "t02", "t03", "t04"])
+        self.s.add(2,["2", "t02", "t03", "t04", "t05"])
+        self.s.add(3,["3", "t03", "t04", "t05", "t06"])
+        self.s.add(4,["4", "t04", "t05", "t06", "t07"])
+       
+        for comb in self.s.get_combinations():
+            self.assertEqual(len(comb[1] & comb[2]), 4-(comb[0][0]-comb[0][1]))
+        
 
     def test_shuffle(self):
         # make sure the shuffled sequence does not lose any elements

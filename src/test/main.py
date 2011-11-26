@@ -13,8 +13,10 @@ maybe a better way to create proper test suite, which allow the testRunner to ca
 
 import unittest
 import sys
+## check, auto run the test suite
 from test.test_sequence import TestSequence
 from test.test_hclust import TestHClust
+from test.test_distance import TestDistance
 sys.path.append("/home/sw167/Postdoc/Project_Lemur/src/")
 
 import test_sequence
@@ -26,6 +28,7 @@ def test_main():
     alltests = unittest.TestSuite(test_sequence.suite)
     alltests.addTests( unittest.TestLoader().loadTestsFromTestCase(TestSequence) )
     alltests.addTests( unittest.TestLoader().loadTestsFromTestCase(TestHClust) )
+    alltests.addTests( unittest.TestLoader().loadTestsFromTestCase(TestDistance) )
     print alltests
     print alltests.countTestCases()
     unittest.TextTestRunner(verbosity=2).run(alltests)

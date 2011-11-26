@@ -104,6 +104,18 @@ class HClust(object):
     #    Y=numpy.ndarray(numpy.array([1.1,2.2,3.3,4.4]))
         Y= numpy.array(range(1,7))
         print "Y:",Y, type(Y),  Y.shape, Y.dtype
+        
+        
+        
+        ss = Y.shape
+        print ss, len(ss)
+        print Y.shape, Y.shape[0]
+    
+        d = int(np.ceil(np.sqrt(X.shape[0] * 2)))
+        print d, ss[0]
+        # Check that v is of valid dimensions.
+        d * (d - 1) / 2 != int(ss[0])
+
         print squareform(Y)
         Z=linkage(Y, 'single')
     

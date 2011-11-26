@@ -17,7 +17,6 @@ from Bio import SeqIO
 import go_connector
 #import sequence; reload(sequence)
 #from sequence import *
-from sequence import Sequence
 
 
 import numpy
@@ -27,6 +26,9 @@ import scipy
 
 from core import hclust
 from core.hclust import HClust
+
+from core.sequence import Sequence
+from core.dist.matching_distance import MatchingDistance
 
 print numpy.__version__
 print scipy.__version__
@@ -82,9 +84,13 @@ def test_single():
     seq = go_connector.blast_AmiGO(seq)
     seq = go_connector.extract_ID(seq)
     
-    seq = go_connector.parse_go_term(seq, e_value_cut_off) 
+    seq = go_connector.parse_go_term(seq, e_value_cut_off)
+    print "test set", seq.each_term 
     print "test set", seq.all_terms
-
+    
+    dist_method = MatchingDistance()
+    dist_matirx = dist_method.cal_dist(seq)
+    print dist_matirx
 
 
 
@@ -114,8 +120,8 @@ def run_blast():
 
 def main():
     print __name__;
+    test_single()
 #    test_hclust()
-#    test_single()
 #    run_blast()
     
 if __name__ == "__main__":
