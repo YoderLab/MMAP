@@ -15,69 +15,24 @@ import os
 
 from Bio import SeqIO
 import go_connector
-#import sequence; reload(sequence)
-#from sequence import *
-
-
-import numpy
-import scipy
-
-
-
-from core import hclust
-from core.hclust import HClust
-
 from core.sequence import Sequence
 from core.dist.matching_distance import MatchingDistance
 
-print numpy.__version__
-print scipy.__version__
-working_dir = "/home/sw167/Postdoc/Project_Lemur/Data/"
+import numpy
+import scipy
+import Bio
+from core.utils import path_utils
 
 
+print "NumPy version %s" % numpy.__version__
+print "SciPy version %s" % scipy.__version__
+print "Bio version %s" % Bio.__version__
 
+CWD = os.getcwd()
+data_dir = path_utils.get_data_dir(CWD)
+print data_dir
 
-
-data = "8332116"
-data = "GO:0006468"
-data = "MALVAGLSMRSGASHLVVSLAPMMAHRRFISDAAKSKLNDGPGFGEFVSGNVPLTPKALK"
-data = "MALVAGLSMRSGASHLVVSLAPMMAHRRFISDAAKSKLNDGPGFGEFVSGNVPLTPKALKRKQRLRLPEWVKTDVPAGKNFARIKGNLRDLKLHTVCEEARCPNIGECWGGAEGTATATIMLMGDECTRGCRFCSIKTNKAPAPLDVDEPAHTAAAVAAWGLDYVVLTSVDRDDLPDGGSNHFASTVIELKKRKPEILVECLTPDFSGVYEDIARVAVSGLDVFAHNMETVESLTPSVRD"
-data = "GTGTTCTACAGAGAGAAGCGTAGAGCAATAGGCTGTATTTTGAGAAAGCTGTGTGAGTGGAAAAGTGTACGGATTCTGGAAGCTGAATGCTGTGCAGATCATATCCATATGCTTGTGGAGATCCCGCCCAAAATGAGCGTATCAGGCTTTATGGGATATCTGAAAGGGAAAAGCAGTCTGATGCCTTACGAGCAGTTTGGTGATTTGAAATTCAAATACAGGAACAGGGAGTTCTGGTGCAGAGGGTATTACGTCGATACGGTGGGTAAGAACACGGCGAAGATACAGGATTACATAAAGCACCAGCTTGAAGAGGATAAAATGGGAGAGCAGTTATCGATTCCCTATCCGGGCAGCCCGTTTACGGGCCGTAAGTAA"
-
-print os.getcwd()
-
-
-infile = working_dir+"AE014075_sub.fasta"
-infile = working_dir+"AE014075_subSmall.fasta"
-#records = (SeqIO.parse(infile, "fasta"))
-#records = list(SeqIO.parse(infile, "fasta"))
-#record_dict = SeqIO.to_dict(SeqIO.parse(infile, "fasta"))
-record_index = SeqIO.index(infile, "fasta") # use index for large file
-
-#print record_index["lcl|AE014075.1_gene_1"].format("fasta")
-data = record_index["lcl|AE014075.1_gene_1"].seq ## short no result
-## TODO mismatch
-## maybe change from *** NONE *** to 
-##  Sorry, your BLAST query returned no results. Please see the raw BLAST data for full details.
-data = record_index["lcl|AE014075.1_gene_2"].seq ## good
-data = record_index["lcl|AE014075.1_gene_3"].seq ## long search time, implemented waiting time
-
-#data = str(data)
-#data = data+data+data+data+data+data
-
-## do more test here later
-##Test try...except..raise
-#try:
-#    v = float("12.33")
-#except ValueError as e:
-#    print 'Exception error is: %s' % e;
-#    print "c0", sys.exc_info()[0], sys.exc_info()[1]
-#    raise
-    
-    
-
-e_value_cut_off = 1e-15
-def test_single():
+def test_single(record_index, e_value_cut_off):
   
     data = record_index["lcl|AE014075.1_gene_2"].seq ## good
     seq = Sequence(data)
@@ -94,7 +49,7 @@ def test_single():
 
 
 
-def run_blast():
+def run_blast(record_index, e_value_cut_off):
     
     results = dict()
     for key in record_index:
@@ -118,12 +73,46 @@ def run_blast():
 
 
 
-def main():
-    print __name__;
-    test_single()
-#    test_hclust()
-#    run_blast()
+def setup_database():
     
+    infile = data_dir+"AE014075_subSmall100.fasta"
+    infile = data_dir+"AE014075_subTiny5.fasta"
+    #records = (SeqIO.parse(infile, "fasta"))
+    #records = list(SeqIO.parse(infile, "fasta"))
+    #record_dict = SeqIO.to_dict(SeqIO.parse(infile, "fasta"))
+    record_index = SeqIO.index(infile, "fasta") # use index for large file
+    
+    #print record_index["lcl|AE014075.1_gene_1"].format("fasta")
+#    data = record_index["lcl|AE014075.1_gene_1"].seq ## short no result
+    ## TODO mismatch
+    ## maybe change from *** NONE *** to 
+    ##  Sorry, your BLAST query returned no results. Please see the raw BLAST data for full details.
+#    data = record_index["lcl|AE014075.1_gene_2"].seq ## good
+#    data = record_index["lcl|AE014075.1_gene_3"].seq ## long search time, implemented waiting time
+    
+    #data = str(data)
+    #data = data+data+data+data+data+data
+    
+    ## do more test here later
+    ##Test try...except..raise
+    #try:
+    #    v = float("12.33")
+    #except ValueError as e:
+    #    print 'Exception error is: %s' % e;
+    #    print "c0", sys.exc_info()[0], sys.exc_info()[1]
+    #    raise
+    return record_index
+    
+
+
+def main():
+    print __name__
+    e_value_cut_off = 1e-15
+    record_index = setup_database()
+    test_single(record_index, e_value_cut_off)
+#    run_blast(record_index, e_value_cut_off)
+
+
 if __name__ == "__main__":
     main()
 

@@ -4,7 +4,7 @@
 
 String utility class
 '''
-
+import os
 
 def substring(s, start, end, offset=0):
     """Extract substring between "start" and "end" 
@@ -15,5 +15,3 @@ def substring(s, start, end, offset=0):
     end_index = s.find(end, start_index)
     s2 = s[start_index:end_index].strip()
     return s2
-    
-    

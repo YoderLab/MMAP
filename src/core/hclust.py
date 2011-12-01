@@ -55,15 +55,15 @@ class HClust(object):
         '''
         still need a way to save/export properly
         '''
-        working_dir = "/home/sw167/Postdoc/Project_Lemur/Data/"
-        handle = open(working_dir+"mydatafile.txt", 'w')
+        data_dir = "/home/sw167/Postdoc/Project_Lemur/Data/"
+        handle = open(data_dir+"mydatafile.txt", 'w')
         
         handle.write("1 2 3\n")
         handle.write("1 22 3\n")
         handle.write("1 2 33")
         handle.close()
         
-        handle = open(working_dir+"mydatafile.txt")
+        handle = open(data_dir+"mydatafile.txt")
         record = Cluster.read(handle )
         
 #        record.data = dist
@@ -75,10 +75,10 @@ class HClust(object):
         genetree = record.treecluster(method='s')
         genetree.scale()
         exptree = record.treecluster(dist='u', transpose=1)
-        record.save(working_dir+"cyano_result", genetree, exptree)
+        record.save(data_dir+"cyano_result", genetree, exptree)
         print genetree
         print exptree
-#        record.save(working_dir+"testResult", geneclusters=tree, expclusters=tree)
+#        record.save(data_dir+"testResult", geneclusters=tree, expclusters=tree)
         handle.close()
             
         
