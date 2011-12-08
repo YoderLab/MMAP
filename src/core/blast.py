@@ -22,9 +22,9 @@ result_handle = NCBIWWW.qblast("blastn", "nr", "8332116")
 #result_handle.next()
 #data = aa.read()
 
-http://www.ncbi.nlm.nih.gov/blast/Blast.cgi?QUERY=AGGTTGGTTGGGAGGATTG&DATABASE=nr&FORMAT_TYPE=HTML&PROGRAM=blastn&CLIENT=web&SERVICE=plain&PAGE=Nucleotides&CMD=Put
+#http://www.ncbi.nlm.nih.gov/blast/Blast.cgi?QUERY=AGGTTGGTTGGGAGGATTG&DATABASE=nr&FORMAT_TYPE=HTML&PROGRAM=blastn&CLIENT=web&SERVICE=plain&PAGE=Nucleotides&CMD=Put
 
-http://www.ncbi.nlm.nih.gov/blast/Blast.cgi?RID=954517013-7639-11119&CMD=Get
+#http://www.ncbi.nlm.nih.gov/blast/Blast.cgi?RID=954517013-7639-11119&CMD=Get
 
 blast_records = NCBIXML.parse(result_handle)
 blast_record = blast_records.next()
@@ -88,7 +88,7 @@ record = Entrez.read(handle)
 
 record.keys()
 [u'DbList']
-The values stored in this key is the list of database names shown in the XML above:
+#The values stored in this key is the list of database names shown in the XML above:
 
 handle = Entrez.einfo(db="gene")
 record = Entrez.read(handle)

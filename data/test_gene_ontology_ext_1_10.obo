@@ -1,0 +1,115 @@
+format-version: 1.2
+date: 06:12:2011 18:33
+saved-by: gwg
+auto-generated-by: OBO-Edit 2.0
+subsetdef: goslim_aspergillus "Aspergillus GO slim"
+subsetdef: goslim_candida "Candida GO slim"
+subsetdef: goslim_generic "Generic GO slim"
+subsetdef: goslim_pir "PIR GO slim"
+subsetdef: goslim_plant "Plant GO slim"
+subsetdef: goslim_pombe "Fission yeast GO slim"
+subsetdef: goslim_yeast "Yeast GO slim"
+subsetdef: gosubset_prok "Prokaryotic GO subset"
+subsetdef: high_level_annotation_qc "High-level terms not to be used for direct annotation"
+subsetdef: mf_needs_review "Catalytic activity terms in need of attention"
+synonymtypedef: systematic_synonym "Systematic synonym" EXACT
+default-namespace: gene_ontology
+remark: cvs version: $Revision: 1.2423 $
+ontology: go
+
+[Term]
+id: GO:0000001
+name: mitochondrion inheritance
+namespace: biological_process
+def: "The distribution of mitochondria, including the mitochondrial genome, into daughter cells after mitosis or meiosis, mediated by interactions between mitochondria and the cytoskeleton." [GOC:mcc, PMID:10873824, PMID:11389764]
+synonym: "mitochondrial inheritance" EXACT []
+is_a: GO:0048308 ! organelle inheritance
+is_a: GO:0048311 ! mitochondrion distribution
+
+[Term]
+id: GO:0000002
+name: mitochondrial genome maintenance
+namespace: biological_process
+def: "The maintenance of the structure and integrity of the mitochondrial genome; includes replication and segregation of the mitochondrial chromosome." [GOC:ai, GOC:vw]
+is_a: GO:0007005 ! mitochondrion organization
+
+[Term]
+id: GO:0000003
+name: reproduction
+namespace: biological_process
+alt_id: GO:0019952
+alt_id: GO:0050876
+def: "The production by an organism of new individuals that contain some portion of their genetic material inherited from that organism." [GOC:go_curators, GOC:isa_complete, ISBN:0198506732]
+subset: goslim_generic
+subset: goslim_pir
+subset: goslim_plant
+subset: gosubset_prok
+synonym: "reproductive physiological process" EXACT []
+xref: Wikipedia:Reproduction
+is_a: GO:0008150 ! biological_process
+
+[Term]
+id: GO:0000005
+name: ribosomal chaperone activity
+namespace: molecular_function
+def: "OBSOLETE. Assists in the correct assembly of ribosomes or ribosomal subunits in vivo, but is not a component of the assembled ribosome when performing its normal biological function." [GOC:jl, PMID:12150913]
+comment: This term was made obsolete because it refers to a class of gene products and a biological process rather than a molecular function.
+is_obsolete: true
+consider: GO:0042254
+consider: GO:0044183
+consider: GO:0051082
+
+[Term]
+id: GO:0000006
+name: high affinity zinc uptake transmembrane transporter activity
+namespace: molecular_function
+def: "Catalysis of the transfer of a solute or solutes from one side of a membrane to the other according to the reaction: Zn2+(out) = Zn2+(in), probably powered by proton motive force. In high affinity transport the transporter is able to bind the solute even if it is only present at very low concentrations." [TC:2.A.5.1.1]
+is_a: GO:0005385 ! zinc ion transmembrane transporter activity
+
+[Term]
+id: GO:0000007
+name: low-affinity zinc ion transmembrane transporter activity
+namespace: molecular_function
+def: "Catalysis of the transfer of a solute or solutes from one side of a membrane to the other according to the reaction: Zn2+ = Zn2+, probably powered by proton motive force. In low affinity transport the transporter is able to bind the solute only if it is present at very high concentrations." [GOC:mtg_transport, ISBN:0815340729]
+is_a: GO:0005385 ! zinc ion transmembrane transporter activity
+
+[Term]
+id: GO:0000008
+name: thioredoxin
+namespace: molecular_function
+alt_id: GO:0000013
+def: "OBSOLETE. A small disulfide-containing redox protein that serves as a general protein disulfide oxidoreductase. Interacts with a broad range of proteins by a redox mechanism, based on the reversible oxidation of 2 cysteine thiol groups to a disulfide, accompanied by the transfer of 2 electrons and 2 protons. The net result is the covalent interconversion of a disulfide and a dithiol." [GOC:kd]
+comment: This term was made obsolete because it represents gene products.
+is_obsolete: true
+consider: GO:0006467
+consider: GO:0015036
+
+[Term]
+id: GO:0000009
+name: alpha-1,6-mannosyltransferase activity
+namespace: molecular_function
+def: "Catalysis of the transfer of a mannose residue to an oligosaccharide, forming an alpha-(1->6) linkage." [GOC:mcc, PMID:2644248]
+synonym: "1,6-alpha-mannosyltransferase activity" EXACT []
+xref: EC:2.4.1.-
+xref: Reactome:REACT_22295 "Addition of a third mannose to the N-glycan precursor by Alg2, Saccharomyces cerevisiae"
+xref: Reactome:REACT_22383 "Addition of a third mannose to the N-glycan precursor by ALG2, Homo sapiens"
+is_a: GO:0000030 ! mannosyltransferase activity
+
+[Term]
+id: GO:0000010
+name: trans-hexaprenyltranstransferase activity
+namespace: molecular_function
+def: "Catalysis of the reaction: all-trans-hexaprenyl diphosphate + isopentenyl diphosphate = all-trans-heptaprenyl diphosphate + diphosphate." [EC:2.5.1.30, RHEA:20839]
+subset: gosubset_prok
+synonym: "all-trans-heptaprenyl-diphosphate synthase activity" EXACT [EC:2.5.1.30]
+synonym: "all-trans-hexaprenyl-diphosphate:isopentenyl-diphosphate hexaprenyltranstransferase activity" EXACT [EC:2.5.1.30]
+synonym: "heptaprenyl diphosphate synthase activity" EXACT [EC:2.5.1.30]
+synonym: "heptaprenyl pyrophosphate synthase activity" EXACT [EC:2.5.1.30]
+synonym: "heptaprenyl pyrophosphate synthetase activity" EXACT [EC:2.5.1.30]
+xref: EC:2.5.1.30
+xref: KEGG:R05612
+xref: MetaCyc:TRANS-HEXAPRENYLTRANSTRANSFERASE-RXN
+xref: RHEA:20839
+xref: RHEA:27797
+is_a: GO:0016765 ! transferase activity, transferring alkyl or aryl (other than methyl) groups
+

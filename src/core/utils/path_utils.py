@@ -12,15 +12,20 @@ def get_parent_path(path, above=1):
         above -= 1
     else:
         try:
-            return path[0:path.rindex(os.sep)+1]
+            return path[0:path.rindex(os.sep)]
         except ValueError as e:
             print "Exception error is: %s, too many levels above path" % e;
             raise
 
 
 def get_data_dir(path):
-    parent_path = get_parent_path(path, 2)
-    return parent_path+"data"+os.sep
+    '''
+    find */src/ then go ../src/data/
+    '''  
+    while path.find("src") != -1:
+        path = get_parent_path(path)
+        
+    return path+os.sep+"data"+os.sep
 
 
 class pathUtils(object):

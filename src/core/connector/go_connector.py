@@ -9,14 +9,13 @@ TODO write unit test
 
 import urllib, urllib2
 import time
-import re_patterns
-from Bio._py3k import _as_string 
-
-
 import sys
 import errno
 import os
 from core.utils import string_utils
+from core import re_patterns
+from Bio._py3k import _as_string
+
 
 
 ## check these later

@@ -17,6 +17,7 @@ import sys
 from test.test_sequence import TestSequence
 from test.test_hclust import TestHClust
 from test.test_distance import TestDistance
+from test.parser.test_go_OBO_parser import TestGOOBOParser
 sys.path.append("/home/sw167/Postdoc/Project_Lemur/src/")
 
 import test_sequence
@@ -25,7 +26,7 @@ import test_hclust
 
 def test_main():
     print "\n"
-    alltests = unittest.TestSuite(test_sequence.suite)
+    alltests = unittest.TestSuite()
     alltests.addTests( unittest.TestLoader().loadTestsFromTestCase(TestSequence) )
     alltests.addTests( unittest.TestLoader().loadTestsFromTestCase(TestHClust) )
     alltests.addTests( unittest.TestLoader().loadTestsFromTestCase(TestDistance) )
@@ -42,15 +43,3 @@ if (__name__ == '__main__') | (__name__ == 'test.main') :
     test_main()
 
 
-
-#TODO fix this to allow -m unittest to test.main works properly 
-#class TestMain(unittest.TestSuite):
-class TestMain(unittest.TestCase):
-
-    def test_method(self):
-        print "====call test_method===="
-        alltests = unittest.TestSuite([test_sequence.suite])
-        tt = unittest.TestSuite()
-        tt.addTest(test_sequence.suite)
-    
-    

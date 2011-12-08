@@ -14,7 +14,7 @@ import sys
 import os
 
 from Bio import SeqIO
-import go_connector
+from core.connector import go_connector
 from core.sequence import Sequence
 from core.dist.matching_distance import MatchingDistance
 
@@ -34,7 +34,7 @@ print data_dir
 
 def test_single(record_index, e_value_cut_off):
   
-    data = record_index["lcl|AE014075.1_gene_2"].seq ## good
+    data = record_index["lcl|AE014075.1_gene_3"].seq ## good
     seq = Sequence(data)
     seq = go_connector.blast_AmiGO(seq)
     seq = go_connector.extract_ID(seq)
@@ -109,7 +109,7 @@ def main():
     print __name__
     e_value_cut_off = 1e-15
     record_index = setup_database()
-    test_single(record_index, e_value_cut_off)
+#    test_single(record_index, e_value_cut_off)
 #    run_blast(record_index, e_value_cut_off)
 
 
