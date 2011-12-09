@@ -1,0 +1,52 @@
+!CVS Version: Revision: 1.45 $
+!GOC Validation Date: 08/12/2011 $
+!Submission Date: 5/20/2009
+!
+! The above "Submission Date" is when the annotation project provided
+! this file to the Gene Ontology Consortium (GOC).  The "GOC Validation
+! Date" indicates when this file was last changed as a result of a GOC
+! validation and filtering process.  The "CVS Version" above is the
+! GOC version of this file.
+!
+! Note: The contents of this file may differ from that submitted to the
+! GOC. The identifiers and syntax of the file have been checked, rows of
+! data not meeting the standards set by the GOC have been removed. This
+! file may also have annotations removed because the annotations for the
+! listed Taxonomy identifier are only allowed in a file provided by
+! another annotation project.  The original submitted file is available from:
+!  http://www.geneontology.org/gene-associations/submission/
+!
+! For information on which taxon are allowed in which files please see:
+!  http://www.geneontology.org/GO.annotation.shtml#script
+!
+!gaf-version: 2.0
+!Project_name: Leishmania major GeneDB
+!URL: http://www.genedb.org/leish
+!Contact Email: mb4@sanger.ac.uk
+GeneDB_Lmajor	LmjF05.0285	LmjF05.0285		GO:0003779	PMID:unpublished	ISS		F	ARP2/3 complex 16kDa subunit, putative	LmjF05.0285	gene	taxon:5664	20040828	GeneDB_Lmajor		
+GeneDB_Lmajor	LmjF05.0285	LmjF05.0285		GO:0005885	PMID:unpublished	ISS		C	ARP2/3 complex 16kDa subunit, putative	LmjF05.0285	gene	taxon:5664	20040828	GeneDB_Lmajor		
+GeneDB_Lmajor	LmjF05.0285	LmjF05.0285		GO:0007010	PMID:unpublished	ISS		P	ARP2/3 complex 16kDa subunit, putative	LmjF05.0285	gene	taxon:5664	20040828	GeneDB_Lmajor		
+GeneDB_Lmajor	LmjF10.1000	LmjF10.1000		GO:0005198	TIGR_Tba1:annotation	ISS	UniProt:P53731	F	ARP2/3 complex subunit, putative	LmjF10.1000	gene	taxon:5664	20041209	GeneDB_Lmajor		
+GeneDB_Lmajor	LmjF10.1000	LmjF10.1000		GO:0005885	TIGR_Tba1:annotation	ISS	Pfam:PF04045|UniProt:O96623	C	ARP2/3 complex subunit, putative	LmjF10.1000	gene	taxon:5664	20041209	GeneDB_Lmajor		
+GeneDB_Lmajor	LmjF10.0030	LmjF10.0030		GO:0015114	TAIR:2088851	ISS		F	phosphate-repressible phosphate permease-like protein	LmjF10.0030	gene	taxon:5664	20040110	GeneDB_Lmajor		
+GeneDB_Lmajor	LmjF10.0030	LmjF10.0030		GO:0016021	UniProtKB:Q08344	ISS		C	phosphate-repressible phosphate permease-like protein	LmjF10.0030	gene	taxon:5664	20040110	GeneDB_Lmajor		
+GeneDB_Lmajor	LmjF18.0920	LmjF18.0920		GO:0005198	TIGR_Tba1:Tb10.389.0270	ISS	UniProt:O88656	F	ARP2/3 complex subunit, putative	LmjF18.0920	gene	taxon:5664	20040828	GeneDB_Lmajor		
+GeneDB_Lmajor	LmjF18.0920	LmjF18.0920		GO:0005198	TIGR_Tba1:Tb10.389.0270	ISS	UniProt:O88656	F	ARP2/3 complex subunit, putative	LmjF18.0920	gene	taxon:5664	20040617	GeneDB_Lmajor		
+GeneDB_Lmajor	LmjF18.0920	LmjF18.0920		GO:0005885	TIGR_Tba1:Tb10.389.0270	ISS	UniProt:O15143	C	ARP2/3 complex subunit, putative	LmjF18.0920	gene	taxon:5664	20040828	GeneDB_Lmajor		
+GeneDB_Lmajor	LmjF18.0920	LmjF18.0920		GO:0005885	TIGR_Tba1:Tb10.389.0270	ISS	UniProt:O15143	C	ARP2/3 complex subunit, putative	LmjF18.0920	gene	taxon:5664	20040729	GeneDB_Lmajor		
+GeneDB_Lmajor	LmjF18.0920	LmjF18.0920		GO:0030036	TIGR_Tba1:Tb10.389.0270	ISS	UniProt:Q92747	P	ARP2/3 complex subunit, putative	LmjF18.0920	gene	taxon:5664	20040828	GeneDB_Lmajor		
+GeneDB_Lmajor	LmjF18.0920	LmjF18.0920		GO:0030036	TIGR_Tba1:Tb10.389.0270	ISS	UniProt:Q92747	P	ARP2/3 complex subunit, putative	LmjF18.0920	gene	taxon:5664	20040729	GeneDB_Lmajor		
+GeneDB_Lmajor	LmjF10.1300	LmjF10.1300		GO:0015114	TAIR:2088851	ISS		F	phosphate-repressible phosphate permease-like protein	LmjF10.1300	gene	taxon:5664	20040110	GeneDB_Lmajor		
+GeneDB_Lmajor	LmjF10.1300	LmjF10.1300		GO:0016021	UniProtKB:Q08344	ISS		C	phosphate-repressible phosphate permease-like protein	LmjF10.1300	gene	taxon:5664	20040110	GeneDB_Lmajor		
+GeneDB_Lmajor	LmjF20.0010	LmjF20.0010		GO:0003677	SGD:S0005733	ISS		F	DNA-directed RNA polymerase polypeptide, putative	LmjF20.0010	gene	taxon:5664	20040110	GeneDB_Lmajor		
+GeneDB_Lmajor	LmjF20.0010	LmjF20.0010		GO:0005666	SGD:S0005733	ISS		C	DNA-directed RNA polymerase polypeptide, putative	LmjF20.0010	gene	taxon:5664	20040110	GeneDB_Lmajor		
+GeneDB_Lmajor	LmjF20.0010	LmjF20.0010		GO:0006383	SGD:S0005733	ISS		P	DNA-directed RNA polymerase polypeptide, putative	LmjF20.0010	gene	taxon:5664	20040110	GeneDB_Lmajor		
+GeneDB_Lmajor	LmjF20.0050	LmjF20.0050		GO:0003682	UniProtKB:Q9Y294	ISS		F	anti-silencing protein asf 1-like protein	LmjF20.0050	gene	taxon:5664	20050110	GeneDB_Lmajor		
+GeneDB_Lmajor	LmjF20.0050	LmjF20.0050		GO:0005634	UniProtKB:Q9Y294	ISS		C	anti-silencing protein asf 1-like protein	LmjF20.0050	gene	taxon:5664	20050110	GeneDB_Lmajor		
+GeneDB_Lmajor	LmjF20.0250	LmjF20.0250		GO:0008612	FB:FBgn0035854	ISS		P	deoxyhypusine synthase, putative	LmjF20.0250	gene	taxon:5664	20050110	GeneDB_Lmajor		
+GeneDB_Lmajor	LmjF20.0100	PGKC		GO:0004618	PMID:9497041	TAS		F	phosphoglycerate kinase C, glycosomal	LmjF20.0100|PGKC	gene	taxon:5664	20040110	GeneDB_Lmajor		
+GeneDB_Lmajor	LmjF20.0100	PGKC		GO:0020015	PMID:9497041	TAS		C	phosphoglycerate kinase C, glycosomal	LmjF20.0100|PGKC	gene	taxon:5664	20040110	GeneDB_Lmajor		
+GeneDB_Lmajor	LmjF20.0100	PGKC		GO:0006096	PMID:9497041	TAS		P	phosphoglycerate kinase C, glycosomal	LmjF20.0100|PGKC	gene	taxon:5664	20040110	GeneDB_Lmajor		
+GeneDB_Lmajor	LmjF20.0110	PGKB		GO:0004618	PMID:9497041	TAS		F	phosphoglycerate kinase B, cytosolic	LmjF20.0110|PGKB	gene	taxon:5664	20040110	GeneDB_Lmajor		
+GeneDB_Lmajor	LmjF20.0110	PGKB		GO:0020015	PMID:9497041	TAS		C	phosphoglycerate kinase B, cytosolic	LmjF20.0110|PGKB	gene	taxon:5664	20040110	GeneDB_Lmajor		
+GeneDB_Lmajor	LmjF20.0110	PGKB		GO:0006096	PMID:9497041	TAS		P	phosphoglycerate kinase B, cytosolic	LmjF20.0110|PGKB	gene	taxon:5664	20040110	GeneDB_Lmajor		

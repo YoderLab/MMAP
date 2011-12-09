@@ -1,0 +1,54 @@
+'''
+Created on Dec 8, 2011
+
+@author: Steven Wu
+'''
+import unittest
+from core.utils import path_utils
+import os
+from core.parser.go_annotation_parser import AnnotationParser
+
+
+class Test(unittest.TestCase):
+
+
+    def setUp(self):
+        CWD = os.getcwd()
+        self.data_dir = path_utils.get_data_dir(CWD)
+
+
+    def tearDown(self):
+        pass
+
+
+    def test_parse_database(self):
+        data_file = self.data_dir+"test_gene_association.GeneDB_Lmajor"
+        self.ap = AnnotationParser(data_file)
+        self.ap.parse_database()
+        self.data = self.ap.annotation
+
+        self.assertEqual(self.ap.cvs_version, "1.45")
+        self.assertEqual(self.ap.goc_validation_date, "08/12/2011")
+
+        self.assertSetEqual(self.data["GO:0003677"], {"LmjF20.0010"} )
+        self.assertSetEqual(self.data["GO:0003682"], {"LmjF20.0050"} )
+        self.assertSetEqual(self.data["GO:0003779"], {"LmjF05.0285"} )
+        self.assertSetEqual(self.data["GO:0004618"], {"LmjF20.0100", "LmjF20.0110"} )
+        self.assertSetEqual(self.data["GO:0005198"], {"LmjF10.1000", "LmjF18.0920", "LmjF18.0920"} )
+        self.assertSetEqual(self.data["GO:0005634"], {"LmjF20.0050"} )
+        self.assertSetEqual(self.data["GO:0005666"], {"LmjF20.0010"} )
+        self.assertSetEqual(self.data["GO:0005885"], {"LmjF05.0285", "LmjF10.1000", "LmjF18.0920", "LmjF18.0920"} )
+        self.assertSetEqual(self.data["GO:0006096"], {"LmjF20.0100", "LmjF20.0110"} )
+        self.assertSetEqual(self.data["GO:0006383"], {"LmjF20.0010"} )
+        self.assertSetEqual(self.data["GO:0007010"], {"LmjF05.0285"} )
+        self.assertSetEqual(self.data["GO:0008612"], {"LmjF20.0250"} )
+        self.assertSetEqual(self.data["GO:0015114"], {"LmjF10.0030", "LmjF10.1300"} )
+        self.assertSetEqual(self.data["GO:0016021"], {"LmjF10.0030", "LmjF10.1300"} )
+        self.assertSetEqual(self.data["GO:0020015"], {"LmjF20.0100", "LmjF20.0110"} )
+        self.assertSetEqual(self.data["GO:0030036"], {"LmjF18.0920", "LmjF18.0920"} )
+        
+
+
+if __name__ == "__main__":
+    #import sys;sys.argv = ['', 'Test.testName']
+    unittest.main()

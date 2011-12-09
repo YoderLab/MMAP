@@ -19,7 +19,7 @@ class TestGOOBOParser(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def test_init(self):
+    def test_parse_database(self):
         self.infile = self.data_dir+"test_gene_ontology_ext_1_10.obo" 
         self.pr = OBOParser(self.infile)
         self.pr.parse_database()

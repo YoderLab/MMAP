@@ -4,47 +4,36 @@ Created on Dec 7, 2011
 @author: Steven Wu
 '''
 import pickle
+from core.parser import parser
 
 
-
-
-
-
-def parse_keyword(line, keyword):
-    index = line.find(keyword)
-    if index == -1:
-        return None
-    else:
-        indexC = line.find(":")
-        if indexC != -1:
-            return line[indexC+1:len(line)].strip()
-        else:
-            return line[index+1:len(line)].strip()
 
 def parse_version(readline):
-    return parse_keyword(readline, "version:")
+    return parser.parse_keyword(readline, "version:")
 
 
 def parse_date(readline):
-    return parse_keyword(readline, "date:")
+    return parser.parse_keyword(readline, "date:")
 
 
 def parse_id(readline):
-    return parse_keyword(readline, "id:")
+    return parser.parse_keyword(readline, "id:")
 
 
 def parse_name(readline):
-    return parse_keyword(readline, "name:")
+    return parser.parse_keyword(readline, "name:")
 
 
 def parse_namespace(readline):
-    return parse_keyword(readline, "namespace:")
+    return parser.parse_keyword(readline, "namespace:")
 
 
 def parse_isa(readline):
     index_start = readline.find("is_a:")+5
     index_end = readline.find("!")
     return readline[index_start:index_end].strip()
+
+
 
 
 class OBOParser(object):
@@ -101,10 +90,11 @@ class OBOParser(object):
         '''
         self.file = file
 
-        
+    
     def save_dict_to_file(self, outfile):
         '''
         ?save the whole class not just 1 object
+        TODO: move save/load to parser class
         '''
         save_file = open(outfile, "w")
 #        pickle.dump(self.date, save_file)
