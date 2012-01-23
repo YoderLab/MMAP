@@ -42,6 +42,7 @@ def test_single(record_index, e_value_cut_off):
     seq = go_connector.extract_ID(seq)
     
     seq = go_connector.parse_go_term(seq, e_value_cut_off)
+    
     print "test set", seq.each_term 
     print "test set", seq.all_terms
     
@@ -111,7 +112,7 @@ def main():
     print __name__
     e_value_cut_off = 1e-15
     record_index = setup_database()
-#    test_single(record_index, e_value_cut_off)
+    test_single(record_index, e_value_cut_off)
 #    run_blast(record_index, e_value_cut_off)
 
 

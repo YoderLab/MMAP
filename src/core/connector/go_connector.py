@@ -10,8 +10,7 @@ TODO write unit test
 import urllib, urllib2
 import time
 import sys
-import errno
-import os
+
 from core.utils import string_utils
 from core import re_patterns
 from Bio._py3k import _as_string
@@ -114,7 +113,7 @@ def extract_ID(seq):
         #for i,l in enumerate(lines):
         for l in lines:
             if l.find(MATCH_HREF_HASH) != -1:
-                token = re_patterns.multi_space.split(l)
+                token = re_patterns.multi_space_split(l) 
                 if len(token) != 4:
                     raise UserWarning("Error: incorrecting parsing", token, len(token))
                     print "====NEVER REACH HERE??=====", token, len(token)
@@ -159,9 +158,9 @@ def parse_go_term(seq, e_value_cut_off=1.0):
                 match_index = seq.web_page.find(search_Key)
                 end_match_index = seq.web_page.find("Length", match_index)
                 raw_list = seq.web_page[match_index:end_match_index]
-                raw_list = re_patterns.multi_space.sub(" ", raw_list)
-                term_full_list = re_patterns.go_term_full.findall(raw_list)
-                term_summary_list = re_patterns.go_term_exact.findall("".join(term_full_list))
+                raw_list = re_patterns.multi_space_sub(" ", raw_list)
+                term_full_list = re_patterns.go_term_full_findall(raw_list)
+                term_summary_list = re_patterns.go_term_exact_findall("".join(term_full_list))
                 result_Full[m] = term_full_list
                 result_Summary[m] = term_summary_list
                 list_GO_term.update(term_summary_list)

@@ -69,7 +69,8 @@ class TestGOOBOParser(unittest.TestCase):
         self.pr = OBOParser(self.infile)
         self.pr.parse_database()
 
-        self.assertSetEqual(self.pr.get_child("GO:0000001", {"GO:", "GO:"} ))
+#TODO: finish this!!
+#        self.assertSetEqual(self.pr.get_child("GO:0000001", {"GO:", "GO:"} ))
 
 
 

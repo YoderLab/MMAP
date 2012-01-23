@@ -19,7 +19,7 @@ from test.test_hclust import TestHClust
 from test.test_distance import TestDistance
 from test.parser.test_go_OBO_parser import TestGOOBOParser
 from test.parser.test_go_annotation_parser import TestGoAnnotationParser
-
+from test.test_run_ext_prog import TestRunExtProgram
 
 
 #def test_main():
