@@ -7,7 +7,7 @@ import unittest
 from core.parser.go_OBO_parser import OBOParser
 import os
 from core.utils import path_utils
-import pickle
+
 
 
 class TestGOOBOParser(unittest.TestCase):
@@ -62,6 +62,19 @@ class TestGOOBOParser(unittest.TestCase):
         self.assertSetEqual(self.data["GO:0000008"], set())
         self.assertSetEqual(self.data["GO:0000009"], {"GO:0000030"})
         self.assertSetEqual(self.data["GO:0000010"], {"GO:0016765"})
+        
+        
+    def test_get_child(self):
+        self.infile = self.data_dir+"test_gene_ontology_ext_1_10.obo" 
+        self.pr = OBOParser(self.infile)
+        self.pr.parse_database()
+
+        self.assertSetEqual(self.pr.get_child("GO:0000001", {"GO:", "GO:"} ))
+
+
+
+
+
         
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.test_Init']

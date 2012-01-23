@@ -5,24 +5,26 @@
 require Biopython - 1.58
 require numpy - 1.6.1
 require SciPy - 0.10.0
-require hcluster - 0.2 http://code.google.com/p/scipy-cluster/
-require matplotlib - 1.1.0 http://matplotlib.sourceforge.net/ 
+
+not require hcluster - 0.2 http://code.google.com/p/scipy-cluster/
+not require matplotlib - 1.1.0 http://matplotlib.sourceforge.net/ 
     matplotlib (and its dep) is only required to plot dendrogram (with "ipython -pylab") 
 
 '''
 import sys
 import os
 
-from Bio import SeqIO
+
 from core.connector import go_connector
 from core.sequence import Sequence
 from core.dist.matching_distance import MatchingDistance
+from core.utils import path_utils
+
 
 import numpy
 import scipy
 import Bio
-from core.utils import path_utils
-
+from Bio import SeqIO
 
 print "NumPy version %s" % numpy.__version__
 print "SciPy version %s" % scipy.__version__

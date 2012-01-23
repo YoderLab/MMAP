@@ -9,7 +9,7 @@ import os
 from core.parser.go_annotation_parser import AnnotationParser
 
 
-class Test(unittest.TestCase):
+class TestGoAnnotationParser(unittest.TestCase):
 
 
     def setUp(self):
@@ -47,8 +47,28 @@ class Test(unittest.TestCase):
         self.assertSetEqual(self.data["GO:0020015"], {"LmjF20.0100", "LmjF20.0110"} )
         self.assertSetEqual(self.data["GO:0030036"], {"LmjF18.0920", "LmjF18.0920"} )
         
+    def test_get_annotation_count(self):
+        data_file = self.data_dir+"test_gene_association.GeneDB_Lmajor"
+        self.ap = AnnotationParser(data_file)
+        self.ap.parse_database()
+        
+        
+        self.assertEqual(self.ap.get_annotation_count("GO:0003677"), 1)
+        self.assertEqual(self.ap.get_annotation_count("GO:0003682"), 1)
+        self.assertEqual(self.ap.get_annotation_count("GO:0003779"), 1)
+        self.assertEqual(self.ap.get_annotation_count("GO:0004618"), 2)
+        self.assertEqual(self.ap.get_annotation_count("GO:0005634"), 1) # 1 repeat term
+        self.assertEqual(self.ap.get_annotation_count("GO:0005666"), 1)
+        self.assertEqual(self.ap.get_annotation_count("GO:0005885"), 3) # 1 repeat term
+        self.assertEqual(self.ap.get_annotation_count("GO:0006096"), 2)
+        self.assertEqual(self.ap.get_annotation_count("GO:0006383"), 1)
+        self.assertEqual(self.ap.get_annotation_count("GO:0007010"), 1)
+        self.assertEqual(self.ap.get_annotation_count("GO:0008612"), 1)
+        self.assertEqual(self.ap.get_annotation_count("GO:0015114"), 2)
+        self.assertEqual(self.ap.get_annotation_count("GO:0016021"), 2)
+        self.assertEqual(self.ap.get_annotation_count("GO:0020015"), 2)
+        self.assertEqual(self.ap.get_annotation_count("GO:0030036"), 1) # 1 repeat term
 
-
-if __name__ == "__main__":
-    #import sys;sys.argv = ['', 'Test.testName']
-    unittest.main()
+#if __name__ == "__main__":
+#    #import sys;sys.argv = ['', 'Test.testName']
+#    unittest.main()

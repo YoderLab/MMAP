@@ -68,3 +68,7 @@ class AnnotationParser(object):
 
         print "Done"
         
+        
+    def get_annotation_count(self, key):
+        terms = self.annotation[key]
+        return len(terms)
