@@ -18,9 +18,10 @@ class Sequence(object):
         self.all_terms = set()
         self.data = data
         self.is_match = False
-        self.web_page = None
+        self.__web_page = None
         self.len = 0
         self.acc_ID, self.match_ID, self.e_value = [], [], []
+        
 
         
     def add(self, key, term):
@@ -75,6 +76,7 @@ class Sequence(object):
         del self.__web_page
         
     web_page = property(get_web_page, set_web_page, del_web_page, "Testing property")
+    
     
 
 

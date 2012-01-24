@@ -18,7 +18,7 @@ def get_parent_path(path, above=1):
             raise
 
 
-def get_data_dir(path):
+def get_data_dir(path=os.getcwd()):
     '''
     find */src/ then go ../src/data/
     '''  
@@ -26,6 +26,11 @@ def get_data_dir(path):
         path = get_parent_path(path)
         
     return path+os.sep+"data"+os.sep
+
+
+
+
+
 
 
 class pathUtils(object):

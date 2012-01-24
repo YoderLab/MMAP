@@ -14,12 +14,13 @@ cd ./src
 python -m unittest -v test.main 
 '''
 
-from test.test_sequence import TestSequence
-from test.test_hclust import TestHClust
-from test.test_distance import TestDistance
-from test.parser.test_go_OBO_parser import TestGOOBOParser
 from test.parser.test_go_annotation_parser import TestGoAnnotationParser
+from test.parser.test_go_OBO_parser import TestGOOBOParser
 
+from test.test_distance import TestDistance
+from test.test_hclust import TestHClust
+from test.test_run_ext_prog import TestRunExtProgram
+from test.test_sequence import TestSequence
 
 
 #def test_main():
