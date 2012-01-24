@@ -13,26 +13,35 @@ import os.path
 class TestRunExtProgram(unittest.TestCase):
 
 
-    def test_addResetSwitch(self):
+    def test_appendResetSwitch(self):
         self.p1 = runExtProg("ls")
-        self.assertListEqual(self.p1.switch, [])
+       
+        self.assertListEqual(self.p1.get_switch(), [])
         
         self.p1.append_switch("-l")
-        self.assertListEqual(self.p1.switch, ["-l"])
+        self.assertListEqual(self.p1.get_switch(), ["-l"])
         self.p1.append_switch("-s")
-        self.assertListEqual(self.p1.switch, ["-l","-s"])
+        self.assertListEqual(self.p1.get_switch(), ["-l","-s"])
         self.p1.append_switch(["-1","-2"])
-        self.assertListEqual(self.p1.switch, ["-l","-s","-1","-2"])
+        self.assertListEqual(self.p1.get_switch(), ["-l","-s","-1","-2"])
         self.p1.append_switch(["-x"])
-        self.assertListEqual(self.p1.switch, ["-l","-s","-1","-2","-x"])
+        self.assertListEqual(self.p1.get_switch(), ["-l","-s","-1","-2","-x"])
         
         self.p1.reset_switch()
-        self.assertListEqual(self.p1.switch, [])
+        self.assertListEqual(self.p1.get_switch(), [])
         self.p1.append_switch(["-a","-b"])
-        self.assertListEqual(self.p1.switch, ["-a","-b"])
+        self.assertListEqual(self.p1.get_switch(), ["-a","-b"])
+
+    def test_setSwitch(self):
+        self.p1 = runExtProg("ls")
+        self.assertListEqual(self.p1.get_switch(), [])
         
-
-
+        self.p1.set_switch("-l")
+        self.assertListEqual(self.p1.get_switch(), ["-l"])
+        self.p1.set_switch("-s")
+        self.assertListEqual(self.p1.get_switch(), ["-s"])
+        self.p1.set_switch(["-111","-222"])
+        self.assertListEqual(self.p1.get_switch(), ["-111","-222"])
 
 
     def test_runCommand(self):
@@ -56,10 +65,10 @@ class TestRunExtProgram(unittest.TestCase):
         
         self.p2 = runExtProg("./muscle3.8.31_i86linux64")
         self.p2.cwd = self.data_dir
-        self.switch = "-in testAlignmentInput.fasta -out".split()
-        self.switch.append(self.outFileName)
+        self._switch = "-in testAlignmentInput.fasta -out".split()
+        self._switch.append(self.outFileName)
         
-        self.p2.append_switch( self.switch )
+        self.p2.append_switch( self._switch )
         self.p2.run()
         self.out = self.p2.errors #not sure why output capture by stderr, but it works
         
