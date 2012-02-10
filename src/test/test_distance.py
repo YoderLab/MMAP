@@ -19,7 +19,7 @@ class TestDistance(unittest.TestCase):
         pass
 
 
-    def test_matching_distance(self):
+    def testDistance_matching_distance(self):
         
         
         d = MatchingDistance()
@@ -58,8 +58,3 @@ def dataset1():
     return s
 
 
-
-if __name__ == "__main__":
-    #import sys;sys.argv = ['', 'Test.testBasicDistance']
-    unittest.main()
-    

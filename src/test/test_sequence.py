@@ -8,7 +8,7 @@ import unittest
 import random
 #from ..src import sequence
 from core.sequence import Sequence
-import numpy
+
 
 
 
@@ -24,10 +24,10 @@ class TestSequence(unittest.TestCase):
         pass
 
     @unittest.skip("demonstrating skipping")
-    def test_nothing(self):
+    def testSequence_nothing(self):
         self.fail("shouldn't happen")
         
-    def test_add(self):
+    def testSequence_add(self):
         
         self.s.add(0,["term0", "term1"])
         self.s.add(1,["term2", "term3"])
@@ -58,7 +58,7 @@ class TestSequence(unittest.TestCase):
         self.assertEqual(self.s.all_terms, expectAll)
 
 
-    def test_combinations(self):
+    def testSequence_combinations(self):
         
         self.s.add(0,["0", "t00", "t01", "t02", "t03", "t04"])
         self.s.add(1,["1", "t01", "t01", "t02", "t03"])
@@ -76,7 +76,7 @@ class TestSequence(unittest.TestCase):
                 k += 1
 
         
-    def test_combinations2(self):
+    def testSequence_combinations2(self):
         
         self.s.add(0,["0", "t00", "t01", "t02", "t03"])
         self.s.add(1,["1", "t01", "t02", "t03", "t04"])
@@ -88,7 +88,7 @@ class TestSequence(unittest.TestCase):
             self.assertEqual(len(comb[1] & comb[2]), 4-(comb[0][0]-comb[0][1]))
         
 
-    def test_shuffle(self):
+    def testSequence_shuffle(self):
         # make sure the shuffled sequence does not lose any elements
         random.shuffle(self.seq)
         self.seq.sort()
@@ -97,11 +97,11 @@ class TestSequence(unittest.TestCase):
         # should raise an exception for an immutable sequence
         self.assertRaises(TypeError, random.shuffle, (1,2,3))
 
-    def test_choice(self):
+    def testSequence_choice(self):
         element = random.choice(self.seq)
         self.assertTrue(element in self.seq)
 
-    def test_sample(self):
+    def testSequence_sample(self):
         with self.assertRaises(ValueError):
             random.sample(self.seq, 20)
         for element in random.sample(self.seq, 5):
