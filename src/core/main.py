@@ -14,7 +14,6 @@ not require matplotlib - 1.1.0 http://matplotlib.sourceforge.net/
 import sys
 import os
 
-
 from core.connector import go_connector
 from core.sequence import Sequence
 from core.dist.matching_distance import MatchingDistance
@@ -25,6 +24,8 @@ import numpy
 import scipy
 import Bio
 from Bio import SeqIO
+
+
 
 print "NumPy version %s" % numpy.__version__
 print "SciPy version %s" % scipy.__version__
@@ -114,7 +115,6 @@ def main():
     record_index = setup_database()
     test_single(record_index, e_value_cut_off)
 #    run_blast(record_index, e_value_cut_off)
-
 
 if __name__ == "__main__":
     main()

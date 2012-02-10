@@ -21,7 +21,7 @@ class TestGoAnnotationParser(unittest.TestCase):
         pass
 
 
-    def test_parse_database(self):
+    def testGoAnnotationParser_parse_database(self):
         data_file = self.data_dir+"test_gene_association.GeneDB_Lmajor"
         self.ap = AnnotationParser(data_file)
         self.ap.parse_database()
@@ -47,7 +47,7 @@ class TestGoAnnotationParser(unittest.TestCase):
         self.assertSetEqual(self.data["GO:0020015"], {"LmjF20.0100", "LmjF20.0110"} )
         self.assertSetEqual(self.data["GO:0030036"], {"LmjF18.0920", "LmjF18.0920"} )
         
-    def test_get_annotation_count(self):
+    def testGoAnnotationParser_get_annotation_count(self):
         data_file = self.data_dir+"test_gene_association.GeneDB_Lmajor"
         self.ap = AnnotationParser(data_file)
         self.ap.parse_database()
@@ -69,6 +69,4 @@ class TestGoAnnotationParser(unittest.TestCase):
         self.assertEqual(self.ap.get_annotation_count("GO:0020015"), 2)
         self.assertEqual(self.ap.get_annotation_count("GO:0030036"), 1) # 1 repeat term
 
-#if __name__ == "__main__":
-#    #import sys;sys.argv = ['', 'Test.testName']
-#    unittest.main()
+

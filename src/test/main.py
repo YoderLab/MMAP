@@ -14,15 +14,21 @@ cd ./src
 python -m unittest -v test.main 
 '''
 
-from test.parser.test_go_annotation_parser import TestGoAnnotationParser
-from test.parser.test_go_OBO_parser import TestGOOBOParser
+## from file import class
 
 from test.test_distance import TestDistance
 from test.test_hclust import TestHClust
-from test.test_run_ext_prog import TestRunExtProgram
+from test.test_run_ext_prog import TestRunExtProg
 from test.test_sequence import TestSequence
 
+# Parser module
+from test.parser.test_go_annotation_parser import *
+from test.parser.test_go_OBO_parser import *
 
+
+# component module
+from test.component.test_run_metaIDBA import *
+ 
 #def test_main():
 #    '''
 #    Testing method

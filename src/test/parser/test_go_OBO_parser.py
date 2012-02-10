@@ -19,7 +19,7 @@ class TestGOOBOParser(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def test_parse_database(self):
+    def testGOOBOParser_parse_database(self):
         self.infile = self.data_dir+"test_gene_ontology_ext_1_10.obo" 
         self.pr = OBOParser(self.infile)
         self.pr.parse_database()
@@ -41,10 +41,10 @@ class TestGOOBOParser(unittest.TestCase):
         
 
 
-    def test_save_file(self):
+    def testGOOBOParser_save_file(self):
         
         self.infile = self.data_dir+"test_gene_ontology_ext_1_10.obo"
-        self.save_file = self.data_dir+"testOBO_parser_save.zzz" 
+        self.save_file = self.data_dir+"tempOBO_parser_save.zzz" 
         self.pr = OBOParser(self.infile)
         self.pr.parse_database()
         self.pr.save_dict_to_file(self.save_file)
@@ -62,9 +62,10 @@ class TestGOOBOParser(unittest.TestCase):
         self.assertSetEqual(self.data["GO:0000008"], set())
         self.assertSetEqual(self.data["GO:0000009"], {"GO:0000030"})
         self.assertSetEqual(self.data["GO:0000010"], {"GO:0016765"})
+        #clean up
+        os.remove(self.save_file)
         
-        
-    def test_get_child(self):
+    def testGOOBOParser_get_child(self):
         self.infile = self.data_dir+"test_gene_ontology_ext_1_10.obo" 
         self.pr = OBOParser(self.infile)
         self.pr.parse_database()
@@ -75,8 +76,3 @@ class TestGOOBOParser(unittest.TestCase):
 
 
 
-
-        
-if __name__ == "__main__":
-    #import sys;sys.argv = ['', 'Test.test_Init']
-    unittest.main()
