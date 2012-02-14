@@ -80,7 +80,7 @@ def run_blast(record_index, e_value_cut_off):
 def setup_database():
     
     infile = data_dir+"AE014075_subSmall100.fasta"
-    infile = data_dir+"AE014075_subTiny5.fasta"
+    infile = data_dir+"MetaSim_bint-454.20e39f4c.fna"
     #records = (SeqIO.parse(infile, "fasta"))
     #records = list(SeqIO.parse(infile, "fasta"))
     #record_dict = SeqIO.to_dict(SeqIO.parse(infile, "fasta"))
@@ -113,8 +113,8 @@ def main():
     print __name__
     e_value_cut_off = 1e-15
     record_index = setup_database()
-    test_single(record_index, e_value_cut_off)
-#    run_blast(record_index, e_value_cut_off)
+#   test_single(record_index, e_value_cut_off)
+    run_blast(record_index, e_value_cut_off)
 
 if __name__ == "__main__":
     main()
