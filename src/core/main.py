@@ -143,19 +143,19 @@ def main():
     record_index = setup_database()
 #    test_single(record_index, e_value_cut_off)
 #    run_blast(record_index, e_value_cut_off)
-    
+
     """
     run metaIDBA then blast
     TODO(Steven Wu): rewrite it with better way to connect them 
     """
-    infile = "testMetaIDBA.fasta"
+    infile = "MetaSim_bint-454.20e39f4c.fna"
     metaIDBA = RunMetaIDBA(infile=infile, pdir = data_dir)
     metaIDBA.setSwitchMinK(1)
     metaIDBA.setSwitchMaxK(2)
     metaIDBA.run()
     records = metaIDBA.readContig()
-#    BLAST = RunBlast(records, e_value_cut_off) # dont have proper metaIDBA output file
-    BLAST = RunBlast(record_index, e_value_cut_off)
+    BLAST = RunBlast(records, e_value_cut_off) # dont have proper metaIDBA output file
+#    BLAST = RunBlast(record_index, e_value_cut_off)
     BLAST.run();
 
 
