@@ -10,6 +10,7 @@ class RunBlast(object):
     """
     run BLAST
     take record parameter, assumed files read from Bio.SeqIO.index
+    Bio.SeqIO.index returns a dictionary like object.
     
     TODO(Steven Wu): copy/pasted from old main.py. Add test class
     """
@@ -29,7 +30,7 @@ class RunBlast(object):
         for key in self.record_index:
             self.seq = Sequence(self.record_index[key].seq)
             print len(self.seq.data)
-        
+            
             self.seq = go_connector.blast_AmiGO(self.seq)
             self.seq = go_connector.extract_ID(self.seq)
             self.seq = go_connector.parse_go_term(self.seq, self.e_value_cut_off) 

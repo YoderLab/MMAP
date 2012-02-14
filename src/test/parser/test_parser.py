@@ -9,7 +9,7 @@ import unittest
 class Test(unittest.TestCase):
 
 
-    def testParser(self):
+    def test_Parser(self):
         pass
 
 

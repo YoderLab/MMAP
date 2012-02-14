@@ -13,7 +13,7 @@ import os.path
 class TestRunExtProg(unittest.TestCase):
 
 
-    def testRunExtProg_append_reset_switch(self):
+    def test_RunExtProg_append_reset_switch(self):
         self.p1 = runExtProg("ls")
        
         self.assertListEqual(self.p1.get_switch(), [])
@@ -32,7 +32,7 @@ class TestRunExtProg(unittest.TestCase):
         self.p1.add_switch(["-a","-b"])
         self.assertListEqual(self.p1.get_switch(), ["-a","-b"])
 
-    def testRunExtProg_set_switch(self):
+    def test_RunExtProg_set_switch(self):
         self.p1 = runExtProg("ls")
         self.assertListEqual(self.p1.get_switch(), [])
         
@@ -44,7 +44,7 @@ class TestRunExtProg(unittest.TestCase):
         self.assertListEqual(self.p1.get_switch(), ["-111","-222"])
 
 
-    def testRunExtProg_run_command(self):
+    def test_RunExtProg_run_command(self):
         self.p1 = runExtProg("ls")
         self.p1.add_switch("-l")
         self.p1.run()
@@ -54,7 +54,7 @@ class TestRunExtProg(unittest.TestCase):
         
 #        print "\noutput:\n",self.out
         
-    def testRunExtProg_run_program(self):
+    def test_RunExtProg_run_program(self):
 
         self.data_dir = path_utils.get_data_dir()
         self.outFileName = "tempAlignmentOutput.fasta"
@@ -79,7 +79,7 @@ class TestRunExtProg(unittest.TestCase):
         #clean up
         os.remove(self.data_dir+self.outFileName)
         
-    def testRunExtProg_update_switch(self):
+    def test_RunExtProg_update_switch(self):
         self.p1 = runExtProg("ls")
         
         self.p1.add_switch(["-a", "1", "--b", "2"])
@@ -95,7 +95,7 @@ class TestRunExtProg(unittest.TestCase):
         self.p1.updateSwitch("--b", "7")
         self.assertListEqual(self.p1.get_switch(), ["-a", "3", "--b", "7", "-c", "4", "-b", "5", "-C", "6"])
         
-    def testRunExtProg_toggle_switch(self):
+    def test_RunExtProg_toggle_switch(self):
         self.p1 = runExtProg("ls")
         
         self.p1.add_switch(["-a", "1"])
