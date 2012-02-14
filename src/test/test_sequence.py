@@ -113,3 +113,4 @@ class TestSequence(unittest.TestCase):
 
 #suite = unittest.TestLoader().loadTestsFromTestCase(TestSequence)
 #unittest.TextTestRunner(verbosity=2).run(suite)
+

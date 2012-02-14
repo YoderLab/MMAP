@@ -19,10 +19,13 @@ class RunMetaIDBA(object):
         """
         self.pdir = pdir
         self.infile = infile
-        self.outfile = outfile
-        self.metaIDBA = runExtProg("./metaidba", pdir=self.pdir)
+        if outfile is None:
+            self.outfile = infile
+            
+        self.metaIDBA = runExtProg("./metaidba", pdir=self.pdir)    
         self.setSwitchRead(self.infile)
         self.setSwitchOutput(self.outfile)
+        
         
 
         
@@ -33,12 +36,8 @@ class RunMetaIDBA(object):
         self.metaIDBA.run()
     
     def readContig(self, outfile=None):
-        """
-        TODO: add parse record method
-        """
         if outfile is None:
             outfile = self.pdir+self.outfile
-        
         self.record = SeqIO.index(outfile+"-contig.fa","fasta")
     
     def getRecord(self):

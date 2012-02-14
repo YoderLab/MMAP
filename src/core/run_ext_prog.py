@@ -48,7 +48,7 @@ class runExtProg(object):
         self._command.extend(self._switch)
         p = subprocess.Popen(self._command,stdout= subprocess.PIPE, stderr=subprocess.PIPE, cwd = self.cwd )
         self.output, self.errors = p.communicate()
-
+        
     
     def updateSwitch(self, switchName, switchValue):
         switchValue = str(switchValue)
