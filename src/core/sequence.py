@@ -66,7 +66,7 @@ class Sequence(object):
             return 0
 
 ## test property    
-    def get_web_page(self):
+    def _get_web_page(self):
         return self.__web_page
 
     def set_web_page(self, value):
@@ -75,7 +75,7 @@ class Sequence(object):
     def del_web_page(self):
         del self.__web_page
         
-    web_page = property(get_web_page, set_web_page, del_web_page, "Testing property")
+    web_page = property(_get_web_page, set_web_page, del_web_page, "Testing property")
     
     
 

@@ -24,7 +24,7 @@ from test.test_sequence import TestSequence
 # Parser module
 from test.parser.test_go_annotation_parser import *
 from test.parser.test_go_OBO_parser import *
-
+from test.parser.test_parser import *
 
 # component module
 from test.component.test_run_metaIDBA import *

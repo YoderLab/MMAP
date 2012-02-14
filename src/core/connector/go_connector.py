@@ -4,6 +4,7 @@
 
 connect it AmiGoS
 TODO write unit test
+Setup on at Dec 2011, if URL/webpage changes then need update it accordingly
 '''
 
 
@@ -46,6 +47,34 @@ MATCH_BLAST_NOT_COMPLETE = "Please be patient as your job may take several minut
 
 amigo_blast_URL = "http://amigo.geneontology.org/cgi-bin/amigo/blast.cgi"
 
+
+class GOConnector(object):
+    """
+
+    """
+    def __init__(self, seq):
+        self.seq = seq
+    
+    def get_GO_terms(self):
+        self.seq = blast_AmiGO(self.seq)
+        self.seq = extract_ID(self.seq)
+        self.seq = parse_go_term(self.seq, self.e_value_cut_off) 
+        
+    def set_seq(self, seq):
+        self.seq = seq
+        
+    def testClassMethod(self):
+        self.seq*self.seq
+        
+    def testGlobalMethod(self):
+        square(self.seq)
+        
+        
+def square(seq):
+    seq*seq 
+    
+
+
 def blast_AmiGO(seq):
     """ blast Amigo with data \
     no customise blast parameters yet"""
@@ -57,7 +86,7 @@ def blast_AmiGO(seq):
         #('seq_id','FB:FBgn0015946'),
         ('CMD', 'Put')]
     
-    seq.web_page = get_web_page(query_blast , amigo_blast_URL)
+    seq.web_page = _get_web_page(query_blast , amigo_blast_URL)
     
     delay = 3.0
     is_complete = seq.web_page.find(MATCH_BLAST_NOT_COMPLETE)
@@ -79,21 +108,12 @@ def blast_AmiGO(seq):
             ('action', 'get_blast_results'),
             ('session_id', session_id),
             ('CMD', 'Put')]
-        seq.web_page = get_web_page(query_wait, amigo_blast_URL)
+        seq.web_page = _get_web_page(query_wait, amigo_blast_URL)
         is_complete = seq.web_page.find(MATCH_BLAST_NOT_COMPLETE)
     
     return seq
     
     
-
-def get_web_page(query, URL):
-    
-    message = urllib.urlencode(query)
-    request = urllib2.Request(URL, message, {"User-Agent":"BiopythonClient"})
-    handle = urllib2.urlopen(request)
-    s = _as_string(handle.read())
-    
-    return s
 
 
 
@@ -169,6 +189,15 @@ def parse_go_term(seq, e_value_cut_off=1.0):
     return seq
 
 
+
+def _get_web_page(query, URL):
+    
+    message = urllib.urlencode(query)
+    request = urllib2.Request(URL, message, {"User-Agent":"BiopythonClient"})
+    handle = urllib2.urlopen(request)
+    s = _as_string(handle.read())
+    
+    return s
 
 
 
