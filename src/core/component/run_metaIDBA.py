@@ -36,6 +36,7 @@ class RunMetaIDBA(object):
 
     def run(self):
         self.metaIDBA.run()
+        outfile = self.pdir+self.outfile+"-contig.fa"
     
     def readContig(self, outfile=None):
         if outfile is None:

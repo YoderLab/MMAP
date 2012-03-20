@@ -35,9 +35,25 @@ print "NumPy version %s" % numpy.__version__
 print "SciPy version %s" % scipy.__version__
 print "Bio version %s" % Bio.__version__
 
+print Bio.__path__
+
 CWD = os.getcwd()
 data_dir = path_utils.get_data_dir(CWD)
 print data_dir
+
+if sys.platform.startswith('linux'):
+    platform="linux"
+elif sys.platform.startswith('darwin'):
+    plateform="mac"
+else:
+    print "Unsupport OS: %s" % sys.platform
+    sys.exit(-1)
+    
+
+#Linux (2.x and 3.x)    'linux2'
+#Windows    'win32'
+#Mac OS X    'darwin'
+
 
 def test_single(record_index, e_value_cut_off):
     """
