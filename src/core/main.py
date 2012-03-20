@@ -10,12 +10,20 @@ not require hcluster - 0.2 http://code.google.com/p/scipy-cluster/
 not require matplotlib - 1.1.0 http://matplotlib.sourceforge.net/ 
     matplotlib (and its dep) is only required to plot dendrogram (with "ipython -pylab") 
 
-'''
-import sys
-import os
 
+'''
+import os
+from core.component.run_Genovo import RunGenovo
+
+a=os.environ['PYTHONPATH']#.split(os.pathsep)
+print "asdfgh", a
+import Bio
+print Bio.__path__
+import numpy
+import os
+#from core.connector import go_connector
 from core.connector import *
-from core.sequence import Sequence
+#from core.sequence import Sequence
 from core.dist.matching_distance import MatchingDistance
 from core.utils import path_utils
 
@@ -24,11 +32,10 @@ import numpy
 import scipy
 import Bio
 from Bio import SeqIO
-from core.component.run_metaIDBA import RunMetaIDBA
+#from core.component.run_metaIDBA import RunMetaIDBA
 import time
 from core.connector.go_connector import GOConnector
 from core.component.run_BLAST import RunBlast
-
 
 
 print "NumPy version %s" % numpy.__version__
@@ -145,17 +152,25 @@ def main():
 #    run_blast(record_index, e_value_cut_off)
 
     """
-    run metaIDBA then blast
+    run Genovo then blast
     TODO(Steven Wu): rewrite it with better way to connect them 
     """
-    infile = "MetaSim_bint-454.20e39f4c.fna"
-    metaIDBA = RunMetaIDBA(infile=infile, pdir = data_dir)
-    metaIDBA.setSwitchMinK(1)
-    metaIDBA.setSwitchMaxK(2)
-    metaIDBA.run()
-    records = metaIDBA.readContig()
-    BLAST = RunBlast(records, e_value_cut_off) # dont have proper metaIDBA output file
-#    BLAST = RunBlast(record_index, e_value_cut_off)
+#    infile = "MetaSim_bint-454.20e39f4c.fna"
+    infile = "testMetaIDBA.fasta"
+    Genovo = RunGenovo(infile=infile, pdir = data_dir)
+    Genovo.assemble
+    Genovo.finalize
+    Genovo.run()
+#    metaIDBA = RunMetaIDBA(infile=infile, pdir = data_dir)
+#    metaIDBA.setSwitchMinK(1)
+#    metaIDBA.setSwitchMaxK(2)
+#    metaIDBA.run()
+    records = Genovo.readContig()
+    Glimmer = RunGlimmer(infile=infile, pdir = data_dir)
+    Glimmer.g3Iterated
+#    records = metaIDBA.readContig()
+#    BLAST = RunBlast(records, e_value_cut_off) # dont have proper metaIDBA output file
+    BLAST = RunBlast(record_index, e_value_cut_off)
     BLAST.run();
 
 
