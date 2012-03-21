@@ -69,6 +69,7 @@ class runExtProg(object):
     def checkPlatform(self, checkOS):
         """
         Check platform, only check program_name start with "./"
+        
         """
         if checkOS or self.program_name.find("./") is 0:
             self.name_only = self.program_name[2:len(self.program_name)]
