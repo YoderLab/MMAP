@@ -32,13 +32,14 @@ class runExtProg(object):
     
     def set_switch(self, s):    
         self.reset_switch()
-        self.add_switch(s);
+        self.add_switch(s)
         
     def reset_switch(self):
         self._switch = list()
 
     def init_switch(self, len):
-        self._switch = []*len
+
+        self._switch = [None]*len
 
     def get_switch(self):
         return self._switch
@@ -78,7 +79,8 @@ class runExtProg(object):
                 self.add_switch(switchName)
 
     def set_param_at(self, param, position):
-        self._switch[position-1]=param
+        position = position - 1
+        self._switch[position]=str(param)
 
 
                 

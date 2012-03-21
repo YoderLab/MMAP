@@ -13,7 +13,7 @@ class RunGenovo(object):
     """
 
 
-    def __init__(self, infile, outfile=None, pdir=None):
+    def __init__(self, infile, noI, thresh, outfile=None, pdir=None):
         """
         Constructor
         """
@@ -23,16 +23,18 @@ class RunGenovo(object):
             self.outfile = infile
 #
         self.assemble = runExtProg("./assemble", pdir=self.pdir, len=2)
-        self.setSwitchRead(self.infile)
-        self.setNumberOfIterations(noI,2)
-#
         self.finalize = runExtProg("./finalize", pdir=self.pdir, len=3)
+        self.setSwitchRead(self.infile)
+        self.setNumberOfIter(noI,2)
+#
+
         self.setSwitchOutput(self.outfile)
-        self.setCutoff(v)
+        self.setCutoff(thresh)
 
 
-#    def setSwitch(self, switch):
-#        self.Genovo.get_switch(switch)
+    def setSwitch(self, switch):
+        self.assemble.get_switch(switch)
+        self.finalize.get_switch(switch)
 
     def run(self):
         self.assemble.run()
@@ -45,7 +47,19 @@ class RunGenovo(object):
     
     def getRecord(self):
         return self.record
-    
+
+
+    def setSwitchOutput(self, v):
+        """
+          -o, --output arg (=out)    prefix of output
+        """
+        self.finalize.set_param_at(v+".fasta", 2)
+
+    def setCutoff(self, v):
+        """
+        $CUTOFF      minimum contig length
+        """
+        self.finalize.set_param_at(v,1)
     
     def getSwitch(self):
         return self.assemble._switch
@@ -60,11 +74,7 @@ class RunGenovo(object):
         self.finalize.set_param_at(v+"dump.best",3)
 
         
-    def setSwitchOutput(self, v):
-        """
-          -o, --output arg (=out)    prefix of output
-        """
-        self.finalize.set_param_at(v+".fasta", 2)
+
         
     def setIterations(self, v):
         """
@@ -73,11 +83,7 @@ class RunGenovo(object):
         self.assemble.add_switch(v)
         self.finalize.add_switch(v)
     
-    def setCutoff(self, v):
-        """
-        $CUTOFF      minimum contig length
-        """ 
-        self.finalize.set_param_at(v,1)
+
 
     def setToggleConnect(self, v=None):
         """ 
@@ -92,7 +98,7 @@ class RunGenovo(object):
         self.assemble.add_switch(switch)
         self.finalize.add_switch(switch)
 
-    def setNumberOfIterations(self, param, position):
+    def setNumberOfIter(self, param, position):
         self.assemble.set_param_at(param,position)
 
 

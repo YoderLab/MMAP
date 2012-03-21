@@ -157,7 +157,7 @@ def main():
     """
 #    infile = "MetaSim_bint-454.20e39f4c.fna"
     infile = "testMetaIDBA.fasta"
-    Genovo = RunGenovo(infile=infile, pdir = data_dir)
+    Genovo = RunGenovo(infile=infile, pdir = data_dir, noI=3, thresh=250)
     Genovo.assemble
     Genovo.finalize
     Genovo.run()
