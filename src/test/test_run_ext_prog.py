@@ -4,14 +4,22 @@ Created on Jan 23, 2012
 @author: Steven Wu
 '''
 import unittest
+import sys
 from core.run_ext_prog import runExtProg
 from core.utils import path_utils
 import os.path
+from nose.core import run_exit
+from core import run_ext_prog
 
 
 
 class TestRunExtProg(unittest.TestCase):
-
+    
+    platform = run_ext_prog.get_platform()
+        
+    def setUp(self):
+        self.data_dir = path_utils.get_data_dir()
+        
 
     def test_RunExtProg_append_reset_switch(self):
         self.p1 = runExtProg("ls")
@@ -56,15 +64,14 @@ class TestRunExtProg(unittest.TestCase):
         
     def test_RunExtProg_run_program(self):
 
-        self.data_dir = path_utils.get_data_dir()
+        
         self.outFileName = "tempAlignmentOutput.fasta"
         if os.path.isfile(self.data_dir+self.outFileName):
             os.remove(self.data_dir+self.outFileName)
         
         self.assertFalse(os.listdir(self.data_dir).count(self.outFileName))
         
-        self.p2 = runExtProg("./muscle3.8.31_i86linux64")
-        self.p2.cwd = self.data_dir
+        self.p2 = runExtProg("./muscle3.8.31_i86linux64", pdir=self.data_dir)
         self._switch = "-in testAlignmentInput.fasta -out".split()
         self._switch.append(self.outFileName)
         
@@ -113,6 +120,13 @@ class TestRunExtProg(unittest.TestCase):
         self.assertListEqual(self.p1.get_switch(), ["-a", "1"])
 
 
+    def test_RunExtProg_check(self):
+        
+        self.p1 = runExtProg("./metaidba", pdir= self.data_dir, checkOS=True)
+        self.assertEqual(self.p1.program_name, "./metaidba_"+TestRunExtProg.platform)
+        
+        self.p1 = runExtProg("./muscle3.8.31_i86linux64", pdir= self.data_dir, checkOS=True)
+        self.assertEqual(self.p1.program_name, "./muscle3.8.31_i86linux64")
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
