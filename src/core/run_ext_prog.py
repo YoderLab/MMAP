@@ -7,6 +7,7 @@ import subprocess
 import os
 import sys
 
+
 def get_platform():
     if sys.platform.startswith('linux'):
         platform="linux"
