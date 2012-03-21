@@ -6,6 +6,7 @@ Created on Jan 23, 2012
 import subprocess
 import copy
 
+
 class runExtProg(object):
     '''
     self.program: program name
