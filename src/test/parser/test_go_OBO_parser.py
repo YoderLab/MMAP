@@ -19,7 +19,7 @@ class TestGOOBOParser(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def testGOOBOParser_parse_database(self):
+    def test_GOOBOParser_parse_database(self):
         self.infile = self.data_dir+"test_gene_ontology_ext_1_10.obo" 
         self.pr = OBOParser(self.infile)
         self.pr.parse_database()
@@ -41,7 +41,7 @@ class TestGOOBOParser(unittest.TestCase):
         
 
 
-    def testGOOBOParser_save_file(self):
+    def test_GOOBOParser_save_file(self):
         
         self.infile = self.data_dir+"test_gene_ontology_ext_1_10.obo"
         self.save_file = self.data_dir+"tempOBO_parser_save.zzz" 
@@ -65,7 +65,7 @@ class TestGOOBOParser(unittest.TestCase):
         #clean up
         os.remove(self.save_file)
         
-    def testGOOBOParser_get_child(self):
+    def test_GOOBOParser_get_child(self):
         self.infile = self.data_dir+"test_gene_ontology_ext_1_10.obo" 
         self.pr = OBOParser(self.infile)
         self.pr.parse_database()

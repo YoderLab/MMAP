@@ -13,14 +13,16 @@ class RunMetaIDBA(object):
     """
 
 
-    def __init__(self, infile, outfile=None, pdir=None):
+    def __init__(self, infile, outfile=None, pdir="./"):
         """
         Constructor
         """
         self.pdir = pdir
         self.infile = infile
-        if outfile is None:
+        self.outfile = outfile
+        if self.outfile is None:
             self.outfile = infile
+
             
         self.metaIDBA = runExtProg("./metaidba", pdir=self.pdir)    
         self.setSwitchRead(self.infile)
@@ -34,11 +36,19 @@ class RunMetaIDBA(object):
 
     def run(self):
         self.metaIDBA.run()
+        outfile = self.pdir+self.outfile+"-contig.fa"
     
     def readContig(self, outfile=None):
         if outfile is None:
-            outfile = self.pdir+self.outfile
-        self.record = SeqIO.index(outfile+"-contig.fa","fasta")
+            outfile = self.pdir+self.outfile+"-contig.fa"
+           
+        try:
+            self.record = SeqIO.index(outfile,"fasta") 
+        except IOError as e:
+            print "Exception error is: %s" % e;
+            raise
+            
+        
     
     def getRecord(self):
         return self.record

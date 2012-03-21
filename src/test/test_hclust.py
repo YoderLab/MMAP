@@ -23,21 +23,21 @@ class TestHClust(unittest.TestCase):
         pass
 
 
-    def testHClust_treeclust_dataset1_single(self):
+    def test_HClust_treeclust_dataset1_single(self):
         len_set = 5
         self.hc.distMatrix = dataset1(len_set)
         self.hc.treecluster(method="s")
         for i in range(0,len_set-1):
             self.assertEqual(self.hc.distMatrix[i+1,0], self.hc.tree[i].distance)
             
-    def testHClust_treeclust_dataset1_complete(self):
+    def test_HClust_treeclust_dataset1_complete(self):
         len_set = 5
         self.hc.distMatrix = dataset1(len_set)
         self.hc.treecluster(method="m")
         for i in range(0,len_set-1):
             self.assertEqual(self.hc.distMatrix[i+1,i], self.hc.tree[i].distance)
             
-    def testHClust_treeclust_dataset1_average(self):
+    def test_HClust_treeclust_dataset1_average(self):
         len_set = 5
         self.hc.distMatrix = dataset1(len_set)            
         self.hc.treecluster(method="a")
@@ -45,7 +45,7 @@ class TestHClust(unittest.TestCase):
             expected =  numpy.mean(self.hc.distMatrix[i+1, range(0,i+1)]) #row mean
             self.assertEqual(expected, self.hc.tree[i].distance)
 
-    def testHClust_treeclust_dataset2_single(self):
+    def test_HClust_treeclust_dataset2_single(self):
         
         self.hc.distMatrix = dataset2()
         self.hc.treecluster(method="s")
@@ -53,7 +53,7 @@ class TestHClust(unittest.TestCase):
         for i in range(0,4):
             self.assertEqual(expected[i], self.hc.tree[i].distance)
 
-    def testHClust_treeclust_dataset2_complete(self):
+    def test_HClust_treeclust_dataset2_complete(self):
         
         self.hc.distMatrix = dataset2()
         self.hc.treecluster(method="m")
@@ -62,7 +62,7 @@ class TestHClust(unittest.TestCase):
             self.assertEqual(expected[i], self.hc.tree[i].distance)
 
 
-    def testHClust_treeclust_dataset2_average(self):
+    def test_HClust_treeclust_dataset2_average(self):
         
         self.hc.distMatrix = dataset2()
         self.hc.treecluster(method="a")
@@ -70,7 +70,7 @@ class TestHClust(unittest.TestCase):
         for i in range(0,4):
             self.assertEqual(expected[i], self.hc.tree[i].distance)
 
-    def testHClust_treeclust_dataset3_(self):
+    def test_HClust_treeclust_dataset3_(self):
                 
         self.hc.distMatrix = dataset3()
 #        print self.hc.distMatrix

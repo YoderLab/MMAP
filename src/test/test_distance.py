@@ -19,7 +19,7 @@ class TestDistance(unittest.TestCase):
         pass
 
 
-    def testDistance_matching_distance(self):
+    def test_Distance_matching_distance(self):
         
         
         d = MatchingDistance()

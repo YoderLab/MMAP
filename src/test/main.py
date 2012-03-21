@@ -27,7 +27,7 @@ from test.parser.test_go_OBO_parser import *
 from test.parser.test_parser import *
 
 # component module
-from test.component.test_run_metaIDBA import *
+#from test.component.test_run_metaIDBA import *
  
 #def test_main():
 #    '''

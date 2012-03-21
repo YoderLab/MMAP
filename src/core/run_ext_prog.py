@@ -18,41 +18,45 @@ class runExtProg(object):
 
     def __init__(self, p, pdir=None, len=0):
         
-        self.program = [p]
+        self.program_name = p
+
         self.init_switch(len)
         self.cwd = pdir
-        
-    
-    def add_switch(self, s):
-        if isinstance(s, str):
-            self._switch.append(s)
-        elif isinstance(s, list):
-            self._switch.extend(s)
-#        print "add_switch: ",s,"\t==",self._switch
-    
-    def set_switch(self, s):    
-        self.reset_switch()
-        self.add_switch(s)
-        
-    def reset_switch(self):
-        self._switch = list()
 
-    def init_switch(self, len):
 
-        self._switch = [None]*len
+    def set_param_at(self, param, position):
+        self._switch[position-1]=str(param)
+
+
+    def init_switch(self, leng):
+        self._switch = [None]*leng
 
     def get_switch(self):
         return self._switch
-        
+
+
+    """
+    ignore here here
+    """
+    def set_switch(self, s):
+        self.reset_switch()
+        self.add_switch(s);
     parameters = property( get_switch, set_switch, doc="switch/parameters" ) 
     
     
     def run(self):
-        self._command = copy.copy(self.program)
+        self._command = [self.program_name]
         self._command.extend(self._switch)
         p = subprocess.Popen(self._command,stdout= subprocess.PIPE, stderr=subprocess.PIPE, cwd = self.cwd )
         self.output, self.errors = p.communicate()
-        
+
+
+
+
+
+
+    def reset_switch(self):
+        self._switch = list()
     
     def updateSwitch(self, switchName, switchValue):
         switchValue = str(switchValue)
@@ -78,9 +82,12 @@ class runExtProg(object):
             if switchValue or (switchValue is None):
                 self.add_switch(switchName)
 
-    def set_param_at(self, param, position):
-        position = position - 1
-        self._switch[position]=str(param)
 
 
-                
+
+    def add_switch(self, s):
+        if isinstance(s, str):
+            self._switch.append(s)
+        elif isinstance(s, list):
+            self._switch.extend(s)
+#        print "add_switch: ",s,"\t==",self._switch
