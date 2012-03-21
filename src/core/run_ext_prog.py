@@ -6,16 +6,25 @@ Created on Jan 23, 2012
 import subprocess
 import os
 import sys
-    
-def get_platform():    
-    if sys.platform.startswith('linux'):
+
+
+
+def get_platform():   
+    """
+    ignore windows now
+    """
+    sys_platform = sys.platform 
+    if sys_platform.startswith('linux'):
         platform="linux"
-    elif sys.platform.startswith('darwin'):
+    elif sys_platform.startswith('darwin'):
         platform="mac"
     else:
-        print "Unsupport OS: %s" % sys.platform
+        print "Unsupport OS: %s" % sys_platform
         sys.exit(-1)
     return platform
+
+
+
 
 
 
@@ -28,16 +37,17 @@ class runExtProg(object):
     self.output: capture output message
     self.errors: capture error message
     '''
-    
     platform = get_platform()
     
+
     def __init__(self, p, pdir=None, len=0, checkOS=False):
         
         self.program_name = p
         self.init_switch(len)
         self.cwd = pdir
-        self.checkPlatform(checkOS)
-#            print "zz: ", is_exe(self.cwd+self.program_name)
+#        TODO(Steven Wu):add this back later
+#        self.checkPlatform(checkOS)
+        
 
     def set_param_at(self, param, position):
         self._switch[position - 1] = str(param)
@@ -73,14 +83,16 @@ class runExtProg(object):
     '''
     def checkPlatform(self, checkOS):
         """
-        Check platform, only check program_name start with "./"
-        
+        Check platform, only check program_name start with "./". so `ls` still work
+        ALWAYS append "_platform" to program_name 
         """
         if checkOS or self.program_name.find("./") is 0:
             self.name_only = self.program_name[2:len(self.program_name)]
             self.name_only = self.name_only + "_" + runExtProg.platform
             if os.path.exists(self.cwd+self.name_only):
                 self.program_name = "./"+self.name_only
+#            else:
+#                print "ignore platform"
 
 
     
@@ -122,7 +134,8 @@ class runExtProg(object):
                 self.add_switch(switchName)
 
 
-
+    
+    
 '''
 Global
 '''
@@ -145,3 +158,6 @@ def which(program):
 def is_exe(fpath):
     return os.path.exists(fpath) and os.access(fpath, os.X_OK)
         
+
+
+

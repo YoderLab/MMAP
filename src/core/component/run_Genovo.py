@@ -17,6 +17,9 @@ class RunGenovo(object):
     def __init__(self, infile, noI, thresh, outfile=None, pdir=None):
         """
         Constructor
+        TODO: implement finalize
+        TODO: read/parse/check output
+        
         """
         self.pdir = pdir
         self.infile_class_var = infile
@@ -44,6 +47,7 @@ class RunGenovo(object):
     def setInfileName(self, infile):
         """
         type anything here
+        TODO: check valid infile
         """
         self.assemble.set_param_at(infile, 1)
     #        self.finalize.set_param_at(v+"dump.best",3)
