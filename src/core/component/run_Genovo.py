@@ -17,6 +17,9 @@ class RunGenovo(object):
     def __init__(self, infile, noI, thresh, outfile=None, pdir=None):
         """
         Constructor
+        TODO: implement finalize
+        TODO: read/parse/check output
+        
         """
         self.pdir = pdir
         self.infile_class_var = infile
@@ -29,27 +32,29 @@ class RunGenovo(object):
         self.setNumberOfIter(noI)
 #        print self.assemble.get_switch()
 #
-        self.testRandom()
-#        self.setSwitchOutput(self.outfile)
-#        self.setCutoff(thresh)
+#        self.testRandom()
+        self.setSwitchOutput(self.outfile)
+        self.setCutoff(thresh)
 
 
     def setNumberOfIter(self, param):
         """
         TODO(Erin): check for invalid number
         """
-        self.assemble.set_param_at(param, 2)
+#        self.assemble.set_param_at(param, 2)
 
 
     def setInfileName(self, infile):
         """
         type anything here
+        TODO: check valid infile
         """
-        self.assemble.set_param_at(infile, 1)
-    #        self.finalize.set_param_at(v+"dump.best",3)
+#        self.assemble.set_param_at(infile, 1)
+        self.finalize.set_param_at(infile+".fasta",2)
+        self.finalize.set_param_at(infile+"dump.best",3)
 
     def testRandom(self):
-        print "test method"
+#        print "test method"
         print self.infile_class_var
 #        print infile
 
@@ -76,17 +81,17 @@ class RunGenovo(object):
 #        return self.record
 #
 #
-#    def setSwitchOutput(self, v):
-#        """
-#          -o, --output arg (=out)    prefix of output
-#        """
-#        self.finalize.set_param_at(v+".fasta", 2)
+    def setSwitchOutput(self, v):
+        """
+          -o, --output arg (=out)    prefix of output
+        """
+        self.finalize.set_param_at(v+".fasta", 2)
 #
-#    def setCutoff(self, v):
-#        """
-#        $CUTOFF      minimum contig length
-#        """
-#        self.finalize.set_param_at(v,1)
+    def setCutoff(self, v):
+        """
+        $CUTOFF      minimum contig length
+        """
+        self.finalize.set_param_at(v,1)
 #
 #    def getSwitch(self):
 #        return self.assemble._switch

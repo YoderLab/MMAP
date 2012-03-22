@@ -63,23 +63,6 @@ else:
 #Mac OS X    'darwin'
 
 
-def test_single(record_index, e_value_cut_off):
-    """
-    TODO(Steven Wu): Move this to test class 
-    """
-    data = record_index["lcl|AE014075.1_gene_3"].seq ## good
-    seq = Sequence(data)
-    seq = go_connector.blast_AmiGO(seq)
-    seq = go_connector.extract_ID(seq)
-    
-    seq = go_connector.parse_go_term(seq, e_value_cut_off)
-    
-    print "test set", seq.each_term 
-    print "test set", seq.all_terms
-    
-    dist_method = MatchingDistance()
-    dist_matrix = dist_method.cal_dist(seq)
-    print dist_matrix
 
 #
 #
@@ -175,18 +158,37 @@ def main():
 #    infile = "MetaSim_bint-454.20e39f4c.fna"
     infile_var = "testMetaIDBA.fasta"
     Genovo = RunGenovo(infile=infile_var, pdir = data_dir, noI=3, thresh=250)
-    print Genovo.assemble.get_switch()
+#    print Genovo.assemble.get_switch()
 #    print Genovo.__doc__
 #    print Genovo.setInfileName.__doc__
-    print len(Genovo.assemble._switch)
-    Genovo.setNumberOfIter(10)
-    print "set iterations to 10", Genovo.assemble.get_switch()
+    """
+    Code below allows you to change the assemble variables individually
+    and tests to make sure changed variables go to correct position
+    """
+#    print len(Genovo.assemble._switch)
+#    Genovo.setNumberOfIter(10)
+#    print "set iterations to 10", Genovo.assemble.get_switch()
+#
+#    infile_var="newname.fasta"
+##    print infile
+##    Genovo = RunGenovo(infile=infile_var, pdir = data_dir, noI=3, thresh=250)
+#    Genovo.setInfileName(infile_var)
+#    print Genovo.assemble.get_switch()
 
-    infile_var="newname.fasta"
+    """
+    Now try to do same thing for finalize: write 3 methods to
+    save variables separately, and test with print commands.
+    """
+    print len(Genovo.finalize._switch)
+    Genovo.setCutoff(250)
+    print "set Cutoff to 250", Genovo.finalize.get_switch()
+#
+    infile_var="VICTORY!!!.fasta"
 #    print infile
 #    Genovo = RunGenovo(infile=infile_var, pdir = data_dir, noI=3, thresh=250)
     Genovo.setInfileName(infile_var)
-    print Genovo.assemble.get_switch()
+    print Genovo.finalize.get_switch()
+
 
 #
 #    Genovo.setNumberOfIter(12.54)
