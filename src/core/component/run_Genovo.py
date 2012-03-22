@@ -23,8 +23,8 @@ class RunGenovo(object):
         if outfile is None:
             self.outfile = infile
 #
-        self.assemble = runExtProg("./assemble", pdir=self.pdir, len=2)
-#        self.finalize = runExtProg("./finalize", pdir=self.pdir, len=3)
+#        self.assemble = runExtProg("./assemble", pdir=self.pdir, len=2)
+        self.finalize = runExtProg("./finalize", pdir=self.pdir, len=3)
         self.setInfileName(self.infile_class_var)
         self.setNumberOfIter(noI)
 #        print self.assemble.get_switch()
