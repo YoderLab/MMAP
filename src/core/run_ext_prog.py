@@ -40,7 +40,7 @@ class runExtProg(object):
     """
     def set_switch(self, s):
         self.reset_switch()
-        self.add_switch(s);
+        self.add_switch(s)
     parameters = property( get_switch, set_switch, doc="switch/parameters" ) 
     
     
