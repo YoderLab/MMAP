@@ -78,8 +78,8 @@ def test_single(record_index, e_value_cut_off):
     print "test set", seq.all_terms
     
     dist_method = MatchingDistance()
-    dist_matirx = dist_method.cal_dist(seq)
-    print dist_matirx
+    dist_matrix = dist_method.cal_dist(seq)
+    print dist_matrix
 
 #
 #
