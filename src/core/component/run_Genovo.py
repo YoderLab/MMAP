@@ -3,9 +3,11 @@ Created on Feb 29, 2012
 
 @author: Erin McKenney and Steven Wu
 """
+import sys
 
 from core.run_ext_prog import runExtProg
 from Bio import SeqIO
+
 
 class RunGenovo(object):
     """
@@ -24,16 +26,16 @@ class RunGenovo(object):
         self.pdir = pdir
         self.infile_class_var = infile
         if outfile is None:
-            self.outfile = infile
+            self.outfile = self.GenerateOutfileName(self.infile_class_var)
 #
-#        self.assemble = runExtProg("./assemble", pdir=self.pdir, len=2)
+        self.assemble = runExtProg("./assemble", pdir=self.pdir, len=2, checkOS=True)
         self.finalize = runExtProg("./finalize", pdir=self.pdir, len=3)
         self.setInfileName(self.infile_class_var)
         self.setNumberOfIter(noI)
 #        print self.assemble.get_switch()
 #
 #        self.testRandom()
-        self.setSwitchOutput(self.outfile)
+        self.setFinalizeOutfile(self.outfile)
         self.setCutoff(thresh)
 
 
@@ -41,17 +43,21 @@ class RunGenovo(object):
         """
         TODO(Erin): check for invalid number
         """
-#        self.assemble.set_param_at(param, 2)
+
+        if param>0 and isinstance( param, ( int, long ) ):
+            self.assemble.set_param_at(param, 2)
+        else:
+            print "Error:", param
+            sys.exit(-1)
 
 
     def setInfileName(self, infile):
         """
         type anything here
-        TODO: check valid infile
+        TODO: check valid infile, infile exist or not
         """
-#        self.assemble.set_param_at(infile, 1)
-        self.finalize.set_param_at(infile+".fasta",2)
-        self.finalize.set_param_at(infile+"dump.best",3)
+        self.assemble.set_param_at(infile, 1)
+        self.finalize.set_param_at(infile+".dump.best",3)
 
     def testRandom(self):
 #        print "test method"
@@ -61,9 +67,38 @@ class RunGenovo(object):
         print "end test method"
 
 
+    def setFinalizeOutfile(self, v):
+        """
+        """
+        self.finalize.set_param_at(v+".fasta", 2)
+    #
+    def setCutoff(self, v):
+        """
+        """
+        self.finalize.set_param_at(v,1)
     """
     ignore after this
     """
+
+    def GenerateOutfileName(self, infile):
+        """
+        infile name testAssemble.fasta
+        step1: testAssemble
+        step2: testAssemble_out.fasta
+        step3: self.pdir+testAssemble_out.fasta
+                check if it exist
+                overwrite or not
+
+
+        if os.path.exists(  self.cwd+self.name_only  ):
+        if os.path.exists(  full_file_path  ):
+        """
+
+
+        return "out.test"
+
+
+
 #    def setSwitch(self, switch):
 #        self.assemble.get_switch(switch)
 #        self.finalize.get_switch(switch)
@@ -81,17 +116,6 @@ class RunGenovo(object):
 #        return self.record
 #
 #
-    def setSwitchOutput(self, v):
-        """
-          -o, --output arg (=out)    prefix of output
-        """
-        self.finalize.set_param_at(v+".fasta", 2)
-#
-    def setCutoff(self, v):
-        """
-        $CUTOFF      minimum contig length
-        """
-        self.finalize.set_param_at(v,1)
 #
 #    def getSwitch(self):
 #        return self.assemble._switch

@@ -90,6 +90,7 @@ class runExtProg(object):
         if checkOS or self.program_name.find("./") is 0:
             self.name_only = self.program_name[2:len(self.program_name)]
             self.name_only = self.name_only + "_" + runExtProg.platform
+
             if os.path.exists(self.cwd+self.name_only):
                 self.program_name = "./"+self.name_only
 #            else:

@@ -1,4 +1,15 @@
 """
+Created on March 23, 2012
+
+@author: Erin McKenney
+"""
+class GoAnalysis(object):
+    """
+    Calculates term frequency and % functionality of Blast.results
+    """
+
+
+"""
 TODO: try methods for selecting GO-terms of functional interest
 """
 GOterms.full = Blast.results():

@@ -65,10 +65,12 @@ def main():
     """
 #    infile = "MetaSim_bint-454.20e39f4c.fna"
     infile_var = "testMetaIDBA.fasta"
-    Genovo = RunGenovo(infile=infile_var, pdir = data_dir, noI=3, thresh=250)
-#    print Genovo.assemble.get_switch()
-#    print Genovo.__doc__
-#    print Genovo.setInfileName.__doc__
+    outfile = "testout"
+    genovo_dir = "/Users/erinmckenney/Desktop/Pipeline/metaLem/data/Genovo/"
+    Genovo = RunGenovo(infile=infile_var, outfile=outfile, pdir = genovo_dir, noI=3, thresh=250)
+
+
+
     """
     Code below allows you to change the assemble variables individually
     and tests to make sure changed variables go to correct position
@@ -88,13 +90,15 @@ def main():
     save variables separately, and test with print commands.
     """
     print len(Genovo.finalize._switch)
-    Genovo.setCutoff(250)
-    print "set Cutoff to 250", Genovo.finalize.get_switch()
+    print "set Cutoff to 250a", Genovo.finalize.get_switch()
+    Genovo.setCutoff(300)
+    print "set Cutoff to 300", Genovo.finalize.get_switch()
 #
     infile_var="VICTORY!!!.fasta"
 #    print infile
 #    Genovo = RunGenovo(infile=infile_var, pdir = data_dir, noI=3, thresh=250)
     Genovo.setInfileName(infile_var)
+    Genovo.setFinalizeOutfile("sdif")
     print Genovo.finalize.get_switch()
 
 
