@@ -20,8 +20,8 @@ class TestGOOBOParser(unittest.TestCase):
         pass
 
     def test_GOOBOParser_parse_database(self):
-        self.infile = self.data_dir+"test_gene_ontology_ext_1_10.obo" 
-        self.pr = OBOParser(self.infile)
+        self.infile_var = self.data_dir+"test_gene_ontology_ext_1_10.obo" 
+        self.pr = OBOParser(self.infile_var)
         self.pr.parse_database()
         
         self.data = self.pr.dict_is_a
@@ -43,9 +43,9 @@ class TestGOOBOParser(unittest.TestCase):
 
     def test_GOOBOParser_save_file(self):
         
-        self.infile = self.data_dir+"test_gene_ontology_ext_1_10.obo"
+        self.infile_var = self.data_dir+"test_gene_ontology_ext_1_10.obo"
         self.save_file = self.data_dir+"tempOBO_parser_save.zzz" 
-        self.pr = OBOParser(self.infile)
+        self.pr = OBOParser(self.infile_var)
         self.pr.parse_database()
         self.pr.save_dict_to_file(self.save_file)
         
@@ -66,8 +66,8 @@ class TestGOOBOParser(unittest.TestCase):
         os.remove(self.save_file)
         
     def test_GOOBOParser_get_child(self):
-        self.infile = self.data_dir+"test_gene_ontology_ext_1_10.obo" 
-        self.pr = OBOParser(self.infile)
+        self.infile_var = self.data_dir+"test_gene_ontology_ext_1_10.obo" 
+        self.pr = OBOParser(self.infile_var)
         self.pr.parse_database()
 
 #TODO: finish this!!

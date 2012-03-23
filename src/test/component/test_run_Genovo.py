@@ -20,9 +20,43 @@ class TestRunGenovo(unittest.TestCase):
         pass
 
     def test_RunGenovo_init(self):
-        self.infile = "all_reads.fa"
-        self.g1 = RunGenovo(self.infile, pdir=self.data_dir)
-        self.assertEqual(self.g1.getSwitch()[0], self.infile)
-#        self.assertEqual(self.g1.getSwitch(), [self.infile, 3])
+        infile_var = "all_reads.fa"
+        genovo = RunGenovo(infile_var, pdir=self.data_dir,  noI=1, thresh=10)
+        self.assertEqual(genovo.assemble.get_switch()[0], infile_var)
+        self.assertEqual(genovo.assemble.get_switch(), [infile_var, "1"])
 
 
+    def test_RunGenovo_simple_assemble(self):
+        infile_var = "testMetaIDBA.fasta"
+        genovo = RunGenovo(infile=infile_var, pdir = self.data_dir, noI=3, thresh=250)
+        self.assertListEqual(genovo.assemble.get_switch(), [infile_var, "3"])
+        
+        genovo.setNumberOfIter(10)
+        self.assertListEqual(genovo.assemble.get_switch(), [infile_var, "10"])
+        
+        infile_var="newname.fasta"
+        genovo.setInfileName(infile_var)
+        self.assertListEqual(genovo.assemble.get_switch(), [infile_var, "10"])
+       
+        
+    def test_RunGenovo_simple_finalise(self):
+        
+        infile_var="newname.fasta"
+        genovo = RunGenovo(infile=infile_var, pdir = self.data_dir, noI=3, thresh=250)
+        self.assertEqual(3, len(genovo.finalize._switch) )
+        self.assertListEqual(genovo.finalize.get_switch(), ["250", infile_var, infile_var+".dump.best"])
+    
+        genovo.setCutoff(300)
+        self.assertListEqual(genovo.finalize.get_switch(), ["300", infile_var, infile_var+".dump.best"])
+        
+        infile_var="VICTORY!!!.fasta"
+        genovo.setInfileName(infile_var)
+        self.assertListEqual(genovo.finalize.get_switch(), ["300", infile_var, infile_var+".dump.best"])
+        
+#
+#    def test_RunGenovo_setNumberOfIter(self):   
+#        infile_var="newname.fasta"
+#        genovo = RunGenovo(infile=infile_var, pdir = self.data_dir, noI=3, thresh=250)
+#        self.assertRaises(ValueError, genovo.setNumberOfIter, 1.1)
+#        self.assertRaises(ValueError, genovo.setNumberOfIter, -1)
+#        self.assertRaises(TypeError, genovo.setNumberOfIter, "string")
