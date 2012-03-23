@@ -47,7 +47,7 @@ class runExtProg(object):
         self.init_switch(len)
         self.cwd = pdir
 #        TODO(Steven Wu):add this back later
-#        self.checkPlatform(checkOS)
+        self.checkPlatform(checkOS)
         
 
 
@@ -75,6 +75,9 @@ class runExtProg(object):
     def run(self):
         self._command = [self.program_name]
         self._command.extend(self._switch)
+
+
+        print self._command, "\t" , self.cwd
         p = subprocess.Popen(self._command,stdout= subprocess.PIPE, stderr=subprocess.PIPE, cwd = self.cwd )
         self.output, self.errors = p.communicate()
 
@@ -89,10 +92,13 @@ class runExtProg(object):
         ALWAYS append "_platform" to program_name 
         """
         if checkOS or self.program_name.find("./") is 0:
+
             self.name_only = self.program_name[2:len(self.program_name)]
             self.name_only = self.name_only + "_" + runExtProg.platform
+
             if os.path.exists(self.cwd+self.name_only):
                 self.program_name = "./"+self.name_only
+
 #            else:
 #                print "ignore platform"
 
