@@ -46,8 +46,7 @@ class runExtProg(object):
 
         self.init_switch(len)
         self.cwd = pdir
-#        TODO(Steven Wu):add this back later
-#        self.checkPlatform(checkOS)
+        self.checkPlatform(checkOS)
         
 
 
