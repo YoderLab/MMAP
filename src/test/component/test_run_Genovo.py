@@ -57,7 +57,8 @@ class TestRunGenovo(unittest.TestCase):
 
 
     def test_RunGenovo_finalise_outfile(self):
-
+        pass
+        
 
 
 
