@@ -22,7 +22,7 @@ class TestRunGenovo(unittest.TestCase):
     def test_RunGenovo_init(self):
         infile_var = "all_reads.fa"
         genovo = RunGenovo(infile_var, pdir=self.data_dir,  noI=1, thresh=10)
-        print genovo.assemble.get_switch()
+#        print genovo.assemble.get_switch()
         self.assertEqual(genovo.assemble.get_switch()[0], infile_var)
         self.assertEqual(genovo.assemble.get_switch(), [infile_var, "1"])
 
@@ -41,7 +41,7 @@ class TestRunGenovo(unittest.TestCase):
        
         
     def test_RunGenovo_simple_finalise(self):
-#   def_test_ClassName_mhatAreWeTestingHere(self)
+#   def_test_ClassName_whatAreWeTestingHere(self)
         infile_var="newname.fasta"
         genovo = RunGenovo(infile=infile_var, pdir = self.data_dir, noI=3, thresh=250)
         self.assertEqual(3, len(genovo.finalize._switch) )
@@ -59,18 +59,23 @@ class TestRunGenovo(unittest.TestCase):
     #   def_test_ClassName_mhatAreWeTestingHere(self)
         infile_var="newname.fasta"
         outfile_var="testname.fasta"
-        Genovo = RunGenovo(infile=infile_var, outfile=outfile_var, pdir = None, noI=3, thresh=250)
+        Genovo = RunGenovo(infile=infile_var, outfile=outfile_var, pdir = self.data_dir, noI=3, thresh=250)
         self.assertEqual(3, len(Genovo.finalize._switch) )
-        self.assertListEqual(Genovo.finalize.get_switch(), ["250", "sdif.fasta", infile_var+".dump.best"])
+        self.assertListEqual(Genovo.finalize.get_switch(), ["250", outfile_var, infile_var+".dump.best"])
 
-        Genovo2 = RunGenovo(infile=infile_var,  pdir = None, noI=3, thresh=250)   ## outfile == None
-        self.assertListEqual(Genovo2.finalize.get_switch(), ["250", "out.test.fasta", infile_var+".dump.best"])
+        Genovo2 = RunGenovo(infile=infile_var,  pdir = self.data_dir, noI=3, thresh=250)   ## outfile == None
+        self.assertListEqual(Genovo2.finalize.get_switch(), ["250", "newname_out.fasta", infile_var+".dump.best"])
+        infile_var="newname.xyz.fasta.abc"
+        Genovo2 = RunGenovo(infile=infile_var,  pdir = self.data_dir, noI=3, thresh=250)   ## outfile == None
+        self.assertListEqual(Genovo2.finalize.get_switch(), ["250", "newname.xyz.fasta_out.fasta", infile_var+".dump.best"])
 
+        infile_var="newname"
+        Genovo2 = RunGenovo(infile=infile_var,  pdir = self.data_dir, noI=3, thresh=250)   ## outfile == None
+        self.assertListEqual(Genovo2.finalize.get_switch(), ["250", "newname_out.fasta", infile_var+".dump.best"])
 
-
-#    def test_RunGenovo_setNumberOfIter(self):   
-#        infile_var="newname.fasta"
-#        genovo = RunGenovo(infile=infile_var, pdir = self.data_dir, noI=3, thresh=250)
-#        self.assertRaises(ValueError, genovo.setNumberOfIter, 1.1)
-#        self.assertRaises(ValueError, genovo.setNumberOfIter, -1)
-#        self.assertRaises(TypeError, genovo.setNumberOfIter, "string")
+    def test_RunGenovo_setNumberOfIter(self):
+        infile_var="newname.fasta"
+        genovo = RunGenovo(infile=infile_var, pdir = self.data_dir, noI=3, thresh=250)
+        self.assertRaises(TypeError, genovo.setNumberOfIter, 1.1)
+        self.assertRaises(TypeError, genovo.setNumberOfIter, -1)
+        self.assertRaises(TypeError, genovo.setNumberOfIter, "string")

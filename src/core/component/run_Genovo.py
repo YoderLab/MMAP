@@ -16,7 +16,7 @@ class RunGenovo(object):
     """
 
 
-    def __init__(self, infile, noI, thresh, outfile=None, pdir=None):
+    def __init__(self, infile, noI, thresh, pdir, outfile=None):
         """
         Constructor
         TODO: implement finalize
@@ -43,14 +43,14 @@ class RunGenovo(object):
 
     def setNumberOfIter(self, param):
         """
-        TODO(Erin): check for invalid number
+
         """
 
         if param>0 and isinstance( param, ( int, long ) ):
             self.assemble.set_param_at(param, 2)
         else:
-            print "Error:", param
-            sys.exit(-1)
+            raise TypeError, "Error: unacceptable value for param: %s" %param
+
 
 
     def setInfileName(self, infile):
@@ -72,7 +72,7 @@ class RunGenovo(object):
     def setFinalizeOutfile(self, outfile):
         """
         """
-        self.finalize.set_param_at(outfile+".fasta", 2)
+        self.finalize.set_param_at(outfile, 2)
     #
     def setCutoff(self, v):
         """
@@ -88,7 +88,8 @@ class RunGenovo(object):
 
     def GenerateOutfileName(self, infile):
         """
-        infile name testAssemble.fasta
+        infile name
+               testAssemble.poiuyxcvbjkfastaaaasdfghjk
         step1: testAssemble
         step2: testAssemble_out.fasta
         step3: self.pdir+testAssemble_out.fasta
@@ -99,7 +100,16 @@ class RunGenovo(object):
         if os.path.exists(  self.cwd+self.name_only  ):
         if os.path.exists(  full_file_path  ):
         """
-        return "out.test"
+        location=infile.rfind(".")
+        if location is -1:
+            namebase=infile
+        else:
+            namebase=infile[0:location]
+#        print "location", location, infile, infile[0:location]
+        outfile=namebase+"_out.fasta"
+        return outfile
+
+
 
 
 
