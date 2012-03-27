@@ -108,7 +108,7 @@ def main():
     print "set outfile to sdif", Genovo.finalize.get_switch()
     Genovo2 = RunGenovo(infile=infile_var,  pdir = genovo_dir, noI=3, thresh=250)   ## outfile == None
     print "outfile = None = out.test", Genovo2.finalize.get_switch()
-
+    Genovo2.setCutoff(-2.3)
 
 #
 #    Genovo.setNumberOfIter(12.54)

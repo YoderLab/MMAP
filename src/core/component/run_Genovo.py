@@ -81,6 +81,7 @@ class RunGenovo(object):
             self.finalize.set_param_at(v,1)
         else:
             print "Error:", v
+#            raise TypeError, "invalid argument %s" %v
             sys.exit(-1)
     """
     ignore after this
