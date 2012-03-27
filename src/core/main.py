@@ -89,17 +89,25 @@ def main():
     Now try to do same thing for finalize: write 3 methods to
     save variables separately, and test with print commands.
     """
-    print len(Genovo.finalize._switch)
-    print "set Cutoff to 250a", Genovo.finalize.get_switch()
-    Genovo.setCutoff(300)
-    print "set Cutoff to 300", Genovo.finalize.get_switch()
-#
+#    print len(Genovo.finalize._switch)
+#    print "set Cutoff to 250a", Genovo.finalize.get_switch()
+#    Genovo.setCutoff(16.5)
+#    print "set Cutoff to 16.5", Genovo.finalize.get_switch()
+#    Genovo.setCutoff(-16)
+#    print "set Cutoff to -16", Genovo.finalize.get_switch()
+
     infile_var="VICTORY!!!.fasta"
 #    print infile
 #    Genovo = RunGenovo(infile=infile_var, pdir = data_dir, noI=3, thresh=250)
     Genovo.setInfileName(infile_var)
-    Genovo.setFinalizeOutfile("sdif")
+
     print Genovo.finalize.get_switch()
+
+    Genovo = RunGenovo(infile=infile_var, outfile=outfile, pdir = genovo_dir, noI=3, thresh=250)
+    Genovo.setFinalizeOutfile("sdif")
+    print "set outfile to sdif", Genovo.finalize.get_switch()
+    Genovo2 = RunGenovo(infile=infile_var,  pdir = genovo_dir, noI=3, thresh=250)   ## outfile == None
+    print "outfile = None = out.test", Genovo2.finalize.get_switch()
 
 
 #

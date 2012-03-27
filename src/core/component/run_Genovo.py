@@ -25,9 +25,11 @@ class RunGenovo(object):
         """
         self.pdir = pdir
         self.infile_class_var = infile
+        self.outfile = outfile
         if outfile is None:
             self.outfile = self.GenerateOutfileName(self.infile_class_var)
-#
+
+
         self.assemble = runExtProg("./assemble", pdir=self.pdir, len=2, checkOS=True)
         self.finalize = runExtProg("./finalize", pdir=self.pdir, len=3)
         self.setInfileName(self.infile_class_var)
@@ -67,15 +69,19 @@ class RunGenovo(object):
         print "end test method"
 
 
-    def setFinalizeOutfile(self, v):
+    def setFinalizeOutfile(self, outfile):
         """
         """
-        self.finalize.set_param_at(v+".fasta", 2)
+        self.finalize.set_param_at(outfile+".fasta", 2)
     #
     def setCutoff(self, v):
         """
         """
-        self.finalize.set_param_at(v,1)
+        if v>0 and isinstance(v, ( int, long ) ):
+            self.finalize.set_param_at(v,1)
+        else:
+            print "Error:", v
+            sys.exit(-1)
     """
     ignore after this
     """
@@ -86,15 +92,13 @@ class RunGenovo(object):
         step1: testAssemble
         step2: testAssemble_out.fasta
         step3: self.pdir+testAssemble_out.fasta
-                check if it exist
-                overwrite or not
+            check if it exist
+            overwrite or not
 
 
         if os.path.exists(  self.cwd+self.name_only  ):
         if os.path.exists(  full_file_path  ):
         """
-
-
         return "out.test"
 
 
