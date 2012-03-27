@@ -187,3 +187,13 @@ class TestRunGenovo(unittest.TestCase):
         for i, key in enumerate(result):
             self.assertEqual(len(result[key]), expected[i])
             
+            
+#    
+#    def test_RunGenovo_run(self):
+#        infile_var="test_run_infile.fasta"
+#        outfile_var="test_run_outfile.fasta"
+#        genovo = RunGenovo(infile=infile_var, outfile = outfile_var, pdir = self.data_dir, noI=10, thresh=100, checkExist=False)
+#        genovo.run()
+#        self.assertTrue( genovo.checkAssembleResultExist() )
+#        
+    

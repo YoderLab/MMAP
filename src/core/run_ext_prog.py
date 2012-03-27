@@ -87,7 +87,7 @@ class runExtProg(object):
         Check platform, only check program_name start with "./". so `ls` still work
         ALWAYS append "_platform" to program_name 
         """
-        if self.cwd == None:
+        if self.cwd == None and checkOS:
             raise TypeError, "Error: no value assigned to self.cwd. Current value = %s" %self.cwd
 #            sys.exit(4)
 

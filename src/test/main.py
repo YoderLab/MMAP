@@ -22,6 +22,7 @@ from test.test_run_ext_prog import TestRunExtProg
 from test.test_sequence import TestSequence
 
 # Parser module
+#from test.parser import *
 from test.parser.test_go_annotation_parser import *
 from test.parser.test_go_OBO_parser import *
 from test.parser.test_parser import *
@@ -30,6 +31,9 @@ from test.parser.test_parser import *
 from test.component.test_run_Genovo import *
 #from test.component.test_run_metaIDBA import *
  
+ 
+ 
+
 #def test_main():
 #    '''
 #    Testing method
