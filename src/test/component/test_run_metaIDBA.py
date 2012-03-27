@@ -9,11 +9,12 @@ from core.component.run_metaIDBA import RunMetaIDBA
 from core.utils import path_utils
 import os
 
-
+@unittest.skip("No longer use metaibda")
 class TestRunMetaIDBA(unittest.TestCase):
 
     def setUp(self):
         self.data_dir = path_utils.get_data_dir()
+
 
     def test_RunMetaIDBA_run(self):
         """
@@ -43,7 +44,6 @@ class TestRunMetaIDBA(unittest.TestCase):
         os.remove(self.data_dir+self.outFileName+".graph")
         os.remove(self.data_dir+self.outFileName+".kmer")
         
-    
     def test_RunMetaIDBA_parameters(self):
         
         self.p1 = RunMetaIDBA("test")
