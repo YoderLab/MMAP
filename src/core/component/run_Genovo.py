@@ -129,11 +129,23 @@ class RunGenovo(object):
          use 
          if os.path.exists( fileName ):
         """
+#        This chunk checks for a valid directory.
+        print "Directory set to:",self.pdir
+        if os.path.exists(self.pdir):
+            print "Valid directory."
+        else:
+            print "Error: invalid directory:",self.pdir
+            sys.exit(-1)
+
+#        If the directory is valid, this chunk makes sure the infile exists.
         self.infile_path="%s%s" % (self.pdir, self.infile_class_var)
+        print "Infile path set to:",self.infile_path
         if os.path.exists(self.infile_path):
-            print self.infile_path
+            print "Infile exists."
         else:
             print "Error: infile does not exist."
+
+#        This chunk makes sure you won't overwrite an existing outfile.
         self.outfile_path="%s%s" % (self.pdir, self.outfile)
         if os.path.exists(self.outfile_path):
             print "WARNING: outfile already exists!!!"
@@ -162,9 +174,36 @@ class RunGenovo(object):
         
         if os.path.exists( fileName ):
         """
+        infile = self.infile_class_var
+#        Check *.status outfile:
+        statusOutfile=infile+".status"
+        print "*.status file:",statusOutfile
+        self.statusOutfile_path="%s%s" % (self.pdir, statusOutfile)
+        if os.path.exists(self.statusOutfile_path):
+            print ".status outfile exists."
+        else:
+            print "Error: *.status outfile does not exist."
 
-        isExist = None
-        return isExist
+#        Check *.dump1 outfile:
+        dump1Outfile=infile + ".dump1"
+        print "*.dump1 file:",dump1Outfile
+        self.dump1Outfile_path="%s%s" % (self.pdir, dump1Outfile)
+        if os.path.exists(self.dump1Outfile_path):
+            print ".dump1 outfile exists."
+        else:
+            print "Error: *.dump1 outfile does not exist."
+
+        #        Check *.dump.best outfile:
+        dumpBestOutfile=infile + ".dump.best"
+        print dumpBestOutfile
+        self.dumpbestOutfile_path="%s%s" % (self.pdir, dumpBestOutfile)
+        if os.path.exists(self.dumpbestOutfile_path):
+            print ".dump.best outfile exists."
+        else:
+            print "Error: *.dump.best outfile does not exist."
+
+#        isExist = None
+#        return isExist
     
 
     

@@ -135,29 +135,33 @@ class TestRunGenovo(unittest.TestCase):
         check if infile and/or file directory exist
         """        
         
-#        infile_var = "fileDoesNotExist"
-#        with self.assertRaises(IOError):
-#            RunGenovo(infile=infile_var, pdir = self.data_dir, noI=3, thresh=250, checkExist= True)
+        infile_var = "fileDoesNotExist"
+        with self.assertRaises(IOError):
+            RunGenovo(infile=infile_var, pdir = self.data_dir, noI=3, thresh=250, checkExist= True)
 
-        print pdir
+        print self.data_dir
         infile_var = "test_infile.fasta"
+        with self.assertRaises(IOError):
+            RunGenovo(infile=infile_var, pdir = self.data_dir, noI=3, thresh=250, checkExist= True)
+
+        infile_var = "anyFile"
         invalid_dir = "/RandomDirThatDoesNotExist/"
         with self.assertRaises(IOError):
             RunGenovo(infile=infile_var, pdir = invalid_dir, noI=3, thresh=250, checkExist= True)
         
 
 
-    def test_RunGenovo_outfile_already_exist(self):
-        """
-        check if out file alread exist,
-        maybe should not raise error, should
-        TODO: maybe it should be handle it at different way, auto rename? 
-        """
-        infile_var="test_infile.fasta"
-        outfile_var = "testOutFileAlreadyExist.fasta"
-        with self.assertRaises(IOError):
-            RunGenovo(infile=infile_var, outfile = outfile_var, pdir = self.data_dir, noI=3, thresh=250, checkExist= True)
-        
+#    def test_RunGenovo_outfile_already_exist(self):
+#        """
+#        check if out file already exists,
+#        maybe should not raise error, should
+#        TODO: maybe it should be handle it at different way, auto rename?
+#        """
+#        infile_var="test_infile.fasta"
+#        outfile_var = "testOutFileAlreadyExist.fasta"
+#        with self.assertRaises(IOError):
+#            RunGenovo(infile=infile_var, outfile = outfile_var, pdir = self.data_dir, noI=3, thresh=250, checkExist= True)
+#
         
     def test_RunGenovo_checkAssembleResultExist(self):
         """
