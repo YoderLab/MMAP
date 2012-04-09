@@ -1,4 +1,4 @@
-Command:  ./linux/glimmer3 -o 50 -g 110 -t 30 tpall.fna iterated.icm iterated.run1
+Command:  ./mac/glimmer3 -o 50 -g 110 -t 30 tpall.fna iterated.icm iterated.run1
 
 Sequence file = tpall.fna
 Number of sequences = 1
