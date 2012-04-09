@@ -125,9 +125,10 @@ class RunGlimmer(object):
         #            sys.exit(-1)
             raise IOError, "Error: invalid directory:%s" %self.pdir
         #        If the directory is valid, this chunk makes sure the infile exists.
-        self.infile_path="%s%s" % (self.pdir, self.infile_class_var)
-        print "Infile path set to:",self.infile_path
-        if os.path.exists(self.infile_path):
+#        self.infile_path="%s%s" % (self.pdir, self.infile_class_var)
+#        print "Infile path set to:",self.infile_path
+
+        if self.check_outfile_existence( self.pdir, self.infile_class_var, True):
             print "Infile exists."
         else:
             print "Error: infile does not exist."
@@ -146,8 +147,93 @@ class RunGlimmer(object):
         else:
             pass
 
-    #Check for expected output files:
+
     def checkG3OutfilesExist(self):
+
+        allextw=[".coords", ".detail", ".icm", ".longorfs", ".motif", ".predict", ".run1.detail", ".run1.predict", ".train", ".upstream"]
+        isExist = self.check_multiple_outfiles_existence( self.outfileTag, allextw)
+        return isExist
+
+
+
+
+    def check_multiple_outfiles_existence(self, outfileTag, allext, isExist=True):
+        for ext in allext:
+            isExist = self.check_outfile_existence( outfileTag, ext, isExist)
+        return isExist
+
+
+    def check_outfile_existence(self, filetag, ext, isExist):
+
+        test_outfile=filetag + ext
+        print ext," file:",test_outfile
+        test_outfile="%s%s" % (self.pdir, test_outfile)
+        print "*",ext," file:",test_outfile
+        if os.path.exists(test_outfile):
+            print ext,"  outfile exists."
+            isExist=isExist and True
+        else:
+            isExist=False
+            print "Error: ",ext,"  outfile does not exist."
+
+        return isExist
+
+
+    #Check for expected output files:
+    def checkG3OutfilesExistOld2(self):
+        """
+        TODO: check if standard outfile from ./assemble exist
+
+        start with self.infile_class_var (test_infile.fasta)
+        should have 10 output
+            test_infile.fasta.coords
+            test_infile.fasta.detail
+            test_infile.fasta.icm
+            test_infile.fasta.longorfs
+            test_infile.fasta.motif
+            test_infile.fasta.predict
+            test_infile.fasta.run1.detail
+            test_infile.fasta.run1.predict
+            test_infile.fasta.train
+            test_infile.fasta.upstream
+
+        ./assemble_linux test_infile.fasta 1
+        still generate test_infile.fasta.status
+
+        check
+        *.coords
+        *.detail
+        *.icm
+        *.longorfs
+        *.motif
+        *.preict
+        *.run1.detail
+        *.run1.predict
+        *.train
+        *.upstream
+        exist
+
+        if os.path.exists( fileName ):
+        """
+        
+        isExist=True
+
+        isExist = self.check_outfile_existence( self.outfileTag, ".coords", isExist)
+        isExist = self.check_outfile_existence( self.outfileTag, ".detail", isExist)
+        isExist = self.check_outfile_existence( self.outfileTag, ".icm", isExist)
+        isExist = self.check_outfile_existence( self.outfileTag, ".longorfs", isExist)
+        isExist = self.check_outfile_existence( self.outfileTag, ".motif", isExist)
+        isExist = self.check_outfile_existence( self.outfileTag, ".predict", isExist)
+        isExist = self.check_outfile_existence( self.outfileTag, ".run1.detail", isExist)
+        isExist = self.check_outfile_existence( self.outfileTag, ".run1.predict", isExist)
+        isExist = self.check_outfile_existence( self.outfileTag, ".train", isExist)
+        isExist = self.check_outfile_existence( self.outfileTag, ".upstream", isExist)
+        return isExist
+
+    
+    
+    #Check for expected output files:
+    def checkG3OutfilesExistOld(self):
         """
         TODO: check if standard outfile from ./assemble exist
 
@@ -185,18 +271,20 @@ class RunGlimmer(object):
         outfile = self.outfileTag
         isExist=False
         #        Check *.coords outfile:
-        coordsOutfile=outfile+".coords"
-        print "*.coords file:",coordsOutfile
-        self.coordsOutfile_path="%s%s" % (self.pdir, coordsOutfile)
-        if os.path.exists(self.coordsOutfile_path):
+        test_outfile=outfile+".coords"
+        print "*.coords file:",test_outfile
+        test_outfile="%s%s" % (self.pdir, test_outfile)
+        print "*.coords file:",test_outfile
+        if os.path.exists(test_outfile):
             print ".coords outfile exists."
             isExist=True
 
     #            Check *.detail outfile:
-        detailOutfile=outfile + ".detail"
-        print "*.detail file:",detailOutfile
-        self.detailOutfile_path="%s%s" % (self.pdir, detailOutfile)
-        if os.path.exists(self.detailOutfile_path):
+        test_outfile=outfile + ".detail"
+        print "*.detail file:",test_outfile
+        test_outfile="%s%s" % (self.pdir, test_outfile)
+        print "*.detail file:",test_outfile
+        if os.path.exists(test_outfile):
             print ".detail outfile exists."
             isExist=isExist and True
         else:
@@ -295,4 +383,3 @@ class RunGlimmer(object):
 
         #        isExist = None
         return isExist
-
