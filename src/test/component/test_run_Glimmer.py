@@ -15,7 +15,7 @@ import subprocess
 class TestRunGlimmer(unittest.TestCase):
 
     platform = run_ext_prog.get_platform()
-    
+
     def setUp(self):
         self.longMessage = True
         self.data_dir = path_utils.get_data_dir()+"Glimmer/"
@@ -26,38 +26,37 @@ class TestRunGlimmer(unittest.TestCase):
 
     def test_RunGlimmer_init(self):
         infile_var = "all_reads.fa"
-        glimmer = RunGlimmer(infile_var, pdir=self.data_dir)
-        self.assertEqual(glimmer.get_switch()[0], infile_var)
-        self.assertEqual(glimmer.get_switch(), [infile_var, "1"])
-        self.assertListEqual(glimmer.get_switch(), [infile_var, "all_reads_out"])
-
+        outfile_var="testOutfile"
+        test_glimmer = RunGlimmer(infile_var, outfile=outfile_var,pdir=self.data_dir, checkExist=False)
+        self.assertEqual(test_glimmer.get_switch()[0], infile_var)
+        self.assertListEqual(test_glimmer.get_switch(), [infile_var, "testOutfile"])
+#
 
     def test_RunGlimmer_setInfile(self):
     #   def_test_ClassName_whatAreWeTestingHere(self)
         infile_var="test_infile.fasta"
-        glimmer = RunGlimmer(infile=infile_var, pdir = self.data_dir, checkExist=False)
-        self.assertEqual(2, len(glimmer._switch) )
-        self.assertListEqual(glimmer.get_switch(), ["test_infile.fasta", "test_infile_out"])
+        outfile_var="testOutfile"
+        glimmer = RunGlimmer(infile=infile_var, outfile=outfile_var,pdir = self.data_dir, checkExist=False)
+        self.assertEqual(2, len(glimmer.get_switch()) )
+        self.assertListEqual(glimmer.get_switch(), ["test_infile.fasta", outfile_var])
 
         infile_var="VICTORY!!!.fasta"
         glimmer.setInfileName(infile_var)
-        self.assertListEqual(glimmer.get_switch(), ["VICTORY!!!.fasta", "test_infile_out"])
+        self.assertListEqual(glimmer.get_switch(), ["VICTORY!!!.fasta", outfile_var])
 
     def test_RunGlimmer_set_outfile(self):
     #   def_test_ClassName_mhatAreWeTestingHere(self)
         infile_var="test_infile.fasta"
         outfile_var="testOutfile"
         glimmer = RunGlimmer(infile=infile_var, outfile=outfile_var, pdir = self.data_dir, checkExist=False)
-        self.assertEqual(2, len(glimmer._switch) )
-        self.assertListEqual(glimmer.get_switch(), [ "test_infile.fasta", "testOutfile"
-        glimmer2 = RunGlimmer(infile=infile_var,  pdir = self.data_dir,  checkExist=False)   ## outfile == None
-        self.assertListEqual(glimmer2.get_switch(), ["test_infile.fasta", "test_infile_out"])
+        self.assertEqual(2, len(glimmer.get_switch()) )
+        self.assertListEqual(glimmer.get_switch(), [ "test_infile.fasta", "testOutfile"])
         infile_var="test_infile.xyz.fasta.abc"
-        glimmer2 = RunGlimmer(infile=infile_var,  pdir = self.data_dir,  checkExist=False)   ## outfile == None
-        self.assertListEqual(glimmer2.get_switch(), ["test_infile.xyz.fasta.fasta", "test_infile_out"])
+        glimmer2 = RunGlimmer(infile=infile_var,  outfile=outfile_var,pdir = self.data_dir,  checkExist=False)
+        self.assertListEqual(glimmer2.get_switch(), ["test_infile.xyz.fasta.abc", outfile_var])
         infile_var="test_infile"
-        glimmer2 = RunGlimmer(infile=infile_var,  pdir = self.data_dir,  checkExist=False)   ## outfile == None
-        self.assertListEqual(glimmer2.get_switch(), ["test_infile", "test_infile_out"])
+        glimmer2 = RunGlimmer(infile=infile_var, outfile=outfile_var, pdir = self.data_dir,  checkExist=False)
+        self.assertListEqual(glimmer2.get_switch(), ["test_infile", outfile_var])
 
 
     def test_RunGlimmer_set_infile_outfile(self):
@@ -83,8 +82,9 @@ class TestRunGlimmer(unittest.TestCase):
         check if directory name is valid
         """
         infile_var="test_infile.fasta"
+        outfile_var="testOutfile"
         dir = self.data_dir[:-1]
-        glimmer = RunGlimmer(infile=infile_var, pdir = dir,  checkExist=False)
+        glimmer = RunGlimmer(infile=infile_var, outfile = outfile_var,pdir = dir,  checkExist=False)
         self.assertEqual(glimmer.pdir, self.data_dir)
 
 
@@ -94,8 +94,9 @@ class TestRunGlimmer(unittest.TestCase):
         """
 
         infile_var = "fileDoesNotExist"
+        outfile_var="testOutfile"
         with self.assertRaises(IOError):
-            RunGlimmer(infile=infile_var, pdir = self.data_dir, checkExist= True)
+            RunGlimmer(infile=infile_var, outfile = outfile_var,pdir = self.data_dir, checkExist= True)
 
         #        print self.data_dir
         #        infile_var = "test_infile.fasta"
@@ -105,21 +106,21 @@ class TestRunGlimmer(unittest.TestCase):
         infile_var = "anyFile"
         invalid_dir = "/RandomDirThatDoesNotExist/"
         with self.assertRaises(IOError):
-            RunGlimmer(infile=infile_var, pdir = invalid_dir,checkExist= True)
+            RunGlimmer(infile=infile_var, outfile = outfile_var,pdir = invalid_dir,checkExist= True)
 
 
 
-        #    def test_RunGenovo_outfile_already_exist(self):
-        #        """
-        #        check if out file already exists,
-        #        maybe should not raise error, should
-        #        TODO: maybe it should be handle it at different way, auto rename?
-        #        """
-        #        infile_var="test_infile.fasta"
-        #        outfile_var = "testOutFileAlreadyExist.fasta"
-        #        with self.assertRaises(IOError):
-        #            RunGenovo(infile=infile_var, outfile = outfile_var, pdir = self.data_dir, noI=3, thresh=250, checkExist= True)
-        #
+    def test_RunGlimmer_outfile_already_exist(self):
+        """
+        check if out file already exists,
+        maybe should not raise error, should
+        TODO: maybe it should be handle it at different way, auto rename?
+        """
+        infile_var="tpall.fna"
+        outfile_var = "iterated"
+        with self.assertRaises(IOError):
+            RunGlimmer(infile=infile_var, outfile = outfile_var, pdir = self.data_dir, checkExist= True)
+
 
     def test_RunGlimmer_checkOutfilesExist(self):
         """
@@ -127,40 +128,24 @@ class TestRunGlimmer(unittest.TestCase):
         only pass if all 10 exist
         """
         infile_var="test_infile.fasta"
-        glimmer = RunGlimmer(infile=infile_var, pdir = self.data_dir, checkExist=False)
-        print glimmer.checkOutfilesExist()
-        self.assertTrue( glimmer.checkOutfilesExist() )
+        outfile_var="iterated"
+        glimmer = RunGlimmer(infile=infile_var, outfile = outfile_var,pdir = self.data_dir, checkExist=False)
+        print glimmer.checkG3OutfilesExist()
+        self.assertTrue( glimmer.checkG3OutfilesExist() )
 
         # negative test, outfiles are not suppose to exist
-        infile_var="fileNotExist.fasta"
-        glimmer = RunGlimmer(infile=infile_var, pdir = self.data_dir, checkExist=False)
-        print glimmer.checkOutfilesExist()
-        self.assertFalse( glimmer.checkOutfilesExist() )
 
-    def test_RunGlimmer_readOutfile(self):
-        """
-        check if it can "read" assembled contig
-        TODO: have check what happen in the file format is invalid, assuming its the correct fasta now
-        """
-        infile_var="test_infile.fasta"
-        outfile_var="test_outfile.fasta"
-        glimmer = RunGlimmer(infile=infile_var, outfile = outfile_var, pdir = self.data_dir, checkExist=False)
-        result = glimmer.readOutfile()
-        self.assertEqual(len(result), 2)
-        self.assertEqual(result.keys(), ["1","2"])
+        outfile_var="fineNotExist"
+        glimmer = RunGlimmer(infile=infile_var, outfile = outfile_var,pdir = self.data_dir, checkExist=False)
+        print glimmer.checkG3OutfilesExist()
+        self.assertFalse( glimmer.checkG3OutfilesExist() )
 
-        expected = [170,60]
-        for i, key in enumerate(result):
-            print key, i, type(result[key]), result[key]
-            self.assertEqual(len(result[key]), expected[i])
-
-
-#    
-#    def test_RunGlimmer_run(self):
-#        infile_var="test_run_infile.fasta"
-#        outfile_var="test_run_outfile"
-#        glimmer = RunGlimmer(infile=infile_var, outfile = outfile_var, pdir = self.data_dir, checkExist=False)
-#        glimmer.run()
-#        self.assertTrue( glimmer.checkOutfilesExist() )
-#        
-    
+##
+##    def test_RunGlimmer_run(self):
+##        infile_var="test_run_infile.fasta"
+##        outfile_var="test_run_outfile"
+##        glimmer = RunGlimmer(infile=infile_var, outfile = outfile_var, pdir = self.data_dir, checkExist=False)
+##        glimmer.run()
+##        self.assertTrue( glimmer.checkOutfilesExist() )
+##
+#

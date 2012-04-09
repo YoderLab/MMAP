@@ -241,8 +241,8 @@ class RunGenovo(object):
 #        isExist = False;
 #        return isExist;
 #
-#    def run(self):
-#        self.assemble.run()
-#        self.finalize.run()
+    def run(self):
+        self.assemble.run()
+        self.finalize.run()
 #
 
