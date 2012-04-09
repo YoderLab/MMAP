@@ -125,7 +125,7 @@ class TestRunGenovo(unittest.TestCase):
         check if directory name is valid
         """        
         infile_var="test_infile.fasta"
-        dir = self.data_dir[:-1] + "/"
+        dir = self.data_dir[:-1]
         genovo = RunGenovo(infile=infile_var, pdir = dir, noI=3, thresh=250, checkExist=False)
         self.assertEqual(genovo.pdir, self.data_dir)
         
@@ -139,10 +139,10 @@ class TestRunGenovo(unittest.TestCase):
         with self.assertRaises(IOError):
             RunGenovo(infile=infile_var, pdir = self.data_dir, noI=3, thresh=250, checkExist= True)
 
-        print self.data_dir
-        infile_var = "test_infile.fasta"
-        with self.assertRaises(IOError):
-            RunGenovo(infile=infile_var, pdir = self.data_dir, noI=3, thresh=250, checkExist= True)
+#        print self.data_dir
+#        infile_var = "test_infile.fasta"
+#        with self.assertRaises(IOError):
+#            RunGenovo(infile=infile_var, pdir = self.data_dir, noI=3, thresh=250, checkExist= True)
 
         infile_var = "anyFile"
         invalid_dir = "/RandomDirThatDoesNotExist/"
@@ -170,11 +170,13 @@ class TestRunGenovo(unittest.TestCase):
         """
         infile_var="test_infile.fasta"
         genovo = RunGenovo(infile=infile_var, pdir = self.data_dir, noI=10, thresh=250, checkExist=False)
-        self.assertTrue( genovo.checkAssembleResultExist(), )
+        print genovo.checkAssembleResultExist()
+        self.assertTrue( genovo.checkAssembleResultExist() )
 
         # negative test, outfiles are not suppose to exist
         infile_var="fileNotExist.fasta"
         genovo = RunGenovo(infile=infile_var, pdir = self.data_dir, noI=10, thresh=250, checkExist=False)
+        print genovo.checkAssembleResultExist()
         self.assertFalse( genovo.checkAssembleResultExist() )
 
     def test_RunGenovo_readFinalizeOutfile(self):
@@ -188,9 +190,10 @@ class TestRunGenovo(unittest.TestCase):
         result = genovo.readFinalizeOutfile()
         self.assertEqual(len(result), 2)
         self.assertEqual(result.keys(), ["1","2"])
-        
+
         expected = [170,60]
         for i, key in enumerate(result):
+            print key, i, type(result[key]), result[key]
             self.assertEqual(len(result[key]), expected[i])
             
             

@@ -17,7 +17,7 @@ python -m unittest -v test.main
 ## from file import class
 
 from test.test_distance import TestDistance
-from test.test_hclust import TestHClust
+#from test.test_hclust import TestHClust
 from test.test_run_ext_prog import TestRunExtProg
 from test.test_sequence import TestSequence
 
