@@ -7,6 +7,7 @@ Created on Feb 1, 2012
 from core.run_ext_prog import runExtProg
 from Bio import SeqIO
 
+
 class RunMetaIDBA(object):
     """
     classdocs
@@ -33,7 +34,7 @@ class RunMetaIDBA(object):
         
 #    def setSwitch(self, switch):
 #        self.metaIDBA.get_switch(switch)
-
+    
     def run(self):
         self.metaIDBA.run()
         outfile = self.pdir+self.outfile+"-contig.fa"
@@ -45,9 +46,8 @@ class RunMetaIDBA(object):
         try:
             self.record = SeqIO.index(outfile,"fasta") 
         except IOError as e:
-            print "Exception error is: %s" % e;
-            raise
-            
+            raise IOError("Exception error is: %s" % e)
+
         
     
     def getRecord(self):

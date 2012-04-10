@@ -5,7 +5,7 @@
 
 
 from Bio import Seq
-import numpy
+
 
 class Sequence(object):
     """store all blast results from 1 seq
@@ -45,18 +45,18 @@ class Sequence(object):
     def get_combinations(self):
         '''
         return tuple (index_in_dist_matrix, set1, set2)
-        index_in_dist_matrix in "tuple", with (row_index, col_index) for lower triangle 
+        index_in_dist_matrix in "tuple", with (row_index, col_index) for lower triangle
         '''
-        
-        keyList = self.each_term.keys();
+
+        keyList = self.each_term.keys()
         len_set = len(keyList)
 #        dist = numpy.zeros(shape=(len_set, len_set), dtype=numpy.float32)
         combList = []
         for i, u in enumerate(self.each_term.values()):
-            for j in range(i+1, len_set):
+            for j in range(i + 1, len_set):
                 v = self.each_term.get(keyList[j])
 #                print "i:%d \t j:%d \t %d and %s and %s" % (i ,j,len(u&v), str(u), str(v))
-                combList.append(((j, i), u, v))            
+                combList.append(((j, i), u, v))
 
         return combList
 
@@ -74,14 +74,13 @@ class Sequence(object):
 
     def del_web_page(self):
         del self.__web_page
-        
+
     web_page = property(_get_web_page, set_web_page, del_web_page, "Testing property")
-    
-    
 
 
 
 class Hits(object):
+    
     
     def __init__(self):
         self.acc_ID = None

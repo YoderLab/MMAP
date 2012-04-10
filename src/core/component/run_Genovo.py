@@ -3,7 +3,6 @@ Created on Feb 29, 2012
 
 @author: Erin McKenney and Steven Wu
 """
-import sys
 
 from core.run_ext_prog import runExtProg
 from Bio import SeqIO
@@ -21,11 +20,11 @@ class RunGenovo(object):
     def __init__(self, infile, noI, thresh, pdir, outfile=None, checkExist = True):
         """
         Constructor
-        TODO: implement finalize
+        
         TODO: read/parse/check output
         
         """
-        if pdir[-1]=="/":
+        if pdir.endswith("/"):
 
             self.pdir=pdir
         else:
@@ -43,8 +42,8 @@ class RunGenovo(object):
             self.checkInfileExist()
             
 
-        self.assemble = runExtProg("./assemble", pdir=self.pdir, len=2, checkOS=True)
-        self.finalize = runExtProg("./finalize", pdir=self.pdir, len=3, checkOS=True)
+        self.assemble = runExtProg("./assemble", pdir=self.pdir, length=2, checkOS=True)
+        self.finalize = runExtProg("./finalize", pdir=self.pdir, length=3, checkOS=True)
         self.setInfileName(self.infile_class_var)
         self.setNumberOfIter(noI)
 #        print self.assemble.get_switch()
@@ -62,24 +61,18 @@ class RunGenovo(object):
         if param>0 and isinstance( param, ( int, long ) ):
             self.assemble.set_param_at(param, 2)
         else:
-            raise TypeError, "Error: unacceptable value for param: %s" %param
+            raise TypeError("Error: unacceptable value for param: %s" %param)
 
 
 
     def setInfileName(self, infile):
         """
         type anything here
-        TODO: check valid infile, infile exist or not
         """
         self.assemble.set_param_at(infile, 1)
         self.finalize.set_param_at(infile+".dump.best",3)
 
-    def testRandom(self):
-#        print "test method"
-        print self.infile_class_var
-#        print infile
 
-        print "end test method"
 
 
     def setFinalizeOutfile(self, outfile):
@@ -95,12 +88,10 @@ class RunGenovo(object):
             self.finalize.set_param_at(v,1)
         else:
             if isinstance(v,str):
-                print 'Error: cutoff set as string "%s"' %v
-                raise TypeError
+                raise TypeError('Error: cutoff set as string "%s"' %v)
             else:
-                print 'Error: cutoff set to:',v
-                raise ValueError
-#            sys.exit(-1)
+                raise ValueError('Error: cutoff set to: %f' %v)
+
 
 
     def GenerateOutfileName(self, infile):
@@ -145,20 +136,18 @@ class RunGenovo(object):
         else:
 #            print
 #            sys.exit(-1)
-            raise IOError, "Error: invalid directory:%s" %self.pdir
+            raise IOError("Error: invalid directory: %s" %self.pdir)
 #        If the directory is valid, this chunk makes sure the infile exists.
         self.infile_path="%s%s" % (self.pdir, self.infile_class_var)
         print "Infile path set to:",self.infile_path
         if os.path.exists(self.infile_path):
             print "Infile exists."
         else:
-            print "Error: infile does not exist."
-            raise IOError
+            raise IOError("Error: infile does not exist.")
 #        This chunk makes sure you won't overwrite an existing outfile.
         self.outfile_path="%s%s" % (self.pdir, self.outfile)
         if os.path.exists(self.outfile_path):
-            print "WARNING: outfile already exists!!!"
-            raise IOError
+            raise IOError("WARNING: outfile already exists!!!")
         #TODO: come back to this later.
 #            Can rename the file, raise a different error, etc.
         else:
@@ -233,13 +222,6 @@ class RunGenovo(object):
         return self.record_index
     
 
-#
-#    def checkFileExist(self, file):
-#        """
-#        TODO: implement method, refactor example
-#        """
-#        isExist = False;
-#        return isExist;
 #
     def run(self):
         self.assemble.run()
