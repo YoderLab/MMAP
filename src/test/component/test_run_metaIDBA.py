@@ -61,7 +61,6 @@ class TestRunMetaIDBA(unittest.TestCase):
 #        self.assertRaises(IOError, self.p1.readContig())
 #        
 #        self.assertRaises(ValueError, self.p1.readContig())
-        
         with self.assertRaises(IOError):
             self.p1.readContig()
         

@@ -40,11 +40,11 @@ class runExtProg(object):
     platform = get_platform()
     
 
-    def __init__(self, p, pdir=None, len=0, checkOS=False):
+    def __init__(self, p, pdir=None, length=0, checkOS=False):
         
         self.program_name = p
 
-        self.init_switch(len)
+        self.init_switch(length)
         self.cwd = pdir
         self.checkPlatform(checkOS)
         
@@ -87,8 +87,8 @@ class runExtProg(object):
         Check platform, only check program_name start with "./". so `ls` still work
         ALWAYS append "_platform" to program_name 
         """
-        if self.cwd == None and checkOS:
-            raise TypeError, "Error: no value assigned to self.cwd. Current value = %s" %self.cwd
+        if self.cwd is None and checkOS:
+            raise TypeError("Error: no value assigned to self.cwd. Current value = %s" %self.cwd)
 #            sys.exit(4)
 
         if checkOS or self.program_name.find("./") is 0:

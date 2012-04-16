@@ -8,8 +8,7 @@ import unittest
 from core.component.run_glimmer import RunGlimmer
 from core import run_ext_prog
 from core.utils import path_utils
-import os
-import subprocess
+
 
 
 class TestRunGlimmer(unittest.TestCase):
@@ -26,10 +25,10 @@ class TestRunGlimmer(unittest.TestCase):
 
     def test_RunGlimmer_init(self):
         infile_var = "all_reads.fa"
-        outfile_var="testOutfile"
-        test_glimmer = RunGlimmer(infile_var, outfile=outfile_var,pdir=self.data_dir, checkExist=False)
+#        outfile_var="testOutfile"
+        test_glimmer = RunGlimmer(infile_var, pdir=self.data_dir, checkExist=False)
         self.assertEqual(test_glimmer.get_switch()[0], infile_var)
-        self.assertListEqual(test_glimmer.get_switch(), [infile_var, "testOutfile"])
+        self.assertListEqual(test_glimmer.get_switch(), [infile_var, "all_reads_out"])
 #
 
     def test_RunGlimmer_setInfile(self):
@@ -83,8 +82,8 @@ class TestRunGlimmer(unittest.TestCase):
         """
         infile_var="test_infile.fasta"
         outfile_var="testOutfile"
-        dir = self.data_dir[:-1]
-        glimmer = RunGlimmer(infile=infile_var, outfile = outfile_var,pdir = dir,  checkExist=False)
+        wrong_dir = self.data_dir[:-1]
+        glimmer = RunGlimmer(infile=infile_var, outfile = outfile_var,pdir = wrong_dir,  checkExist=False)
         self.assertEqual(glimmer.pdir, self.data_dir)
 
 

@@ -147,9 +147,9 @@ def extract_ID(seq):
                     v = float(token.pop(len(token) - 2) )
                     e_value.append(v) ## or call pop() twice
                 except ValueError as e:
-                    print 'ValueError: %s' % e;
-                    print "", sys.exc_info()[0], sys.exc_info()[1]
-                    raise
+#                    print 'ValueError: %s' % e;
+#                    print "", 
+                    raise ValueError("ValueError: %s \t %s \t %s" %{e, sys.exc_info()[0], sys.exc_info()[1]}  )
                    
         
         
@@ -237,8 +237,8 @@ def _get_web_page(query, URL):
         #previous = current
 
     #request = urllib2.Request("http://blast.ncbi.nlm.nih.gov/Blast.cgi",
-                              #message,
-                              #{"User-Agent":"BiopythonClient"})
+                        #message,
+                        #{"User-Agent":"BiopythonClient"})
     #handle = urllib2.urlopen(request)
     #results = _as_string(handle.read())
     ## Can see an "\n\n" page while results are in progress,

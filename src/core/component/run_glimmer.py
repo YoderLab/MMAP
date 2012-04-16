@@ -4,10 +4,10 @@ Created on March 19, 2012
 @author: Erin McKenney
 """
 
-from subprocess import call
+
 import os
 from core.run_ext_prog import runExtProg
-from Bio import SeqIO
+
 
 class RunGlimmer(object):
     """
@@ -21,7 +21,7 @@ class RunGlimmer(object):
         """
 
 #        Make sure directory ends with a "/":
-        if pdir[-1]=="/":
+        if pdir.endswith("/"):
 
             self.pdir=pdir
         else:
@@ -45,7 +45,7 @@ class RunGlimmer(object):
 #        self.setOutputTag(self.outfileTag)
 
 #            Or, do we call the script using runExtProg?
-        self.glimmer = runExtProg("./g3_iterated.csh", pdir=self.pdir, len=2, checkOS=True)
+        self.glimmer = runExtProg("./g3_iterated.csh", pdir=self.pdir, length=2, checkOS=True)
         self.setInfileName(self.infile_class_var)
         self.setOutputTag(self.outfileTag)
 
@@ -123,7 +123,7 @@ class RunGlimmer(object):
         else:
         #            print
         #            sys.exit(-1)
-            raise IOError, "Error: invalid directory:%s" %self.pdir
+            raise IOError("Error: invalid directory: %s" %self.pdir)
         #        If the directory is valid, this chunk makes sure the infile exists.
 #        self.infile_path="%s%s" % (self.pdir, self.infile_class_var)
 #        print "Infile path set to:",self.infile_path
@@ -131,8 +131,7 @@ class RunGlimmer(object):
         if self.check_outfile_existence( self.pdir, self.infile_class_var, True):
             print "Infile exists."
         else:
-            print "Error: infile does not exist."
-            raise IOError
+            raise IOError("Error: infile does not exist.")
         #        This chunk makes sure you won't overwrite an existing outfile.
         self.outfile_path="%s%s" % (self.pdir, self.outfileTag)
         isExist = self.checkG3OutfilesExist()
@@ -140,8 +139,7 @@ class RunGlimmer(object):
 
         if isExist:
 #        os.path.exists(self.outfile_path):
-            print "WARNING: outfile already exists!!!"
-            raise IOError
+            raise IOError("WARNING: outfile already exists!!!")
             #TODO: come back to this later.
         #            Can rename the file, raise a different error, etc.
         else:
