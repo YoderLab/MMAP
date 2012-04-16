@@ -4,10 +4,12 @@ Created on Mar 20, 2012
 @author: Steven Wu
 """
 import unittest
+import sys
+import os
 from core.component.run_Genovo import RunGenovo
 from core import run_ext_prog
 from core.utils import path_utils
-import os
+
 
 class TestRunGenovo(unittest.TestCase):
 
@@ -125,8 +127,8 @@ class TestRunGenovo(unittest.TestCase):
         check if directory name is valid
         """        
         infile_var="test_infile.fasta"
-        dir = self.data_dir[:-1]
-        genovo = RunGenovo(infile=infile_var, pdir = dir, noI=3, thresh=250, checkExist=False)
+        wrong_dir = self.data_dir[:-1]
+        genovo = RunGenovo(infile=infile_var, pdir = wrong_dir, noI=3, thresh=250, checkExist=False)
         self.assertEqual(genovo.pdir, self.data_dir)
         
 
@@ -139,10 +141,6 @@ class TestRunGenovo(unittest.TestCase):
         with self.assertRaises(IOError):
             RunGenovo(infile=infile_var, pdir = self.data_dir, noI=3, thresh=250, checkExist= True)
 
-#        print self.data_dir
-#        infile_var = "test_infile.fasta"
-#        with self.assertRaises(IOError):
-#            RunGenovo(infile=infile_var, pdir = self.data_dir, noI=3, thresh=250, checkExist= True)
 
         infile_var = "anyFile"
         invalid_dir = "/RandomDirThatDoesNotExist/"
@@ -151,17 +149,17 @@ class TestRunGenovo(unittest.TestCase):
         
 
 
-#    def test_RunGenovo_outfile_already_exist(self):
-#        """
-#        check if out file already exists,
-#        maybe should not raise error, should
-#        TODO: maybe it should be handle it at different way, auto rename?
-#        """
-#        infile_var="test_infile.fasta"
-#        outfile_var = "testOutFileAlreadyExist.fasta"
-#        with self.assertRaises(IOError):
-#            RunGenovo(infile=infile_var, outfile = outfile_var, pdir = self.data_dir, noI=3, thresh=250, checkExist= True)
-#
+    def test_RunGenovo_outfile_already_exist(self):
+        """
+        check if out file already exists,
+        maybe should not raise error, should
+        TODO: maybe it should be handle it at different way, auto rename?
+        """
+        infile_var="test_infile.fasta"
+        outfile_var = "testOutFileAlreadyExist.fasta"
+        with self.assertRaises(IOError):
+            RunGenovo(infile=infile_var, outfile = outfile_var, pdir = self.data_dir, noI=3, thresh=250, checkExist= True)
+
         
     def test_RunGenovo_checkAssembleResultExist(self):
         """
@@ -170,14 +168,14 @@ class TestRunGenovo(unittest.TestCase):
         """
         infile_var="test_infile.fasta"
         genovo = RunGenovo(infile=infile_var, pdir = self.data_dir, noI=10, thresh=250, checkExist=False)
-        print genovo.checkAssembleResultExist()
-        self.assertTrue( genovo.checkAssembleResultExist() )
+        print genovo.checkAssembleOutfilesExist("test_infile.fasta")
+        self.assertTrue( genovo.checkAssembleOutfilesExist("test_infile.fasta") )
 
         # negative test, outfiles are not suppose to exist
         infile_var="fileNotExist.fasta"
         genovo = RunGenovo(infile=infile_var, pdir = self.data_dir, noI=10, thresh=250, checkExist=False)
-        print genovo.checkAssembleResultExist()
-        self.assertFalse( genovo.checkAssembleResultExist() )
+        print genovo.checkAssembleOutfilesExist("fileNotExist_out")
+        self.assertFalse( genovo.checkAssembleOutfilesExist("fileNotExist_out") )
 
     def test_RunGenovo_readFinalizeOutfile(self):
         """
@@ -199,10 +197,12 @@ class TestRunGenovo(unittest.TestCase):
             
 
     def test_RunGenovo_run(self):
-        infile_var="test_run_infile.fasta"
+        infile_var="test_infile.fasta"
         outfile_var="test_run_outfile.fasta"
-        genovo = RunGenovo(infile=infile_var, outfile = outfile_var, pdir = self.data_dir, noI=10, thresh=100, checkExist=False)
+        genovo = RunGenovo(infile=infile_var, outfile = outfile_var, pdir = self.data_dir, noI=10, thresh=100, checkExist=True)
         genovo.run()
-#        self.assertTrue( genovo.checkAssembleResultExist() )
+        self.assertTrue( genovo.checkAssembleOutfilesExist(infile_var) )
+        self.assertTrue(genovo.check_outfile_existence("test_run_outfile", ".fasta",True))
+        os.remove(self.data_dir+outfile_var)
 
     

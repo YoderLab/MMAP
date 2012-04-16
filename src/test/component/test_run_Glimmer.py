@@ -141,11 +141,11 @@ class TestRunGlimmer(unittest.TestCase):
         self.assertFalse( glimmer.checkG3OutfilesExist() )
 
 ##
-##    def test_RunGlimmer_run(self):
-##        infile_var="test_run_infile.fasta"
-##        outfile_var="test_run_outfile"
-##        glimmer = RunGlimmer(infile=infile_var, outfile = outfile_var, pdir = self.data_dir, checkExist=False)
-##        glimmer.run()
-##        self.assertTrue( glimmer.checkOutfilesExist() )
-##
+    def test_RunGlimmer_run(self):
+        infile_var="tpall.fna"
+        outfile_var="iterated2"
+        glimmer = RunGlimmer(infile=infile_var, outfile = outfile_var, pdir = self.data_dir)
+        glimmer.run()
+#        self.assertTrue( glimmer.checkG3OutfilesExist() )
+
 #

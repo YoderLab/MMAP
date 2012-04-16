@@ -25,7 +25,7 @@ class RunGenovo(object):
         TODO: read/parse/check output
         
         """
-        if pdir[-1]=="/":
+        if pdir.endswith("/"):
 
             self.pdir=pdir
         else:
@@ -43,8 +43,8 @@ class RunGenovo(object):
             self.checkInfileExist()
             
 
-        self.assemble = runExtProg("./assemble", pdir=self.pdir, len=2, checkOS=True)
-        self.finalize = runExtProg("./finalize", pdir=self.pdir, len=3, checkOS=True)
+        self.assemble = runExtProg("./assemble", pdir=self.pdir, length=2, checkOS=True)
+        self.finalize = runExtProg("./finalize", pdir=self.pdir, length=3, checkOS=True)
         self.setInfileName(self.infile_class_var)
         self.setNumberOfIter(noI)
 #        print self.assemble.get_switch()
@@ -141,8 +141,9 @@ class RunGenovo(object):
 #        Attempt to refactor code:
 #        This chunk should take care of directory and infile check
         self.infile_path="%s%s" % (self.pdir, self.infile_class_var)
-        querylist = [self.pdir, self.infile_class_var]
+        querylist = [self.pdir, self.infile_path]
         for item in querylist:
+            print item
             if os.path.exists(item):
                 print "Existence verified."
             else: raise IOError, "Error: %s does not exist" %item
@@ -173,10 +174,10 @@ class RunGenovo(object):
         else:
             pass
 
-    def checkAssembleOutfilesExist(self):
+    def checkAssembleOutfilesExist(self,  outfile_tag):
 
         allextw=[".status", ".dump1", ".dump.best"]
-        isExist = self.check_multiple_outfiles_existence( self.outfileTag, allextw)
+        isExist = self.check_multiple_outfiles_existence( outfile_tag, allextw)
         return isExist
 
     def check_multiple_outfiles_existence(self, outfileTag, allext, isExist=True):

@@ -21,7 +21,7 @@ class RunGlimmer(object):
         """
 
 #        Make sure directory ends with a "/":
-        if pdir[-1]=="/":
+        if pdir.endswith("/"):
 
             self.pdir=pdir
         else:
@@ -45,10 +45,13 @@ class RunGlimmer(object):
 #        self.setOutputTag(self.outfileTag)
 
 #            Or, do we call the script using runExtProg?
-        self.glimmer = runExtProg("./g3_iterated.csh", pdir=self.pdir, len=2, checkOS=True)
+        self.glimmer = runExtProg("./g3-iterated.csh", pdir=self.pdir, length=2, checkOS=True)
         self.setInfileName(self.infile_class_var)
         self.setOutputTag(self.outfileTag)
 
+        
+    def run(self):
+        self.glimmer.run()
 #    def getRecord(self):
 #        return self.record
 
@@ -119,7 +122,7 @@ class RunGlimmer(object):
         #        This chunk checks for a valid directory.
         print "Directory set to:",self.pdir
         if os.path.exists(self.pdir):
-            print "Valid directory."
+            print("Valid directory.")
         else:
         #            print
         #            sys.exit(-1)
@@ -128,13 +131,14 @@ class RunGlimmer(object):
 #        self.infile_path="%s%s" % (self.pdir, self.infile_class_var)
 #        print "Infile path set to:",self.infile_path
 
-        if self.check_outfile_existence( self.pdir, self.infile_class_var, True):
+        if self.check_outfile_existence( "", self.infile_class_var, True):
             print "Infile exists."
         else:
-            print "Error: infile does not exist."
-            raise IOError
+
+            raise IOError("Error: infile does not exist. %s%s"%(self.pdir, self.infile_class_var))
         #        This chunk makes sure you won't overwrite an existing outfile.
         self.outfile_path="%s%s" % (self.pdir, self.outfileTag)
+
         isExist = self.checkG3OutfilesExist()
 #        print "zzzzzzzzz:",    isExist
 
