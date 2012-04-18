@@ -53,6 +53,15 @@ class RunGenovo(object):
         self.setCutoff(thresh)
 
 
+    @classmethod
+    def create_genovo(cls, setting):
+#        :"test_run_infile.fasta", = self.data_dir, :10, 
+        genovo = cls(infile=setting.get("infile"), noI=setting.get("noI"), thresh=setting.get("thresh"), 
+                     pdir=setting.get("pdir"), outfile=setting.get(""))
+        return genovo
+        
+        
+
     def setNumberOfIter(self, param):
         """
 
@@ -227,4 +236,5 @@ class RunGenovo(object):
         self.assemble.run()
         self.finalize.run()
 #
+
 

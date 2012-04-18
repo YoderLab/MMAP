@@ -29,8 +29,8 @@ class TestRunMetaIDBA(unittest.TestCase):
         self.assertFalse(os.listdir(self.data_dir).count(self.outFileName))
 
         self.p1 = RunMetaIDBA(infile="testMetaIDBA.fasta", outfile=self.outFileName, pdir=self.data_dir)
-        self.p1.setSwitchMinK(1)
-        self.p1.setSwitchMaxK(2)
+        self.p1.set_switch_min_k(1)
+        self.p1.set_switch_max_k(2)
         self.p1.run()
 
         self.assertTrue(os.listdir(self.data_dir).count(self.outFileName+"-contig.fa"))
@@ -47,24 +47,24 @@ class TestRunMetaIDBA(unittest.TestCase):
     def test_RunMetaIDBA_parameters(self):
         
         self.p1 = RunMetaIDBA("test")
-        self.p1.setSwitchMaxK(100)
-        self.p1.setSwitchMinK(1)
-        self.assertLessEqual(self.p1.getSwitch(), ["--read", "test", "--output", "test", "--maxk", "100", "--mink", "1"])
-        self.p1.setSwitchMaxK(500)
-        self.p1.setToggleConnect()
-        self.assertLessEqual(self.p1.getSwitch(), ["--read", "test", "--output", "test", "--maxk", "500", "--mink", "1", "--connect"])
+        self.p1.set_switch_max_k(100)
+        self.p1.set_switch_min_k(1)
+        self.assertLessEqual(self.p1.get_switch(), ["--read", "test", "--output", "test", "--maxk", "100", "--mink", "1"])
+        self.p1.set_switch_max_k(500)
+        self.p1.set_toggle_connect()
+        self.assertLessEqual(self.p1.get_switch(), ["--read", "test", "--output", "test", "--maxk", "500", "--mink", "1", "--connect"])
 
 
-    def test_RunMetaIDBA_readContig(self):
+    def test_RunMetaIDBA_read_contig(self):
         self.p1 = RunMetaIDBA("test")
         
 #        self.assertRaises(IOError, self.p1.readContig())
 #        
 #        self.assertRaises(ValueError, self.p1.readContig())
         with self.assertRaises(IOError):
-            self.p1.readContig()
+            self.p1.read_contig()
         
-        self.p1.readContig(self.data_dir+"AE014075_subTiny5.fasta")    
+        self.p1.read_contig(self.data_dir+"AE014075_subTiny5.fasta")    
 #        print self.p1.record.__dict__
 #        print self.p1.record.items()
 #        print self.p1.record.values()

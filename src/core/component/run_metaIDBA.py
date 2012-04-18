@@ -26,20 +26,20 @@ class RunMetaIDBA(object):
 
             
         self.metaIDBA = runExtProg("./metaidba", pdir=self.pdir)    
-        self.setSwitchRead(self.infile)
-        self.setSwitchOutput(self.outfile)
+        self.set_switch_read(self.infile)
+        self.set_switch_output(self.outfile)
         
         
 
         
-#    def setSwitch(self, switch):
+#    def set_switch(self, switch):
 #        self.metaIDBA.get_switch(switch)
     
     def run(self):
         self.metaIDBA.run()
         outfile = self.pdir+self.outfile+"-contig.fa"
     
-    def readContig(self, outfile=None):
+    def read_contig(self, outfile=None):
         if outfile is None:
             outfile = self.pdir+self.outfile+"-contig.fa"
            
@@ -50,63 +50,63 @@ class RunMetaIDBA(object):
 
         
     
-    def getRecord(self):
+    def get_record(self):
         return self.record
     
     
-    def getSwitch(self):
+    def get_switch(self):
         return self.metaIDBA.get_switch()
 
 
-    def setSwitchRead(self, v):
+    def set_switch_read(self, v):
         """
           -r, --read arg         read file
         """
         self.metaIDBA.updateSwitch("--read", v)     
         
-    def setSwitchOutput(self, v):
+    def set_switch_output(self, v):
         """
           -o, --output arg (=out)    prefix of output
         """
         self.metaIDBA.updateSwitch("--output", v)     
         
-    def setSwitchMinK(self, v): 
+    def set_switch_min_k(self, v): 
         """
         --mink arg (=25)      minimum k value
         """   
         self.metaIDBA.updateSwitch("--mink", v)       
     
-    def setSwitchMaxK(self, v):   
+    def set_switch_max_k(self, v):   
         """
         --maxk arg (=50)      maximum k value
         """ 
         self.metaIDBA.updateSwitch("--maxk", v)
 
-    def setSwitchMinCount(self, v):    
+    def set_switch_min_count(self, v):    
         """
         --minCount arg (=2)    filtering threshold for each k-mer
         """
         self.metaIDBA.updateSwitch("--minCount", v)
 
-    def setSwitchCover(self, v):    
+    def set_switch_cover(self, v):    
         """
         --cover arg (=0)      the cutting coverage for contigs
         """
         self.metaIDBA.updateSwitch("--cover", v)
 
-    def setSwitchMinPairs(self, v):  
+    def set_switch_min_pairs(self, v):  
         """
         --minPairs arg (=5)  minimum number of pair-end connections to join two components
         """  
         self.metaIDBA.updateSwitch("--minPairs", v)
         
-    def setSwitchPrefixLength(self, v):    
+    def set_switch_prefix_length(self, v):    
         """
         --prefixLength arg (=3)  length of the prefix of k-mer used to split k-mer table
         """
         self.metaIDBA.updateSwitch("--prefixLength", v)
         
-    def setToggleConnect(self, v=None):
+    def set_toggle_connect(self, v=None):
         """ 
         #    --connect         use paired-end reads to connect components
         #    
@@ -114,7 +114,7 @@ class RunMetaIDBA(object):
         self.metaIDBA.toggleSwitch("--connect", v)           
     
 
-    def addSwitch(self, switch):
+    def add_switch(self, switch):
         self.metaIDBA.add_switch(switch)
 
     

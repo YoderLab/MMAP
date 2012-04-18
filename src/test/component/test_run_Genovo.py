@@ -9,6 +9,7 @@ from core import run_ext_prog
 from core.utils import path_utils
 
 
+
 class TestRunGenovo(unittest.TestCase):
 
     platform = run_ext_prog.get_platform()
@@ -201,4 +202,15 @@ class TestRunGenovo(unittest.TestCase):
         genovo.run()
         self.assertTrue( genovo.checkAssembleResultExist() )
 
+
+    def test_RunGenovo_create_genovo(self):
+#        setting = Setting()
+        setting = {"infile":"test_run_infile.fasta", "pdir" : self.data_dir, "noI":10, "thresh":100}
+        print setting.viewitems()
+        print setting.items()
+        
+        genove = RunGenovo.create_genovo(setting)
+        print genove.infile_class_var
+        print genove.outfile
+    
     
