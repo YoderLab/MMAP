@@ -135,7 +135,7 @@ class RunGlimmer(object):
         #        This chunk makes sure you won't overwrite an existing outfile.
         self.outfile_path="%s%s" % (self.pdir, self.outfileTag)
         isExist = self.checkG3OutfilesExist()
-        print "zzzzzzzzz:",    isExist
+#        print "zzzzzzzzz:",    isExist
 
         if isExist:
 #        os.path.exists(self.outfile_path):
@@ -214,19 +214,19 @@ class RunGlimmer(object):
         if os.path.exists( fileName ):
         """
         
-        isExist=True
-
-        isExist = self.check_outfile_existence( self.outfileTag, ".coords", isExist)
-        isExist = self.check_outfile_existence( self.outfileTag, ".detail", isExist)
-        isExist = self.check_outfile_existence( self.outfileTag, ".icm", isExist)
-        isExist = self.check_outfile_existence( self.outfileTag, ".longorfs", isExist)
-        isExist = self.check_outfile_existence( self.outfileTag, ".motif", isExist)
-        isExist = self.check_outfile_existence( self.outfileTag, ".predict", isExist)
-        isExist = self.check_outfile_existence( self.outfileTag, ".run1.detail", isExist)
-        isExist = self.check_outfile_existence( self.outfileTag, ".run1.predict", isExist)
-        isExist = self.check_outfile_existence( self.outfileTag, ".train", isExist)
-        isExist = self.check_outfile_existence( self.outfileTag, ".upstream", isExist)
-        return isExist
+#        isExist=True
+#
+#        isExist = self.check_outfile_existence( self.outfileTag, ".coords", isExist)
+#        isExist = self.check_outfile_existence( self.outfileTag, ".detail", isExist)
+#        isExist = self.check_outfile_existence( self.outfileTag, ".icm", isExist)
+#        isExist = self.check_outfile_existence( self.outfileTag, ".longorfs", isExist)
+#        isExist = self.check_outfile_existence( self.outfileTag, ".motif", isExist)
+#        isExist = self.check_outfile_existence( self.outfileTag, ".predict", isExist)
+#        isExist = self.check_outfile_existence( self.outfileTag, ".run1.detail", isExist)
+#        isExist = self.check_outfile_existence( self.outfileTag, ".run1.predict", isExist)
+#        isExist = self.check_outfile_existence( self.outfileTag, ".train", isExist)
+#        isExist = self.check_outfile_existence( self.outfileTag, ".upstream", isExist)
+#        return isExist
 
     
     
