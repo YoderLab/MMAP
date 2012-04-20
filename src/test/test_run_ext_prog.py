@@ -4,11 +4,10 @@ Created on Jan 23, 2012
 @author: Steven Wu
 '''
 import unittest
-import sys
+
 from core.run_ext_prog import runExtProg
 from core.utils import path_utils
 import os.path
-from nose.core import run_exit
 from core import run_ext_prog
 
 
@@ -127,7 +126,13 @@ class TestRunExtProg(unittest.TestCase):
         
         prog1 = runExtProg("./muscle3.8.31_i86linux64", pdir= self.data_dir, checkOS=True)
         self.assertEqual(prog1.program_name, "./muscle3.8.31_i86linux64")
-
+        
+        with self.assertRaises(TypeError):
+            runExtProg("./muscle3.8.31_i86linux64", checkOS=True)
+            
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
     unittest.main()
+    
+#suite = unittest.TestLoader().loadTestsFromTestCase(TestRunExtProg)
+#unittest.TextTestRunner(verbosity=2).run(suite)

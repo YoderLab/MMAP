@@ -144,8 +144,7 @@ class RunGlimmer(object):
 
         if isExist:
 #        os.path.exists(self.outfile_path):
-            print "WARNING: outfile already exists!!!"
-            raise IOError
+            raise IOError("WARNING: outfile already exists!!!")
             #TODO: come back to this later.
         #            Can rename the file, raise a different error, etc.
         else:

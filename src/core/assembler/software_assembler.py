@@ -31,6 +31,7 @@ class SoftwareAssembler(object):
         self.setting.add("genovo_infile",infile)
         self.setting.add("genovo_outfile",outfile)
         self.setting.add("asdfghjp",pdir) == fail
+        self.setting.add("glimmer_outfile",outfile)
 
 #    def set_param(self, **kwargs):
 #        for k in kwargs.iterkeys():
