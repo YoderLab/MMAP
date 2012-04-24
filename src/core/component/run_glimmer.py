@@ -4,10 +4,8 @@ Created on March 19, 2012
 @author: Erin McKenney
 """
 
-from subprocess import call
-import os
+wimport os
 from core.run_ext_prog import runExtProg
-from Bio import SeqIO
 
 class RunGlimmer(object):
     """

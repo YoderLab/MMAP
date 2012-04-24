@@ -4,7 +4,6 @@ Created on Mar 20, 2012
 @author: Steven Wu
 """
 import unittest
-import sys
 import os
 from core.component.run_Genovo import RunGenovo
 from core import run_ext_prog
@@ -18,16 +17,17 @@ class TestRunGenovo(unittest.TestCase):
     def setUp(self):
         self.longMessage = True
         self.data_dir = path_utils.get_data_dir()+"Genovo/"
-
+        self.working_dir = path_utils.get_data_dir()+"Genovo/test_data/"
 
     def tearDown(self):
         pass
 
     def test_RunGenovo_init(self):
         infile_var = "all_reads.fa"
+        expected_infile = self.wdir+infile_var
         genovo = RunGenovo(infile_var, pdir=self.data_dir,  noI=1, thresh=10)
-        self.assertEqual(genovo.assemble.get_switch()[0], infile_var)
-        self.assertEqual(genovo.assemble.get_switch(), [infile_var, "1"])
+        self.assertEqual(genovo.assemble.get_switch()[0], expected_infile)
+        self.assertEqual(genovo.assemble.get_switch(), [expected_infile, "1"])
         self.assertListEqual(genovo.finalize.get_switch(), ["10", "all_reads_out.fasta", infile_var+".dump.best"])
           
 
@@ -62,7 +62,7 @@ class TestRunGenovo(unittest.TestCase):
     def test_RunGenovo_finalise_outfile(self):
     #   def_test_ClassName_mhatAreWeTestingHere(self)
         infile_var="test_infile.fasta"
-        outfile_var="testOutfile.fasta"
+        outfile_var=self.wdir+"testOutfile.fasta"
         genovo = RunGenovo(infile=infile_var, outfile=outfile_var, pdir = self.data_dir, noI=3, thresh=250, checkExist=False)
         self.assertEqual(3, len(genovo.finalize._switch) )
         self.assertListEqual(genovo.finalize.get_switch(), ["250", outfile_var, infile_var+".dump.best"])
@@ -79,6 +79,10 @@ class TestRunGenovo(unittest.TestCase):
 
 
     def test_RunGenovo_set_infile_outfile(self):
+        """
+
+        add working dir
+        """
         infile_var="test_infile.fasta"
         outfile_var="test_outfile.fasta"
         genovo = RunGenovo(infile=infile_var, outfile = outfile_var, pdir = self.data_dir, noI=3, thresh=250, checkExist=False)
@@ -205,4 +209,9 @@ class TestRunGenovo(unittest.TestCase):
         self.assertTrue(genovo.check_outfile_existence("test_run_outfile", ".fasta",True))
         os.remove(self.data_dir+outfile_var)
 
-    
+    def test_RunGenovo_wdir(self):
+
+        infile_fasta = "wdir_all_reads.fa"
+        genovo=RunGenovo(infile = infile_fasta ,noI=10,thresh=10,pdir=self.data_dir,wdir=self.working_dir)
+        genovo.run()
+        self.assertTrue( genovo.checkAssembleOutfilesExist(infile_fasta) )

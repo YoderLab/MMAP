@@ -15,7 +15,7 @@ __author__ = 'erinmckenney'
 
 class SoftwareAssembler(object):
 
-    def __init__(self):
+    def __init__(self, **kwargs):
 
         """
         create the following:
@@ -29,10 +29,11 @@ class SoftwareAssembler(object):
         out_gli
         """
         self.setting = Setting()
-        self.setting.add("genovo_infile",infile)
-        self.setting.add("genovo_outfile",outfile)
-        self.setting.add("asdfghjp",pdir) == fail
-        self.setting.add("glimmer_outfile",outfile)
+        self.set_all_param(**kwargs)
+#        self.setting.add("genovo_infile",infile)
+#        self.setting.add("genovo_outfile",outfile)
+#        self.setting.add("asdfghjp",pdir) == fail
+#        self.setting.add("glimmer_outfile",outfile)
 
 #    def set_param(self, **kwargs):
 #        for k in kwargs.iterkeys():
@@ -47,10 +48,14 @@ class SoftwareAssembler(object):
 #        If we create a dictionary of all extensions associated with a program,
 #       we can define a generic function to check outfiles --> reduce code
     def check_outfiles(self, program, pdir, namebase):
+
+        """
+        TODO: reuse code from Genovo
+        """
         #create dict of outfile extensions for programs
         self.all_outfiles = dict()
         for program in self.all_outfiles():
-            if.os.path.exists(pdir+namebase+self.all_outfiles.ext):
+            if os.path.exists(pdir+namebase+self.all_outfiles+ext):
                 pass
 
     def add(self, program, ext):
@@ -60,7 +65,8 @@ class SoftwareAssembler(object):
 
     def init_program(self):
         self.setting.check()
-        self.genovo_a = RunGenovo(infile=self.setting.get("genovo_infile"), outfile, pdir, noI, thresh)
+        self.genovo_a = RunGenovo(infile=self.setting.get("genovo_infile"), outfile=self.setting.get("genovo_outfile"),
+            pdir=self.setting.get("pdir"), noI, thresh)
         self.glimmer_a = RunGlimmer(infile, outfile, pdir)
 #        self.blast_a = RunBlast()
 
@@ -73,9 +79,8 @@ class SoftwareAssembler(object):
 #        check_outfiles(genovo_a)
 #        self.glimmer_a.run()
 #        check_outfiles(glimmer_a)
-        if self.genovo_a.checkAssembleOutfilesExist(infile_var):
-            if os.path.exists(self.genovo_a.readFinalizeOutfile.record_index):
+        if self.genovo_a.checkAssembleOutfilesExist(self.setting.get("??")) and  os.path.exists(self.genovo_a.readFinalizeOutfile.record_index):
                 self.glimmer_a.run()
-        if self.glimmer_a.checkG3OutfilesExist(outfile):
+        if self.glimmer_a.checkG3OutfilesExist(self.setting.get("??")):
             pass
 #            self.blast_a.run()
