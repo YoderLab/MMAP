@@ -10,6 +10,7 @@ class Setting(object):
 
         """
         self.all_setting = dict()
+        self.add()
         self.list_valid_param["",""]
 
     def add(self, k, v):
