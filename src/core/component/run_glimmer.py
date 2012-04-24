@@ -4,7 +4,7 @@ Created on March 19, 2012
 @author: Erin McKenney
 """
 
-wimport os
+import os
 from core.run_ext_prog import runExtProg
 
 class RunGlimmer(object):
