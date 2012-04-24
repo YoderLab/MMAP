@@ -10,7 +10,14 @@ class Setting(object):
 
         """
         self.all_setting = dict()
-        self.add()
+        self.all_setting.add("parent_directory",pdir)
+        self.all_setting.add("genovo_infile",infile)
+        self.all_setting.add("genovo_noI",noI)
+        self.all_setting.add("genovo_thresh",thresh)
+        self.all_setting.add("genovo_outfile",outfile)
+        self.all_setting.add("glimmer_infile","genovo_outfile")
+        self.all_setting.add("glimmer_outfile",outfile)
+
         self.list_valid_param["",""]
 
     def add(self, k, v):
