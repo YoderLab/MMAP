@@ -61,9 +61,9 @@ class TestRunGenovo(unittest.TestCase):
 
     def test_RunGenovo_finalise_outfile(self):
     #   def_test_ClassName_mhatAreWeTestingHere(self)
-        infile_var="test_infile.fasta"
-        outfile_var=self.wdir+"testOutfile.fasta"
-        genovo = RunGenovo(infile=infile_var, outfile=outfile_var, pdir = self.data_dir, noI=3, thresh=250, checkExist=False)
+        infile_var=self.working_dir+"test_infile.fasta"
+        outfile_var="testOutfile.fasta"
+        genovo = RunGenovo(infile=infile_var, outfile=outfile_var, pdir = self.data_dir, wdir = self.working_dir,noI=3, thresh=250, checkExist=False)
         self.assertEqual(3, len(genovo.finalize._switch) )
         self.assertListEqual(genovo.finalize.get_switch(), ["250", outfile_var, infile_var+".dump.best"])
 
