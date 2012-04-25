@@ -13,19 +13,22 @@ class RunGlimmer(object):
     """
 
 
-    def __init__(self, infile, pdir, outfile=None, checkExist = True):
+    def __init__(self, infile, pdir, wdir=None, outfile=None, checkExist = True):
         """
         Constructor
         """
 
 #        Make sure directory ends with a "/":
         if pdir.endswith("/"):
-
             self.pdir=pdir
         else:
             self.pdir = pdir+"/"
 
+        self.wdir = wdir
+        if self.wdir is None:
+            self.wdir = self.pdir
 
+        self.infile_class_var = self.wdir+infile
 
         self.infile_class_var = infile
         ## TODO (Steven): use this to demonstrate refactor
@@ -118,13 +121,13 @@ class RunGlimmer(object):
          if os.path.exists( fileName ):
         """
         #        This chunk checks for a valid directory.
-        print "Directory set to:",self.pdir
-        if os.path.exists(self.pdir):
+        print "Directory set to:",self.wdir
+        if os.path.exists(self.wdir):
             print("Valid directory.")
         else:
         #            print
         #            sys.exit(-1)
-            raise IOError, "Error: invalid directory:%s" %self.pdir
+            raise IOError, "Error: invalid directory:%s" %self.wdir
         #        If the directory is valid, this chunk makes sure the infile exists.
 #        self.infile_path="%s%s" % (self.pdir, self.infile_class_var)
 #        print "Infile path set to:",self.infile_path
@@ -133,9 +136,9 @@ class RunGlimmer(object):
             print "Infile exists."
         else:
 
-            raise IOError("Error: infile does not exist. %s%s"%(self.pdir, self.infile_class_var))
+            raise IOError("Error: infile does not exist. %s%s"%(self.wdir, self.infile_class_var))
         #        This chunk makes sure you won't overwrite an existing outfile.
-        self.outfile_path="%s%s" % (self.pdir, self.outfileTag)
+        self.outfile_path="%s%s" % (self.wdir, self.outfileTag)
 
         isExist = self.checkG3OutfilesExist()
 #        print "zzzzzzzzz:",    isExist
@@ -168,7 +171,7 @@ class RunGlimmer(object):
 
         test_outfile=filetag + ext
         print ext," file:",test_outfile
-        test_outfile="%s%s" % (self.pdir, test_outfile)
+        test_outfile="%s%s" % (self.wdir, test_outfile)
         print "*",ext," file:",test_outfile
         if os.path.exists(test_outfile):
             print ext,"  outfile exists."
@@ -274,7 +277,7 @@ class RunGlimmer(object):
         #        Check *.coords outfile:
         test_outfile=outfile+".coords"
         print "*.coords file:",test_outfile
-        test_outfile="%s%s" % (self.pdir, test_outfile)
+        test_outfile="%s%s" % (self.wdir, test_outfile)
         print "*.coords file:",test_outfile
         if os.path.exists(test_outfile):
             print ".coords outfile exists."
@@ -283,7 +286,7 @@ class RunGlimmer(object):
     #            Check *.detail outfile:
         test_outfile=outfile + ".detail"
         print "*.detail file:",test_outfile
-        test_outfile="%s%s" % (self.pdir, test_outfile)
+        test_outfile="%s%s" % (self.wdir, test_outfile)
         print "*.detail file:",test_outfile
         if os.path.exists(test_outfile):
             print ".detail outfile exists."
@@ -295,7 +298,7 @@ class RunGlimmer(object):
         #        Check *.icm outfile:
         icmOutfile=outfile + ".icm"
         print icmOutfile
-        self.icmOutfile_path="%s%s" % (self.pdir, icmOutfile)
+        self.icmOutfile_path="%s%s" % (self.wdir, icmOutfile)
         if os.path.exists(self.icmOutfile_path):
             print ".icm outfile exists."
             isExist=isExist and True
@@ -306,7 +309,7 @@ class RunGlimmer(object):
             #        Check *.longorfs outfile:
         longorfsOutfile=outfile+".longorfs"
         print "*.longorfs file:",longorfsOutfile
-        self.longorfsOutfile_path="%s%s" % (self.pdir, longorfsOutfile)
+        self.longorfsOutfile_path="%s%s" % (self.wdir, longorfsOutfile)
         if os.path.exists(self.longorfsOutfile_path):
             print ".longorfs outfile exists."
             isExist=isExist and True
@@ -317,7 +320,7 @@ class RunGlimmer(object):
         #            Check *.motif outfile:
         motifOutfile=outfile + ".motif"
         print "*.motif file:",motifOutfile
-        self.motifOutfile_path="%s%s" % (self.pdir, motifOutfile)
+        self.motifOutfile_path="%s%s" % (self.wdir, motifOutfile)
         if os.path.exists(self.motifOutfile_path):
             print ".motif outfile exists."
             isExist=isExist and True
@@ -328,7 +331,7 @@ class RunGlimmer(object):
         #        Check *.predict outfile:
         predictOutfile=outfile + ".predict"
         print predictOutfile
-        self.predictOutfile_path="%s%s" % (self.pdir, predictOutfile)
+        self.predictOutfile_path="%s%s" % (self.wdir, predictOutfile)
         if os.path.exists(self.predictOutfile_path):
             print ".predict outfile exists."
             isExist=isExist and True
@@ -339,7 +342,7 @@ class RunGlimmer(object):
             #        Check *.run1.detail outfile:
         run1detailOutfile=outfile+".run1.detail"
         print "*.run1.detail file:",run1detailOutfile
-        self.run1detailOutfile_path="%s%s" % (self.pdir, run1detailOutfile)
+        self.run1detailOutfile_path="%s%s" % (self.wdir, run1detailOutfile)
         if os.path.exists(self.run1detailOutfile_path):
             print ".run1.detail outfile exists."
             isExist=isExist and True
@@ -350,7 +353,7 @@ class RunGlimmer(object):
         #            Check *.run1.predict outfile:
         run1predictOutfile=outfile + ".run1.predict"
         print "*.run1.predict file:",run1predictOutfile
-        self.run1predictOutfile_path="%s%s" % (self.pdir, run1predictOutfile)
+        self.run1predictOutfile_path="%s%s" % (self.wdir, run1predictOutfile)
         if os.path.exists(self.run1predictOutfile_path):
             print ".run1.predict outfile exists."
             isExist=isExist and True
@@ -362,7 +365,7 @@ class RunGlimmer(object):
         #        Check *.train outfile:
         trainOutfile=outfile + ".train"
         print trainOutfile
-        self.trainOutfile_path="%s%s" % (self.pdir, trainOutfile)
+        self.trainOutfile_path="%s%s" % (self.wdir, trainOutfile)
         if os.path.exists(self.trainOutfile_path):
             print ".train outfile exists."
             isExist=isExist and True
@@ -373,7 +376,7 @@ class RunGlimmer(object):
         #        Check *.upstream outfile:
         upstreamOutfile=outfile + ".upstream"
         print upstreamOutfile
-        self.upstreamOutfile_path="%s%s" % (self.pdir, upstreamOutfile)
+        self.upstreamOutfile_path="%s%s" % (self.wdir, upstreamOutfile)
         if os.path.exists(self.upstreamOutfile_path):
             print ".upstream outfile exists."
             isExist=isExist and True

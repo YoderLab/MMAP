@@ -18,8 +18,9 @@ class Setting(object):
 #        self.add("glimmer_infile","genovo_outfile")
 #        self.add("glimmer_outfile",outfile)
 
-        self.list_valid_param = ["parent_directory","genovo_infile","??_outfile"]
-        self.list_essential_param = ["parent_directory","genovo_infile","??"] # dont need outfile
+        self.list_valid_param = ["parent_directory","genovo_infile","genovo_pdir","genovo_wdir","genovo_noI","genovo_thresh","genovo_outfile","glimmer_infile","glimmer_pdir","glimmer_wdir","glimmer_outfile"]
+#        TODO set "glimmer_infile"="genovo_outfile" and "genovo_wdir"="glimmer_wdir"
+        self.list_essential_param = ["parent_directory","genovo_infile","genovo_pdir","genovo_noI","genovo_thresh","glimmer_pdir"] # dont need outfile
         self.add_all(**kwargs)
 
 

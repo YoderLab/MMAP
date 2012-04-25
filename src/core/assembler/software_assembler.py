@@ -66,8 +66,8 @@ class SoftwareAssembler(object):
     def init_program(self):
         self.setting.check()
         self.genovo_a = RunGenovo(infile=self.setting.get("genovo_infile"), outfile=self.setting.get("genovo_outfile"),
-            pdir=self.setting.get("pdir"), noI, thresh)
-        self.glimmer_a = RunGlimmer(infile, outfile, pdir)
+            pdir=self.setting.get("genovo_pdir"), noI=self.setting.get("noI"), thresh=self.setting.get("thresh"))
+        self.glimmer_a = RunGlimmer(infile=self.setting.get("glimmer_infile"), outfile=self.setting.get("glimmer_outfile"), pdir=self.setting.get("glimmer_pdir"))
 #        self.blast_a = RunBlast()
 
 #        genovo = RunGenovo(infile=infile_var, outfile = outfile_var, pdir = self.data_dir, noI=10, thresh=100, checkExist=True)
@@ -79,8 +79,8 @@ class SoftwareAssembler(object):
 #        check_outfiles(genovo_a)
 #        self.glimmer_a.run()
 #        check_outfiles(glimmer_a)
-        if self.genovo_a.checkAssembleOutfilesExist(self.setting.get("??")) and  os.path.exists(self.genovo_a.readFinalizeOutfile.record_index):
+        if self.genovo_a.checkAssembleOutfilesExist(self.setting.get("genovo_outfile")) and  os.path.exists(self.genovo_a.readFinalizeOutfile.record_index):
                 self.glimmer_a.run()
-        if self.glimmer_a.checkG3OutfilesExist(self.setting.get("??")):
+        if self.glimmer_a.checkG3OutfilesExist(self.setting.get("glimmer_outfile")):
             pass
 #            self.blast_a.run()
