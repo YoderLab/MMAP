@@ -41,7 +41,7 @@ class runExtProg(object):
     
 
     def __init__(self, p, pdir=None, length=0, checkOS=False):
-        
+
         self.program_name = p
 
         self.init_switch(length)
@@ -74,9 +74,10 @@ class runExtProg(object):
     def run(self):
         self._command = [self.program_name]
         self._command.extend(self._switch)
+        print(self._command, self.cwd)
         p = subprocess.Popen(self._command,stdout= subprocess.PIPE, stderr=subprocess.PIPE, cwd = self.cwd )
         self.output, self.errors = p.communicate()
-
+        print self.output, self.errors
 
 
     '''

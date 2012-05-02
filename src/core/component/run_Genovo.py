@@ -3,7 +3,6 @@ Created on Feb 29, 2012
 
 @author: Erin McKenney and Steven Wu
 """
-import sys
 
 from core.run_ext_prog import runExtProg
 from Bio import SeqIO
@@ -18,14 +17,17 @@ class RunGenovo(object):
 
     
     
-    def __init__(self, infile, noI, thresh, pdir, outfile=None, checkExist = True):
+    def __init__(self, infile, noI, thresh, pdir, wdir=None, outfile=None, checkExist = True):
         """
         Constructor
         TODO: implement finalize
         TODO: read/parse/check output
         
         """
-        if pdir[-1]=="/":
+        self.outfile = outfile
+        self.wdir = wdir
+
+        if pdir.endswith("/"):
 
             self.pdir=pdir
         else:
@@ -33,18 +35,25 @@ class RunGenovo(object):
 
 
 
-        self.infile_class_var = infile
+
         ## TODO (Steven): use this to demonstrate refactor
-        self.outfile = outfile
-        if outfile is None:
+        if self.wdir is None:
+            self.wdir = self.pdir
+
+        self.infile_class_var = self.wdir+infile
+
+        if self.outfile is None:
             self.outfile = self.GenerateOutfileName(self.infile_class_var)
+
 
         if checkExist:
             self.checkInfileExist()
-            
 
-        self.assemble = runExtProg("./assemble", pdir=self.pdir, len=2, checkOS=True)
-        self.finalize = runExtProg("./finalize", pdir=self.pdir, len=3, checkOS=True)
+
+
+
+        self.assemble = runExtProg("./assemble", pdir=self.pdir, length=2, checkOS=True)
+        self.finalize = runExtProg("./finalize", pdir=self.pdir, length=3, checkOS=True)
         self.setInfileName(self.infile_class_var)
         self.setNumberOfIter(noI)
 #        print self.assemble.get_switch()
@@ -147,23 +156,34 @@ class RunGenovo(object):
          use 
          if os.path.exists( fileName ):
         """
-#        This chunk checks for a valid directory.
-        print "Directory set to:",self.pdir
-        if os.path.exists(self.pdir):
-            print "Valid directory."
-        else:
-#            print
-#            sys.exit(-1)
-            raise IOError("Error: invalid directory: %s" %self.pdir)
-#        If the directory is valid, this chunk makes sure the infile exists.
-        self.infile_path="%s%s" % (self.pdir, self.infile_class_var)
-        print "Infile path set to:",self.infile_path
-        if os.path.exists(self.infile_path):
-            print "Infile exists."
-        else:
-            raise IOError("Error: infile does not exist.")
+#        Attempt to refactor code:
+#        This chunk should take care of directory and infile check
+#        self.infile_path="%s%s" % (self.wdir, self.infile_class_var)
+        querylist = [self.wdir, self.infile_class_var]
+        for item in querylist:
+            print item
+            if os.path.exists(item):
+                print "Existence verified."
+            else: raise IOError, "Error: %s does not exist" %item
+
+##        This chunk checks for a valid directory.
+#        print "Directory set to:",self.pdir
+#        if os.path.exists(self.pdir):
+#            print "Valid directory."
+#        else:
+##            print
+##            sys.exit(-1)
+#            raise IOError, "Error: invalid directory:%s" %self.pdir
+##        If the directory is valid, this chunk makes sure the infile exists.
+#        self.infile_path="%s%s" % (self.pdir, self.infile_class_var)
+#        print "Infile path set to:",self.infile_path
+#        if os.path.exists(self.infile_path):
+#            print "Infile exists."
+#        else:
+#            print "Error: infile does not exist."
+#            raise IOError
 #        This chunk makes sure you won't overwrite an existing outfile.
-        self.outfile_path="%s%s" % (self.pdir, self.outfile)
+        self.outfile_path="%s%s" % (self.wdir, self.outfile)
         if os.path.exists(self.outfile_path):
             print "WARNING: outfile already exists!!!"
             raise IOError
@@ -172,8 +192,34 @@ class RunGenovo(object):
         else:
             pass
 
-    
-    def checkAssembleResultExist(self):
+    def checkAssembleOutfilesExist(self,  outfile_tag):
+
+        allextw=[".status", ".dump1", ".dump.best"]
+        isExist = self.check_multiple_outfiles_existence( outfile_tag, allextw)
+        return isExist
+
+    def check_multiple_outfiles_existence(self, outfileTag, allext, isExist=True):
+        for ext in allext:
+            isExist = self.check_outfile_existence( outfileTag, ext, isExist)
+        return isExist
+
+
+    def check_outfile_existence(self, filetag, ext, isExist):
+
+        test_outfile=filetag + ext
+        print ext," file:",test_outfile
+        test_outfile="%s%s" % (self.wdir, test_outfile)
+        print "*",ext," file:",test_outfile
+        if os.path.exists(test_outfile):
+            print ext,"  outfile exists."
+            isExist=isExist and True
+        else:
+            isExist=False
+            print "Error: ",ext,"  outfile does not exist."
+
+        return isExist
+
+    def checkAssembleResultExistOld(self):
         """
         TODO: check if standard outfile from ./assemble exist
         
@@ -194,41 +240,41 @@ class RunGenovo(object):
         
         if os.path.exists( fileName ):
         """
-        infile = self.infile_class_var
-        isExist=False
-#        Check *.status outfile:
-        statusOutfile=infile+".status"
-        print "*.status file:",statusOutfile
-        self.statusOutfile_path="%s%s" % (self.pdir, statusOutfile)
-        if os.path.exists(self.statusOutfile_path):
-            print ".status outfile exists."
-            isExist=True
+#        infile = self.infile_class_var
+#        isExist=False
+##        Check *.status outfile:
+#        statusOutfile=infile+".status"
+#        print "*.status file:",statusOutfile
+#        self.statusOutfile_path="%s%s" % (self.pdir, statusOutfile)
+#        if os.path.exists(self.statusOutfile_path):
+#            print ".status outfile exists."
+#            isExist=True
+##        else:
+##            print "Error: *.status outfile does not exist."
+#
+##        Check *.dump1 outfile:
+#        dump1Outfile=infile + ".dump1"
+#        print "*.dump1 file:",dump1Outfile
+#        self.dump1Outfile_path="%s%s" % (self.pdir, dump1Outfile)
+#        if os.path.exists(self.dump1Outfile_path):
+#            print ".dump1 outfile exists."
+#            isExist=isExist and True
 #        else:
-#            print "Error: *.status outfile does not exist."
-
-#        Check *.dump1 outfile:
-        dump1Outfile=infile + ".dump1"
-        print "*.dump1 file:",dump1Outfile
-        self.dump1Outfile_path="%s%s" % (self.pdir, dump1Outfile)
-        if os.path.exists(self.dump1Outfile_path):
-            print ".dump1 outfile exists."
-            isExist=isExist and True
-        else:
-            isExist=False
-            print "Error: *.dump1 outfile does not exist."
-
-        #        Check *.dump.best outfile:
-        dumpBestOutfile=infile + ".dump.best"
-        print dumpBestOutfile
-        self.dumpbestOutfile_path="%s%s" % (self.pdir, dumpBestOutfile)
-        if os.path.exists(self.dumpbestOutfile_path):
-            print ".dump.best outfile exists."
-            isExist=isExist and True
-        else:
-            print "Error: *.dump.best outfile does not exist."
-            isExist=False
-#        isExist = None
-        return isExist
+#            isExist=False
+#            print "Error: *.dump1 outfile does not exist."
+#
+#        #        Check *.dump.best outfile:
+#        dumpBestOutfile=infile + ".dump.best"
+#        print dumpBestOutfile
+#        self.dumpbestOutfile_path="%s%s" % (self.pdir, dumpBestOutfile)
+#        if os.path.exists(self.dumpbestOutfile_path):
+#            print ".dump.best outfile exists."
+#            isExist=isExist and True
+#        else:
+#            print "Error: *.dump.best outfile does not exist."
+#            isExist=False
+##        isExist = None
+#        return isExist
     
 
     
@@ -237,7 +283,7 @@ class RunGenovo(object):
         use SeqIO.index(file, "fast") to read the result seq file, generated from ./finalize
         TODO: check outfile exist, properly generated by ./finalize 
         """
-        self.record_index = SeqIO.index(self.pdir+self.outfile, "fasta")
+        self.record_index = SeqIO.index(self.wdir+self.outfile, "fasta")
         return self.record_index
     
 
