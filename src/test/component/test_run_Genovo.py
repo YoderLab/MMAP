@@ -24,7 +24,7 @@ class TestRunGenovo(unittest.TestCase):
 
     def test_RunGenovo_init(self):
         infile_var = "all_reads.fa"
-        expected_infile = self.wdir+infile_var
+        expected_infile = self.working_dir+infile_var
         genovo = RunGenovo(infile_var, pdir=self.data_dir,  noI=1, thresh=10)
         self.assertEqual(genovo.assemble.get_switch()[0], expected_infile)
         self.assertEqual(genovo.assemble.get_switch(), [expected_infile, "1"])
@@ -32,7 +32,7 @@ class TestRunGenovo(unittest.TestCase):
           
 
     def test_RunGenovo_simple_assemble(self):
-        infile_var = "all_read.fa"
+        infile_var = self.working_dir+"all_read.fa"
         genovo = RunGenovo(infile=infile_var, pdir = self.data_dir, noI=3, thresh=250, checkExist=False)
         self.assertListEqual(genovo.assemble.get_switch(), [infile_var, "3"])
         
@@ -46,7 +46,7 @@ class TestRunGenovo(unittest.TestCase):
         
     def test_RunGenovo_simple_finalise(self):
 #   def_test_ClassName_whatAreWeTestingHere(self)
-        infile_var="test_infile.fasta"
+        infile_var=self.working_dir+"test_infile.fasta"
         genovo = RunGenovo(infile=infile_var, pdir = self.data_dir, noI=3, thresh=250, checkExist=False)
         self.assertEqual(3, len(genovo.finalize._switch) )
         self.assertListEqual(genovo.finalize.get_switch(), ["250", "test_infile_out.fasta", infile_var+".dump.best"])
@@ -83,7 +83,7 @@ class TestRunGenovo(unittest.TestCase):
 
         add working dir
         """
-        infile_var="test_infile.fasta"
+        infile_var=self.working_dir+"test_infile.fasta"
         outfile_var="test_outfile.fasta"
         genovo = RunGenovo(infile=infile_var, outfile = outfile_var, pdir = self.data_dir, noI=3, thresh=250, checkExist=False)
         self.assertListEqual(genovo.assemble.get_switch(), [infile_var, "3"])
