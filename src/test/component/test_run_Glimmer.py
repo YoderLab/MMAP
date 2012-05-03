@@ -10,7 +10,6 @@ from core import run_ext_prog
 from core.utils import path_utils
 
 
-
 class TestRunGlimmer(unittest.TestCase):
 
     platform = run_ext_prog.get_platform()
@@ -129,15 +128,15 @@ class TestRunGlimmer(unittest.TestCase):
         infile_var="test_infile.fasta"
         outfile_var="iterated"
         glimmer = RunGlimmer(infile=infile_var, outfile = outfile_var,pdir = self.data_dir, checkExist=False)
-        print glimmer.checkG3OutfilesExist()
-        self.assertTrue( glimmer.checkG3OutfilesExist() )
+#        print glimmer.check_outfiles_exist(outfile_var)
+        self.assertTrue( glimmer.check_outfiles_exist(self.data_dir+outfile_var) )
 
         # negative test, outfiles are not suppose to exist
 
         outfile_var="fineNotExist"
         glimmer = RunGlimmer(infile=infile_var, outfile = outfile_var,pdir = self.data_dir, checkExist=False)
-        print glimmer.checkG3OutfilesExist()
-        self.assertFalse( glimmer.checkG3OutfilesExist() )
+#        print glimmer.check_outfiles_exist(outfile_var)
+        self.assertFalse( glimmer.check_outfiles_exist(self.data_dir+outfile_var) )
 
 ##
     def test_RunGlimmer_run(self):

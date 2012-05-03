@@ -79,8 +79,8 @@ class SoftwareAssembler(object):
 #        check_outfiles(genovo_a)
 #        self.glimmer_a.run()
 #        check_outfiles(glimmer_a)
-        if self.genovo_a.checkAssembleOutfilesExist(self.setting.get("genovo_outfile")) and  os.path.exists(self.genovo_a.readFinalizeOutfile.record_index):
+        if self.genovo_a.check_outfiles_exist(self.setting.get("genovo_outfile")) and  os.path.exists(self.genovo_a.readFinalizeOutfile.record_index):
                 self.glimmer_a.run()
-        if self.glimmer_a.checkG3OutfilesExist(self.setting.get("glimmer_outfile")):
+        if self.glimmer_a.check_outfiles_exist(self.setting.get("glimmer_outfile")):
             pass
 #            self.blast_a.run()

@@ -21,10 +21,10 @@ class RunMetaIDBA(object):
         self.infile = infile
         self.outfile = outfile
         self.metaIDBA = runExtProg("./metaidba", pdir=self.pdir)
-        self.setSwitchRead(self.infile)
-        self.setSwitchOutput(self.outfile)
+        self.set_switch_read(self.infile)
+        self.set_switch_output(self.outfile)
         
-
+        
         
 #    def setSwitch(self, switch):
 #        self.metaIDBA.get_switch(switch)
@@ -41,21 +41,21 @@ class RunMetaIDBA(object):
         
         self.record = SeqIO.index(outfile+"-contig.fa","fasta")
     
-    def getRecord(self):
+    def get_record(self):
         return self.record
     
     
-    def getSwitch(self):
+    def get_switch(self):
         return self.metaIDBA.get_switch()
 
 
-    def setSwitchRead(self, v):
+    def set_switch_read(self, v):
         """
           -r, --read arg         read file
         """
         self.metaIDBA.updateSwitch("--read", v)     
         
-    def setSwitchOutput(self, v):
+    def set_switch_output(self, v):
         """
           -o, --output arg (=out)    prefix of output
         """

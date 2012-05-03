@@ -129,7 +129,8 @@ class TestRunExtProg(unittest.TestCase):
         
         with self.assertRaises(TypeError):
             runExtProg("./muscle3.8.31_i86linux64", checkOS=True)
-            
+        
+        
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
     unittest.main()
