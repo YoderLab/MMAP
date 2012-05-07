@@ -45,7 +45,7 @@ class RunGenovo(RunComponent):
 
 
         if outfile is None:
-            self.outfile = self.GenerateOutfileName(self.infile_class_var)
+            self.outfile = self.GenerateOutfileName(self.infile_class_var,"_out.fasta")
         else:
             self.outfile = self.wdir+outfile
 
@@ -109,73 +109,73 @@ class RunGenovo(RunComponent):
                 raise ValueError('Error: cutoff set to:',v)
 
 
-    def GenerateOutfileName(self, infile):
-        """
-        infile name
-               testAssemble.poiuyxcvbjkfastaaaasdfghjk
-        step1: testAssemble
-        step2: testAssemble_out.fasta
-        step3: self.pdir+testAssemble_out.fasta
-            check if it exist
-            overwrite or not
-
-
-        if os.path.exists(  self.cwd+self.name_only  ):
-        if os.path.exists(  full_file_path  ):
-        """
-        location=infile.rfind(".")
-        if location is -1:
-            namebase=infile
-        else:
-            namebase=infile[0:location]
-#        print "location", location, infile, infile[0:location]
-        outfile=namebase+"_out.fasta"
-        return outfile
-
-
-
-    def checkInfileExist(self):
-        """
-         TODO: add code to check if these exist
-         check if self.pdir exist
-         check if infile exist
-         check if outfile already exist
-         
-         use 
-         if os.path.exists( fileName ):
-        """
-#        Attempt to refactor code:
-#        This chunk should take care of directory and infile check
-#        self.infile_path="%s%s" % (self.wdir, self.infile_class_var)
-        querylist = [self.wdir, self.infile_class_var]
-        for item in querylist:
-            if not os.path.exists(item):
-                raise IOError("Error: %s does not exist" %item)
-
-##        This chunk checks for a valid directory.
-#        print "Directory set to:",self.pdir
-#        if os.path.exists(self.pdir):
-#            print "Valid directory."
+#    def GenerateOutfileName(self, infile):
+#        """
+#        infile name
+#               testAssemble.poiuyxcvbjkfastaaaasdfghjk
+#        step1: testAssemble
+#        step2: testAssemble_out.fasta
+#        step3: self.pdir+testAssemble_out.fasta
+#            check if it exist
+#            overwrite or not
+#
+#
+#        if os.path.exists(  self.cwd+self.name_only  ):
+#        if os.path.exists(  full_file_path  ):
+#        """
+#        location=infile.rfind(".")
+#        if location is -1:
+#            namebase=infile
 #        else:
-##            print
-##            sys.exit(-1)
-#            raise IOError, "Error: invalid directory:%s" %self.pdir
-##        If the directory is valid, this chunk makes sure the infile exists.
-#        self.infile_path="%s%s" % (self.pdir, self.infile_class_var)
-#        print "Infile path set to:",self.infile_path
-#        if os.path.exists(self.infile_path):
-#            print "Infile exists."
+#            namebase=infile[0:location]
+##        print "location", location, infile, infile[0:location]
+#        outfile=namebase+"_out.fasta"
+#        return outfile
+
+
+
+#    def checkInfileExist(self):
+#        """
+#         TODO: add code to check if these exist
+#         check if self.pdir exist
+#         check if infile exist
+#         check if outfile already exist
+#
+#         use
+#         if os.path.exists( fileName ):
+#        """
+##        Attempt to refactor code:
+##        This chunk should take care of directory and infile check
+##        self.infile_path="%s%s" % (self.wdir, self.infile_class_var)
+#        querylist = [self.wdir, self.infile_class_var]
+#        for item in querylist:
+#            if not os.path.exists(item):
+#                raise IOError("Error: %s does not exist" %item)
+#
+###        This chunk checks for a valid directory.
+##        print "Directory set to:",self.pdir
+##        if os.path.exists(self.pdir):
+##            print "Valid directory."
+##        else:
+###            print
+###            sys.exit(-1)
+##            raise IOError, "Error: invalid directory:%s" %self.pdir
+###        If the directory is valid, this chunk makes sure the infile exists.
+##        self.infile_path="%s%s" % (self.pdir, self.infile_class_var)
+##        print "Infile path set to:",self.infile_path
+##        if os.path.exists(self.infile_path):
+##            print "Infile exists."
+##        else:
+##            print "Error: infile does not exist."
+##            raise IOError
+##        This chunk makes sure you won't overwrite an existing outfile.
+#        self.outfile_path="%s%s" % (self.wdir, self.outfile)
+#        if os.path.exists(self.outfile_path):
+#            raise IOError("WARNING: outfile already exists!!!")
+#        #TODO: come back to this later.
+##            Can rename the file, raise a different error, etc.
 #        else:
-#            print "Error: infile does not exist."
-#            raise IOError
-#        This chunk makes sure you won't overwrite an existing outfile.
-        self.outfile_path="%s%s" % (self.wdir, self.outfile)
-        if os.path.exists(self.outfile_path):
-            raise IOError("WARNING: outfile already exists!!!")
-        #TODO: come back to this later.
-#            Can rename the file, raise a different error, etc.
-        else:
-            pass
+#            pass
 
 #    def check_outfiles_exist(self,  outfile_tag):
         """

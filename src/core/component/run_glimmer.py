@@ -34,7 +34,7 @@ class RunGlimmer(RunComponent):
         ## TODO (Steven): use this to demonstrate refactor
 
         if outfile is None:
-            self.outfileTag = self.GenerateOutfileName(self.infile_class_var)
+            self.outfileTag = self.GenerateOutfileName(self.infile_class_var,"_out")
         else:
             self.outfileTag = self.wdir+outfile
 
@@ -71,58 +71,58 @@ class RunGlimmer(RunComponent):
 #            print("setOutfile to", outfile)
         self.glimmer.set_param_at(outfile, 2)
 
-    def GenerateOutfileName(self, infile):
-        """
-        infile name
-               testGlimmer.poiuyxcvbjkfastaaaasdfghjk
-        step1: testGlimmer
-        step2: testGlimmer_out.fasta
-        step3: self.pdir+testGlimmer_out.fasta
-            check if it exist
-            overwrite or not
-
-
-        if os.path.exists(  self.cwd+self.name_only  ):
-        if os.path.exists(  full_file_path  ):
-        """
-        location=infile.rfind(".")
-        if location is -1:
-            namebase=infile
-        else:
-            namebase=infile[0:location]
-        #        print "location", location, infile, infile[0:location]
-        outfile=namebase+"_out"
-        return outfile
+#    def GenerateOutfileName(self, infile):
+#        """
+#        infile name
+#               testGlimmer.poiuyxcvbjkfastaaaasdfghjk
+#        step1: testGlimmer
+#        step2: testGlimmer_out.fasta
+#        step3: self.pdir+testGlimmer_out.fasta
+#            check if it exist
+#            overwrite or not
+#
+#
+#        if os.path.exists(  self.cwd+self.name_only  ):
+#        if os.path.exists(  full_file_path  ):
+#        """
+#        location=infile.rfind(".")
+#        if location is -1:
+#            namebase=infile
+#        else:
+#            namebase=infile[0:location]
+#        #        print "location", location, infile, infile[0:location]
+#        outfile=namebase+"_out"
+#        return outfile
 
 
     #Check whether infile exists:
-    def checkInfileExist(self):
-        """
-         TODO: add code to check if these exist
-         check if self.pdir exist
-         check if infile exist
-         check if outfile already exist
-
-         use
-         if os.path.exists( fileName ):
-        """
-        if not os.path.exists(self.wdir):
-            raise IOError("Error: invalid directory: %s" %self.wdir)
-        #        If the directory is valid, this chunk makes sure the infile exists.
-#        self.infile_path="%s%s" % (self.pdir, self.infile_class_var)
-#        print "Infile path set to:",self.infile_path
-
-        if not self.check_file_existence( "", self.infile_class_var, True):
-            raise IOError("Error: infile does not exist. %s%s"%(self.wdir, self.infile_class_var))
-        #        This chunk makes sure you won't overwrite an existing outfile.
-#        self.outfile_path="%s%s" % (self.wdir, self.outfileTag)
-
-        isExist = self.check_outfiles_exist(self.allextw)
-
-        if isExist:
-            raise IOError("WARNING: outfile already exists!!!")
-            #TODO: come back to this later.
-        #            Can rename the file, raise a different error, etc.
+#    def checkInfileExist(self):
+#        """
+#         TODO: add code to check if these exist
+#         check if self.pdir exist
+#         check if infile exist
+#         check if outfile already exist
+#
+#         use
+#         if os.path.exists( fileName ):
+#        """
+#        if not os.path.exists(self.wdir):
+#            raise IOError("Error: invalid directory: %s" %self.wdir)
+#        #        If the directory is valid, this chunk makes sure the infile exists.
+##        self.infile_path="%s%s" % (self.pdir, self.infile_class_var)
+##        print "Infile path set to:",self.infile_path
+#
+#        if not self.check_file_existence( "", self.infile_class_var, True):
+#            raise IOError("Error: infile does not exist. %s%s"%(self.wdir, self.infile_class_var))
+#        #        This chunk makes sure you won't overwrite an existing outfile.
+##        self.outfile_path="%s%s" % (self.wdir, self.outfileTag)
+#
+#        isExist = self.check_outfiles_exist(self.allextw)
+#
+#        if isExist:
+#            raise IOError("WARNING: outfile already exists!!!")
+#            #TODO: come back to this later.
+#        #            Can rename the file, raise a different error, etc.
 
 
 #
