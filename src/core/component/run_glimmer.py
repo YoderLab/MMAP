@@ -59,11 +59,16 @@ class RunGlimmer(RunComponent):
         """
         TODO: check valid infile, infile exist or not
         """
+#        if os.path.isdir(infile) != True:
+#            infile = self.wdir+infile
+#            print("setInfile to", infile)
         self.glimmer.set_param_at(infile, 1)
 
 
     def setOutputTag(self, outfile):
-
+#        if os.path.isdir(outfile) != True:
+#            outfile = self.wdir+outfile
+#            print("setOutfile to", outfile)
         self.glimmer.set_param_at(outfile, 2)
 
     def GenerateOutfileName(self, infile):
@@ -112,7 +117,7 @@ class RunGlimmer(RunComponent):
         #        This chunk makes sure you won't overwrite an existing outfile.
 #        self.outfile_path="%s%s" % (self.wdir, self.outfileTag)
 
-        isExist = self.check_outfiles_exist()
+        isExist = self.check_outfiles_exist(self.allextw)
 
         if isExist:
             raise IOError("WARNING: outfile already exists!!!")

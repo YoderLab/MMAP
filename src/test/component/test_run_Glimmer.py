@@ -26,8 +26,8 @@ class TestRunGlimmer(unittest.TestCase):
         infile_var = "all_reads.fa"
 #        outfile_var="testOutfile"
         test_glimmer = RunGlimmer(infile_var, pdir=self.data_dir, checkExist=False)
-        self.assertEqual(test_glimmer.get_switch()[0], infile_var)
-        self.assertListEqual(test_glimmer.get_switch(), [infile_var, "all_reads_out"])
+        self.assertEqual(test_glimmer.get_switch()[0], self.data_dir+infile_var)
+        self.assertListEqual(test_glimmer.get_switch(), [self.data_dir+infile_var, self.data_dir+"all_reads_out"])
 #
 
     def test_RunGlimmer_setInfile(self):
@@ -36,11 +36,11 @@ class TestRunGlimmer(unittest.TestCase):
         outfile_var="testOutfile"
         glimmer = RunGlimmer(infile=infile_var, outfile=outfile_var,pdir = self.data_dir, checkExist=False)
         self.assertEqual(2, len(glimmer.get_switch()) )
-        self.assertListEqual(glimmer.get_switch(), ["test_infile.fasta", outfile_var])
+        self.assertListEqual(glimmer.get_switch(), [self.data_dir+"test_infile.fasta", self.data_dir+outfile_var])
 
         infile_var="VICTORY!!!.fasta"
         glimmer.setInfileName(infile_var)
-        self.assertListEqual(glimmer.get_switch(), ["VICTORY!!!.fasta", outfile_var])
+        self.assertListEqual(glimmer.get_switch(), ["VICTORY!!!.fasta", self.data_dir+outfile_var])
 
     def test_RunGlimmer_set_outfile(self):
     #   def_test_ClassName_mhatAreWeTestingHere(self)
@@ -48,23 +48,23 @@ class TestRunGlimmer(unittest.TestCase):
         outfile_var="testOutfile"
         glimmer = RunGlimmer(infile=infile_var, outfile=outfile_var, pdir = self.data_dir, checkExist=False)
         self.assertEqual(2, len(glimmer.get_switch()) )
-        self.assertListEqual(glimmer.get_switch(), [ "test_infile.fasta", "testOutfile"])
+        self.assertListEqual(glimmer.get_switch(), [ self.data_dir+"test_infile.fasta", self.data_dir+"testOutfile"])
         infile_var="test_infile.xyz.fasta.abc"
         glimmer2 = RunGlimmer(infile=infile_var,  outfile=outfile_var,pdir = self.data_dir,  checkExist=False)
-        self.assertListEqual(glimmer2.get_switch(), ["test_infile.xyz.fasta.abc", outfile_var])
+        self.assertListEqual(glimmer2.get_switch(), [self.data_dir+"test_infile.xyz.fasta.abc", self.data_dir+outfile_var])
         infile_var="test_infile"
         glimmer2 = RunGlimmer(infile=infile_var, outfile=outfile_var, pdir = self.data_dir,  checkExist=False)
-        self.assertListEqual(glimmer2.get_switch(), ["test_infile", outfile_var])
+        self.assertListEqual(glimmer2.get_switch(), [self.data_dir+"test_infile", self.data_dir+outfile_var])
 
 
     def test_RunGlimmer_set_infile_outfile(self):
         infile_var="test_infile.fasta"
         outfile_var="test_outfile.fasta"
         glimmer = RunGlimmer(infile=infile_var, outfile = outfile_var, pdir = self.data_dir,  checkExist=False)
-        self.assertListEqual(glimmer.get_switch(), [infile_var, "test_outfile.fasta"])
+        self.assertListEqual(glimmer.get_switch(), [self.data_dir+infile_var, self.data_dir+"test_outfile.fasta"])
         infile_var="test_infile2.fasta"
         glimmer.setInfileName(infile_var)
-        self.assertListEqual(glimmer.get_switch(), ["test_infile2.fasta", "test_outfile.fasta"])
+        self.assertListEqual(glimmer.get_switch(), ["test_infile2.fasta", self.data_dir+"test_outfile.fasta"])
 
         outfile_var="test_outfile2.fasta"
         glimmer.setOutputTag(outfile_var)
@@ -117,7 +117,7 @@ class TestRunGlimmer(unittest.TestCase):
         infile_var="tpall.fna"
         outfile_var = "iterated"
         with self.assertRaises(IOError):
-            RunGlimmer(infile=infile_var, outfile = outfile_var, pdir = self.data_dir, checkExist= True)
+            RunGlimmer(infile=self.data_dir+infile_var, outfile = self.data_dir+outfile_var, pdir = self.data_dir, checkExist= True)
 
 
     def test_RunGlimmer_checkOutfilesExist(self):

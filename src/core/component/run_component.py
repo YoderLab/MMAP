@@ -24,8 +24,9 @@ class RunComponent(object):
 
 
     def check_file_existence(self, filetag, ext, isExist):
-
-        test_file=filetag + ext
+#        print(type(filetag))
+#        print(type(ext))
+        test_file= "%s%s" % (filetag, ext)
 #        print ext," file:",test_file
 
 #        print "*",ext," file:",test_outfile
