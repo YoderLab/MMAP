@@ -18,7 +18,7 @@ class RunGlimmer(RunComponent):
         """
         Constructor
         """
-        self.allextw=[".coords", ".detail", ".icm", ".longorfs", ".motif", ".predict", ".run1.detail", ".run1.predict", ".train", ".upstream"]
+        self.all_ext=[".coords", ".detail", ".icm", ".longorfs", ".motif", ".predict", ".run1.detail", ".run1.predict", ".train", ".upstream"]
 #        Make sure directory ends with a "/":
         if pdir.endswith("/"):
             self.pdir=pdir
@@ -34,7 +34,7 @@ class RunGlimmer(RunComponent):
         ## TODO (Steven): use this to demonstrate refactor
 
         if outfile is None:
-            self.outfileTag = self.GenerateOutfileName(self.infile_class_var)
+            self.outfileTag = self.generate_outfile_name(self.infile_class_var)
         else:
             self.outfileTag = self.wdir+outfile
 
@@ -42,7 +42,7 @@ class RunGlimmer(RunComponent):
             self.checkInfileExist()
 
         self.glimmer = runExtProg("./g3-iterated.csh", pdir=self.pdir, length=2, checkOS=True)
-        self.setInfileName(self.infile_class_var)
+        self.set_infile_name(self.infile_class_var)
         self.setOutputTag(self.outfileTag)
 
         
@@ -55,7 +55,7 @@ class RunGlimmer(RunComponent):
         return self.glimmer._switch
 #
 
-    def setInfileName(self, infile):
+    def set_infile_name(self, infile):
         """
         TODO: check valid infile, infile exist or not
         """
@@ -71,7 +71,7 @@ class RunGlimmer(RunComponent):
 #            print("setOutfile to", outfile)
         self.glimmer.set_param_at(outfile, 2)
 
-    def GenerateOutfileName(self, infile):
+    def generate_outfile_name(self, infile):
         """
         infile name
                testGlimmer.poiuyxcvbjkfastaaaasdfghjk
@@ -117,7 +117,7 @@ class RunGlimmer(RunComponent):
         #        This chunk makes sure you won't overwrite an existing outfile.
 #        self.outfile_path="%s%s" % (self.wdir, self.outfileTag)
 
-        isExist = self.check_outfiles_exist(self.allextw)
+        isExist = self.check_outfiles_exist(self.all_ext)
 
         if isExist:
             raise IOError("WARNING: outfile already exists!!!")
@@ -142,8 +142,8 @@ class RunGlimmer(RunComponent):
 #        exist
 #        """
 #        print "in Glimmer"
-#        self.allextw=[".coords", ".detail", ".icm", ".longorfs", ".motif", ".predict", ".run1.detail", ".run1.predict", ".train", ".upstream"]
-#        isExist = self.check_multiple_outfiles_existence( self.outfileTag, allextw)
+#        self.all_ext=[".coords", ".detail", ".icm", ".longorfs", ".motif", ".predict", ".run1.detail", ".run1.predict", ".train", ".upstream"]
+#        isExist = self.check_multiple_outfiles_existence( self.outfileTag, all_ext)
 #        return isExist
 #
 

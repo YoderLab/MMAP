@@ -36,11 +36,11 @@ class TestRunGenovo(unittest.TestCase):
         genovo = RunGenovo(infile=infile_var, pdir = self.data_dir, wdir=self.working_dir,noI=3, thresh=250, checkExist=False)
         self.assertListEqual(genovo.assemble.get_switch(), [self.working_dir+infile_var, "3"])
         
-        genovo.setNumberOfIter(10)
+        genovo.set_number_of_iter(10)
         self.assertListEqual(genovo.assemble.get_switch(), [self.working_dir+infile_var, "10"])
         
         infile_var="test_infile.fasta"
-        genovo.setInfileName(infile_var)
+        genovo.set_infile_name(infile_var)
         self.assertListEqual(genovo.assemble.get_switch(), [infile_var, "10"])
        
         
@@ -51,11 +51,11 @@ class TestRunGenovo(unittest.TestCase):
         self.assertEqual(3, len(genovo.finalize._switch) )
         self.assertListEqual(genovo.finalize.get_switch(), ["250", self.data_dir+"test_infile_out.fasta", self.data_dir+infile_var+".dump.best"])
     
-        genovo.setCutoff(300)
+        genovo.set_cutoff(300)
         self.assertListEqual(genovo.finalize.get_switch(), ["300", self.data_dir+"test_infile_out.fasta", self.data_dir+infile_var+".dump.best"])
         
         infile_var="VICTORY!!!.fasta"
-        genovo.setInfileName(infile_var)
+        genovo.set_infile_name(infile_var)
         self.assertListEqual(genovo.finalize.get_switch(), ["300", self.data_dir+"test_infile_out.fasta", infile_var+".dump.best"])
 
 
@@ -95,12 +95,12 @@ class TestRunGenovo(unittest.TestCase):
         self.assertListEqual(genovo.finalize.get_switch(), ["250", self.data_dir+outfile_var, self.data_dir+infile_var+".dump.best"])
         
         infile_var="test_infile2.fasta"
-        genovo.setInfileName(infile_var)
+        genovo.set_infile_name(infile_var)
         self.assertListEqual(genovo.assemble.get_switch(), [infile_var, "3"])
         self.assertListEqual(genovo.finalize.get_switch(), ["250", self.data_dir+outfile_var, infile_var+".dump.best"])
         
         outfile_var="test_outfile2.fasta"
-        genovo.setFinalizeOutfile(outfile_var) 
+        genovo.set_finalize_outfile(outfile_var) 
         self.assertListEqual(genovo.assemble.get_switch(), [infile_var, "3"])
         self.assertListEqual(genovo.finalize.get_switch(), ["250", outfile_var, infile_var+".dump.best"])
         
@@ -110,10 +110,10 @@ class TestRunGenovo(unittest.TestCase):
     def test_RunGenovo_setNumberOfIter(self):
         infile_var="test_infile.fasta"
         genovo = RunGenovo(infile=infile_var, pdir = self.data_dir, noI=3, thresh=250, checkExist=False)
-        self.assertRaises(TypeError, genovo.setNumberOfIter, 1.1)
-        self.assertRaises(TypeError, genovo.setNumberOfIter, -1)
-        self.assertRaises(TypeError, genovo.setNumberOfIter, "string")
-        self.assertRaises(TypeError, genovo.setNumberOfIter, "5")
+        self.assertRaises(TypeError, genovo.set_number_of_iter, 1.1)
+        self.assertRaises(TypeError, genovo.set_number_of_iter, -1)
+        self.assertRaises(TypeError, genovo.set_number_of_iter, "string")
+        self.assertRaises(TypeError, genovo.set_number_of_iter, "5")
 
 
 
@@ -124,11 +124,11 @@ class TestRunGenovo(unittest.TestCase):
         """   
         infile_var="test_infile.fasta"
         genovo = RunGenovo(infile=infile_var, pdir = self.data_dir, noI=3, thresh=250, checkExist=False)
-        self.assertRaises(ValueError, genovo.setCutoff, 1.1)
-        self.assertRaises(ValueError, genovo.setCutoff, -1)
-        self.assertRaises(ValueError, genovo.setCutoff, -2.5)
-        self.assertRaises(TypeError, genovo.setCutoff, "string")
-        self.assertRaises(TypeError, genovo.setCutoff, "3")
+        self.assertRaises(ValueError, genovo.set_cutoff, 1.1)
+        self.assertRaises(ValueError, genovo.set_cutoff, -1)
+        self.assertRaises(ValueError, genovo.set_cutoff, -2.5)
+        self.assertRaises(TypeError, genovo.set_cutoff, "string")
+        self.assertRaises(TypeError, genovo.set_cutoff, "3")
 
 
     def test_RunGenovo_check_directory_name(self):
@@ -200,7 +200,7 @@ class TestRunGenovo(unittest.TestCase):
 
         expected = [170,60]
         for i, key in enumerate(result):
-            print key, i, type(result[key]), result[key]
+#            print key, i, type(result[key]), result[key]
             self.assertEqual(len(result[key]), expected[i])
             
             

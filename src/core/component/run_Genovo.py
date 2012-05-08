@@ -27,7 +27,7 @@ class RunGenovo(RunComponent):
         """
 
 #        super(RunGenovo, self).__init__()
-        self.allextw=[".status", ".dump1", ".dump.best"]
+        self.all_ext=[".status", ".dump1", ".dump.best"]
 
         if pdir.endswith("/"):
 
@@ -45,7 +45,7 @@ class RunGenovo(RunComponent):
 
 
         if outfile is None:
-            self.outfile = self.GenerateOutfileName(self.infile_class_var)
+            self.outfile = self.generate_outfile_name(self.infile_class_var)
         else:
             self.outfile = self.wdir+outfile
 
@@ -55,13 +55,13 @@ class RunGenovo(RunComponent):
 
         self.assemble = runExtProg("./assemble", pdir=self.pdir, length=2, checkOS=True)
         self.finalize = runExtProg("./finalize", pdir=self.pdir, length=3, checkOS=True)
-        self.setInfileName(self.infile_class_var)
-        self.setNumberOfIter(noI)
+        self.set_infile_name(self.infile_class_var)
+        self.set_number_of_iter(noI)
 #        print self.assemble.get_switch()
 #
 #        self.testRandom()
-        self.setFinalizeOutfile(self.outfile)
-        self.setCutoff(thresh)
+        self.set_finalize_outfile(self.outfile)
+        self.set_cutoff(thresh)
 
 
     @classmethod
@@ -73,7 +73,7 @@ class RunGenovo(RunComponent):
         
         
 
-    def setNumberOfIter(self, param):
+    def set_number_of_iter(self, param):
 
         if param>0 and isinstance( param, ( int, long ) ):
             self.assemble.set_param_at(param, 2)
@@ -82,7 +82,7 @@ class RunGenovo(RunComponent):
 
 
 
-    def setInfileName(self, infile):
+    def set_infile_name(self, infile):
         """
         type anything here
         TODO: check valid infile, infile exist or not
@@ -94,11 +94,11 @@ class RunGenovo(RunComponent):
         self.finalize.set_param_at(infile+".dump.best",3)
 
 
-    def setFinalizeOutfile(self, outfile):
+    def set_finalize_outfile(self, outfile):
         self.finalize.set_param_at(outfile, 2)
     
     
-    def setCutoff(self, v):
+    def set_cutoff(self, v):
 
         if v>0 and isinstance(v, ( int, long ) ):
             self.finalize.set_param_at(v,1)
@@ -109,7 +109,7 @@ class RunGenovo(RunComponent):
                 raise ValueError('Error: cutoff set to:',v)
 
 
-    def GenerateOutfileName(self, infile):
+    def generate_outfile_name(self, infile):
         """
         infile name
                testAssemble.poiuyxcvbjkfastaaaasdfghjk
@@ -197,8 +197,8 @@ class RunGenovo(RunComponent):
         exist
         
         """
-#        allextw=[".status", ".dump1", ".dump.best"]
-#        isExist = self.check_multiple_outfiles_existence( outfile_tag, allextw)
+#        all_exts=[".status", ".dump1", ".dump.best"]
+#        isExist = self.check_multiple_outfiles_existence( outfile_tag, all_exts)
 #        return isExist
 
 

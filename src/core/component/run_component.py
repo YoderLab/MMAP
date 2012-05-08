@@ -7,13 +7,11 @@ class RunComponent(object):
 
     def __init__(self):
 
-        self.allextw=[]
+        self.all_ext=[]
 
 
     def check_outfiles_exist(self, outfile_tag):
-    #        allextw=[".status", ".dump1", ".dump.best"]
-        print "in c", self.allextw
-        isExist = self.check_multiple_outfiles_existence( outfile_tag, self.allextw)
+        isExist = self.check_multiple_outfiles_existence( outfile_tag, self.all_ext)
         return isExist
 
     def check_multiple_outfiles_existence(self, outfileTag, allext, isExist=True):

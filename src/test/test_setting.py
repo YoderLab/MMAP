@@ -33,6 +33,7 @@ class TestSetting(unittest.TestCase):
         print(b)
 
     def add_value(self, *arg):
+        self.ass
         print "inside add_value"
         a= [0,0]
         print type(arg)

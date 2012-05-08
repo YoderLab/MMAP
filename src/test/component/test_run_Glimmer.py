@@ -39,7 +39,7 @@ class TestRunGlimmer(unittest.TestCase):
         self.assertListEqual(glimmer.get_switch(), [self.data_dir+"test_infile.fasta", self.data_dir+outfile_var])
 
         infile_var="VICTORY!!!.fasta"
-        glimmer.setInfileName(infile_var)
+        glimmer.set_infile_name(infile_var)
         self.assertListEqual(glimmer.get_switch(), ["VICTORY!!!.fasta", self.data_dir+outfile_var])
 
     def test_RunGlimmer_set_outfile(self):
@@ -63,7 +63,7 @@ class TestRunGlimmer(unittest.TestCase):
         glimmer = RunGlimmer(infile=infile_var, outfile = outfile_var, pdir = self.data_dir,  checkExist=False)
         self.assertListEqual(glimmer.get_switch(), [self.data_dir+infile_var, self.data_dir+"test_outfile.fasta"])
         infile_var="test_infile2.fasta"
-        glimmer.setInfileName(infile_var)
+        glimmer.set_infile_name(infile_var)
         self.assertListEqual(glimmer.get_switch(), ["test_infile2.fasta", self.data_dir+"test_outfile.fasta"])
 
         outfile_var="test_outfile2.fasta"

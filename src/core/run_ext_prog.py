@@ -77,7 +77,7 @@ class runExtProg(object):
         print(self._command, self.cwd)
         p = subprocess.Popen(self._command,stdout= subprocess.PIPE, stderr=subprocess.PIPE, cwd = self.cwd )
         self.output, self.errors = p.communicate()
-        print self.output, self.errors
+#        print self.output, self.errors
 
 
     '''

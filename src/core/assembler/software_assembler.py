@@ -3,11 +3,10 @@ Created on April 16, 2012
 
 @author: Erin McKenney and Steven Wu
 """
-from PIL.Scripts.explode import infile
+
 from core.component.run_Genovo import RunGenovo
 from core.component.run_glimmer import RunGlimmer
 from core.setting import Setting
-from traits.trait_types import self
 import os
 
 __author__ = 'erinmckenney'
