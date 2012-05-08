@@ -40,7 +40,7 @@ class TestRunGenovo(unittest.TestCase):
         self.assertListEqual(genovo.assemble.get_switch(), [self.working_dir+infile_var, "10"])
         
         infile_var="test_infile.fasta"
-        genovo.set_infile_name(infile_var)
+        genovo.setInfileName(infile_var)
         self.assertListEqual(genovo.assemble.get_switch(), [infile_var, "10"])
        
         
@@ -55,7 +55,7 @@ class TestRunGenovo(unittest.TestCase):
         self.assertListEqual(genovo.finalize.get_switch(), ["300", self.data_dir+"test_infile_out.fasta", self.data_dir+infile_var+".dump.best"])
         
         infile_var="VICTORY!!!.fasta"
-        genovo.set_infile_name(infile_var)
+        genovo.setInfileName(infile_var)
         self.assertListEqual(genovo.finalize.get_switch(), ["300", self.data_dir+"test_infile_out.fasta", infile_var+".dump.best"])
 
 
@@ -95,7 +95,7 @@ class TestRunGenovo(unittest.TestCase):
         self.assertListEqual(genovo.finalize.get_switch(), ["250", self.data_dir+outfile_var, self.data_dir+infile_var+".dump.best"])
         
         infile_var="test_infile2.fasta"
-        genovo.set_infile_name(infile_var)
+        genovo.setInfileName(infile_var)
         self.assertListEqual(genovo.assemble.get_switch(), [infile_var, "3"])
         self.assertListEqual(genovo.finalize.get_switch(), ["250", self.data_dir+outfile_var, infile_var+".dump.best"])
         
@@ -107,7 +107,7 @@ class TestRunGenovo(unittest.TestCase):
 
 
 
-    def test_RunGenovo_setNumberOfIter(self):
+    def test_RunGenovo_set_number_of_iter(self):
         infile_var="test_infile.fasta"
         genovo = RunGenovo(infile=infile_var, pdir = self.data_dir, noI=3, thresh=250, checkExist=False)
         self.assertRaises(TypeError, genovo.set_number_of_iter, 1.1)
@@ -117,7 +117,7 @@ class TestRunGenovo(unittest.TestCase):
 
 
 
-    def test_RunGenovo_setCutoff(self):
+    def test_RunGenovo_set_cutoff(self):
         """
         Note: There are different type of Errors
         Feel free to change/swap/move between ValueError and TypeError
@@ -170,7 +170,7 @@ class TestRunGenovo(unittest.TestCase):
             RunGenovo(infile=infile_var, outfile = outfile_var, pdir = self.data_dir, noI=3, thresh=250, checkExist= True)
 
         
-    def test_RunGenovo_checkAssembleResultExist(self):
+    def test_RunGenovo_check_assemble_result_exist(self):
         """
         check if ./assemble finished running, should produce 3 output files
         only pass if all 3 exist
@@ -186,7 +186,7 @@ class TestRunGenovo(unittest.TestCase):
 #        print genovo.checkAssembleOutfilesExist("fileNotExist_out")
         self.assertFalse( genovo.check_outfiles_exist(self.data_dir+"fileNotExist_out") )
 
-    def test_RunGenovo_readFinalizeOutfile(self):
+    def test_RunGenovo_read_finalize_outfile(self):
         """
         check if it can "read" assembled contig
         TODO: have check what happen in the file format is invalid, assuming its the correct fasta now
@@ -213,24 +213,3 @@ class TestRunGenovo(unittest.TestCase):
         self.assertTrue( genovo.check_outfiles_exist(self.data_dir+infile_var) )
         self.assertTrue(genovo.check_file_existence(self.data_dir+"test_run_outfile", ".fasta",True))
         os.remove(self.data_dir+outfile_var)
-
-    def test_RunGenovo_wdir(self):
-
-        infile_fasta = "wdir_all_reads.fa"
-        genovo=RunGenovo(infile = infile_fasta ,noI=10,thresh=10,pdir=self.data_dir,wdir=self.working_dir)
-        genovo.run()
-        self.assertTrue( genovo.check_outfiles_exist(self.working_dir+infile_fasta) )
-
-    def test_parent_class(self):
-#        GenerateOutfileName
-        super(RunGenovo,self).GenerateOutfileName()
-        infile_var="test_infile.fasta"
-        genovo = RunGenovo(infile=infile_var, pdir = self.data_dir, noI=10, thresh=250, checkExist=False)
-        #        print genovo.checkAssembleOutfilesExist("test_infile.fasta")
-        self.assertTrue( genovo.check_outfiles_exist(self.data_dir+"test_infile.fasta"))
-#        checkInfileExist
-        infile_var="test_infile.fasta"
-        outfile_var="test_run_outfile.fasta"
-        genovo = RunGenovo(infile=infile_var, outfile = outfile_var, pdir = self.data_dir, noI=10, thresh=100, checkExist=True)
-        genovo.run()
-        self.assertTrue(genovo.check_file_existence(self.data_dir+"test_run_outfile", ".fasta",True))

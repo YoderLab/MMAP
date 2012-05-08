@@ -34,16 +34,16 @@ class RunGlimmer(RunComponent):
         ## TODO (Steven): use this to demonstrate refactor
 
         if outfile is None:
-            self.outfileTag = self.GenerateOutfileName(self.infile_class_var,"_out")
+            self.outfileTag = self.generate_outfile_name(self.infile_class_var,"_out")
         else:
             self.outfileTag = self.wdir+outfile
 
         if checkExist:
-            self.checkInfileExist()
+            self.check_infile_exist()
 
         self.glimmer = runExtProg("./g3-iterated.csh", pdir=self.pdir, length=2, checkOS=True)
         self.setInfileName(self.infile_class_var)
-        self.setOutputTag(self.outfileTag)
+        self.set_output_tag(self.outfileTag)
 
         
     def run(self):
@@ -65,13 +65,13 @@ class RunGlimmer(RunComponent):
         self.glimmer.set_param_at(infile, 1)
 
 
-    def setOutputTag(self, outfile):
+    def set_output_tag(self, outfile):
 #        if os.path.isdir(outfile) != True:
 #            outfile = self.wdir+outfile
 #            print("setOutfile to", outfile)
         self.glimmer.set_param_at(outfile, 2)
 
-#    def GenerateOutfileName(self, infile):
+#    def generate_outfile_name(self, infile):
 #        """
 #        infile name
 #               testGlimmer.poiuyxcvbjkfastaaaasdfghjk
@@ -96,7 +96,7 @@ class RunGlimmer(RunComponent):
 
 
     #Check whether infile exists:
-#    def checkInfileExist(self):
+#    def check_infile_exist(self):
 #        """
 #         TODO: add code to check if these exist
 #         check if self.pdir exist

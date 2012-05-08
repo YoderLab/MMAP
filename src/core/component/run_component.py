@@ -9,7 +9,7 @@ class RunComponent(object):
 
         self.allextw=[]
 
-    def checkInfileExist(self):
+    def check_infile_exist(self):
         if not os.path.exists(self.wdir):
             raise IOError("Error: invalid directory: %s" %self.wdir)
             #        If the directory is valid, this chunk makes sure the infile exists.
@@ -27,7 +27,7 @@ class RunComponent(object):
 #            raise IOError("WARNING: outfile already exists!!!")
 #            #TODO: come back to this later.
 
-    def GenerateOutfileName(self, infile, outtag):
+    def generate_outfile_name(self, infile, outtag):
         """
         infile name
             check if it exist

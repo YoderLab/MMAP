@@ -8,6 +8,8 @@ from core.component.run_Genovo import RunGenovo
 from core.component.run_glimmer import RunGlimmer
 from core.setting import Setting
 import os
+from core.component.run_metaIDBA import RunMetaIDBA
+from core.utils import path_utils
 
 __author__ = 'erinmckenney'
 
@@ -28,7 +30,7 @@ class SoftwareAssembler(object):
         out_gli
         """
         self.setting = Setting()
-        self.set_all_param(**kwargs)
+#        self.set_all_param(**kwargs)
 #        self.setting.add("genovo_infile",infile)
 #        self.setting.add("genovo_outfile",outfile)
 #        self.setting.add("asdfghjp",pdir) == fail
@@ -70,7 +72,7 @@ class SoftwareAssembler(object):
 #        self.blast_a = RunBlast()
 
 #        genovo = RunGenovo(infile=infile_var, outfile = outfile_var, pdir = self.data_dir, noI=10, thresh=100, checkExist=True)
-
+        
 #    glimmer = RunGlimmer(infile=infile_var, outfile = outfile_var, pdir = self.data_dir)
 
     def run(self):
@@ -83,3 +85,21 @@ class SoftwareAssembler(object):
         if self.glimmer_a.check_outfiles_exist(self.setting.get("glimmer_outfile")):
             pass
 #            self.blast_a.run()
+
+
+    def example_only(self):
+        infile_var = "wdir_all_reads.fa"
+        self.data_dir = path_utils.get_data_dir()+"Genovo/"
+        self.working_dir = path_utils.get_data_dir()+"Genovo/test_data/"        
+        genovo_p = RunGenovo(infile_var, pdir=self.data_dir, wdir=self.working_dir,  noI=1, thresh=10)
+        glimmer_p = RunGlimmer(infile_var, pdir=self.data_dir, checkExist=False)
+        blast_p = RunMetaIDBA(infile_var)
+        
+        all_p = [genovo_p, glimmer_p, blast_p]
+        for p in all_p:
+            p.setInfileName()
+        
+        
+
+a = SoftwareAssembler(a=1, b=2)
+a.example_only()
