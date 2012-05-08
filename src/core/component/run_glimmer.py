@@ -18,7 +18,7 @@ class RunGlimmer(RunComponent):
         """
         Constructor
         """
-        self.all_ext=[".coords", ".detail", ".icm", ".longorfs", ".motif", ".predict", ".run1.detail", ".run1.predict", ".train", ".upstream"]
+        self.allextw=[".coords", ".detail", ".icm", ".longorfs", ".motif", ".predict", ".run1.detail", ".run1.predict", ".train", ".upstream"]
 #        Make sure directory ends with a "/":
         if pdir.endswith("/"):
             self.pdir=pdir
@@ -34,7 +34,7 @@ class RunGlimmer(RunComponent):
         ## TODO (Steven): use this to demonstrate refactor
 
         if outfile is None:
-            self.outfileTag = self.generate_outfile_name(self.infile_class_var)
+            self.outfileTag = self.GenerateOutfileName(self.infile_class_var,"_out")
         else:
             self.outfileTag = self.wdir+outfile
 
@@ -42,7 +42,7 @@ class RunGlimmer(RunComponent):
             self.checkInfileExist()
 
         self.glimmer = runExtProg("./g3-iterated.csh", pdir=self.pdir, length=2, checkOS=True)
-        self.set_infile_name(self.infile_class_var)
+        self.setInfileName(self.infile_class_var)
         self.setOutputTag(self.outfileTag)
 
         
@@ -55,7 +55,7 @@ class RunGlimmer(RunComponent):
         return self.glimmer._switch
 #
 
-    def set_infile_name(self, infile):
+    def setInfileName(self, infile):
         """
         TODO: check valid infile, infile exist or not
         """
@@ -71,58 +71,58 @@ class RunGlimmer(RunComponent):
 #            print("setOutfile to", outfile)
         self.glimmer.set_param_at(outfile, 2)
 
-    def generate_outfile_name(self, infile):
-        """
-        infile name
-               testGlimmer.poiuyxcvbjkfastaaaasdfghjk
-        step1: testGlimmer
-        step2: testGlimmer_out.fasta
-        step3: self.pdir+testGlimmer_out.fasta
-            check if it exist
-            overwrite or not
-
-
-        if os.path.exists(  self.cwd+self.name_only  ):
-        if os.path.exists(  full_file_path  ):
-        """
-        location=infile.rfind(".")
-        if location is -1:
-            namebase=infile
-        else:
-            namebase=infile[0:location]
-        #        print "location", location, infile, infile[0:location]
-        outfile=namebase+"_out"
-        return outfile
+#    def GenerateOutfileName(self, infile):
+#        """
+#        infile name
+#               testGlimmer.poiuyxcvbjkfastaaaasdfghjk
+#        step1: testGlimmer
+#        step2: testGlimmer_out.fasta
+#        step3: self.pdir+testGlimmer_out.fasta
+#            check if it exist
+#            overwrite or not
+#
+#
+#        if os.path.exists(  self.cwd+self.name_only  ):
+#        if os.path.exists(  full_file_path  ):
+#        """
+#        location=infile.rfind(".")
+#        if location is -1:
+#            namebase=infile
+#        else:
+#            namebase=infile[0:location]
+#        #        print "location", location, infile, infile[0:location]
+#        outfile=namebase+"_out"
+#        return outfile
 
 
     #Check whether infile exists:
-    def checkInfileExist(self):
-        """
-         TODO: add code to check if these exist
-         check if self.pdir exist
-         check if infile exist
-         check if outfile already exist
-
-         use
-         if os.path.exists( fileName ):
-        """
-        if not os.path.exists(self.wdir):
-            raise IOError("Error: invalid directory: %s" %self.wdir)
-        #        If the directory is valid, this chunk makes sure the infile exists.
-#        self.infile_path="%s%s" % (self.pdir, self.infile_class_var)
-#        print "Infile path set to:",self.infile_path
-
-        if not self.check_file_existence( "", self.infile_class_var, True):
-            raise IOError("Error: infile does not exist. %s%s"%(self.wdir, self.infile_class_var))
-        #        This chunk makes sure you won't overwrite an existing outfile.
-#        self.outfile_path="%s%s" % (self.wdir, self.outfileTag)
-
-        isExist = self.check_outfiles_exist(self.all_ext)
-
-        if isExist:
-            raise IOError("WARNING: outfile already exists!!!")
-            #TODO: come back to this later.
-        #            Can rename the file, raise a different error, etc.
+#    def checkInfileExist(self):
+#        """
+#         TODO: add code to check if these exist
+#         check if self.pdir exist
+#         check if infile exist
+#         check if outfile already exist
+#
+#         use
+#         if os.path.exists( fileName ):
+#        """
+#        if not os.path.exists(self.wdir):
+#            raise IOError("Error: invalid directory: %s" %self.wdir)
+#        #        If the directory is valid, this chunk makes sure the infile exists.
+##        self.infile_path="%s%s" % (self.pdir, self.infile_class_var)
+##        print "Infile path set to:",self.infile_path
+#
+#        if not self.check_file_existence( "", self.infile_class_var, True):
+#            raise IOError("Error: infile does not exist. %s%s"%(self.wdir, self.infile_class_var))
+#        #        This chunk makes sure you won't overwrite an existing outfile.
+##        self.outfile_path="%s%s" % (self.wdir, self.outfileTag)
+#
+#        isExist = self.check_outfiles_exist(self.allextw)
+#
+#        if isExist:
+#            raise IOError("WARNING: outfile already exists!!!")
+#            #TODO: come back to this later.
+#        #            Can rename the file, raise a different error, etc.
 
 
 #
@@ -142,8 +142,8 @@ class RunGlimmer(RunComponent):
 #        exist
 #        """
 #        print "in Glimmer"
-#        self.all_ext=[".coords", ".detail", ".icm", ".longorfs", ".motif", ".predict", ".run1.detail", ".run1.predict", ".train", ".upstream"]
-#        isExist = self.check_multiple_outfiles_existence( self.outfileTag, all_ext)
+#        self.allextw=[".coords", ".detail", ".icm", ".longorfs", ".motif", ".predict", ".run1.detail", ".run1.predict", ".train", ".upstream"]
+#        isExist = self.check_multiple_outfiles_existence( self.outfileTag, allextw)
 #        return isExist
 #
 
