@@ -99,7 +99,60 @@ class SoftwareAssembler(object):
         for p in all_p:
             p.setInfileName()
         
+    def example2(self):
+        all = ["aoue", (9,8,7,6), [1,2,3], {"a":1,"b":2}]
+        for i in all:
+            print type(i),"\t", len(i), i
+            
+        for i in (1,2,3):
+            print i, i+i
+            
+        for i in "aoeu":
+            print i, i+i
+            
+        all = [AA(), BB(), CC(), DD(), EE(), FF()]
+        for i in all:
+            print type(i)
+            i.run()
+            
+
+
+class AA(object):
+    def __init__(self):
+        pass
+    def run(self):
+        print "AA running"
+        print "zzzzz"
         
+class BB(object):
+    def run(self):
+        print "BB running"
+        for i in range(3):
+            print i
+        
+        
+class CC(BB):
+    d = [1,2]
+    def run(self):
+        print "CC running"
+        CC.d.extend(CC.d)
+        print CC.d
+        
+class DD(object):
+    def run(self):
+        print "DD running"
+        
+        
+class EE(DD):
+    pass
+#    def run(self):
+#        super(DD)
+#        
+
+class FF(DD):
+    def run(self):
+        print "FF running"
+        super(FF, self).run()
 
 a = SoftwareAssembler(a=1, b=2)
-a.example_only()
+a.example2()
