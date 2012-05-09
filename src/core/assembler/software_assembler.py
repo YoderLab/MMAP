@@ -92,12 +92,13 @@ class SoftwareAssembler(object):
         self.data_dir = path_utils.get_data_dir()+"Genovo/"
         self.working_dir = path_utils.get_data_dir()+"Genovo/test_data/"        
         genovo_p = RunGenovo(infile_var, pdir=self.data_dir, wdir=self.working_dir,  noI=1, thresh=10)
-        glimmer_p = RunGlimmer(infile_var, pdir=self.data_dir, checkExist=False)
+        glimmer_p = RunGlimmer(infile_var, pdir=self.data_dir+"Q", checkExist=False)
         blast_p = RunMetaIDBA(infile_var)
         
         all_p = [genovo_p, glimmer_p, blast_p]
         for p in all_p:
-            p.setInfileName()
+            print "aa",p.wdir
+            p.setInfileName("QWER")
         
         
 

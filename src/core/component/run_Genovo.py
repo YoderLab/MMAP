@@ -9,8 +9,9 @@ from core.run_ext_prog import runExtProg
 from Bio import SeqIO
 import os
 
-INFILE_POSITION = 1;
-    
+INFILE_POSITION = 1
+INFILE_FINALIZE_POSITION = 3
+
 class RunGenovo(RunComponent):
     """
     classdocs
@@ -91,13 +92,12 @@ class RunGenovo(RunComponent):
 #            print("setInfile to", infile)
       
         self.assemble.set_param_at(infile, INFILE_POSITION)
-        
-        self.finalize.set_param_at(infile+".dump.best",3)
+        self.finalize.set_param_at(infile+".dump.best",INFILE_FINALIZE_POSITION)
 
 
     def set_finalize_outfile(self, outfile):
         self.finalize.set_param_at(outfile, 2)
-    
+
     
     def set_cutoff(self, v):
 
