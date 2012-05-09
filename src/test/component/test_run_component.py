@@ -26,16 +26,28 @@ class TestRunComponent(unittest.TestCase):
 
     def test_GenerateOutfileName(self):
         infile_var="test_infile.fasta"
-        genovo = RunComponent.generate_outfile_name(infile)
-        #        print genovo.checkAssembleOutfilesExist("test_infile.fasta")
-        self.assertTrue( genovo.check_outfiles_exist(infile=self.data_dir+infile_var) )
 
-        glimmer = RunComponent.generate_outfile_name(infile)
+        comp = RunComponent()
+        outfile = comp.generate_outfile_name(infile_var,"_out")
+        self.assertEqual("test_infile_out", outfile)
         #        print genovo.checkAssembleOutfilesExist("test_infile.fasta")
-        self.assertTrue( glimmer.check_outfiles_exist(self.data_dir+infile_var) )
+
+    def test_check_outfiles_exist(self):
+        print "in check outfile exist"
+        infile_tag="test_infile.fasta"
+        exts=[".dump1",".status"]
+        comp = RunComponent()
+        self.assertTrue( comp.check_multiple_outfiles_existence(outfileTag=self.data_dir+infile_tag , allext=exts) )
+        exts=["not1","not2"]
+        self.assertFalse( comp.check_multiple_outfiles_existence(outfileTag=self.data_dir+infile_tag , allext=exts) )
+#        glimmer = RunComponent.generate_outfile_name(infile)
+#        #        print genovo.checkAssembleOutfilesExist("test_infile.fasta")
+#        self.assertTrue( glimmer.check_outfiles_exist(self.data_dir+infile_var) )
+
 
     def test_checkInfileExist(self):
         infile_var="test_infile.fasta"
+        comp = RunComponent()
         genovo = RunComponent.check_infile_exist(infile)
         genovo.run()
         self.assertTrue(RunComponent.check_file_existence(self.data_dir+infile_var, ".fasta",True))
@@ -44,7 +56,8 @@ class TestRunComponent(unittest.TestCase):
         glimmer.run()
         self.assertTrue(RunComponent.check_file_existence(self.data_dir+infile_var, ".fasta",True))
 
-    def test_check_outfiles_exist(self):
+    @unittest.skip("")
+    def test_check_outfiles_exista(self):
         infile_var="test_infile.fasta"
         genovo = RunComponent.check_outfiles_exist(outfile_tag=infile_var)
         self.assertTrue( genovo.check_outfiles_exist(self.data_dir+"test_infile.fasta") )

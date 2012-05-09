@@ -52,6 +52,7 @@ class RunComponent(object):
         return isExist
 
     def check_multiple_outfiles_existence(self, outfileTag, allext, isExist=True):
+
         for ext in allext:
             isExist = self.check_file_existence( outfileTag, ext, isExist)
         return isExist

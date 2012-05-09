@@ -44,20 +44,28 @@ class TestSetting(unittest.TestCase):
         return a
 
 #            (arg)
+    foo = 9
     def test_example(self):
         print "example"
-#        foo = 3
+        foo = 3
         print "G", foo
 #        global foo
 #        foo=20
-        print "G",foo
+        print "G",TestSetting.foo
         
         print "== create class=="
         cVar = var()
         print "G",foo      
         print "C",cVar.foo
         print "S",var.foo
-        
+
+        print "== for loop== "
+        for i in range(5):
+            foo = i
+            print foo
+
+        global foo
+        foo=20
         cVar.foo = 10
         print "== update class foo =="
         print "G",foo
@@ -74,7 +82,7 @@ class TestSetting(unittest.TestCase):
     def test_example2(self):
         print "example2"
 #        foo = 3
-        print "G", foo
+        print "G2", foo
 #        global foo
 #        foo=20
 #        print "G",foo
@@ -85,7 +93,7 @@ class TestSetting(unittest.TestCase):
                 
         
 foo = 2
-
+foo=20
 class var(object):
     foo = 1
     
