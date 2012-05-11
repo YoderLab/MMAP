@@ -1,3 +1,5 @@
+import os
+
 __author__ = 'erinmckenney'
 
 
@@ -34,8 +36,16 @@ class Setting(object):
     def get(self, key):
         return self.all_setting[key]
 
-    def check(self):
-        pass
+    def check(self,variable):
+        isExist = self.check_variables_exist(variable, self.all_setting[variable])
+        return isExist
+
+    def check_variables_exist(self, parameter, all_params, isExist=True):
+        all_params = [self.list_valid_param, self.list_essential_param]
+        for parameter in all_params:
+            isExist = self.check(parameter, all_params, isExist)
+            if os.path.exists(parameter):
+                isExist=isExist and True
 
     def add_all(self, **kwargs):
         for k in kwargs.iterkeys():
