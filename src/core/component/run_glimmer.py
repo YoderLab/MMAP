@@ -52,7 +52,7 @@ class RunGlimmer(RunComponent):
 #        return self.record
 
     def get_switch(self):
-        return self.glimmer._switch
+        return self.glimmer.__switch
 #
 
     def setInfileName(self, infile):

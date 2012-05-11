@@ -66,9 +66,8 @@ class SoftwareAssembler(object):
 
     def init_program(self):
         self.setting.check()
-        self.genovo_a = RunGenovo(infile=self.setting.get("genovo_infile"), outfile=self.setting.get("genovo_outfile"),
-            pdir=self.setting.get("genovo_pdir"), noI=self.setting.get("noI"), thresh=self.setting.get("thresh"))
-        self.glimmer_a = RunGlimmer(infile=self.setting.get("glimmer_infile"), outfile=self.setting.get("glimmer_outfile"), pdir=self.setting.get("glimmer_pdir"))
+        self.genovo_a = RunGenovo.create_genovo(self.setting.get_genovo())
+        self.glimmer_a = RunGlimmer(self.setting.get_all_par("list_glimmer") )
 #        self.blast_a = RunBlast()
 
 #        genovo = RunGenovo(infile=infile_var, outfile = outfile_var, pdir = self.data_dir, noI=10, thresh=100, checkExist=True)

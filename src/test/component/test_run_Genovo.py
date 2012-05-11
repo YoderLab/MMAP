@@ -51,7 +51,7 @@ class TestRunGenovo(unittest.TestCase):
         self.assertEqual(3, len(genovo.finalize._switch) )
         self.assertListEqual(genovo.finalize.get_switch(), ["250", self.data_dir+"test_infile_out.fasta", self.data_dir+infile_var+".dump.best"])
     
-        genovo.set_cutoff(300)
+        genovo._set_cutoff(300)
         self.assertListEqual(genovo.finalize.get_switch(), ["300", self.data_dir+"test_infile_out.fasta", self.data_dir+infile_var+".dump.best"])
         
         infile_var="VICTORY!!!.fasta"
@@ -124,11 +124,11 @@ class TestRunGenovo(unittest.TestCase):
         """   
         infile_var="test_infile.fasta"
         genovo = RunGenovo(infile=infile_var, pdir = self.data_dir, noI=3, thresh=250, checkExist=False)
-        self.assertRaises(ValueError, genovo.set_cutoff, 1.1)
-        self.assertRaises(ValueError, genovo.set_cutoff, -1)
-        self.assertRaises(ValueError, genovo.set_cutoff, -2.5)
-        self.assertRaises(TypeError, genovo.set_cutoff, "string")
-        self.assertRaises(TypeError, genovo.set_cutoff, "3")
+        self.assertRaises(ValueError, genovo._set_cutoff, 1.1)
+        self.assertRaises(ValueError, genovo._set_cutoff, -1)
+        self.assertRaises(ValueError, genovo._set_cutoff, -2.5)
+        self.assertRaises(TypeError, genovo._set_cutoff, "string")
+        self.assertRaises(TypeError, genovo._set_cutoff, "3")
 
 
     def test_RunGenovo_check_directory_name(self):

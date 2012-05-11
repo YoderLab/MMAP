@@ -32,6 +32,28 @@ class TestSetting(unittest.TestCase):
         b=self.add_value(1,2,3,4,5)
         print(b)
 
+
+    def test_Setting_get_genovo(self):
+        setting = Setting()
+        setting.add_all(genovo_infile="asdf", outfile="zxcv", genovo_thresh=2)
+        setting.print_all()
+        setting.get_genovo()
+#        self.assertFalse(  )
+#        print setting.get("genovo_outfile")
+        setting = Setting()
+        setting.add_all(genovo_infile="asdf", outfile="zxcv", genovo_noI=2)
+#        setting.print_all()
+        setting.get_genovo()
+#        self.assertFalse(  )
+
+        setting = Setting()
+        setting.add_all(genovo_infile="asdf", genovo_thresh="zxcv", genovo_pdir="pdir", genovo_noI=2)
+#        self.assertTrue(    )
+        setting.get_genovo()
+        setting.get("wdir")
+
+        setting.get_all_par("list_genovo")
+
     def add_value(self, *arg):
 #        self.ass
 #        print "inside add_value"

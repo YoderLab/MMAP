@@ -61,14 +61,19 @@ class RunGenovo(RunComponent):
 #
 #        self.testRandom()
         self.set_finalize_outfile(self.outfile)
-        self.set_cutoff(thresh)
+        self._set_cutoff(thresh)
 
 
     @classmethod
     def create_genovo(cls, setting):
 #        :"test_run_infile.fasta", = self.data_dir, :10, 
-        genovo = cls(infile=setting.get("infile"), noI=setting.get("noI"), thresh=setting.get("thresh"), 
-                     pdir=setting.get("pdir"), outfile=setting.get(""))
+        genovo = cls(infile=setting.get("genovo_infile"), noI=setting.get("genovo_noI"), thresh=setting.get("genovo_thresh"),
+                     pdir=setting.get("genovo_pdir"), wdir=setting.get("wdir") ,outfile=setting.get("genovo_outfile"),
+                    checkExist=setting.get("check_exist"))
+#        infile, noI, thresh, pdir, wdir=None, outfile=None, checkExist = True):
+#        """
+#        ["parent_directory","genovo_infile","genovo_pdir","genovo_noI","genovo_thresh","glimmer_pdir"] # dont need outfile
+#        self.add_all(**kwargs)
         return genovo
         
         
@@ -97,9 +102,11 @@ class RunGenovo(RunComponent):
 
     def set_finalize_outfile(self, outfile):
         self.finalize.set_param_at(outfile, 2)
-
+#        self.finalize.__switch[1] = str(outfile)
+#        print self.finalize.__dict__
+#        self._switch[position - 1] = str(param)
     
-    def set_cutoff(self, v):
+    def _set_cutoff(self, v):
 
         if v>0 and isinstance(v, ( int, long ) ):
             self.finalize.set_param_at(v,1)
@@ -109,6 +116,12 @@ class RunGenovo(RunComponent):
             else:
                 raise ValueError('Error: cutoff set to:',v)
 
+#    def __le__(self, other):
+#        return self.finalize.getNoCutOff() < other.fimalize.getNoCutOff()
+#        a = RunG()
+#        b = RunG()
+#        a <= b
+#        a < b
 
 #    def generate_outfile_name(self, infile):
 #        """
