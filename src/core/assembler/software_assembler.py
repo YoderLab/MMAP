@@ -43,8 +43,13 @@ class SoftwareAssembler(object):
 #        self.setting.add("parent_pdir",pdir)
 
 
-    def set_all_param(self, **kwargs):
-        self.setting.add_all(kwargs)
+    def add_all_param(self, **kwargs):
+        self.setting.add_all(**kwargs)
+
+
+    def get_all_par(self):
+        return self.setting.all_setting
+
 
 #        If we create a dictionary of all extensions associated with a program,
 #       we can define a generic function to check outfiles --> reduce code
@@ -59,20 +64,45 @@ class SoftwareAssembler(object):
             if os.path.exists(pdir+namebase+self.all_outfiles+ext):
                 pass
 
-    def add(self, program, ext):
+    def _addRandom(self, program, ext):
         self.all_outfiles[program]=ext
 
+    def update_genovo_setting(self):
+        self.setting.add("genovo_outfile",self.genovo_a.outfile)
 
 
     def init_program(self):
-        self.setting.check()
+#        self.setting.check()
         self.genovo_a = RunGenovo.create_genovo(self.setting.get_genovo())
-        self.glimmer_a = RunGlimmer(self.setting.get_all_par("list_glimmer") )
+        print self.setting.get_glimmer()
+        self.update_genovo_setting()
+
+        print self.setting.get_glimmer()
+        self.glimmer_a = RunGlimmer.create_glimmer(self.setting.get_glimmer() )
 #        self.blast_a = RunBlast()
 
 #        genovo = RunGenovo(infile=infile_var, outfile = outfile_var, pdir = self.data_dir, noI=10, thresh=100, checkExist=True)
-        
-#    glimmer = RunGlimmer(infile=infile_var, outfile = outfile_var, pdir = self.data_dir)
+
+
+
+    def init_program2(self):
+    #        self.setting.check()
+        self.genovo_a = RunGenovo.create_genovo(self.setting.get_all_par("genovo"))
+        print self.setting.get_glimmer()
+        self.update_genovo_setting()
+
+        print self.setting.get_glimmer()
+        self.glimmer_a = RunGlimmer.create_glimmer(self.setting.get_all_par("glimmer"))
+    #        self.blast_a = RunBlast()
+
+    def init_program3(self):
+    #        self.setting.check()
+        self.genovo_a = RunGenovo.create_genovo2(self.setting)
+        print self.setting.get_glimmer()
+        self.update_genovo_setting()
+
+        print self.setting.get_glimmer()
+#        self.glimmer_a = RunGlimmer.create_glimmer2(self.setting)
 
     def run(self):
         self.genovo_a.run()
@@ -80,79 +110,9 @@ class SoftwareAssembler(object):
 #        self.glimmer_a.run()
 #        check_outfiles(glimmer_a)
         if self.genovo_a.check_outfiles_exist(self.setting.get("genovo_outfile")) and  os.path.exists(self.genovo_a.readFinalizeOutfile.record_index):
-                self.glimmer_a.run()
+            self.glimmer_a.run()
         if self.glimmer_a.check_outfiles_exist(self.setting.get("glimmer_outfile")):
             pass
 #            self.blast_a.run()
 
 
-    def example_only(self):
-        infile_var = "wdir_all_reads.fa"
-        self.data_dir = path_utils.get_data_dir()+"Genovo/"
-        self.working_dir = path_utils.get_data_dir()+"Genovo/test_data/"        
-        genovo_p = RunGenovo(infile_var, pdir=self.data_dir, wdir=self.working_dir,  noI=1, thresh=10)
-        glimmer_p = RunGlimmer(infile_var, pdir=self.data_dir+"Q", checkExist=False)
-        blast_p = RunMetaIDBA(infile_var)
-        
-        all_p = [genovo_p, glimmer_p, blast_p]
-        for p in all_p:
-            print "aa",p.wdir
-            p.setInfileName("QWER")
-        
-    def example2(self):
-        all = ["aoue", (9,8,7,6), [1,2,3], {"a":1,"b":2}]
-        for i in all:
-            print type(i),"\t", len(i), i
-            
-        for i in (1,2,3):
-            print i, i+i
-            
-        for i in "aoeu":
-            print i, i+i
-            
-        all = [AA(), BB(), CC(), DD(), EE(), FF()]
-        for i in all:
-            print type(i)
-            i.run()
-            
-
-
-class AA(object):
-    def __init__(self):
-        pass
-    def run(self):
-        print "AA running"
-        print "zzzzz"
-        
-class BB(object):
-    def run(self):
-        print "BB running"
-        for i in range(3):
-            print i
-        
-        
-class CC(BB):
-    d = [1,2]
-    def run(self):
-        print "CC running"
-        CC.d.extend(CC.d)
-        print CC.d
-        
-class DD(object):
-    def run(self):
-        print "DD running"
-        
-        
-class EE(DD):
-    pass
-#    def run(self):
-#        super(DD)
-#        
-
-class FF(DD):
-    def run(self):
-        print "FF running"
-        super(FF, self).run()
-
-a = SoftwareAssembler(a=1, b=2)
-a.example2()

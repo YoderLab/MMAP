@@ -20,27 +20,30 @@ class Setting(object):
 #        self.add("glimmer_infile","genovo_outfile")
 #        self.add("glimmer_outfile",outfile)
 
-        self.list_valid_param = ["parent_directory","genovo_infile","genovo_pdir","genovo_wdir","genovo_noI","genovo_thresh","genovo_outfile","glimmer_infile","glimmer_pdir","glimmer_wdir","glimmer_outfile"]
+#        self.list_valid_param = ["parent_directory","genovo_infile","genovo_pdir","genovo_wdir","genovo_noI","genovo_thresh","genovo_outfile","glimmer_infile","glimmer_pdir","glimmer_wdir","glimmer_outfile"]
 #        TODO set "_glimmer_infile"="genovo_outfile" and "genovo_wdir"="glimmer_wdir"
         self.list_essential_shared = ["parent_directory"]
-        self.list_essential_genovo = ["genovo_infile","genovo_pdir","genovo_noI","genovo_thresh"]
-        self.list_essential_glimmer = ["glimmer_pdir"] # dont need outfile
-        self.list_optional_genovo = ["wdir","genovo_outfile","checkExist"]
-        self.list_optional_glimmer = ["glimmer_infile","wdir","glimmer_outfile","checkExist"]
+        self.list_essential_genovo_only = ["genovo_infile","genovo_pdir","genovo_noI","genovo_thresh"]
+        self.list_essential_glimmer_only = ["glimmer_pdir"] # dont need outfile
+        self.list_optional_shared = ["wdir", "checkExist"]
+        self.list_optional_genovo_only = ["genovo_outfile",]
+        self.list_optional_glimmer_only = ["glimmer_infile","glimmer_outfile"]
         self.list_ess_par = {
-            "list_genovo":self.list_essential_genovo,
-            "list_glimmer":self.list_essential_glimmer
+            "shared":self.list_essential_shared,
+            "genovo":self.list_essential_genovo_only,
+            "glimmer":self.list_essential_glimmer_only
         }
 
         self.list_optional_par = {
-            "list_genovo":self.list_optional_genovo,
-            "list_glimmer":self.list_optional_glimmer
+            "shared":self.list_optional_shared,
+            "genovo":self.list_optional_genovo_only,
+            "glimmer":self.list_optional_glimmer_only
         }
         self.add_all(**kwargs)
 
 
-    def add(self, k, v):
-        self.all_setting[k]=v
+    def add(self, key, value):
+        self.all_setting[key]=value
 
     def print_all(self):
         print "all_keys", self.all_setting.keys()
@@ -52,46 +55,49 @@ class Setting(object):
 
     def get_all_par(self, program_name):
         print "inside get_all_par\t", program_name
-        is_all_exist =  self.check(self.list_ess_par[program_name])
-
+        is_all_exist =  self._check(self.list_ess_par[program_name]) and self._check(self.list_ess_par["shared"])
+        optional = [self.list_optional_par[program_name,"shared"]]
         if is_all_exist:
-            print "asdfghjk not working"
-
+            print "inside optional loop"
+            for c in optional:
+                if not self._check([c]):
+                    self.add(c, None)
         else:
-            print "not alll key exist"
-        #            raise ValueError("not alll key exist")
+            raise KeyError("not all key exist")
         return self.all_setting
 
     def get_genovo(self):
-        is_all_exist =  self.check(self.list_essential_genovo)
-
+        essential = [self.list_essential_genovo_only, self.list_essential_shared ]
+        is_all_exist =  self._check(essential)
+        optional = [self.list_optional_genovo_only, self.list_optional_shared]
         if is_all_exist:
-            print "asdfghjk"
-            for c in self.list_optional_genovo:
-                if not self.check([c]):
+            for c in optional:
+                print "checking optional parameter\t", c
+                if not self._check([c]):
                     self.add(c, None)
         else:
-            print "not alll key exist"
-#            raise ValueError("not alll key exist")
+            print "passed loop"
+            raise KeyError("not all key exist")
         return self.all_setting
 
     def get_glimmer(self):
-        is_all_exist =  self.check(self.list_essential_glimmer)
-
+        is_all_exist =  self._check(self.list_essential_glimmer_only) and self._check(self.list_essential_shared)
+        self.all_setting["glimmer_infile"] = self.all_setting["genovo_outfile"]
+        optional = [self.list_optional_glimmer_only, self.list_optional_shared]
         if is_all_exist:
-            print "asdfghjk"
-            for c in self.list_optional_glimmer:
-                if not self.check([c]):
+#            print "asdfghjk"
+            for c in optional:
+                if not self._check([c]):
                     self.add(c, None)
         else:
-            print "not alll key exist"
-        #            raise ValueError("not alll key exist")
+#            print "not alll key exist"
+            raise KeyError("not all key exist")
         return self.all_setting
 #
-    def check(self, variable):
+    def _check(self, variable):
         for v in variable:
-            print "check\t", v
-            isExist = self.check_variables_exist(v)
+#            print "check\t", v
+            isExist = self._check_variables_exist(v)
             if isExist == False:
                 return isExist
 
@@ -102,7 +108,7 @@ class Setting(object):
 
 
 
-    def check_variables_exist(self, v):#, isExist=True):
+    def _check_variables_exist(self, v):#, isExist=True):
         for key in self.all_setting.iterkeys():
 #            print "matching keys\t", key
             if v==key:

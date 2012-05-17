@@ -75,8 +75,9 @@ class RunGenovo(RunComponent):
 #        ["parent_directory","genovo_infile","genovo_pdir","genovo_noI","genovo_thresh","glimmer_pdir"] # dont need outfile
 #        self.add_all(**kwargs)
         return genovo
-        
-        
+
+
+
 
     def set_number_of_iter(self, param):
 
@@ -229,6 +230,11 @@ class RunGenovo(RunComponent):
     def run(self):
         self.assemble.run()
         self.finalize.run()
+
+    @classmethod
+    def create_genovo2(cls, setting):
+        pass
+
 #
 
 

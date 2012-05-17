@@ -45,14 +45,28 @@ class RunGlimmer(RunComponent):
         self.setInfileName(self.infile_class_var)
         self.set_output_tag(self.outfileTag)
 
-        
+
+
+
+    @classmethod
+    def create_glimmer(cls, setting):
+    #        :"test_run_infile.fasta", = self.data_dir, :10,
+        glimmer = cls(infile=setting.get("glimmer_infile"),
+            pdir=setting.get("glimmer_pdir"), wdir=setting.get("wdir") ,outfile=setting.get("glimmer_outfile"),
+            checkExist=setting.get("check_exist"))
+        #        infile, noI, thresh, pdir, wdir=None, outfile=None, checkExist = True):
+        #        """
+        #        ["parent_directory","genovo_infile","genovo_pdir","genovo_noI","genovo_thresh","glimmer_pdir"] # dont need outfile
+        #        self.add_all(**kwargs)
+        return glimmer
+
     def run(self):
         self.glimmer.run()
 #    def getRecord(self):
 #        return self.record
 
     def get_switch(self):
-        return self.glimmer.__switch
+        return self.glimmer._switch
 #
 
     def setInfileName(self, infile):

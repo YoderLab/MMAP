@@ -24,7 +24,7 @@ class TestSetting(unittest.TestCase):
     #    @unittest.skip("demonstrating skipping")
     def test_Setting_set_param(self):
         setting = SA()
-        setting.set_all_param(inasdffle="asdf", outfile="zxcv", noI=2) == fail
+        setting.add_all_param(inasdffle="asdf", outfile="zxcv", noI=2) == fail
         setting.print_all()
 
     def test_check()
