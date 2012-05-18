@@ -45,19 +45,19 @@ class TestRunComponent(unittest.TestCase):
 #        self.assertTrue( glimmer.check_outfiles_exist(self.data_dir+infile_var) )
 
 
-    def test_checkInfileExist(self):
+    def test_check_infile_exist(self):
         infile_var="test_infile.fasta"
         comp = RunComponent()
-        genovo = RunComponent.check_infile_exist(infile)
+        genovo = RunComponent.check_infile_exist(infile_var)
         genovo.run()
         self.assertTrue(RunComponent.check_file_existence(self.data_dir+infile_var, ".fasta",True))
 
-        glimmer = RunComponent.check_infile_exist(infile)
+        glimmer = RunComponent.check_infile_exist(infile_var)
         glimmer.run()
         self.assertTrue(RunComponent.check_file_existence(self.data_dir+infile_var, ".fasta",True))
 
     @unittest.skip("")
-    def test_check_outfiles_exista(self):
+    def test_check_outfiles_exist2(self):
         infile_var="test_infile.fasta"
         genovo = RunComponent.check_outfiles_exist(outfile_tag=infile_var)
         self.assertTrue( genovo.check_outfiles_exist(self.data_dir+"test_infile.fasta") )

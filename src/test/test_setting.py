@@ -69,7 +69,7 @@ class TestSetting(unittest.TestCase):
 
 
     def test_Setting_get_glimmer(self):
-
+        pass
 
     def test_Setting_get_all_par(self, program_name):
         setting = Setting()

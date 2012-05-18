@@ -15,12 +15,12 @@ python -m unittest -v test.main
 '''
 
 ## from file import class
-
+import unittest
 from test.test_distance import TestDistance 
 #from test.test_hclust import TestHClust
 from test.test_run_ext_prog import TestRunExtProg
 from test.test_sequence import TestSequence
-import unittest
+
 
 # Parser module
 #from test.parser import *
@@ -28,7 +28,12 @@ from test.parser.test_go_annotation_parser import *
 from test.parser.test_go_OBO_parser import *
 from test.parser.test_parser import *
 #
+
+## assembler
+from test.assembler.test_software_assembler import *
+
 ## component module
+from test.component.test_run_component import *
 from test.component.test_run_Genovo import *
 from test.component.test_run_Glimmer import *
 #from test.component.test_run_metaIDBA import *

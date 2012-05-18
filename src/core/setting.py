@@ -67,7 +67,21 @@ class Setting(object):
         return self.all_setting
 
     def get_genovo(self):
+        print("\n ** in setting.get_genove() **")
         essential = [self.list_essential_genovo_only, self.list_essential_shared ]
+        print("list_essential_only:\t%s" %self.list_essential_genovo_only)
+        print("list_essential_shared:\t%s" %self.list_essential_shared)
+        print("essential variable:\t%s" %essential)
+        
+        # test each for loop explicitly
+#        for v in self.list_essential_genovo_only:
+#            print("print each par in genovo_only:\t%s" %v)
+#        for v in self.list_essential_shared:
+#            print("print each par in shared_only:\t%s" %v)
+#        for v in essential:
+#            print("print each par in essential:\t%s" %v)
+        
+        
         is_all_exist =  self._check(essential)
         optional = [self.list_optional_genovo_only, self.list_optional_shared]
         if is_all_exist:
@@ -95,8 +109,9 @@ class Setting(object):
         return self.all_setting
 #
     def _check(self, variable):
+        print("\n **in setting._check()**\n variable: %s" %variable)
         for v in variable:
-#            print "check\t", v
+            print("check each v inside for loop\t%s" %v)
             isExist = self._check_variables_exist(v)
             if isExist == False:
                 return isExist
