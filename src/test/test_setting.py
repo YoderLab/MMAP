@@ -34,6 +34,9 @@ class TestSetting(unittest.TestCase):
 
 
     def test_Setting_get_genovo(self):
+        """
+
+        """
         setting = Setting()
         setting.add_all(genovo_infile="gInfile", outfile="gOutfile", genovo_thresh=2)
         setting.print_all()
@@ -45,31 +48,44 @@ class TestSetting(unittest.TestCase):
         self.assertRaises(KeyError, setting.get_genovo)
 #        ["genovo_infile","genovo_pdir","genovo_noI","genovo_thresh"]
         setting.add("genovo_thresh",13)
-        setting.add_all(genovo_thresh=14, genovo_pdir="g_p_dir")
-        setting.add("genovo_thresh", 14)
-        setting.add( "genovo_pdir","g_p_dir")
+        setting.add_all(genovo_thresh=14, genovo_pdir="g_p_dir", parent_directory="main_pdir")
         #        self.assertFalse(  )
         expected = {"genovo_infile":"gInfile", "outfile":"gOutfile", "genovo_noI":2,
                     "genovo_thresh":14, "genovo_pdir":"g_p_dir",
                     "wdir":None,"checkExist":None,
-                    "genovo_outfile":None,}
+                    "genovo_outfile":None,"parent_directory":"main_pdir"}
+#        print "setting.get_genovo:\t", setting.get_genovo()
         self.assertEqual(expected, setting.get_genovo())
 
-        setting.add("wdir", "optionaldir")
-        expected["wdir"]="optionaldir"
+        setting.add("wdir","otherdir")
+        expected["wdir"]="otherdir"
+        print "setting check:\t",setting.print_all()
         self.assertEqual(expected, setting.get_genovo())
 
-        setting = Setting()
-        setting.add_all(genovo_infile="gInfile", genovo_thresh=14, genovo_pdir="g_p_dir", genovo_noI=2)
-        setting.add("wdir","optionaldir")
+        setting1 = Setting()
+        setting1.add_all(genovo_infile="gInfile", genovo_thresh=14, genovo_pdir="g_p_dir", genovo_noI=2)
+        setting1.add("wdir","optionaldir")
 
         expected.pop("outfile")
 
-        self.assertEqual(expected, setting.get_genovo())
+        self.assertEqual(expected, setting1.get_genovo())
 
 
     def test_Setting_get_glimmer(self):
-        pass
+        setting = Setting()
+        setting.add_all(glimmer_infile="glInfile", outfile="Outfile")
+        setting.print_all()
+        self.assertRaises(KeyError, setting.get_glimmer)
+
+        setting.add("genovo_infile","infile")
+        setting.add_all(glimmer_outfile="glimOut", glimmer_pdir="glimp_dir", parent_directory="main_pdir")
+        #        self.assertFalse(  )
+        expected = {"glimmer_infile":"infile", "genovo_infile":"infile","outfile":"Outfile", "glimmer_outfile":"glimOut",
+                    "glimmer_pdir":"glimp_dir",
+                    "wdir":None,"checkExist":None,
+                    "parent_directory":"main_pdir"}
+        #        print "setting.get_genovo:\t", setting.get_genovo()
+        self.assertEqual(expected, setting.get_glimmer())
 
     def test_Setting_get_all_par(self, program_name):
         setting = Setting()
