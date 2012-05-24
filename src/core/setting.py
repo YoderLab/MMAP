@@ -53,27 +53,35 @@ class Setting(object):
         return self.all_setting[key]
 
     def get_all_par(self, program_name):
-        print "inside get_all_par\t", program_name
+#        print "inside get_all_par\t", program_name
         is_all_exist =  self._check(self.list_ess_par[program_name]) and self._check(self.list_ess_par["shared"])
-        optional = [self.list_optional_par[program_name,"shared"]]
+        optional =self.list_optional_par[program_name] + self.list_optional_par["shared"]
+
+
         if is_all_exist:
-            print "inside optional loop"
+#            print "inside optional loop"
             for c in optional:
-                print "getting value for\t", c
+#                print "getting value for\t", c
                 if not self._check([c]):
                     self.add(c, None)
                     print "value for c=\t", self._check([c])
         else:
             raise KeyError("not all key exist")
+
+        #        TODO: remove dup code later
+        if program_name == "glimmer":
+            if self.all_setting["glimmer_infile"] is None:
+                self.all_setting["glimmer_infile"] = self.all_setting["genovo_outfile"]
+
         return self.all_setting
 
     def get_genovo(self):
-        print("\n ** in setting.get_genove() **")
+#        print("\n ** in setting.get_genove() **")
         essential = self.list_essential_genovo_only + self.list_essential_shared
-        print("list_essential_only:\t%s" %self.list_essential_genovo_only)
-        print("list_essential_shared:\t%s" %self.list_essential_shared)
-        print("essential variable:\t%s" %essential)
-        
+#        print("list_essential_only:\t%s" %self.list_essential_genovo_only)
+#        print("list_essential_shared:\t%s" %self.list_essential_shared)
+#        print("essential variable:\t%s" %essential)
+#
         # test each for loop explicitly
 #        for v in self.list_essential_genovo_only:
 #            print("print each par in genovo_only:\t%s" %v)
@@ -85,20 +93,25 @@ class Setting(object):
         
         is_all_exist =  self._check(essential)
         optional = self.list_optional_genovo_only + self.list_optional_shared
+
         if is_all_exist:
+#            print("list option\t%s" %optional)
             for c in optional:
-                print "checking optional parameter\t", c
+#                print "checking optional parameter\t", c
 #                print c, "is set to", self.get[c]
-                if not self._check(c):
+#                if not self._check([c]):
+                if not self._check_variables_exist(c):
                     self.add(c, None)
+
         else:
-            print "passed loop"
             raise KeyError("not all key exist")
         return self.all_setting
 
     def get_glimmer(self):
         is_all_exist =  self._check(self.list_essential_glimmer_only) and self._check(self.list_essential_shared)
-        self.all_setting["glimmer_infile"] = self.all_setting["genovo_outfile"]
+
+        if self.all_setting["glimmer_infile"] is None:
+            self.all_setting["glimmer_infile"] = self.all_setting["genovo_outfile"]
         optional = self.list_optional_glimmer_only + self.list_optional_shared
         if is_all_exist:
 #            print "asdfghjk"
@@ -111,9 +124,9 @@ class Setting(object):
         return self.all_setting
 #
     def _check(self, variable):
-        print("\n **in setting._check()**\n variable: %s" %variable)
+#        print("\n **in setting._check()**\n variable: %s" %variable)
         for v in variable:
-            print("check each v inside for loop\t%s" %v)
+#            print("check each v inside for loop\t%s" %v)
 #            print "variable set to:\t", self.all_setting[v]
             isExist = self._check_variables_exist(v)
             if isExist == False:

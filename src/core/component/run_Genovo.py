@@ -76,6 +76,19 @@ class RunGenovo(RunComponent):
 #        self.add_all(**kwargs)
         return genovo
 
+    @classmethod
+    def create_genovo_from_setting(cls, setting_class):
+    #        :"test_run_infile.fasta", = self.data_dir, :10,
+        setting = setting_class.get_all_par("genovo")
+        genovo = RunGenovo.create_genovo(setting)
+#        genovo = cls(infile=setting.get("genovo_infile"), noI=setting.get("genovo_noI"), thresh=setting.get("genovo_thresh"),
+#            pdir=setting.get("genovo_pdir"), wdir=setting.get("wdir") ,outfile=setting.get("genovo_outfile"),
+#            checkExist=setting.get("check_exist"))
+        #        infile, noI, thresh, pdir, wdir=None, outfile=None, checkExist = True):
+        #        """
+        #        ["parent_directory","genovo_infile","genovo_pdir","genovo_noI","genovo_thresh","glimmer_pdir"] # dont need outfile
+        #        self.add_all(**kwargs)
+        return genovo
 
 
 
@@ -231,9 +244,6 @@ class RunGenovo(RunComponent):
         self.assemble.run()
         self.finalize.run()
 
-    @classmethod
-    def create_genovo2(cls, setting):
-        pass
 
 #
 

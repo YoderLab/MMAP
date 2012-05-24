@@ -1,4 +1,5 @@
 from core.assembler.software_assembler import SoftwareAssembler
+from core.utils import path_utils
 
 __author__ = 'erinmckenney'
 
@@ -9,7 +10,10 @@ class TestSoftwareAssembler(unittest.TestCase):
 
     def setUp(self):
         self.assembly=SoftwareAssembler()
-    pass
+        self.genovo_dir = path_utils.get_data_dir()+"Genovo/"
+        self.glimmer_dir = path_utils.get_data_dir()+"Glimmer/"
+        self.working_dir = path_utils.get_data_dir()+"test_data/"
+
 
 
     def test_SoftwareAssembler_set_all_param(self):
@@ -25,10 +29,15 @@ class TestSoftwareAssembler(unittest.TestCase):
 #        self.assertEqual(True, False)
 
     def test_SoftwareAssembler_init_program(self):
-        self.assembly.add_all_param(genovo_infile="gInfile", genovo_thresh=14, genovo_pdir="g_p_dir", genovo_noI=2)
-        self.assembly.add_all_param(glimmer_pdir="glib_pdir")
+
+        self.assembly.add_all_param(genovo_infile="wdir_all_reads.fa", genovo_thresh=50,
+            genovo_pdir=self.genovo_dir, genovo_noI=10, parent_directory="main_pdir")
+        self.assembly.add_all_param(glimmer_pdir=self.glimmer_dir)
+        self.assembly.add_all_param(wdir=self.working_dir)
+
         self.assembly.init_program()
-#        self.assembly.run()
+        self.assembly.run()
+
 
 if __name__ == '__main__':
     unittest.main()

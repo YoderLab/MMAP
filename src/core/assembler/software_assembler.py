@@ -71,38 +71,38 @@ class SoftwareAssembler(object):
         self.setting.add("genovo_outfile",self.genovo_a.outfile)
 
 
+#    def init_program(self):
+##        self.setting.check()
+#        self.genovo_a = RunGenovo.create_genovo_from_setting(self.setting.get_genovo())
+#        print self.setting.get_glimmer()
+#        self.update_genovo_setting()
+#
+#        print self.setting.get_glimmer()
+#        self.glimmer_a = RunGlimmer.create_glimmer(self.setting.get_glimmer() )
+##        self.blast_a = RunBlast()
+#
+##        genovo = RunGenovo(infile=infile_var, outfile = outfile_var, pdir = self.data_dir, noI=10, thresh=100, checkExist=True)
+#
+#
+#
+#    def init_program2(self):
+#    #        self.setting.check()
+#        self.genovo_a = RunGenovo.create_genovo_from_setting(self.setting.get_all_par("genovo"))
+#        print self.setting.get_glimmer()
+#        self.update_genovo_setting()
+#
+#        print self.setting.get_glimmer()
+#        self.glimmer_a = RunGlimmer.create_glimmer(self.setting.get_all_par("glimmer"))
+#    #        self.blast_a = RunBlast()
+
     def init_program(self):
-#        self.setting.check()
-        self.genovo_a = RunGenovo.create_genovo(self.setting.get_genovo())
-        print self.setting.get_glimmer()
-        self.update_genovo_setting()
-
-        print self.setting.get_glimmer()
-        self.glimmer_a = RunGlimmer.create_glimmer(self.setting.get_glimmer() )
-#        self.blast_a = RunBlast()
-
-#        genovo = RunGenovo(infile=infile_var, outfile = outfile_var, pdir = self.data_dir, noI=10, thresh=100, checkExist=True)
-
-
-
-    def init_program2(self):
     #        self.setting.check()
-        self.genovo_a = RunGenovo.create_genovo(self.setting.get_all_par("genovo"))
-        print self.setting.get_glimmer()
+        self.genovo_a = RunGenovo.create_genovo_from_setting(self.setting)
+#        print self.setting.get_glimmer()
         self.update_genovo_setting()
 
-        print self.setting.get_glimmer()
-        self.glimmer_a = RunGlimmer.create_glimmer(self.setting.get_all_par("glimmer"))
-    #        self.blast_a = RunBlast()
-
-    def init_program3(self):
-    #        self.setting.check()
-        self.genovo_a = RunGenovo.create_genovo2(self.setting)
-        print self.setting.get_glimmer()
-        self.update_genovo_setting()
-
-        print self.setting.get_glimmer()
-#        self.glimmer_a = RunGlimmer.create_glimmer2(self.setting)
+#        print self.setting.get_glimmer()
+        self.glimmer_a = RunGlimmer.create_glimmer_from_setting(self.setting)
 
     def run(self):
         self.genovo_a.run()
