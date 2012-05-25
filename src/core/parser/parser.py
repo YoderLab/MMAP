@@ -5,7 +5,6 @@ Created on Dec 8, 2011
 '''
 
 
-
 def parse_keyword(line, keyword, keyword2=""):
     index = line.find(keyword)
     if keyword2 == "":
@@ -16,10 +15,10 @@ def parse_keyword(line, keyword, keyword2=""):
         return None
     else:
         if keyword.endswith(":"):
-            return line[index+len(keyword)+1:index_end].strip()
+            return line[index + len(keyword) + 1:index_end].strip()
         else:
-            indexC = line.find(":", index+len(keyword))
-            return line[indexC+1:index_end].strip()
+            indexC = line.find(":", index + len(keyword))
+            return line[indexC + 1:index_end].strip()
 
 
 class Parser(object):
@@ -27,9 +26,7 @@ class Parser(object):
     classdocs
     '''
 
-
     def __init__(self):
         '''
         Constructor
         '''
-        

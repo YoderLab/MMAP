@@ -13,7 +13,7 @@ class GoAnalysis(object):
 TODO: try methods for selecting GO-terms of functional interest
 """
 GOterms.full = Blast.results():
-z=item in GOterms.full
+z = item in GOterms.full
 for item z in GOterms.full:
 
     # could search for a pattern within a string
@@ -40,10 +40,11 @@ TODO: Compare speed of methods for counting frequency
 # Counting frequency in a list:
 GOterms = [ ]
 [(a, GOterms.count(a)) for a in set(GOterms)]
-sorted(_, key=lambda x: -x[1])		# add this last line to rank them
+sorted(_, key=lambda x:-x[1])		# add this last line to rank them
 
 # Alternatively, you can use a Counter Class:
 from collections import Counter
 GOterms = " "
 freqs = Counter(GOterms.split())
 print(freqs)
+

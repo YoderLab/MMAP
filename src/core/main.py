@@ -13,14 +13,13 @@ not require matplotlib - 1.1.0 http://matplotlib.sourceforge.net/
 
 '''
 import os
-import sys
 import numpy
 import scipy
 import Bio
 
 
 from Bio import SeqIO
-from core.component.run_Genovo import RunGenovo
+from core.component.run_genovo import RunGenovo
 from core.connector import go_connector
 from core.sequence import Sequence
 from core.dist.matching_distance import MatchingDistance
@@ -43,14 +42,16 @@ CWD = os.getcwd()
 data_dir = path_utils.get_data_dir(CWD)
 print "data dir:\t", data_dir
 
+
 def setup_database():
-    
-    infile = data_dir+"AE014075_subSmall100.fasta"
-    infile = data_dir+"MetaSim_bint-454.20e39f4c.fna"
+
+    infile = data_dir + "AE014075_subSmall100.fasta"
+    infile = data_dir + "MetaSim_bint-454.20e39f4c.fna"
     record_index = SeqIO.index(infile, "fasta") # use index for large file
-    
+
     return record_index
-    
+
+
 def main():
     print __name__
 #    time_profile()
@@ -67,7 +68,7 @@ def main():
     infile_var = "testMetaIDBA.fasta"
     outfile = "testout"
     genovo_dir = "/Users/erinmckenney/Desktop/Pipeline/metaLem/data/Genovo/"
-    Genovo = RunGenovo(infile=infile_var, outfile=outfile, pdir = genovo_dir, noI=3, thresh=250)
+    Genovo = RunGenovo(infile=infile_var, outfile=outfile, pdir=genovo_dir, noI=3, thresh=250)
 
 
 
@@ -96,17 +97,17 @@ def main():
 #    Genovo.setCutoff(-16)
 #    print "set Cutoff to -16", Genovo.finalize.get_switch()
 
-    infile_var="VICTORY!!!.fasta"
+    infile_var = "VICTORY!!!.fasta"
 #    print infile
 #    Genovo = RunGenovo(infile=infile_var, pdir = data_dir, noI=3, thresh=250)
     Genovo.setInfileName(infile_var)
 
     print Genovo.finalize.get_switch()
 
-    Genovo = RunGenovo(infile=infile_var, outfile=outfile, pdir = genovo_dir, noI=3, thresh=250)
+    Genovo = RunGenovo(infile=infile_var, outfile=outfile, pdir=genovo_dir, noI=3, thresh=250)
     Genovo.setFinalizeOutfile("sdif")
     print "set outfile to sdif", Genovo.finalize.get_switch()
-    Genovo2 = RunGenovo(infile=infile_var,  pdir = genovo_dir, noI=3, thresh=250)   ## outfile == None
+    Genovo2 = RunGenovo(infile=infile_var, pdir=genovo_dir, noI=3, thresh=250)   ## outfile == None
     print "outfile = None = out.test", Genovo2.finalize.get_switch()
     Genovo2.setCutoff(-2.3)
 
@@ -132,8 +133,8 @@ def main():
 #    BLAST = RunBlast(record_index, e_value_cut_off)
 #    BLAST.run();
 
-    
- 
+
+
 
 if __name__ == "__main__":
     main()

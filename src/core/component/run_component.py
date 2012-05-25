@@ -3,31 +3,39 @@ import os
 __author__ = 'erinmckenney'
 
 
+def check_dir_ending(tdir):
+    if not tdir.endswith("/"):
+        tdir = tdir + "/"
+    return tdir
+
+
 class RunComponent(object):
 
     def __init__(self):
+        pass
+#        self.all_exts=[]
 
-        self.allextw=[]
+    def parameter_check(self, pdir, wdir, infile, outfile, check_exist,
+                        outfile_tag):
+        self.check_dirs(pdir, wdir)
+        self.generate_outfile_name(infile, outfile, outfile_tag)
+        self.check_infile_exist(check_exist)
 
-    def check_infile_exist(self):
-        if not os.path.exists(self.wdir):
-            raise IOError("Error: invalid directory: %s" %self.wdir)
-            #        If the directory is valid, this chunk makes sure the infile exists.
-        #        self.infile_path="%s%s" % (self.pdir, self.infile_class_var)
-        #        print "Infile path set to:",self.infile_path
+    def check_infile_exist(self, check_exist):
+        if check_exist:
+            if not os.path.exists(self.wdir):
+                raise IOError("Error: invalid directory: %s" % self.wdir)
+            if not self.is_file_exist("", self.infile, True):
+                raise IOError("Error: infile does not exist. %s%s"
+                              % (self.wdir, self.infile))
 
-        if not self.check_file_existence( "", self.infile_class_var, True):
-            raise IOError("Error: infile does not exist. %s%s"%(self.wdir, self.infile_class_var))
-            #        This chunk makes sure you won't overwrite an existing outfile.
-        #        self.outfile_path="%s%s" % (self.wdir, self.outfileTag)
+    def check_dirs(self, pdir, wdir):
+        self.pdir = check_dir_ending(pdir)
+        if wdir is None:
+            wdir = self.pdir
+        self.wdir = check_dir_ending(wdir)
 
-#        isExist = self.check_outfiles_exist(self.allextw)
-#
-#        if isExist:
-#            raise IOError("WARNING: outfile already exists!!!")
-#            #TODO: come back to this later.
-
-    def generate_outfile_name(self, infile, outtag):
+    def generate_outfile_name(self, infile, outfile, outfile_tag):
         """
         infile name
             check if it exist
@@ -35,44 +43,44 @@ class RunComponent(object):
         if os.path.exists(  self.cwd+self.name_only  ):
         if os.path.exists(  full_file_path  ):
         """
-        location=infile.rfind(".")
-        if location is -1:
-            namebase=infile
+        self.infile = self.wdir + infile
+        if outfile is None:
+            location = infile.rfind(".")
+            if location is -1:
+                namebase = infile
+            else:
+                namebase = infile[0:location]
+            self.outfile = self.wdir + namebase + outfile_tag
         else:
-            namebase=infile[0:location]
-        #        print "location", location, infile, infile[0:location]
-        outfile=namebase+outtag
-        return outfile
-
+            self.outfile = self.wdir + outfile
 
     def check_outfiles_exist(self, outfile_tag):
-    #        allextw=[".status", ".dump1", ".dump.best"]
-#        print "in c", self.allextw
-        isExist = self.check_multiple_outfiles_existence( outfile_tag, self.allextw)
-        return isExist
+        """
+        check with default exts for each program
+        """
+        is_exist = self.is_multi_files_exist(outfile_tag, self.all_exts)
+        return is_exist
 
-    def check_multiple_outfiles_existence(self, outfileTag, allext, isExist=True):
+    def is_multi_files_exist(self, file_tag, all_exts, is_exist=True):
+        """
+        check multiple files exists
+        must provide all_exts as []
+        return boolean
+        """
+        for ext in all_exts:
+            is_exist = self.is_file_exist(file_tag, ext, is_exist)
+        return is_exist
 
-        for ext in allext:
-            isExist = self.check_file_existence( outfileTag, ext, isExist)
-        return isExist
-
-
-
-    def check_file_existence(self, filetag, ext, isExist):
-#        print(type(filetag))
-#        print(type(ext))
-        test_file= "%s%s" % (filetag, ext)
-#        print ext," file:",test_file
-
-#        print "*",ext," file:",test_outfile
+    def is_file_exist(self, file_tag, ext="", is_exist=True):
+        """
+        check if one file exist
+        return boolean
+        """
+        test_file = "%s%s" % (file_tag, ext)
         if os.path.exists(test_file):
-        #            print ext,"  outfile exists."
-            isExist=isExist and True
+            is_exist = is_exist and True
         else:
-            isExist=False
-        #            print "Error: ",ext,"  outfile does not exist."
+            is_exist = False
 
-        return isExist
-
+        return is_exist
 

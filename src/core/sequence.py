@@ -14,31 +14,29 @@ class Sequence(object):
     def __init__(self, data=None):
         if not (isinstance(data, Seq.Seq) or isinstance(data, str)):
             raise TypeError("Incorrect type, must be Bio.Seq.Seq or str: type(data) = %s" % type(data))
-        self.each_term = dict() #{str: set()}
+        self.each_term = dict()  # {str: set()}
         self.all_terms = set()
         self.data = data
         self.is_match = False
         self.__web_page = None
         self.len = 0
         self.acc_ID, self.match_ID, self.e_value = [], [], []
-        
 
-        
     def add(self, key, term):
         '''append term, term must be a list (str doesnt work)'''
         self.each_term[key] = set(term)
         self.all_terms.update(term)
         self.len += 1
-    
+
     def add_multi(self, key, *terms):
         '''append multiple terms to the same key'''
         for term in terms:
             self.add(key, term)
 
     def __len__(self):
-        ''' "Emulating" method, should override len()''' 
+        ''' "Emulating" method, should override len()'''
         return self.len
-            
+
     def get_one_term(self, key):
         return self.each_term[key]
 
@@ -60,12 +58,12 @@ class Sequence(object):
 
         return combList
 
-    ## TODO: 
+    ## TODO:
     def cal_distance(self, method="s"):
         if method == "s":
             return 0
 
-## test property    
+## test property
     def _get_web_page(self):
         return self.__web_page
 
@@ -78,13 +76,10 @@ class Sequence(object):
     web_page = property(_get_web_page, set_web_page, del_web_page, "Testing property")
 
 
-
 class Hits(object):
-    
-    
+
     def __init__(self):
         self.acc_ID = None
         self.match_ID = None
         self.e_value = None
-        
-        
+

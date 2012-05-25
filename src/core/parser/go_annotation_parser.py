@@ -9,12 +9,13 @@ from core.parser import parser
 
 def parse_version(readline):
     return parser.parse_keyword(readline, "!CVS Version: Revision", "$")
-    
+
+
 def parse_date(readline):
     return parser.parse_keyword(readline, "!GOC Validation Date:", "$")
 
 
-def addPair(annotation, key, value):
+def add_pair(annotation, key, value):
     if key in annotation:
         annotation[key].add(value)
     else:
@@ -30,45 +31,45 @@ class AnnotationParser(object):
     http://www.geneontology.org/GO.format.gaf-2_0.shtml
     '''
 
-
-    def __init__(self, file):
+    def __init__(self, infile):
         '''
         Constructor
         '''
-        self.file = file
-    
-    
-    def parse_database(self):        
+        self.infile = infile
+
+    def parse_database(self):
         '''
         GAF 2.0 format
-        take 
-            2    DB Object ID 
+        take
+            2    DB Object I
             5    GO ID
         TODO: double check which field to use
         '''
-        self.data = open(self.file, "r")
+        self.data = open(self.infile, "r")
         self.cvs_version = parse_version(self.data.readline())
         self.goc_validation_date = parse_date(self.data.readline())
 #        print "\n","zz",self.version
-        self.annotation = dict() #{str(id) : set(is_a)} 
-        
-        print "Begin parsing annotation version: %s date: %s" %(self.cvs_version, self.goc_validation_date)
-        
+        self.annotation = dict()  # {str(id) : set(is_a)}
+
+        print("Begin parsing annotation version: %s date: %s" %
+              (self.cvs_version, self.goc_validation_date))
+
         self.line = self.data.readline()
         while self.line != "":
             if not self.line.startswith("!"):
                 self.token = self.line.split("\t")
                 self.key = self.token[4]
-                self.value = self.token[1] #TODO: double check which field to use
-                addPair(self.annotation, self.key, self.value)
-            
+                self.value = self.token[1]
+                # TODO: double check which field to use
+                add_pair(self.annotation, self.key, self.value)
+
             self.line = self.data.readline()
 
         self.data.close()
 
-        print "Done"
-        
-        
+        print("Done")
+
     def get_annotation_count(self, key):
         terms = self.annotation[key]
         return len(terms)
+

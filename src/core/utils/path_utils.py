@@ -5,7 +5,7 @@ Created on Nov 30, 2011
 '''
 import os
 
-    
+
 def get_parent_path(path, above=1):
     while above != 1:
         path = path[0:path.rfind(os.sep)]
@@ -14,33 +14,26 @@ def get_parent_path(path, above=1):
         try:
             return path[0:path.rindex(os.sep)]
         except ValueError as e:
-            print "Exception error is: %s, too many levels above path" % e;
-            raise
+            raise ValueError("Exception error is: %s, too many levels above path" % e)
 
 
 def get_data_dir(path=os.getcwd()):
     '''
     find */src/ then go ../src/data/
-    '''  
+    '''
     while path.find("src") != -1:
         path = get_parent_path(path)
-        
-    return path+os.sep+"data"+os.sep
+
+    return path + os.sep + "data" + os.sep
 
 
-
-
-
-
-
-class pathUtils(object):
+class PathUtils(object):
     '''
     classdocs
     '''
-    
 
     def __init__(self):
         '''
         Constructor
         '''
-        
+

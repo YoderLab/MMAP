@@ -5,42 +5,27 @@ Created on Nov 22, 2011
 
 #fully auto method
 cd ./src
-python -m unittest discover -v 
+python -m unittest discover -v
 
  #no ".py", auto call testRunner
  #create proper test suite, which allow the testRunner to call it automatically
  #need add from * import *
 cd ./src
-python -m unittest -v test.main 
+python -m unittest -v test.main
 '''
 
-## from file import class
+from test import *
+from test.assembler import *
+from test.component import *
+from test.connector import *
+from test.parser import *
 import unittest
-from test.test_distance import TestDistance 
-#from test.test_hclust import TestHClust
-from test.test_run_ext_prog import TestRunExtProg
-from test.test_sequence import TestSequence
 
 
-# Parser module
-#from test.parser import *
-from test.parser.test_go_annotation_parser import *
-from test.parser.test_go_OBO_parser import *
-from test.parser.test_parser import *
-#
 
-## assembler
-from test.assembler.test_software_assembler import *
 
-## component module
-from test.component.test_run_component import *
-from test.component.test_run_Genovo import *
-from test.component.test_run_Glimmer import *
-#from test.component.test_run_metaIDBA import *
- 
 
 class TestAll(unittest.TestCase):
-
     pass
 
 #def test_main():

@@ -8,18 +8,15 @@ Setup on at Dec 2011, if URL/webpage changes then need update it accordingly
 '''
 
 
-import urllib, urllib2
-import time
-import sys
-
-from core.utils import string_utils
-from core import re_patterns
 from Bio._py3k import _as_string
-
-
+from core import re_patterns
+from core.utils import string_utils
+import sys
+import time
+import urllib
+import urllib2
 
 ## check these later
-
 
 ### waiting time
 #<h1>BLAST Query Submission</h1>
@@ -32,18 +29,19 @@ from Bio._py3k import _as_string
 #<a href="blast.cgi?action=get_blast_results&amp;session_id=3873amigo1320966804" title="Retrieve your BLAST job">
 #"blast.cgi?action=get_blast_results&amp;session_id=3873amigo1320966804"
 
-
 MATCH_HREF = "<a href=\""
 MATCH_HREF_HASH = "<a href=\"#"
 MATCH_HREF_HASH_LEN = len(MATCH_HREF_HASH)
 MATCH_END_HREF = "\">"
-MATCH_END_HREF_LEN = len(MATCH_END_HREF) 
+MATCH_END_HREF_LEN = len(MATCH_END_HREF)
 
 MATCH_BLAST_WAIT = "<a href=\"blast.cgi?action=get_blast_results&amp;session_id="
-MATCH_BLAST_WAIT_LEN = len(MATCH_BLAST_WAIT) 
+MATCH_BLAST_WAIT_LEN = len(MATCH_BLAST_WAIT)
 MATCH_BLAST_END = "\" title=\"Retrieve your BLAST job\">"
-MATCH_BLAST_NOT_COMPLETE = "Please be patient as your job may take several minutes to complete. "\
-                            "This page will automatically refresh with the BLAST results when the job is done"
+
+MATCH_BLAST_NOT_COMPLETE = ("Please be patient as your job may take several"
+    "minutes to complete. This page will automatically refresh with the BLAST"
+    "results when the job is done")
 
 amigo_blast_URL = "http://amigo.geneontology.org/cgi-bin/amigo/blast.cgi"
 
@@ -54,50 +52,41 @@ class GOConnector(object):
     """
     def __init__(self, seq):
         self.seq = seq
-    
+
     def get_GO_terms(self):
         self.seq = blast_AmiGO(self.seq)
         self.seq = extract_ID(self.seq)
-        self.seq = parse_go_term(self.seq, self.e_value_cut_off) 
-        
+        self.seq = parse_go_term(self.seq, self.e_value_cut_off)
+
     def set_seq(self, seq):
         self.seq = seq
-        
+
     def testClassMethod(self):
-        self.seq*self.seq
-        
-    def testGlobalMethod(self):
-        square(self.seq)
-        
-        
-def square(seq):
-    seq*seq 
-    
+        self.seq * self.seq
 
 
 def blast_AmiGO(seq):
     """ blast Amigo with data \
     no customise blast parameters yet"""
-    
-    
+
     query_blast = [
         ('action', 'blast'),
         ('seq', seq.data),
         #('seq_id','FB:FBgn0015946'),
         ('CMD', 'Put')]
-    
-    seq.web_page = _get_web_page(query_blast , amigo_blast_URL)
-    
+
+    seq.web_page = _get_web_page(query_blast, amigo_blast_URL)
+
     delay = 3.0
     is_complete = seq.web_page.find(MATCH_BLAST_NOT_COMPLETE)
     previous = time.time()
-    
+
     while is_complete != -1:
         current = time.time()
         wait = previous + delay - current
         if wait > 0:
             time.sleep(wait)
-            print "wait %d s" % delay
+            print("wait %d s" % delay)
             previous = current + wait
         else:
             previous = current
@@ -110,30 +99,28 @@ def blast_AmiGO(seq):
             ('CMD', 'Put')]
         seq.web_page = _get_web_page(query_wait, amigo_blast_URL)
         is_complete = seq.web_page.find(MATCH_BLAST_NOT_COMPLETE)
-    
+
     return seq
-    
-    
-
-
-
 
 
 def extract_ID(seq):
-    """extract all ID and evalues"""
+    """
+    extract all ID and evalues
+    """
     if seq.web_page.find("*** NONE ***") == -1:
         key = "Sequences producing High-scoring Segment Pairs"
         end_key = "<span id="
         blast_matches = string_utils.substring(seq.web_page, key, end_key)
         lines = blast_matches.splitlines()
 
-        acc_ID, match_ID, e_value = [], [], [] ## TODO change data structure later
-        ## TODO add evalue filter
-        ## TODO check usage of "raise"
+        acc_ID, match_ID, e_value = [], [], []
+        # TODO: change data structure later
+        # TODO: add evalue filter
+        # TODO: check usage of "raise"
         #for i,l in enumerate(lines):
         for l in lines:
             if l.find(MATCH_HREF_HASH) != -1:
-                token = re_patterns.multi_space_split(l) 
+                token = re_patterns.multi_space_split(l)
                 if len(token) != 4:
                     raise UserWarning("Error: incorrecting parsing", token, len(token))
                     print "====NEVER REACH HERE??=====", token, len(token)
@@ -141,32 +128,29 @@ def extract_ID(seq):
                 start = token[0].find(MATCH_HREF_HASH) + MATCH_HREF_HASH_LEN
                 mid = token[0].find(MATCH_END_HREF)
                 end = token[0].find("</a>")
-                acc_ID.append(token[0][start:mid])   ## search webpage
+                acc_ID.append(token[0][start:mid])   # search webpage
                 match_ID.append(token[0][mid + MATCH_END_HREF_LEN:end])
                 try:
-                    v = float(token.pop(len(token) - 2) )
-                    e_value.append(v) ## or call pop() twice
+                    v = float(token.pop(len(token) - 2))
+                    e_value.append(v)  # or call pop() twice
                 except ValueError as e:
 #                    print 'ValueError: %s' % e;
-#                    print "", 
-                    raise ValueError("ValueError: %s \t %s \t %s" %{e, sys.exc_info()[0], sys.exc_info()[1]}  )
-                   
-        
-        
+                    raise ValueError("ValueError: %s \t %s \t %s" %
+                                     {e, sys.exc_info()[0], sys.exc_info()[1]})
+
         seq.acc_ID = acc_ID
         seq.match_ID = match_ID
         seq.e_value = e_value
         seq.is_match = True
-        
+
     else:
         seq.is_match = False
-        
+
     return seq
-        
-        
+
 
 def parse_go_term(seq, e_value_cut_off=1.0):
-    """1 seq -> blast -> n hits -> m GO terms 
+    """1 seq -> blast -> n hits -> m GO terms
     ## TODO need add e_value filter
     ## TODO not standard along method"""
     if seq.is_match:
@@ -189,73 +173,13 @@ def parse_go_term(seq, e_value_cut_off=1.0):
     return seq
 
 
-
 def _get_web_page(query, URL):
-    
+
     message = urllib.urlencode(query)
-    request = urllib2.Request(URL, message, {"User-Agent":"BiopythonClient"})
+    request = urllib2.Request(URL, message, {"User-Agent": "BiopythonClient"})
     handle = urllib2.urlopen(request)
     s = _as_string(handle.read())
-    
+
     return s
-
-
-
-
-##### get actual GO terms
-#for i, eachID in enumerate(acc_ID):
-
-#parameters2 = [
-    #('gp',eachID),
-    #('CMD', 'Put')]
-#message = urllib.urlencode(parameters2)
-##http://amigo.geneontology.org/cgi-bin/amigo/gp-assoc.cgi?gp=UniProtKB:Q5BIP7&session_id=1671amigo1320698330
-#GOAssoc = "http://amigo.geneontology.org/cgi-bin/amigo/gp-assoc.cgi"
-#request = urllib2.Request(GOAssoc, message, {"User-Agent":"BiopythonClient"})
-
-#handle = urllib2.urlopen(request)
-#goID = _as_string(handle.read())
-
-##save_file = open("testGetID.html", "w")
-##save_file.write(goID)  
-##save_file.close()
-
-
-
-###################### others functions
-##### might need add this delay thing later
-## Poll NCBI until the results are ready.  Use a 3 second wait
-#delay = 3.0
-#previous = time.time()
-#while True:
-    #current = time.time()
-    #wait = previous + delay - current
-    #if wait > 0:
-        ##~ time.sleep(wait)
-        #previous = current + wait
-    #else:
-        #previous = current
-
-    #request = urllib2.Request("http://blast.ncbi.nlm.nih.gov/Blast.cgi",
-                        #message,
-                        #{"User-Agent":"BiopythonClient"})
-    #handle = urllib2.urlopen(request)
-    #results = _as_string(handle.read())
-    ## Can see an "\n\n" page while results are in progress,
-    ## if so just wait a bit longer...
-    #if results=="\n\n":
-        #continue    
-    ## XML results don't have the Status tag when finished
-    #if results.find("Status=") < 0:
-        #break
-    #i = results.index("Status=")
-    #j = results.index("\n", i)
-    #status = results[i+len("Status="):j].strip()
-    #if status.upper() == "READY":
-        #break
-
-
-#return StringIO(results)
-
 
 
