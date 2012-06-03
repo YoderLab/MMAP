@@ -60,7 +60,7 @@ class RunMetaSim(RunComponent):
         metasim = RunMetaSim.create_metasim(setting)
         return metasim
 
-    def init_prog(self, no_iter, thresh):
+    def init_prog(self, no_reads):
         self.set_model_infile_name(self.model_infile)
         self.set_taxon_infile_name(self.taxon_infile)
         self.set_outfile(self.outfile)

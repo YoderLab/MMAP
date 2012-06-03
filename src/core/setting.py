@@ -2,19 +2,23 @@
 __author__ = 'erinmckenney'
 
 list_essential_shared = ["parent_directory"]
+list_essential_metasim_only = ["metasim_pdir","metasim_model_infile", "metasim_taxon_infile", "metasim_no_reads"]
 list_essential_genovo_only = ["genovo_infile", "genovo_pdir", "genovo_noI", "genovo_thresh"]
 list_essential_glimmer_only = ["glimmer_pdir"]  # dont need outfile
+list_optional_metasim_only = ["metasim_outfile"]
 list_optional_shared = ["wdir", "checkExist"]
 list_optional_genovo_only = ["genovo_outfile", ]
 list_optional_glimmer_only = ["glimmer_infile", "glimmer_outfile"]
 list_ess_par = {
     "shared": list_essential_shared,
+    "metasim": list_essential_metasim_only,
     "genovo": list_essential_genovo_only,
     "glimmer": list_essential_glimmer_only
 }
 
 list_optional_par = {
     "shared": list_optional_shared,
+    "metasim": list_optional_metasim_only,
     "genovo": list_optional_genovo_only,
     "glimmer": list_optional_glimmer_only
 }
@@ -83,6 +87,14 @@ class Setting(object):
                 return True
 
         return False
+
+    def _get_metasim(self):
+        is_all_exist = self._check(list_essential_metasim_only + list_essential_shared)
+
+        optional = list_optional_metasim_only + list_optional_shared
+        self.check_all_optional_parameter("metasim", is_all_exist, optional)
+
+        return self.all_setting
 
     def _get_genovo(self):
         essential = list_essential_genovo_only + list_essential_shared

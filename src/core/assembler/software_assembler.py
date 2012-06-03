@@ -3,6 +3,7 @@ Created on April 16, 2012
 
 @author: Erin McKenney and Steven Wu
 """
+from core.component.run_MetaSim import RunMetaSim
 
 from core.component.run_genovo import RunGenovo
 from core.component.run_glimmer import RunGlimmer
@@ -38,6 +39,7 @@ class SoftwareAssembler(object):
         self.setting.add("genovo_outfile", self.genovo.outfile)
 
     def init_program(self):
+#        self.metasim = RunMetaSim.create_metasim_from_setting(self.setting)
         self.genovo = RunGenovo.create_genovo_from_setting(self.setting)
         self.update_genovo_setting()
         self.glimmer = RunGlimmer.create_glimmer_from_setting(self.setting)
@@ -50,7 +52,7 @@ class SoftwareAssembler(object):
             # and os.path.exists(self.genovo.readFinalizeOutfile):
             self.glimmer.run()
         else:
-            raise(IOError("Missing genove output"))
+            raise(IOError("Missing genovo output"))
 #        if self.glimmer.check_outfiles_exist(self.setting.get("glimmer_outfile")):
 #            pass
 
