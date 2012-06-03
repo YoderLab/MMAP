@@ -68,31 +68,35 @@ class RunMetaSim(RunComponent):
 
     def set_number_of_reads(self, param):
         if param > 0 and isinstance(param, (int, long)):
-            self.metasim.set_param_at(param, NO_READS_POSITION)
+            arg = "-r%s" %param
+            self.metasim.set_param_at(arg, NO_READS_POSITION)
         else:
-            raise TypeError("Error: unacceptable value for param: %s" % param)
+            raise TypeError("Error: unacceptable value for number of reads: %s" % param)
 
 #        TODO: if NONE, set to default # of reads
 #        presumably in setting.py
 
 
-    def set_model_infile_name(self, infile):
+    def set_model_infile_name(self, arg):
         """
         type anything here
         TODO: check valid infile, infile exist or not
         """
-        self.metasim.set_param_at(infile, MODEL_INFILE_POSITION)
+        arg = "-mg %s" %self.model_infile
+        self.metasim.set_param_at(arg, MODEL_INFILE_POSITION)
 
 
-    def set_taxon_infile_name(self, infile):
+    def set_taxon_infile_name(self):
         """
         type anything here
         TODO: check valid infile, infile exist or not
         """
-        self.metasim.set_param_at(infile, TAXON_INFILE_POSITION)
+        self.metasim.set_param_at(self.taxon_infile, TAXON_INFILE_POSITION)
 
-    def set_outfile(self, outfile):
-        self.metasim.set_param_at(outfile, OUTFILE_DIRECTORY_POSITION)
+    def set_outfile_directory(self, outfile):
+        outfile = self.wdir+outfile
+        directory = "-d %s" %outfile
+        self.metasim.set_param_at(directory, OUTFILE_DIRECTORY_POSITION)
 
     def read_outfile(self):
         """
