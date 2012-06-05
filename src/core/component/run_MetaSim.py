@@ -27,7 +27,7 @@ class RunMetaSim(RunComponent):
     classdocs
     """
 
-    def __init__(self, model_infile, no_reads, taxon_infile, pdir, wdir=None, outfile=None, check_exist=True):
+    def __init__(self, model_infile, no_reads, taxon_infile, pdir, wdir=None, outfile, check_exist=True):
         """
         Constructor
         """
@@ -63,7 +63,7 @@ class RunMetaSim(RunComponent):
     def init_prog(self, no_reads):
         self.set_model_infile_name(self.model_infile)
         self.set_taxon_infile_name(self.taxon_infile)
-        self.set_outfile(self.outfile)
+        self.set_outfile_directory(self.wdir)
         self.set_number_of_reads(no_reads)
 
     def set_number_of_reads(self, param):
@@ -86,15 +86,15 @@ class RunMetaSim(RunComponent):
         self.metasim.set_param_at(arg, MODEL_INFILE_POSITION)
 
 
-    def set_taxon_infile_name(self):
+    def set_taxon_infile_name(self, taxon_infile):
         """
         type anything here
         TODO: check valid infile, infile exist or not
         """
-        self.metasim.set_param_at(self.taxon_infile, TAXON_INFILE_POSITION)
+        self.metasim.set_param_at(taxon_infile, TAXON_INFILE_POSITION)
 
     def set_outfile_directory(self, outfile):
-        outfile = self.wdir+outfile
+        outfile = self.wdir+self.outfile
         directory = "-d %s" %outfile
         self.metasim.set_param_at(directory, OUTFILE_DIRECTORY_POSITION)
 

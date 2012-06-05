@@ -20,7 +20,7 @@ class TestRunGlimmer(unittest.TestCase):
         """
         self.long_message = True
         self.data_dir = path_utils.get_data_dir() + "Glimmer/"
-
+#        self.working_dir = path_utils.get_data_dir() + "Glimmer/test_data/"
 
     def tearDown(self):
         pass
