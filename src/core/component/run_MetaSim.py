@@ -27,14 +27,18 @@ class RunMetaSim(RunComponent):
     classdocs
     """
 
-    def __init__(self, model_infile, no_reads, taxon_infile, pdir, wdir=None, outfile, check_exist=True):
+    def __init__(self, model, no_reads, taxon_infile, pdir, wdir, outfile, check_exist=True):
         """
         Constructor
         """
+        self.taxon_infile = wdir+taxon_infile
+        self.model_infile = wdir+model
+        self.outfile = wdir+outfile
         self.all_exts = ALL_EXTS
-        self.parameter_check(pdir, wdir, model_infile, no_reads, taxon_infile, outfile, check_exist, "_out")
+        self.parameter_check(pdir, wdir, model, taxon_infile, outfile, "_out")
         self.metasim = runExtProg(METASIM, pdir=self.pdir, length=4, check_OS=True)
-        self.init_prog()
+        self.init_prog(no_reads)
+
 
     @classmethod
     def create_metasim(cls, setting):
@@ -86,16 +90,15 @@ class RunMetaSim(RunComponent):
         self.metasim.set_param_at(arg, MODEL_INFILE_POSITION)
 
 
-    def set_taxon_infile_name(self, taxon_infile):
+    def set_taxon_infile_name(self, infile):
         """
         type anything here
         TODO: check valid infile, infile exist or not
         """
-        self.metasim.set_param_at(taxon_infile, TAXON_INFILE_POSITION)
+        self.metasim.set_param_at(infile, TAXON_INFILE_POSITION)
 
-    def set_outfile_directory(self, outfile):
-        outfile = self.wdir+self.outfile
-        directory = "-d %s" %outfile
+    def set_outfile_directory(self, directory):
+        directory = "-d %s" %self.outfile
         self.metasim.set_param_at(directory, OUTFILE_DIRECTORY_POSITION)
 
     def read_outfile(self):
@@ -109,3 +112,6 @@ class RunMetaSim(RunComponent):
 
     def run(self):
         self.metasim.run()
+
+    def get_switch(self):
+        return self.metasim._switch

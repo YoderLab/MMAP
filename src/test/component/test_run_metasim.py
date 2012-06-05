@@ -34,16 +34,17 @@ class TestRunMetaSim(unittest.TestCase):
         outfile_var = "wdir_all_reads_out.fasta"
         no_reads_var = 100
 
-        metasim = RunMetaSim(model_infile_var, no_reads_var,
-            taxon_infile =self.working_dir + taxon_infile_var, pdir=self.data_dir, wdir=self.working_dir,
-            outfile=self.working_dir+outfile_var, check_exist=False)
+        metasim = RunMetaSim(model=model_infile_var, no_reads=no_reads_var,
+            taxon_infile =taxon_infile_var, pdir=self.data_dir, wdir=self.working_dir,
+            outfile=outfile_var, check_exist=False)
 
-        expected_model_infile = self.working_dir + model_infile_var
+        expected_model_infile = "-mg %s%s"%(self.working_dir, model_infile_var)
         expected_taxon_infile = self.working_dir + taxon_infile_var
+        expected_no_reads = "-r%s" % no_reads_var
+        expected_outfile = "-d%s"%self.working_dir + "wdir_all_reads_out.fasta"
+        expected = [expected_model_infile, "-r100", expected_taxon_infile, self.working_dir + "wdir_all_reads_out.fasta"]
 
-        expected = [expected_model_infile, "100", expected_taxon_infile, self.working_dir + "wdir_all_reads_out.fasta"]
-
-        self.assertEqual(metasim.get_switch()[0], self.working_dir + model_infile_var)
-        self.assertEqual(metasim.get_switch(), [expected_model_infile, "1"])
+        self.assertEqual(metasim.get_switch()[0], "-mg %s%s"%(self.working_dir, model_infile_var))
+        self.assertEqual(metasim.get_switch(), [expected_model_infile, expected_no_reads,expected_taxon_infile,expected_outfile])
         self.assertEqual(metasim.get_switch(), expected)
 
