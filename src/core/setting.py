@@ -17,7 +17,7 @@ list_ess_par = {
     "shared": list_essential_shared,
     "metasim": list_essential_metasim_only,
     "genovo": list_essential_genovo_only,
-    "glimmer": list_essential_glimmer_only
+    "glimmer": list_essential_glimmer_only,
     "mine": list_essential_mine_only
 }
 
@@ -25,7 +25,7 @@ list_optional_par = {
     "shared": list_optional_shared,
     "metasim": list_optional_metasim_only,
     "genovo": list_optional_genovo_only,
-    "glimmer": list_optional_glimmer_only
+    "glimmer": list_optional_glimmer_only,
     "mine": list_optional_mine_only
 }
 

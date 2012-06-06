@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist SYSTEM "file://localhost/System/Library/DTDs/PropertyList.dtd">
+<plist version="0.9">
+<dict>
+<key>CFBundleName</key>
+<string>MetaSim</string>
+<key>CFBundleExecutable</key>
+<string>JavaApplicationStub</string>
+<key>CFBundleIconFile</key>
+<string>app.icns</string>
+<key>CFBundleInfoDictionaryVersion</key>
+<string>6.0</string>
+<key>CFBundlePackageType</key>
+<string>APPL</string>
+<key>CFBundleSignature</key>
+<string>????</string>
+<key>CFBundleIdentifier</key>
+<string>com.install4j.1508-5379-8587-2468.1691242142</string>
+<key>CFBundleVersion</key>
+<string>0.9.5</string>
+<key>CFBundleGetInfoString</key>
+<string> 0.9.5</string>
+<key>CFBundleDocumentTypes</key>
+<array>
+<!-- I4J_INSERT_DOCTYPE -->
+</array>
+<key>Java</key>
+<dict>
+<key>MainClass</key>
+<string>com.install4j.runtime.MacLauncher</string>
+<key>VMOptions</key>
+<string>-server -Xmx1100M</string><!-- I4J_INSERT_VMOPTIONS -->
+<key>Arguments</key>
+<string></string>
+<key>Properties</key>
+<dict>
+<key>exe4j.moduleName</key>
+<string>$APP_PACKAGE</string>
+<key>user.region</key>
+<string>US</string>
+<key>apple.laf.useScreenMenuBar</key>
+<string>true</string>
+<key>user.language</key>
+<string>en</string>
+<!-- I4J_INSERT_PROPERTIES -->
+</dict>
+<key>JVMVersion</key>
+<string>1.5+</string>
+<key>ClassPath</key>
+<string>$APP_PACKAGE/../.install4j/i4jruntime.jar:$APP_PACKAGE/../jars/batik-all-1.6.jar:$APP_PACKAGE/../jars/BrowserLauncher2-10rc4.jar:$APP_PACKAGE/../jars/commons-compress-20050911.jar:$APP_PACKAGE/../jars/evolve.jar:$APP_PACKAGE/../jars/hsqldb-1.8.0.7.jar:$APP_PACKAGE/../jars/hsqldb.jar:$APP_PACKAGE/../jars/jcommon-1.0.10.jar:$APP_PACKAGE/../jars/MetaSim.jar:$APP_PACKAGE/../jars/MRJAdapter.jar:$APP_PACKAGE/../jars/oro-2.0.8.jar:$APP_PACKAGE/../jars/swtgraphics2d.jar:$APP_PACKAGE/../class/</string><!-- I4J_INSERT_CLASSPATH -->
+</dict>
+</dict>
+</plist>

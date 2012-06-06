@@ -1,0 +1,29 @@
+### MetaSim taxon profile
+# 7 name "Acetobacter pasteurianus subsp. pasteurianus LMG 1262"
+7        gi  372212848
+# 2 name "Acinetobacter baumannii 5711 ctg7180000006679"
+2        gi  371492186
+# 1 name "Campylobacter jejuni subsp. jejuni NCTC 11168 chromosome"
+1        gi  15791399
+# 2 name "Cellulophaga algicola DSM 14237"
+2        gi  319420253
+# 20 name "Comamonas testosteroni CNB-2 chromosome"
+20        gi  264676136
+# 1 name "Escherichia coli 'BL21-Gold(DE3)pLysS AG' chromosome"
+1        gi  253771435
+# 1 name "Lactobacillus johnsonii NCC 533"
+1        gi  42518084
+# 1 name "Leuconostoc citreum KM20"
+1        gi  169803215
+# 4 name "Methylotenera mobilis JLW8 chromosome"
+4        gi  253995374
+# 81 name "Sphingobacterium sp. 21"
+81        gi  326548208
+# 10 name "Streptococcus gallolyticus subsp. gallolyticus ATCC BAA-2069"
+10        gi  325977200
+# 4 name "Streptococcus mutans UA159"
+4        gi  345287734
+# 1 name "Weeksella virosa DSM 16922"
+1        gi  323436265
+# 203 name "Weissella koreensis KACC 15510 chromosome"
+203        gi  339633914

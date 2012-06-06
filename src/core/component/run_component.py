@@ -17,23 +17,29 @@ class RunComponent(object):
 
     def parameter_check(self, pdir, wdir, infile, outfile, check_exist,
                         outfile_tag):
-        self.check_dirs(pdir, wdir)
+        self.check_dirs(pdir, wdir, check_exist)
         self.generate_outfile_name(infile, outfile, outfile_tag)
-        self.check_infile_exist(check_exist)
+        self.check_file_exist(self.infile, check_exist)
 
-    def check_infile_exist(self, check_exist):
+
+    def check_file_exist(self, file, check_exist):
         if check_exist:
-            if not os.path.exists(self.wdir):
-                raise IOError("Error: invalid directory: %s" % self.wdir)
-            if not self.is_file_exist("", self.infile, True):
-                raise IOError("Error: infile does not exist. %s%s"
-                              % (self.wdir, self.infile))
+            if not self.is_file_exist("", file, True):
+                raise IOError("Error: file does not exist. %s" % (file))
 
-    def check_dirs(self, pdir, wdir):
+    def check_dirs(self, pdir, wdir, check_exist):
         self.pdir = check_dir_ending(pdir)
         if wdir is None:
             wdir = self.pdir
         self.wdir = check_dir_ending(wdir)
+        self._check_dir_exist(check_exist)
+
+    def _check_dir_exist(self, check_exist):
+        if check_exist:
+            if not os.path.exists(self.wdir):
+                raise IOError("Error: invalid working directory: %s" % self.wdir)
+            if not os.path.exists(self.pdir):
+                raise IOError("Error: invalid program directory: %s" % self.pdir)
 
     def generate_outfile_name(self, infile, outfile, outfile_tag):
         """

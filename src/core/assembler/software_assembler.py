@@ -51,8 +51,8 @@ class SoftwareAssembler(object):
         file_tag = self.setting.get("wdir") + self.setting.get("metasim_infile")
         if (self.metasim.check_outfiles_exist(file_tag) and
             self.metasim.is_file_exist(self.setting.get("metasim_outfile"))):
-
-        self.genovo.run()
+            pass
+#          self.genovo.run()
         file_tag = self.setting.get("wdir") + self.setting.get("genovo_infile")
         if (self.genovo.check_outfiles_exist(file_tag) and
             self.genovo.is_file_exist(self.setting.get("genovo_outfile"))):

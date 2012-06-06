@@ -27,17 +27,17 @@ class RunMetaSim(RunComponent):
     classdocs
     """
 
-    def __init__(self, model, no_reads, taxon_infile, pdir, wdir, outfile, check_exist=True):
+    def __init__(self, model_file, no_reads, taxon_infile, pdir, wdir, outfile, check_exist=True):
         """
         Constructor
         """
-        self.taxon_infile = wdir+taxon_infile
-        self.model_infile = wdir+model
-        self.outfile = wdir+outfile
+
+
+
         self.all_exts = ALL_EXTS
-        self.parameter_check(pdir, wdir, model, taxon_infile, outfile, "_out")
+        self.parameter_check(pdir, wdir, model_file, taxon_infile, outfile, check_exist)
         self.metasim = runExtProg(METASIM, pdir=self.pdir, length=4, check_OS=True)
-        self.init_prog(no_reads, outfile)
+        self.init_prog(no_reads)
 
 
     @classmethod
@@ -65,43 +65,56 @@ class RunMetaSim(RunComponent):
         metasim = RunMetaSim.create_metasim(setting)
         return metasim
 
-    def init_prog(self, no_reads, outfile):
-        self.set_model_infile_name(self.model_infile)
-        self.set_taxon_infile_name(self.taxon_infile)
-        self.set_outfile_directory(outfile)
+    def parameter_check(self, pdir, wdir, model_file, taxon_infile, outfile, check_exist):
+        self.check_dirs(pdir, wdir, check_exist)
+        self.model_infile = self.wdir+model_file
+        self.taxon_infile = self.wdir+taxon_infile
+        self.outfile = self.wdir + outfile
+        files = [self.model_infile, self.taxon_infile, self.outfile]
+        for file in files:
+            self.check_file_exist(file, check_exist)
+#            self.model_infile, self.taxon_infile, self.outfile)
+
+
+    def init_prog(self, no_reads):
+        self.set_model_infile_name()
+        self.set_taxon_infile_name()
         self.set_number_of_reads(no_reads)
+        self.set_outfile_directory()
+
 
     def set_number_of_reads(self, param):
         if param > 0 and isinstance(param, (int, long)):
             arg = "-r%s" %param
             self.metasim.set_param_at(arg, NO_READS_POSITION)
         else:
-            raise TypeError("Error: unacceptable value for number of reads: %s" % param)
+            raise ValueError("Error: unacceptable value for number of reads: %s" % param)
 
 #        TODO: if NONE, set to default # of reads
 #        in setting.py or __init__ (as with check_exist)?
 
 
-    def set_model_infile_name(self, arg):
+    def set_model_infile_name(self):
         """
         type anything here
         TODO: check valid infile, infile exist or not
         """
+
         arg = "-mg %s" %self.model_infile
         self.metasim.set_param_at(arg, MODEL_INFILE_POSITION)
 
 
-    def set_taxon_infile_name(self, infile):
+    def set_taxon_infile_name(self):
         """
         type anything here
         TODO: check valid infile, infile exist or not
         """
-        self.metasim.set_param_at(infile, TAXON_INFILE_POSITION)
 
-    def set_outfile_directory(self, outfile):
-        filename = self.wdir + outfile
+        self.metasim.set_param_at(self.taxon_infile, TAXON_INFILE_POSITION)
+
+    def set_outfile_directory(self):
         print "outfile set to %s"%self.outfile
-        directory = "-d %s" %filename
+        directory = "-d %s" % self.outfile
         self.metasim.set_param_at(directory, OUTFILE_DIRECTORY_POSITION)
 
     def read_outfile(self):

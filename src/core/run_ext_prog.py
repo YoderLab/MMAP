@@ -100,7 +100,7 @@ class runExtProg(object):
         else:
             self.add_switch([name, value])
 
-    def toggle_switch(self, name, value=None):
+def toggle_switch(self, name, value=None):
         """
         toggle on/off a switch parameter
         value = 1 == on

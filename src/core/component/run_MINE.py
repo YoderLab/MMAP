@@ -72,7 +72,7 @@ class RunMINE(RunComponent):
         self.set_comparison_style(style)
         self.set_cv_threshold(cv)
         self.set_clumping_factor(c)
-
+#
     def set_infile_name(self, infile):
         """
         type anything here
