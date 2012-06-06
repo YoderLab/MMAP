@@ -45,6 +45,7 @@ class TestRunMetaSim(unittest.TestCase):
         expected = [expected_model_infile, "-r100", expected_taxon_infile, self.working_dir + "wdir_all_reads_out.fasta"]
 
         self.assertEqual(metasim.get_switch()[0], "-mg %s%s"%(self.working_dir, model_infile_var))
+
         self.assertEqual(metasim.get_switch(), [expected_model_infile, expected_no_reads,expected_taxon_infile,expected_outfile])
         self.assertEqual(metasim.get_switch(), expected)
 

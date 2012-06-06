@@ -37,7 +37,7 @@ class RunMetaSim(RunComponent):
         self.all_exts = ALL_EXTS
         self.parameter_check(pdir, wdir, model, taxon_infile, outfile, "_out")
         self.metasim = runExtProg(METASIM, pdir=self.pdir, length=4, check_OS=True)
-        self.init_prog(no_reads)
+        self.init_prog(no_reads, outfile)
 
 
     @classmethod
@@ -64,10 +64,10 @@ class RunMetaSim(RunComponent):
         metasim = RunMetaSim.create_metasim(setting)
         return metasim
 
-    def init_prog(self, no_reads):
+    def init_prog(self, no_reads, outfile):
         self.set_model_infile_name(self.model_infile)
         self.set_taxon_infile_name(self.taxon_infile)
-        self.set_outfile_directory(self.wdir)
+        self.set_outfile_directory(outfile)
         self.set_number_of_reads(no_reads)
 
     def set_number_of_reads(self, param):
@@ -97,8 +97,10 @@ class RunMetaSim(RunComponent):
         """
         self.metasim.set_param_at(infile, TAXON_INFILE_POSITION)
 
-    def set_outfile_directory(self, directory):
-        directory = "-d %s" %self.outfile
+    def set_outfile_directory(self, outfile):
+        filename = self.wdir + outfile
+        print "outfile set to %s"%self.outfile
+        directory = "-d %s" %filename
         self.metasim.set_param_at(directory, OUTFILE_DIRECTORY_POSITION)
 
     def read_outfile(self):
