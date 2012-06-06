@@ -4,9 +4,9 @@ Created on April 16, 2012
 @author: Erin McKenney and Steven Wu
 """
 from core.component.run_MetaSim import RunMetaSim
-
 from core.component.run_genovo import RunGenovo
 from core.component.run_glimmer import RunGlimmer
+from core.component.run_MINE import RunMINE
 from core.setting import Setting
 
 
@@ -39,12 +39,19 @@ class SoftwareAssembler(object):
         self.setting.add("genovo_outfile", self.genovo.outfile)
 
     def init_program(self):
-#        self.metasim = RunMetaSim.create_metasim_from_setting(self.setting)
+        self.metasim = RunMetaSim.create_metasim_from_setting(self.setting)
         self.genovo = RunGenovo.create_genovo_from_setting(self.setting)
         self.update_genovo_setting()
         self.glimmer = RunGlimmer.create_glimmer_from_setting(self.setting)
+        self.mine = RunMINE.create_mine_from_setting(self.setting)
 
     def run(self):
+
+        self.metasim.run()
+        file_tag = self.setting.get("wdir") + self.setting.get("metasim_infile")
+        if (self.metasim.check_outfiles_exist(file_tag) and
+            self.metasim.is_file_exist(self.setting.get("metasim_outfile"))):
+
         self.genovo.run()
         file_tag = self.setting.get("wdir") + self.setting.get("genovo_infile")
         if (self.genovo.check_outfiles_exist(file_tag) and
@@ -54,7 +61,15 @@ class SoftwareAssembler(object):
         else:
             raise(IOError("Missing genovo output"))
 #        if self.glimmer.check_outfiles_exist(self.setting.get("glimmer_outfile")):
-#            pass
+#            #self.BLAST.run()
+#            #self.GO.run()
+#        else:
+#            raise(IOError("Missing glimmer output"))
+#        if self.GO.check_outfiles_exist(self.setting.get("GO_outfile")):
+#            self.MINE.run()
+#        else:
+#            raise(IOError("Missing GO output"))
+
 
 
 

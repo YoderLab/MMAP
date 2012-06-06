@@ -47,6 +47,7 @@ class RunMetaSim(RunComponent):
         Create RunGlimmer from dict()
         """
         metasim = cls(model_infile=setting.get("metasim_model_infile"),
+            no_reads=setting.get("metasim_no_reads"),
             taxon_infile=setting.get("metasim_taxon_infile"),
             pdir=setting.get("metasim_pdir"),
             wdir=setting.get("wdir"),
@@ -78,7 +79,7 @@ class RunMetaSim(RunComponent):
             raise TypeError("Error: unacceptable value for number of reads: %s" % param)
 
 #        TODO: if NONE, set to default # of reads
-#        presumably in setting.py
+#        in setting.py or __init__ (as with check_exist)?
 
 
     def set_model_infile_name(self, arg):
