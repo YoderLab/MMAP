@@ -147,3 +147,37 @@ class TestRunMetaSim(unittest.TestCase):
             RunMetaSim(model_file=model_infile_var, no_reads=100,
                 taxon_infile =taxon_infile_var, pdir=self.data_dir, wdir=self.working_dir,
                 outfile=outfile_var, check_exist=True)
+
+    def test_read_outfile(self):
+        """
+        check if it can "read" .fna
+        TODO: have check what happen in the file format is invalid,
+        assuming its the correct fasta now
+        """
+        model_infile_var = "ErrorModelSolexa36bp.mconf"
+        taxon_infile_var = "MetaSim_bint.mprf"
+        outfile_var = "test_outfile.fasta"
+        metasim = RunMetaSim(model_file=model_infile_var, no_reads=100,
+            taxon_infile =taxon_infile_var, pdir=self.data_dir, wdir=self.working_dir,
+            outfile=outfile_var, check_exist=True)
+        result = metasim.read_outfile()
+        self.assertEqual(len(result), 2)
+        self.assertEqual(result.keys(), ["1", "2"])
+
+        expected = [170, 60]
+        for i, key in enumerate(result):
+        #            print key, i, type(result[key]), result[key]
+            self.assertEqual(len(result[key]), expected[i])
+
+
+    def test_RunMetaSim_run(self):
+        model_infile_var = "ErrorModelSolexa36bp.mconf"
+        taxon_infile_var = "MetaSim_bint.mprf"
+        outfile_var = "test_outfile.fasta"
+        metasim = RunMetaSim(model_file=model_infile_var, no_reads=100,
+            taxon_infile =taxon_infile_var, pdir=self.data_dir, wdir=self.working_dir,
+            outfile=outfile_var, check_exist=True)
+        metasim.run()
+        self.assertTrue(metasim.check_outfiles_exist(self.working_dir + outfile_var))
+        self.assertTrue(metasim.is_file_exist(self.working_dir + "test_outfile", ".fasta", True))
+        os.remove(self.working_dir + outfile_var)
