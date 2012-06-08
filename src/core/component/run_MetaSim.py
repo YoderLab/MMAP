@@ -88,7 +88,10 @@ class RunMetaSim(RunComponent):
             arg = "-r%s" %param
             self.metasim.set_param_at(arg, NO_READS_POSITION)
         else:
-            raise ValueError("Error: unacceptable value for number of reads: %s" % param)
+            if isinstance(param, str):
+                raise TypeError("Error: number of reads set as string: %s" % param)
+            else:
+                raise ValueError("Error: number of reads set to: %s" % param)
 
 #        TODO: if NONE, set to default # of reads
 #        in setting.py or __init__ (as with check_exist)?
@@ -113,7 +116,6 @@ class RunMetaSim(RunComponent):
         self.metasim.set_param_at(self.taxon_infile, TAXON_INFILE_POSITION)
 
     def set_outfile_directory(self):
-        print "outfile set to %s"%self.outfile
         directory = "-d %s" % self.outfile
         self.metasim.set_param_at(directory, OUTFILE_DIRECTORY_POSITION)
 
