@@ -14,11 +14,13 @@ from core.run_ext_prog import runExtProg
 # <generate ### reads>
 # <using specified taxon file or single genome seq in FASTA format>
 # <specify output directory>
-METASIM = "./MetaSim\ cmd" # .MetaSim cmd
-MODEL_INFILE_POSITION = 1
-NO_READS_POSITION = 2
-TAXON_INFILE_POSITION = 3
-OUTFILE_DIRECTORY_POSITION = 4
+
+#TOREAD(Erin):
+METASIM = "./MetaSim" # .MetaSim cmd
+MODEL_INFILE_POSITION = 2
+NO_READS_POSITION = 3
+TAXON_INFILE_POSITION = 4
+OUTFILE_DIRECTORY_POSITION = 5
 
 ALL_EXTS = [".fna"]
 
@@ -32,11 +34,10 @@ class RunMetaSim(RunComponent):
         Constructor
         """
 
-
-
         self.all_exts = ALL_EXTS
         self.parameter_check(pdir, wdir, model_file, taxon_infile, outfile, check_exist)
-        self.metasim = runExtProg(METASIM, pdir=self.pdir, length=4, check_OS=True)
+        self.metasim = runExtProg(METASIM, pdir=self.pdir, length=5, check_OS=True)
+        self.metasim.set_param_at("cmd", 1)
         self.init_prog(no_reads)
 
 
@@ -67,8 +68,8 @@ class RunMetaSim(RunComponent):
 
     def parameter_check(self, pdir, wdir, model_file, taxon_infile, outfile, check_exist):
         self.check_dirs(pdir, wdir, check_exist)
-        self.model_infile = self.wdir+model_file
-        self.taxon_infile = self.wdir+taxon_infile
+        self.model_infile = self.wdir + model_file
+        self.taxon_infile = self.wdir + taxon_infile
         self.outfile = self.wdir + outfile
         files = [self.model_infile, self.taxon_infile, self.outfile]
         for file in files:
@@ -85,7 +86,7 @@ class RunMetaSim(RunComponent):
 
     def set_number_of_reads(self, param):
         if param > 0 and isinstance(param, (int, long)):
-            arg = "-r%s" %param
+            arg = "-r%s" % param
             self.metasim.set_param_at(arg, NO_READS_POSITION)
         else:
             if isinstance(param, str):
@@ -103,7 +104,7 @@ class RunMetaSim(RunComponent):
         TODO: check valid infile, infile exist or not
         """
 
-        arg = "-mg %s" %self.model_infile
+        arg = "-mg %s" % self.model_infile
         self.metasim.set_param_at(arg, MODEL_INFILE_POSITION)
 
 
@@ -128,8 +129,8 @@ class RunMetaSim(RunComponent):
         self.record_index = SeqIO.index(self.outfile, "fasta")
         return self.record_index
 
-    def run(self):
-        self.metasim.run()
+    def run(self, debug=False):
+        self.metasim.run(debug)
 
     def get_switch(self):
         return self.metasim._switch

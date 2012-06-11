@@ -56,14 +56,18 @@ class runExtProg(object):
 
     parameters = property(get_switch, set_switch, doc="switch/parameters")
 
-    def run(self):
+    def run(self, debug):
+        # TOREAD(Erin): use boolean debug to control how much output to print on the screen
         self._command = [self.program_name]
         self._command.extend(self._switch)
-#        print(self._command, self.cwd)
+        if debug:
+            print("debug: _command:\t%s" % (self._command))
         p = subprocess.Popen(self._command, stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE, cwd=self.cwd)
         self.output, self.errors = p.communicate()
-#        print self.output, self.errors
+        if debug:
+            print("debug - output message:\t%s\nerrors message:\t%s \n===end===\n" %
+                  (self.output, self.errors))
 
     def check_platform(self, check_OS):
         """
@@ -100,7 +104,7 @@ class runExtProg(object):
         else:
             self.add_switch([name, value])
 
-def toggle_switch(self, name, value=None):
+    def toggle_switch(self, name, value=None):
         """
         toggle on/off a switch parameter
         value = 1 == on
