@@ -15,7 +15,7 @@ from core.run_ext_prog import runExtProg
 # <using specified taxon file or single genome seq in FASTA format>
 # <specify output directory>
 
-#TOREAD(Erin):
+#TOREAD(Erin): cmd has to be the very first switch, 
 METASIM = "./MetaSim" # .MetaSim cmd
 MODEL_INFILE_POSITION = 2
 NO_READS_POSITION = 3

@@ -34,4 +34,4 @@ java.io.FileNotFoundException: -d /home/sw167/Postdoc/Project_Lemur/metaLem/data
 	at com.exe4j.runtime.LauncherEngine.launch(Unknown Source)
 	at com.install4j.runtime.Launcher.main(Unknown Source)
 java.io.FileNotFoundException: -d /home/sw167/Postdoc/Project_Lemur/metaLem/data/MetaSim/test_data/test_outfile.fasta (No such file or directory)
-random seed was: 2544772865429103097
+random seed was: 2854140969134427668
