@@ -43,6 +43,7 @@ data_dir = path_utils.get_data_dir(CWD)
 print "data dir:\t", data_dir
 
 
+
 def setup_database():
 
     infile = data_dir + "AE014075_subSmall100.fasta"
