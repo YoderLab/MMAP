@@ -1,9 +1,9 @@
 #install4j response file for MetaSim 0.9.5
-#Mon Jun 04 16:22:31 EDT 2012
+#Wed Jan 18 09:50:07 EST 2012
 sys.component.1691242192$Boolean=true
-sys.component.1691242193$Boolean=false
+sys.component.1691242193$Boolean=true
 sys.programGroup.linkDir=/usr/local/bin
 sys.languageId=en
-sys.installationDir=/Users/erinmckenney/Desktop/Pipeline/metaLem/data/MetaSim/MetaSim
+sys.installationDir=/Applications/MetaSim
 sys.programGroup.enabled$Boolean=true
 sys.programGroup.allUsers$Boolean=true

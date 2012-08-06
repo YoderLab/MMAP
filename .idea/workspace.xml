@@ -2,47 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6f19b297-54ac-4629-84f1-4bb8e27c177b" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/.name" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/metaLem.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/Genovo/compute_score_denovo" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/Genovo/test_data/wdir_all_reads.fa.dump.best" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/Genovo/test_data/wdir_all_reads.fa.dump1" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/Genovo/test_data/wdir_all_reads.fa.status" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/Genovo/test_data/wdir_all_reads_out.fasta" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/Glimmer/iterated2.coords" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/Glimmer/iterated2.icm" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/Glimmer/iterated2.longorfs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/Glimmer/iterated2.motif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/Glimmer/iterated2.run1.detail" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/Glimmer/iterated2.run1.predict" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/Glimmer/iterated2.train" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/Glimmer/iterated2.upstream" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/MINE/MINE-manpage.pdf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/MetaSim_bint-454.20e39f4c.fna.kmer" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/all_reads.fa" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/out-contig.fa" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/out.graph" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/out.kmer" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/tempMetaIDBAOutput.fasta-contig.fa" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/tempMetaIDBAOutput.fasta.graph" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/tempMetaIDBAOutput.fasta.kmer" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/testMetaIDBA.fasta-contig.fa" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/testMetaIDBA.fasta.graph" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/testMetaIDBA.fasta.kmer" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/test_data/testOutFileAlreadyExist.fasta" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/test_data/wdir_all_reads.fa.dump.best" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/test_data/wdir_all_reads.fa.dump1" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/test_data/wdir_all_reads.fa.status" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/test_data/wdir_all_reads.fa" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/test_data/wdir_all_reads_out.fasta" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/dictionaries/erinmckenney.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/scopes/scope_settings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/core/main.py.orig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/MetaSim/.install4j/i4jparams.conf" afterPath="$PROJECT_DIR$/data/MetaSim/.install4j/i4jparams.conf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/MetaSim/.install4j/install.prop" afterPath="$PROJECT_DIR$/data/MetaSim/.install4j/install.prop" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/MetaSim/.install4j/response.varfile" afterPath="$PROJECT_DIR$/data/MetaSim/.install4j/response.varfile" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/MetaSim/database/genomedb.properties" afterPath="$PROJECT_DIR$/data/MetaSim/database/genomedb.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/MetaSim/database/genomedb.script" afterPath="$PROJECT_DIR$/data/MetaSim/database/genomedb.script" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/MetaSim/.install4j/files.log" afterPath="$PROJECT_DIR$/data/MetaSim/.install4j/files.log" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/MetaSim/.install4j/installation.log" afterPath="$PROJECT_DIR$/data/MetaSim/.install4j/installation.log" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/MetaSim/error.log" afterPath="$PROJECT_DIR$/data/MetaSim/error.log" />
     </list>
     <ignored path="metaLem.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -87,7 +55,7 @@
       <file leaf-file-name="run_MetaSim.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/core/component/run_MetaSim.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="37" column="0" selection-start="943" selection-end="943" vertical-scroll-proportion="0.0">
+            <state line="20" column="14" selection-start="663" selection-end="663" vertical-scroll-proportion="-9.807693">
               <folding />
             </state>
           </provider>
@@ -105,7 +73,7 @@
       <file leaf-file-name="test_run_metasim.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/test/component/test_run_metasim.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="142" column="0" selection-start="6345" selection-end="6345" vertical-scroll-proportion="0.3951613">
+            <state line="168" column="17" selection-start="7202" selection-end="7202" vertical-scroll-proportion="0.9298701">
               <folding />
             </state>
           </provider>
@@ -114,7 +82,7 @@
       <file leaf-file-name="run_ext_prog.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/core/run_ext_prog.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="63" column="0" selection-start="1551" selection-end="1551" vertical-scroll-proportion="0.0">
+            <state line="68" column="0" selection-start="1824" selection-end="1824" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -141,7 +109,7 @@
       <file leaf-file-name="run_component.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/core/component/run_component.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="79" column="8" selection-start="2459" selection-end="2459" vertical-scroll-proportion="0.0">
+            <state line="62" column="8" selection-start="1928" selection-end="1928" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -932,7 +900,11 @@
       <created>1339170580587</created>
       <updated>1339170580587</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="3 new files in MetaSim/test_data folder">
+      <created>1344274020263</created>
+      <updated>1344274020263</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -959,21 +931,21 @@
     <frame x="1157" y="0" width="1280" height="768" extended-state="0" />
     <editor active="false" />
     <layout>
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32950193" sideWeight="0.67248064" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32921174" sideWeight="0.98847264" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32921174" sideWeight="0.98847264" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32692307" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.06969206" sideWeight="0.6707882" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20421393" sideWeight="0.6707882" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20421393" sideWeight="0.6707882" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3990755" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37544698" sideWeight="0.9946646" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37403402" sideWeight="0.9946646" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1854714" sideWeight="0.0" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32196453" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.6077058" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -1095,11 +1067,6 @@
         <state line="27" column="42" selection-start="1189" selection-end="1189" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/component/run_MetaSim.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="0" selection-start="943" selection-end="943" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/core/component/run_MINE.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="88" column="24" selection-start="2870" selection-end="2870" vertical-scroll-proportion="0.0" />
@@ -1107,7 +1074,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/core/run_ext_prog.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="63" column="0" selection-start="1551" selection-end="1551" vertical-scroll-proportion="0.0" />
+        <state line="68" column="0" selection-start="1824" selection-end="1824" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file:///System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/unittest/case.py">
@@ -1115,19 +1084,9 @@
         <state line="404" column="0" selection-start="14005" selection-end="14005" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/component/run_component.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="79" column="8" selection-start="2459" selection-end="2459" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/component/test_run_genovo.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="245" column="70" selection-start="11090" selection-end="11090" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/component/run_genovo.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="36" column="16" selection-start="827" selection-end="827" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/core/assembler/software_assembler.py">
@@ -1137,9 +1096,28 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/component/run_component.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="62" column="8" selection-start="1928" selection-end="1928" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/component/run_genovo.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="36" column="16" selection-start="827" selection-end="827" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/component/run_MetaSim.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="14" selection-start="663" selection-end="663" vertical-scroll-proportion="-9.807693">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/component/test_run_metasim.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="142" column="0" selection-start="6345" selection-end="6345" vertical-scroll-proportion="0.3951613">
+        <state line="168" column="17" selection-start="7202" selection-end="7202" vertical-scroll-proportion="0.9298701">
           <folding />
         </state>
       </provider>

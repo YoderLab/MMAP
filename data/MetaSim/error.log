@@ -1,37 +1,37 @@
-Loading settings from "/home/sw167/.MetaSim.Settings"... {AppSettings}
-Reading abundance profile `MetaSim_bint.mprf' [1KiB]
-Database: jdbc:hsqldb:file:database/genomedb
-WARNING: no sequences found matching gi 372212848
-WARNING: no sequences found matching gi 371492186
-WARNING: no sequences found matching gi 15791399
-WARNING: no sequences found matching gi 319420253
-WARNING: no sequences found matching gi 264676136
-WARNING: no sequences found matching gi 253771435
-WARNING: no sequences found matching gi 42518084
-WARNING: no sequences found matching gi 169803215
-WARNING: no sequences found matching gi 253995374
-WARNING: no sequences found matching gi 326548208
-WARNING: no sequences found matching gi 325977200
-WARNING: no sequences found matching gi 345287734
-WARNING: no sequences found matching gi 323436265
-WARNING: no sequences found matching gi 339633914
-0 sequences selected.
-
-java.io.FileNotFoundException: -d /home/sw167/Postdoc/Project_Lemur/metaLem/data/MetaSim/test_data/test_outfile.fasta (No such file or directory)
-	at java.io.FileInputStream.open(Native Method)
-	at java.io.FileInputStream.<init>(FileInputStream.java:138)
-	at java.io.FileReader.<init>(FileReader.java:72)
-	at metasim.util.B.E.B(Unknown Source)
+Loading settings from "/Users/erinmckenney/Library/Preferences/MetaSim.Settings"... {AppSettings}
+Reading fastA file `wdir_all_reads_out.fasta' [79KiB]
+Generating Reads: wdir_all_reads_out.fasta
+Generating Reads: wdir_all_reads_out.fasta
+Generating Reads: wdir_all_reads_out.fasta
+Generating Reads: wdir_all_reads_out.fasta
+Generating Reads: wdir_all_reads_out.fasta
+Generating Reads: wdir_all_reads_out.fasta
+Generating Reads: wdir_all_reads_out.fasta
+Generating Reads: wdir_all_reads_out.fasta
+Generating Reads: wdir_all_reads_out.fasta
+Generating Reads: wdir_all_reads_out.fasta
+Generating Reads: wdir_all_reads_out.fasta
+Generating Reads: wdir_all_reads_out.fasta
+Generating Reads: wdir_all_reads_out.fasta
+Generating Reads: wdir_all_reads_out.fasta
+Generating Reads: wdir_all_reads_out.fasta
+Generating Reads: wdir_all_reads_out.fasta
+Generating Reads: wdir_all_reads_out.fasta
+Generating Reads: wdir_all_reads_out.fasta
+Generating Reads: wdir_all_reads_out.fasta
+Generating Reads: wdir_all_reads_out.fasta
+java.lang.Exception: DNA clone size is too large for this sequence. Adjust Parameters!
+	at metasim.util.K.A(Unknown Source)
+	at metasim.util.K.run(Unknown Source)
 	at metasim.B.A$9.B(Unknown Source)
 	at metasim.B.A$9.call(Unknown Source)
 	at metasim.B.A.A(Unknown Source)
 	at metasim.B.A.A(Unknown Source)
 	at metasim.main.MetaSim.main(Unknown Source)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:601)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
 	at com.exe4j.runtime.LauncherEngine.launch(Unknown Source)
 	at com.install4j.runtime.Launcher.main(Unknown Source)
-java.io.FileNotFoundException: -d /home/sw167/Postdoc/Project_Lemur/metaLem/data/MetaSim/test_data/test_outfile.fasta (No such file or directory)
-random seed was: 2854140969134427668
+random seed was: 8666413600230303124

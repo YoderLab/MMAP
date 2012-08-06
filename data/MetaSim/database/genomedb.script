@@ -8,3 +8,18 @@ CREATE CACHED TABLE TAXID_NAME(TAXID INTEGER NOT NULL PRIMARY KEY,TAXON_NAME VAR
 CREATE USER SA PASSWORD ""
 GRANT DBA TO SA
 SET WRITE_DELAY 10
+SET SCHEMA PUBLIC
+INSERT INTO SEQUENCES VALUES('10b16f9441e8ad4ebbca99413e9aa6c445141e2d',TRUE,15791399,-1,'Campylobacter jejuni subsp. jejuni NCTC 11168 chromosome',1641481,TRUE,1,'gi|15791399|ref|NC_002163.1| Campylobacter jejuni subsp. jejuni NCTC 11168 chromosome, complete genome','')
+INSERT INTO SEQUENCES VALUES('23b9bca3a4de0daa17964d56998324cda4172690',TRUE,264676136,-1,'Comamonas testosteroni CNB-2 chromosome',5373643,TRUE,1,'gi|264676136|ref|NC_013446.1| Comamonas testosteroni CNB-2 chromosome, complete genome','')
+INSERT INTO SEQUENCES VALUES('26cd1b595b4e5010c586fff8bc3e448b0292cabf',TRUE,253995374,-1,'Methylotenera mobilis JLW8 chromosome',2547570,TRUE,1,'gi|253995374|ref|NC_012968.1| Methylotenera mobilis JLW8 chromosome, complete genome','')
+INSERT INTO SEQUENCES VALUES('297ecb29899578b28f387047c6f4cc0a81a3d659',TRUE,372212848,-1,'Acetobacter pasteurianus subsp. pasteurianus LMG 1262',102611,TRUE,1,'gi|372212848|emb|CADO01000001.1| Acetobacter pasteurianus subsp. pasteurianus LMG 1262, WGS project CADO00000000 data, type strain LMG 1262T, contig_8, whole genome shotgun sequence','')
+INSERT INTO SEQUENCES VALUES('34a2e6ad4e51adb908f9f0b7d81fbe8d49883ccd',TRUE,339633914,-1,'Weissella koreensis KACC 15510 chromosome',1422478,TRUE,1,'gi|339633914|ref|NC_015759.1| Weissella koreensis KACC 15510 chromosome, complete genome','')
+INSERT INTO SEQUENCES VALUES('564b52c9f5eab612fd7a1813a74b854907340fd1',TRUE,42518084,-1,'Lactobacillus johnsonii NCC 533',1992676,TRUE,1,'gi|42518084|ref|NC_005362.1| Lactobacillus johnsonii NCC 533, complete genome','')
+INSERT INTO SEQUENCES VALUES('7b19211d06c4312f1fd88931ecb0c0cb49e5e939',TRUE,325977200,-1,'Streptococcus gallolyticus subsp. gallolyticus ATCC BAA-2069',2356444,TRUE,1,'gi|325977200|ref|NC_015215.1| Streptococcus gallolyticus subsp. gallolyticus ATCC BAA-2069, complete genome','')
+INSERT INTO SEQUENCES VALUES('7d6d4b16ae0c0e26f5000187bc9f454a9ef637e7',TRUE,345287734,-1,'Streptococcus mutans UA159',2032925,TRUE,1,'gi|345287734|gb|AE014133.2| Streptococcus mutans UA159, complete genome','')
+INSERT INTO SEQUENCES VALUES('8b1d31b39fad5c81061f706c5c2fb8927483ea4b',TRUE,371492186,-1,'Acinetobacter baumannii 5711 ctg7180000006679',173805,TRUE,1,'gi|371492186|gb|AHAJ01000011.1| Acinetobacter baumannii 5711 ctg7180000006679, whole genome shotgun sequence','')
+INSERT INTO SEQUENCES VALUES('df251b3d9f551d13962b32bd59252593119e2905',TRUE,326548208,-1,'Sphingobacterium sp. 21',6226409,TRUE,1,'gi|326548208|gb|CP002584.1| Sphingobacterium sp. 21, complete genome','')
+INSERT INTO SEQUENCES VALUES('e8e28bf3efe9360d6712e5da93b826924633467f',TRUE,253771435,-1,'Escherichia coli ''BL21-Gold(DE3)pLysS AG'' chromosome',4570938,TRUE,1,'gi|253771435|ref|NC_012947.1| Escherichia coli ''BL21-Gold(DE3)pLysS AG'' chromosome, complete genome','')
+INSERT INTO SEQUENCES VALUES('f5545cc44bb58fec8e4d412d6722af6a6d5f4eaa',TRUE,169803215,-1,'Leuconostoc citreum KM20',1796284,TRUE,1,'gi|169803215|gb|DQ489736.1| Leuconostoc citreum KM20, complete genome','')
+INSERT INTO SEQUENCES VALUES('fbd080551e783f1dc62b784f68d33accf84141d0',TRUE,319420253,-1,'Cellulophaga algicola DSM 14237',4888353,TRUE,1,'gi|319420253|gb|CP002453.1| Cellulophaga algicola DSM 14237, complete genome','')
+INSERT INTO SEQUENCES VALUES('fca8cf4dec36d9ad45773d0ecd7dd0384edebd28',TRUE,323436265,-1,'Weeksella virosa DSM 16922',2272954,TRUE,1,'gi|323436265|gb|CP002455.1| Weeksella virosa DSM 16922, complete genome','')
