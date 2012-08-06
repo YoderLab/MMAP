@@ -133,7 +133,7 @@ class TestRunMetaSim(unittest.TestCase):
             outfile=outfile_var, check_exist=True)
         print self.working_dir
         print metasim.outfile
-        self.assertTrue(metasim.check_outfiles_exist(self.working_dir + "%sMetaSim_bint-454.20e39f4c.fna"))
+        self.assertTrue(metasim.is_file_exist(self.working_dir + "MetaSim_bint-454.20e39f4c.fna"))
 
 
         # negative test, outfiles are not suppose to exist
