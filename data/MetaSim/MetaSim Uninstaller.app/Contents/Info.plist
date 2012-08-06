@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist SYSTEM "file://localhost/System/Library/DTDs/PropertyList.dtd">
+<plist version="0.9">
+<dict>
+<key>CFBundleName</key>
+<string>uninstall</string>
+<key>CFBundleExecutable</key>
+<string>JavaApplicationStub</string>
+<key>CFBundleIconFile</key>
+<string>app.icns</string>
+<key>CFBundleInfoDictionaryVersion</key>
+<string>6.0</string>
+<key>CFBundlePackageType</key>
+<string>APPL</string>
+<key>CFBundleSignature</key>
+<string>????</string>
+<key>CFBundleIdentifier</key>
+<string>com.install4j.1508-5379-8587-2468.1691242292</string>
+<key>CFBundleVersion</key>
+<string>0.9.5</string>
+<key>CFBundleGetInfoString</key>
+<string> 0.9.5</string>
+<key>CFBundleDocumentTypes</key>
+<array>
+<!-- I4J_INSERT_DOCTYPE -->
+</array>
+<key>Java</key>
+<dict>
+<key>MainClass</key>
+<string>com.install4j.runtime.MacLauncher</string>
+<key>VMOptions</key>
+<string></string><!-- I4J_INSERT_VMOPTIONS -->
+<key>Arguments</key>
+<string></string>
+<key>Properties</key>
+<dict>
+<key>java.library.path</key>
+<string>$APP_PACKAGE/../.install4j</string>
+<key>exe4j.moduleName</key>
+<string>$APP_PACKAGE</string>
+<!-- I4J_INSERT_PROPERTIES -->
+</dict>
+<key>JVMVersion</key>
+<string>1.5+</string>
+<key>ClassPath</key>
+<string>$APP_PACKAGE/../.install4j/i4jruntime.jar:$APP_PACKAGE/../.install4j/user.jar</string><!-- I4J_INSERT_CLASSPATH -->
+<key>WorkingDirectory</key>
+<string>$APP_PACKAGE/../..</string>
+</dict>
+</dict>
+</plist>

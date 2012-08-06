@@ -38,3 +38,4 @@ pip-log.txt
 ## pydev
 .project
 .pydevproject
+.DS_Store
