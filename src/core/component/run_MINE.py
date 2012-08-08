@@ -3,9 +3,11 @@ Created on June 6, 2012
 @author: Erin McKenney
 """
 from Bio import SeqIO
-
 from core.component.run_component import RunComponent
 from core.run_ext_prog import runExtProg
+    # in Python we would have to type
+    # >>>import xstats.MINE
+    # How do we import the wrapper here? (Or do we need to at all?)
 
 # Full command-line sequence will read as
 # java -jar MINE.jar "infile" 'style' cv=## c=## <jobID>
