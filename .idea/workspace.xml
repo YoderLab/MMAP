@@ -2,15 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6f19b297-54ac-4629-84f1-4bb8e27c177b" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/MetaSim/.install4j/i4jparams.conf" afterPath="$PROJECT_DIR$/data/MetaSim/.install4j/i4jparams.conf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/MetaSim/.install4j/install.prop" afterPath="$PROJECT_DIR$/data/MetaSim/.install4j/install.prop" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/MetaSim/.install4j/response.varfile" afterPath="$PROJECT_DIR$/data/MetaSim/.install4j/response.varfile" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/MetaSim/database/genomedb.properties" afterPath="$PROJECT_DIR$/data/MetaSim/database/genomedb.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/MetaSim/database/genomedb.script" afterPath="$PROJECT_DIR$/data/MetaSim/database/genomedb.script" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/component/test_run_MINE.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/MetaSim/.install4j/files.log" afterPath="$PROJECT_DIR$/data/MetaSim/.install4j/files.log" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/MetaSim/.install4j/installation.log" afterPath="$PROJECT_DIR$/data/MetaSim/.install4j/installation.log" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/MetaSim/error.log" afterPath="$PROJECT_DIR$/data/MetaSim/error.log" />
     </list>
     <ignored path="metaLem.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -43,10 +36,30 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="setting.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/core/setting.py">
+      <file leaf-file-name="run_MINE.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/core/component/run_MINE.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="27" column="42" selection-start="1189" selection-end="1189" vertical-scroll-proportion="0.0">
+            <state line="30" column="84" selection-start="1006" selection-end="1067" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test_run_MINE.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/test/component/test_run_MINE.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="26" column="39" selection-start="662" selection-end="662" vertical-scroll-proportion="0.3181818">
+              <folding>
+                <element signature="e#56#71#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test_run_metasim.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/component/test_run_metasim.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="12" column="40" selection-start="238" selection-end="238" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -55,25 +68,7 @@
       <file leaf-file-name="run_MetaSim.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/core/component/run_MetaSim.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="20" column="14" selection-start="663" selection-end="663" vertical-scroll-proportion="-9.807693">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="run_MINE.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/core/component/run_MINE.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="88" column="24" selection-start="2870" selection-end="2870" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="test_run_metasim.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/test/component/test_run_metasim.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="168" column="17" selection-start="7202" selection-end="7202" vertical-scroll-proportion="0.9298701">
+            <state line="31" column="75" selection-start="888" selection-end="888" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -97,28 +92,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="case.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file:///System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/unittest/case.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="404" column="0" selection-start="14005" selection-end="14005" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="run_component.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/core/component/run_component.py">
           <provider selected="true" editor-type-id="text-editor">
             <state line="62" column="8" selection-start="1928" selection-end="1928" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="test_run_genovo.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/component/test_run_genovo.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="245" column="70" selection-start="11090" selection-end="11090" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -153,7 +130,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/test/test_setting.py" />
         <option value="$PROJECT_DIR$/src/core/component/run_Genovo.py" />
         <option value="$PROJECT_DIR$/src/core/component/run_glimmer.py" />
         <option value="$PROJECT_DIR$/src/test/assembler/test_software_assembler.py" />
@@ -169,12 +145,13 @@
         <option value="$PROJECT_DIR$/src/core/component/run_MetaSim.py" />
         <option value="$PROJECT_DIR$/src/test/component/test_run_genovo.py" />
         <option value="$PROJECT_DIR$/src/test/component/test_run_metasim.py" />
+        <option value="$PROJECT_DIR$/src/test/component/test_run_MINE.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1157" />
-    <option name="width" value="1280" />
+    <option name="x" value="1152" />
+    <option name="width" value="1360" />
     <option name="height" value="768" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
@@ -203,16 +180,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope">
-        <subPane subId="Project Files">
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -273,6 +240,36 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="test" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="metaLem" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="metaLem" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="metaLem" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="component" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test_run_MINE.py" />
+              <option name="myItemType" value="com.jetbrains.python.projectView.PyFileNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -489,6 +486,16 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope">
+        <subPane subId="Project Files">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -506,16 +513,16 @@
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder1" value="1" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="78" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="842" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="838" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="842" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth2" value="77" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth1" value="74" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder2" value="2" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder2" value="2" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder3" value="3" />
     <property name="FullScreen" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -904,7 +911,11 @@
       <created>1344274020263</created>
       <updated>1344274020263</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="hopefully up to date!">
+      <created>1344274132824</created>
+      <updated>1344274132824</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -928,15 +939,14 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1157" y="0" width="1280" height="768" extended-state="0" />
-    <editor active="false" />
+    <frame x="1152" y="0" width="1360" height="768" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32950193" sideWeight="0.67248064" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32921174" sideWeight="0.98847264" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.41421947" sideWeight="0.98847264" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32692307" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.06969206" sideWeight="0.6707882" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20421393" sideWeight="0.6707882" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.06925418" sideWeight="0.5857805" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20776255" sideWeight="0.5857805" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3990755" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -946,6 +956,7 @@
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32196453" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.6077058" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -989,7 +1000,7 @@
     <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="3 new files in MetaSim/test_data folder" />
+    <option name="LAST_COMMIT_MESSAGE" value="hopefully up to date!" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -1002,7 +1013,6 @@
     <option name="UPDATE_GROUP_BY_CHANGELIST" value="false" />
     <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
-    <MESSAGE value="settings" />
     <MESSAGE value="updating wdir" />
     <MESSAGE value="defined variables in software_assembler&#10;listed valid / essential parameters in setting&#10;added wdir to run_glimmer" />
     <MESSAGE value="test_RunGenovo is hard!!!" />
@@ -1027,21 +1037,12 @@
     <MESSAGE value="test_run_metasim: trouble with test_check_outfile_exist&#10;-self.assertTrue does not pass, even though outfile is present in test_data folder." />
     <MESSAGE value="test_run_metasim: &#10;test_RunMetaSim_run( ) has trouble, I think when the command line is called.&#10;--may not be set up to call from the terminal." />
     <MESSAGE value="3 new files in MetaSim/test_data folder" />
+    <MESSAGE value="hopefully up to date!" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/test/component/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="30" selection-start="124" selection-end="124" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="0" selection-start="446" selection-end="446" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/component/test_run_metaIDBA.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
@@ -1067,16 +1068,19 @@
         <state line="27" column="42" selection-start="1189" selection-end="1189" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/component/run_MINE.py">
+    <entry file="file://$PROJECT_DIR$/src/core/component/run_BLAST.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="88" column="24" selection-start="2870" selection-end="2870" vertical-scroll-proportion="0.0" />
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/core/run_ext_prog.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="68" column="0" selection-start="1824" selection-end="1824" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="68" column="0" selection-start="1824" selection-end="1824" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/assembler/software_assembler.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="74" column="0" selection-start="2318" selection-end="2318" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file:///System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/unittest/case.py">
@@ -1084,23 +1088,14 @@
         <state line="404" column="0" selection-start="14005" selection-end="14005" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/component/run_component.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="62" column="8" selection-start="1928" selection-end="1928" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/component/test_run_genovo.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="245" column="70" selection-start="11090" selection-end="11090" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/assembler/software_assembler.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="74" column="0" selection-start="2318" selection-end="2318" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/component/run_component.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="62" column="8" selection-start="1928" selection-end="1928" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/core/component/run_genovo.py">
@@ -1110,15 +1105,31 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/core/component/run_MetaSim.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="14" selection-start="663" selection-end="663" vertical-scroll-proportion="-9.807693">
+        <state line="31" column="75" selection-start="888" selection-end="888" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/component/test_run_metasim.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="168" column="17" selection-start="7202" selection-end="7202" vertical-scroll-proportion="0.9298701">
+        <state line="12" column="40" selection-start="238" selection-end="238" vertical-scroll-proportion="0.0">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/component/run_MINE.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="30" column="84" selection-start="1006" selection-end="1067" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/component/test_run_MINE.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="26" column="39" selection-start="662" selection-end="662" vertical-scroll-proportion="0.3181818">
+          <folding>
+            <element signature="e#56#71#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
