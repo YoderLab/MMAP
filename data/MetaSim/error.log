@@ -1,37 +1,23 @@
 Loading settings from "/Users/erinmckenney/Library/Preferences/MetaSim.Settings"... {AppSettings}
-Reading fastA file `wdir_all_reads_out.fasta' [79KiB]
-Generating Reads: wdir_all_reads_out.fasta
-Generating Reads: wdir_all_reads_out.fasta
-Generating Reads: wdir_all_reads_out.fasta
-Generating Reads: wdir_all_reads_out.fasta
-Generating Reads: wdir_all_reads_out.fasta
-Generating Reads: wdir_all_reads_out.fasta
-Generating Reads: wdir_all_reads_out.fasta
-Generating Reads: wdir_all_reads_out.fasta
-Generating Reads: wdir_all_reads_out.fasta
-Generating Reads: wdir_all_reads_out.fasta
-Generating Reads: wdir_all_reads_out.fasta
-Generating Reads: wdir_all_reads_out.fasta
-Generating Reads: wdir_all_reads_out.fasta
-Generating Reads: wdir_all_reads_out.fasta
-Generating Reads: wdir_all_reads_out.fasta
-Generating Reads: wdir_all_reads_out.fasta
-Generating Reads: wdir_all_reads_out.fasta
-Generating Reads: wdir_all_reads_out.fasta
-Generating Reads: wdir_all_reads_out.fasta
-Generating Reads: wdir_all_reads_out.fasta
-java.lang.Exception: DNA clone size is too large for this sequence. Adjust Parameters!
-	at metasim.util.K.A(Unknown Source)
-	at metasim.util.K.run(Unknown Source)
+Reading abundance profile `MetaSim_bint.mprf' [1KiB]
+Database: jdbc:hsqldb:file:database/genomedb
+14 sequences selected.
+
+java.io.FileNotFoundException: -d /Users/erinmckenney/Desktop/Pipeline/metaLem/data/MetaSim/test_data/test_outfile.fasta (No such file or directory)
+	at java.io.FileInputStream.open(Native Method)
+	at java.io.FileInputStream.<init>(FileInputStream.java:138)
+	at java.io.FileReader.<init>(FileReader.java:72)
+	at metasim.util.B.E.B(Unknown Source)
 	at metasim.B.A$9.B(Unknown Source)
 	at metasim.B.A$9.call(Unknown Source)
 	at metasim.B.A.A(Unknown Source)
 	at metasim.B.A.A(Unknown Source)
 	at metasim.main.MetaSim.main(Unknown Source)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
-	at java.lang.reflect.Method.invoke(Method.java:597)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
 	at com.exe4j.runtime.LauncherEngine.launch(Unknown Source)
 	at com.install4j.runtime.Launcher.main(Unknown Source)
-random seed was: 8666413600230303124
+java.io.FileNotFoundException: -d /Users/erinmckenney/Desktop/Pipeline/metaLem/data/MetaSim/test_data/test_outfile.fasta (No such file or directory)
+random seed was: 7379054860476827467
