@@ -29,9 +29,76 @@ class TestRunMINE(unittest.TestCase):
         # CLUMPS_POSITION = 4
         # JOB_ID_POSITION = 5
 
-    MINE = "java -jar MINE.jar" # MINE command call
+    def test_RunMINE_init(self):
+        infile_var = "Spellman.csv"
+        jobID_var = "Spellman.csv,mv=0,cv=0.0,B=n^0.6,"
 
+        mine = RunMINE(infile=infile_var, pdir=self.data_dir, wdir=self.working_dir,
+            jobID=jobID_var, comparison='-allPairs', cv=0.0, c=15, check_exist=True)
 
+        expected_infile = "%s%s" % (self.working_dir, infile_var)
+        expected_outfile = "%s%s" % (self.working_dir, jobID_var)
+        expected = [expected_infile, '-allPairs', "0.0", "15", expected_outfile]
+#        print expected
+        self.assertEqual(mine.get_switch(), expected)
 
+    def test_file_not_exist(self):
+        infile_var = "file_inexistent.mconf"  # test infile
+        jobID_var = "Spellman.csv,mv=0,cv=0.0,B=n^0.6,"
 
+        with self.assertRaises(IOError):
+            RunMINE(infile=infile_var, pdir=self.data_dir, wdir=self.working_dir,
+                jobID=jobID_var, comparison='-allPairs', cv=0.0, c=15, check_exist=True)
 
+    def test_parameter_values(self):
+        infile_var = "Spellman.csv"
+        jobID_var = "Spellman.csv,mv=0,cv=0.0,B=n^0.6,"
+
+        mine = RunMINE(infile=infile_var, pdir=self.data_dir, wdir=self.working_dir,
+            jobID=jobID_var, comparison='-allPairs', cv=0.0, c=15, check_exist=True)
+
+        self.assertRaises(ValueError, mine.set_cv_threshold, 1.1)
+        self.assertRaises(ValueError, mine.set_cv_threshold, -1)
+        self.assertRaises(ValueError, mine.set_cv_threshold, -2.5)
+        self.assertRaises(TypeError, mine.set_cv_threshold, "string")
+        self.assertRaises(TypeError, mine.set_cv_threshold, "3")
+
+        self.assertRaises(ValueError, mine.set_clumping_factor, 1.1)
+        self.assertRaises(ValueError, mine.set_clumping_factor, 0)
+        self.assertRaises(ValueError, mine.set_clumping_factor, -1)
+        self.assertRaises(ValueError, mine.set_clumping_factor, -2.5)
+        self.assertRaises(TypeError, mine.set_clumping_factor, "string")
+        self.assertRaises(TypeError, mine.set_clumping_factor, "3")
+
+#    def test_file_already_exist(self):
+        #        """
+        #        check if out file already exists,
+        #        maybe should not raise error, should
+        #        TODO: maybe it should be handle it at different way, auto rename?
+        #        """
+        #        infile_var = "Spellman.csv"
+        #        jobID_var = "Spellman.csv,mv=0,cv=0.0,B=n^0.6,"
+        #
+        #        with self.assertRaises(IOError):
+        #            RunMINE(infile=infile_var, pdir=self.data_dir, wdir=self.working_dir,
+        #                jobID=jobID_var, comparison='-allPairs', cv=0.0, c=15, check_exist=True)
+
+    def test_check_outfile_exist(self):
+        """
+        check if ./MINE finished running, should produce 2 output files
+        only pass if both exist
+        """
+        infile_var = "Spellman.csv"
+        jobID_var = "Spellman.csv,mv=0,cv=0.0,B=n^0.6,"
+
+        mine = RunMINE(infile=infile_var, pdir=self.data_dir, wdir=self.working_dir,
+            jobID=jobID_var, comparison='-allPairs', cv=0.0, c=15, check_exist=True)
+        self.assertTrue(mine.is_file_exist(self.working_dir + "Spellman.csv,mv=0,cv=0.0,B=n^0.6,Results.csv"))
+        self.assertTrue(mine.is_file_exist(self.working_dir + "Spellman.csv,mv=0,cv=0.0,B=n^0.6,Status.txt"))
+
+#        TODO: generate_outfile_name if no jobID set, check outfile, etc.?
+#        # negative test, outfiles are not suppose to exist
+#        jobID_var = "fileNotExist.csv"
+#        with self.assertRaises(IOError):
+#            RunMINE(infile=infile_var, pdir=self.data_dir, wdir=self.working_dir,
+#                jobID=jobID_var, comparison='-allPairs', cv=0.0, c=15, check_exist=True)

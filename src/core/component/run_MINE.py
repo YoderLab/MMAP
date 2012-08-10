@@ -35,9 +35,9 @@ class RunMINE(RunComponent):
         Constructor
         """
         self.infile = wdir+infile
-        self.outfile = wdir+jobID
+        self.outfile = jobID
         self.all_exts = ALL_EXTS
-        self.parameter_check(pdir, wdir, infile, jobID)
+        self.parameter_check(pdir, wdir, infile, self.outfile, check_exist,jobID)
         self.mine = runExtProg(MINE, pdir=self.pdir, length=5, check_OS=True)
         self.init_prog(comparison, cv, c)
 
@@ -68,6 +68,16 @@ class RunMINE(RunComponent):
         mine = RunMINE.create_mine(setting)
         return mine
 
+#    def parameter_check(self, pdir, wdir, model_file, taxon_infile, outfile, check_exist):
+#        self.check_dirs(pdir, wdir, check_exist)
+#        self.model_infile = self.wdir + model_file
+#        self.taxon_infile = self.wdir + taxon_infile
+#        self.outfile = self.wdir + outfile
+#        files = [self.model_infile, self.taxon_infile, self.outfile]
+#        for file in files:
+#            self.check_file_exist(file, check_exist)
+#        #            self.model_infile, self.taxon_infile, self.outfile)
+
     def init_prog(self, style, cv, c):
         self.set_infile_name(self.infile)
         self.set_outfile_tag(self.outfile)
@@ -84,23 +94,28 @@ class RunMINE(RunComponent):
         self.mine.set_param_at(infile, INFILE_POSITION)
 
     def set_comparison_style(self, style):
-        """
-        type anything here
-        TODO: check valid infile, infile exist or not
-        """
+#        if set to acceptable parameter (3-4 choices),
         self.mine.set_param_at(style, COMPARISON_STYLE_POSITION)
+#        else:
+#           raise ValueError("Error: comparison style is currently set to invalid setting: %s. Must be set to -x, -y, or -z." % style
 
     def set_cv_threshold(self, cv):
         if 1> cv >= 0 and isinstance(cv, float):
             self.mine.set_param_at(cv, CV_THRESHOLD_POSITION)
         else:
-            raise TypeError("Error: unacceptable value for comparison threshold: %s" % cv)
+            if isinstance(cv, str):
+                raise TypeError("Error: cv set as string: %s" % cv)
+            else:
+                raise ValueError("Error: unacceptable value for comparison threshold: %s" % cv)
 
     def set_clumping_factor(self, c):
         if c > 0 and isinstance(c, (int, long)):
             self.mine.set_param_at(c, CLUMPS_POSITION)
         else:
-            raise TypeError("Error: unacceptable value for clumping factor: %s" % c)
+            if isinstance(c, str):
+                raise TypeError("Error: clumping factor set as string: %s" % c)
+            else:
+                raise ValueError("Error: unacceptable value for clumping factor: %s" % c)
 
     def set_outfile_tag(self, jobID):
         self.mine.set_param_at(jobID, JOB_ID_POSITION)
@@ -112,7 +127,13 @@ class RunMINE(RunComponent):
 #        self.record_index = SeqIO.index(self.outfile, "csv")
 #        return self.record_index
 
+
     def run(self):
+        #TODO: Figure out how to run MINE using the Python wrapper... command in the README file is below--but how to incorporate?
+#        import xstats.MINE
+#        for a, b, scores in xstats.MINE.analyze_file("Spellman.csv", xstats.MINE.MASTER_VARIABLE, 0, cv = 0.7):
+#            print a, b, scores
+#        analyze_file (fn, method = None, master_variable = None, cv = 0.0, exp = 0.6, c = 15)
         self.mine.run()
 
     def get_switch(self):

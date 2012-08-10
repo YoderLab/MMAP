@@ -11,7 +11,7 @@ list_optional_metasim_only = ["metasim_outfile"]
 list_optional_shared = ["wdir", "checkExist"]
 list_optional_genovo_only = ["genovo_outfile", ]
 list_optional_glimmer_only = ["glimmer_infile", "glimmer_outfile"]
-list_optional_mine_only = ["mine_cv","mine_clumps","mine_outfile"]
+list_optional_mine_only = ["mine_cv","mine_clumps", "mine_jobID"]
 
 list_ess_par = {
     "shared": list_essential_shared,
