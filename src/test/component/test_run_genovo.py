@@ -249,3 +249,5 @@ class TestRunGenovo(unittest.TestCase):
         self.assertTrue(genovo.check_outfiles_exist(self.data_dir + infile_var))
         self.assertTrue(genovo.is_file_exist(self.data_dir + "test_run_outfile", ".fasta", True))
         os.remove(self.data_dir + outfile_var)
+        #TODO: fix "pass" without removing the existing file, something wrong with the outfile check
+

@@ -36,6 +36,7 @@ class RunBlast(object):
 #            self.seq.all_terms
             self.results[key] = self.seq
 
-        for i in self.results.values():
-            print(i.all_terms)
+#        for i in self.results.values():
+#            print(i.all_terms)
+
 
