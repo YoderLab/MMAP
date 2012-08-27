@@ -34,8 +34,25 @@ pip-log.txt
 ## linux backup file
 *~
 
+## *.orig from diff 
+*.orig
 
 ## pydev
 .project
 .pydevproject
 .DS_Store
+
+
+##
+.idea/
+data/MetaSim/MetaSim Uninstaller.app/
+data/MetaSim/MetaSim.app/
+data/MetaSim/class/
+data/MetaSim/database/
+data/MetaSim/error.log
+data/MetaSim/examples/
+data/MetaSim/.install4j/
+data/MetaSim/jars/
+
+
+#
