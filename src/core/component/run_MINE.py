@@ -5,7 +5,7 @@ Created on June 6, 2012
 from Bio import SeqIO
 from core.component.run_component import RunComponent
 from core.run_ext_prog import runExtProg
-    # in Python we would have to type
+    # TODO: in Python we would have to type
     # >>>import xstats.MINE
     # How do we import the wrapper here? (Or do we need to at all?)
 
@@ -23,7 +23,7 @@ CV_THRESHOLD_POSITION = 3
 CLUMPS_POSITION = 4
 JOB_ID_POSITION = 5
 
-ALL_EXTS = ["Results.csv","Status.csv"]
+ALL_EXTS = ["Results.csv","Status.txt"]
 
 class RunMINE(RunComponent):
     """
@@ -38,6 +38,8 @@ class RunMINE(RunComponent):
         self.outfile = jobID
         self.all_exts = ALL_EXTS
         self.parameter_check(pdir, wdir, infile, self.outfile, check_exist,jobID)
+        if self.check_outfiles_exist(self.outfile) and check_exist:
+            raise IOError("Warning: outfiles exist!")
         self.mine = runExtProg(MINE, pdir=self.pdir, length=5, check_OS=True)
         self.init_prog(comparison, cv, c)
 
@@ -68,16 +70,6 @@ class RunMINE(RunComponent):
         mine = RunMINE.create_mine(setting)
         return mine
 
-#    def parameter_check(self, pdir, wdir, model_file, taxon_infile, outfile, check_exist):
-#        self.check_dirs(pdir, wdir, check_exist)
-#        self.model_infile = self.wdir + model_file
-#        self.taxon_infile = self.wdir + taxon_infile
-#        self.outfile = self.wdir + outfile
-#        files = [self.model_infile, self.taxon_infile, self.outfile]
-#        for file in files:
-#            self.check_file_exist(file, check_exist)
-#        #            self.model_infile, self.taxon_infile, self.outfile)
-
     def init_prog(self, style, cv, c):
         self.set_infile_name(self.infile)
         self.set_outfile_tag(self.outfile)
@@ -94,7 +86,7 @@ class RunMINE(RunComponent):
         self.mine.set_param_at(infile, INFILE_POSITION)
 
     def set_comparison_style(self, style):
-#        if set to acceptable parameter (3-4 choices),
+#        if set to acceptable parameter (3 choices),
         self.mine.set_param_at(style, COMPARISON_STYLE_POSITION)
 #        else:
 #           raise ValueError("Error: comparison style is currently set to invalid setting: %s. Must be set to -x, -y, or -z." % style
@@ -128,13 +120,13 @@ class RunMINE(RunComponent):
 #        return self.record_index
 
 
-    def run(self):
+    def run(self, debug=False):
         #TODO: Figure out how to run MINE using the Python wrapper... command in the README file is below--but how to incorporate?
 #        import xstats.MINE
 #        for a, b, scores in xstats.MINE.analyze_file("Spellman.csv", xstats.MINE.MASTER_VARIABLE, 0, cv = 0.7):
 #            print a, b, scores
 #        analyze_file (fn, method = None, master_variable = None, cv = 0.0, exp = 0.6, c = 15)
-        self.mine.run()
+        self.mine.run(debug)
 
     def get_switch(self):
         return self.mine._switch

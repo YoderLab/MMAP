@@ -34,7 +34,7 @@ class TestRunMINE(unittest.TestCase):
         jobID_var = "Spellman.csv,mv=0,cv=0.0,B=n^0.6,"
 
         mine = RunMINE(infile=infile_var, pdir=self.data_dir, wdir=self.working_dir,
-            jobID=jobID_var, comparison='-allPairs', cv=0.0, c=15, check_exist=True)
+            jobID=jobID_var, comparison='-allPairs', cv=0.0, c=15, check_exist=False)
 
         expected_infile = "%s%s" % (self.working_dir, infile_var)
         expected_outfile = "%s%s" % (self.working_dir, jobID_var)
@@ -55,7 +55,7 @@ class TestRunMINE(unittest.TestCase):
         jobID_var = "Spellman.csv,mv=0,cv=0.0,B=n^0.6,"
 
         mine = RunMINE(infile=infile_var, pdir=self.data_dir, wdir=self.working_dir,
-            jobID=jobID_var, comparison='-allPairs', cv=0.0, c=15, check_exist=True)
+            jobID=jobID_var, comparison='-allPairs', cv=0.0, c=15, check_exist=False)
 
         self.assertRaises(ValueError, mine.set_cv_threshold, 1.1)
         self.assertRaises(ValueError, mine.set_cv_threshold, -1)
@@ -70,35 +70,51 @@ class TestRunMINE(unittest.TestCase):
         self.assertRaises(TypeError, mine.set_clumping_factor, "string")
         self.assertRaises(TypeError, mine.set_clumping_factor, "3")
 
-#    def test_file_already_exist(self):
-        #        """
-        #        check if out file already exists,
-        #        maybe should not raise error, should
-        #        TODO: maybe it should be handle it at different way, auto rename?
-        #        """
-        #        infile_var = "Spellman.csv"
-        #        jobID_var = "Spellman.csv,mv=0,cv=0.0,B=n^0.6,"
-        #
-        #        with self.assertRaises(IOError):
-        #            RunMINE(infile=infile_var, pdir=self.data_dir, wdir=self.working_dir,
-        #                jobID=jobID_var, comparison='-allPairs', cv=0.0, c=15, check_exist=True)
+    def test_file_already_exist(self):
+                """
+                check if out file already exists,
+                maybe should not raise error, should
+                TODO: maybe it should be handle it at different way, auto rename?
+                """
+                infile_var = "Spellman.csv"
+                jobID_var = "Spellman.csv,mv=0,cv=0.0,B=n^0.6,"
 
-    def test_check_outfile_exist(self):
-        """
-        check if ./MINE finished running, should produce 2 output files
-        only pass if both exist
-        """
+                with self.assertRaises(IOError):
+                    RunMINE(infile=infile_var, pdir=self.data_dir, wdir=self.working_dir,
+                        jobID=jobID_var, comparison='-allPairs', cv=0.0, c=15, check_exist=True)
+
+#    def test_check_outfile_exist(self):
+#        """
+#        want to check to make sure output files DO NOT exist, first (before running the program)
+#        then run the program, and check:
+#        if ./MINE finished running, should produce 2 output files
+#        only pass if both exist
+#        """
+#        infile_var = "Spellman.csv"
+#        jobID_var = "Spellman.csv,mv=0,cv=0.0,B=n^0.6,"
+#
+#        mine = RunMINE(infile=infile_var, pdir=self.data_dir, wdir=self.working_dir,
+#            jobID=jobID_var, comparison='-allPairs', cv=0.0, c=15, check_exist=True)
+#        self.assertTrue(mine.is_file_exist(self.working_dir + "Spellman.csv,mv=0,cv=0.0,B=n^0.6,Results.csv"))
+#        self.assertTrue(mine.is_file_exist(self.working_dir + "Spellman.csv,mv=0,cv=0.0,B=n^0.6,Status.txt"))
+
+
+#    def test_read_outfile(self):
+#        """
+#        check if it can "read" .csv
+#        TODO: have check what happen in the file format is invalid,
+#        assuming its the correct fasta now
+#        """
+#        ...for now, can only check to make sure output file is not empty.#
+
+    def test_RunMINE_run(self):
         infile_var = "Spellman.csv"
         jobID_var = "Spellman.csv,mv=0,cv=0.0,B=n^0.6,"
 
         mine = RunMINE(infile=infile_var, pdir=self.data_dir, wdir=self.working_dir,
-            jobID=jobID_var, comparison='-allPairs', cv=0.0, c=15, check_exist=True)
-        self.assertTrue(mine.is_file_exist(self.working_dir + "Spellman.csv,mv=0,cv=0.0,B=n^0.6,Results.csv"))
-        self.assertTrue(mine.is_file_exist(self.working_dir + "Spellman.csv,mv=0,cv=0.0,B=n^0.6,Status.txt"))
-
-#        TODO: generate_outfile_name if no jobID set, check outfile, etc.?
-#        # negative test, outfiles are not suppose to exist
-#        jobID_var = "fileNotExist.csv"
-#        with self.assertRaises(IOError):
-#            RunMINE(infile=infile_var, pdir=self.data_dir, wdir=self.working_dir,
-#                jobID=jobID_var, comparison='-allPairs', cv=0.0, c=15, check_exist=True)
+        jobID=jobID_var, comparison='-allPairs', cv=0.0, c=15, check_exist=False)
+        mine.run(debug=True)
+        self.assertTrue(mine.check_outfiles_exist(self.working_dir + jobID_var))
+        self.assertTrue(mine.is_file_exist(self.working_dir + "Spellman.csv,mv=0,cv=0.0,B=n^0.6,", "Results.csv", True))
+        self.assertTrue(mine.is_file_exist(self.working_dir + "Spellman.csv,mv=0,cv=0.0,B=n^0.6,", "Status.txt", True))
+        os.remove(self.working_dir + jobID_var)

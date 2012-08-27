@@ -83,6 +83,7 @@ class RunComponent(object):
         return boolean
         """
         test_file = "%s%s" % (file_tag, ext)
+#        print(test_file)
         if os.path.exists(test_file):
             is_exist = is_exist and True
         else:

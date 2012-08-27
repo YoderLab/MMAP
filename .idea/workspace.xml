@@ -3,9 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="6f19b297-54ac-4629-84f1-4bb8e27c177b" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/core/component/run_MINE.py" afterPath="$PROJECT_DIR$/src/core/component/run_MINE.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/core/setting.py" afterPath="$PROJECT_DIR$/src/core/setting.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/component/test_run_MINE.py" afterPath="$PROJECT_DIR$/src/test/component/test_run_MINE.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/core/main.py" afterPath="$PROJECT_DIR$/src/core/main.py" />
     </list>
     <ignored path="metaLem.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -20,8 +18,13 @@
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="true" />
   <component name="CoverageDataManager">
+    <SUITE FILE_PATH="coverage/metaLem$Unittests_in_TestRunMINE_test_file_already_exist.coverage" NAME="Unittests in TestRunMINE.test_file_already_exist Coverage Results" MODIFIED="1344626531079" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/test/component" />
     <SUITE FILE_PATH="coverage/metaLem$Unittests_in_TestRunGenovo.coverage" NAME="Unittests in TestRunGenovo Coverage Results" MODIFIED="1336511353090" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/test/component" />
     <SUITE FILE_PATH="coverage/metaLem$Unittests_in_TestRunGenovo_test_RunGenovo_finalise_outfile.coverage" NAME="Unittests in TestRunGenovo.test_RunGenovo_finalise_outfile Coverage Results" MODIFIED="1332787204472" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/test/component" />
+    <SUITE FILE_PATH="coverage/metaLem$Unittests_in_TestRunMINE.coverage" NAME="Unittests in TestRunMINE Coverage Results" MODIFIED="1344627214878" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/test/component" />
+  </component>
+  <component name="CoverageViewManager">
+    <option name="myAutoScrollFromSource" value="true" />
   </component>
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
@@ -38,44 +41,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="run_MINE.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/core/component/run_MINE.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="39" column="19" selection-start="1381" selection-end="1381" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="e#55#76#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="setting.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/core/setting.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="64" selection-start="777" selection-end="777" vertical-scroll-proportion="0.0">
+            <state line="59" column="11" selection-start="2011" selection-end="2011" vertical-scroll-proportion="0.0">
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="test_run_MINE.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/test/component/test_run_MINE.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="99" column="59" selection-start="4182" selection-end="4182" vertical-scroll-proportion="0.66292137">
-              <folding>
-                <element signature="e#56#71#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="test_run_metasim.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/component/test_run_metasim.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="143" column="54" selection-start="5208" selection-end="6257" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="e#57#72#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -83,7 +53,16 @@
       <file leaf-file-name="run_MetaSim.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/core/component/run_MetaSim.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="107" column="61" selection-start="3555" selection-end="3555" vertical-scroll-proportion="0.0">
+            <state line="64" column="0" selection-start="1944" selection-end="1944" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test_run_metasim.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/component/test_run_metasim.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="83" column="71" selection-start="3300" selection-end="3363" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -92,25 +71,27 @@
       <file leaf-file-name="run_ext_prog.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/core/run_ext_prog.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="36" column="8" selection-start="773" selection-end="773" vertical-scroll-proportion="0.0">
+            <state line="65" column="0" selection-start="1688" selection-end="1688" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="software_assembler.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/core/assembler/software_assembler.py">
+      <file leaf-file-name="test_software_assembler.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/assembler/test_software_assembler.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="74" column="0" selection-start="2318" selection-end="2318" vertical-scroll-proportion="0.0">
-              <folding />
+            <state line="41" column="36" selection-start="1951" selection-end="1951" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="e#0#63#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="run_component.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/core/component/run_component.py">
+      <file leaf-file-name="main.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/core/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="43" column="8" selection-start="1292" selection-end="1292" vertical-scroll-proportion="0.0">
+            <state line="113" column="0" selection-start="3455" selection-end="3455" vertical-scroll-proportion="0.61139894">
               <folding />
             </state>
           </provider>
@@ -119,7 +100,25 @@
       <file leaf-file-name="run_genovo.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/core/component/run_genovo.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="36" column="16" selection-start="827" selection-end="827" vertical-scroll-proportion="0.0">
+            <state line="36" column="0" selection-start="811" selection-end="811" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="software_assembler.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/core/assembler/software_assembler.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="41" column="0" selection-start="915" selection-end="915" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="run_component.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/core/component/run_component.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="21" column="0" selection-start="461" selection-end="461" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -145,28 +144,27 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/core/component/run_Genovo.py" />
         <option value="$PROJECT_DIR$/src/core/component/run_glimmer.py" />
-        <option value="$PROJECT_DIR$/src/test/assembler/test_software_assembler.py" />
         <option value="$PROJECT_DIR$/src/test/component/test_run_glimmer.py" />
         <option value="$PROJECT_DIR$/src/core/run_ext_prog.py" />
         <option value="$PROJECT_DIR$/src/core/assembler/software_assembler.py" />
-        <option value="$PROJECT_DIR$/src/core/component/run_component.py" />
         <option value="$PROJECT_DIR$/src/test/main.py" />
         <option value="$PROJECT_DIR$/src/test/component/__init__.py" />
         <option value="$PROJECT_DIR$/src/core/component/run_genovo.py" />
         <option value="$PROJECT_DIR$/src/core/component/run_MetaSim.py" />
         <option value="$PROJECT_DIR$/src/test/component/test_run_genovo.py" />
         <option value="$PROJECT_DIR$/src/test/component/test_run_metasim.py" />
-        <option value="$PROJECT_DIR$/src/core/setting.py" />
-        <option value="$PROJECT_DIR$/src/core/component/run_MINE.py" />
+        <option value="$PROJECT_DIR$/src/core/component/run_component.py" />
         <option value="$PROJECT_DIR$/src/test/component/test_run_MINE.py" />
+        <option value="$PROJECT_DIR$/src/core/component/run_MINE.py" />
+        <option value="$PROJECT_DIR$/src/test/assembler/test_software_assembler.py" />
+        <option value="$PROJECT_DIR$/src/core/setting.py" />
+        <option value="$PROJECT_DIR$/src/core/main.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1152" />
-    <option name="y" value="1" />
+    <option name="x" value="1153" />
     <option name="width" value="1360" />
     <option name="height" value="768" />
   </component>
@@ -196,6 +194,16 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope">
+        <subPane subId="Project Files">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -502,16 +510,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope">
-        <subPane subId="Project Files">
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -524,21 +522,21 @@
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder2" value="2" />
     <property name="ChangesBrowser.SHOW_FLATTEN" value="false" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="72" />
-    <property name="options.lastSelected" value="preferences.keymap" />
+    <property name="options.lastSelected" value="com.jetbrains.python.configuration.PythonSdkConfigurable" />
     <property name="recentsLimit" value="5" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder1" value="1" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="78" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="842" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="838" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="842" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth2" value="77" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth1" value="74" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder2" value="2" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder2" value="2" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder3" value="3" />
     <property name="FullScreen" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -562,18 +560,18 @@
       <recent name="$PROJECT_DIR$/src/core/component" />
     </key>
   </component>
-  <component name="RunManager" selected="Python's test.Unittests in TestRunMINE.test_check_outfile_exist">
-    <configuration default="false" name="Unittests in TestRunMINE" type="tests" factoryName="Unittests" temporary="true">
+  <component name="RunManager" selected="Python.main">
+    <configuration default="false" name="Unittests in TestSoftwareAssembler" type="tests" factoryName="Unittests" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs />
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/test/component" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/test/assembler" />
       <option name="IS_MODULE_SDK" value="true" />
       <module name="metaLem" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/test/component/test_run_MINE.py" />
-      <option name="CLASS_NAME" value="TestRunMINE" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/test/assembler/test_software_assembler.py" />
+      <option name="CLASS_NAME" value="TestSoftwareAssembler" />
       <option name="METHOD_NAME" value="" />
       <option name="FOLDER_NAME" value="" />
       <option name="TEST_TYPE" value="TEST_CLASS" />
@@ -584,18 +582,18 @@
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
-    <configuration default="false" name="Unittests in TestRunMINE.test_RunMINE_init" type="tests" factoryName="Unittests" temporary="true">
+    <configuration default="false" name="Unittests in TestSoftwareAssembler.test_SoftwareAssembler_set_all_param" type="tests" factoryName="Unittests" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs />
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/test/component" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/test/assembler" />
       <option name="IS_MODULE_SDK" value="true" />
       <module name="metaLem" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/test/component/test_run_MINE.py" />
-      <option name="CLASS_NAME" value="TestRunMINE" />
-      <option name="METHOD_NAME" value="test_RunMINE_init" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/test/assembler/test_software_assembler.py" />
+      <option name="CLASS_NAME" value="TestSoftwareAssembler" />
+      <option name="METHOD_NAME" value="test_SoftwareAssembler_set_all_param" />
       <option name="FOLDER_NAME" value="" />
       <option name="TEST_TYPE" value="TEST_METHOD" />
       <option name="PATTERN" value="" />
@@ -605,18 +603,18 @@
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
-    <configuration default="false" name="Unittests in TestRunMINE.test_file_not_exist" type="tests" factoryName="Unittests" temporary="true">
+    <configuration default="false" name="Unittests in TestSoftwareAssembler.test_SoftwareAssembler_init_program" type="tests" factoryName="Unittests" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs />
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/test/component" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/test/assembler" />
       <option name="IS_MODULE_SDK" value="true" />
       <module name="metaLem" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/test/component/test_run_MINE.py" />
-      <option name="CLASS_NAME" value="TestRunMINE" />
-      <option name="METHOD_NAME" value="test_file_not_exist" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/test/assembler/test_software_assembler.py" />
+      <option name="CLASS_NAME" value="TestSoftwareAssembler" />
+      <option name="METHOD_NAME" value="test_SoftwareAssembler_init_program" />
       <option name="FOLDER_NAME" value="" />
       <option name="TEST_TYPE" value="TEST_METHOD" />
       <option name="PATTERN" value="" />
@@ -626,20 +624,20 @@
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
-    <configuration default="false" name="Unittests in TestRunMINE.test_no_parameter_value" type="tests" factoryName="Unittests" temporary="true">
+    <configuration default="false" name="Unittests in TestAll" type="tests" factoryName="Unittests" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs />
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/test/component" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/test" />
       <option name="IS_MODULE_SDK" value="true" />
       <module name="metaLem" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/test/component/test_run_MINE.py" />
-      <option name="CLASS_NAME" value="TestRunMINE" />
-      <option name="METHOD_NAME" value="test_no_parameter_value" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/test/main.py" />
+      <option name="CLASS_NAME" value="TestAll" />
+      <option name="METHOD_NAME" value="" />
       <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_METHOD" />
+      <option name="TEST_TYPE" value="TEST_CLASS" />
       <option name="PATTERN" value="" />
       <option name="USE_PATTERN" value="false" />
       <option name="PUREUNITTEST" value="true" />
@@ -647,23 +645,20 @@
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
-    <configuration default="false" name="Unittests in TestRunMINE.test_check_outfile_exist" type="tests" factoryName="Unittests" temporary="true">
+    <configuration default="false" name="main" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/test/component" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/core" />
       <option name="IS_MODULE_SDK" value="true" />
       <module name="metaLem" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/test/component/test_run_MINE.py" />
-      <option name="CLASS_NAME" value="TestRunMINE" />
-      <option name="METHOD_NAME" value="test_check_outfile_exist" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_METHOD" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <option name="PUREUNITTEST" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/core/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="MULTIPROCESS" value="false" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
@@ -830,11 +825,11 @@
       <item index="2" class="java.lang.String" itemvalue="Python's test.RunMainTest.py" />
       <item index="3" class="java.lang.String" itemvalue="Python's test.Unittests in TestRunGenovo.test_RunGenovo_parent_class" />
       <item index="4" class="java.lang.String" itemvalue="Python's test.Unittests in TestRunGenovo.test_parent_class" />
-      <item index="5" class="java.lang.String" itemvalue="Python's test.Unittests in TestRunMINE" />
-      <item index="6" class="java.lang.String" itemvalue="Python's test.Unittests in TestRunMINE.test_RunMINE_init" />
-      <item index="7" class="java.lang.String" itemvalue="Python's test.Unittests in TestRunMINE.test_file_not_exist" />
-      <item index="8" class="java.lang.String" itemvalue="Python's test.Unittests in TestRunMINE.test_no_parameter_value" />
-      <item index="9" class="java.lang.String" itemvalue="Python's test.Unittests in TestRunMINE.test_check_outfile_exist" />
+      <item index="5" class="java.lang.String" itemvalue="Python's test.Unittests in TestSoftwareAssembler" />
+      <item index="6" class="java.lang.String" itemvalue="Python's test.Unittests in TestSoftwareAssembler.test_SoftwareAssembler_set_all_param" />
+      <item index="7" class="java.lang.String" itemvalue="Python's test.Unittests in TestSoftwareAssembler.test_SoftwareAssembler_init_program" />
+      <item index="8" class="java.lang.String" itemvalue="Python's test.Unittests in TestAll" />
+      <item index="9" class="java.lang.String" itemvalue="Python.main" />
     </list>
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
@@ -939,7 +934,19 @@
       <created>1344458106660</created>
       <updated>1344458106660</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="test_run_MINE: initialize, check parameters">
+      <created>1344621346747</created>
+      <updated>1344621346747</updated>
+    </task>
+    <task id="LOCAL-00021" summary="test_run_MINE: finished other tests.&#10;TODO: resolve MINE.run( ) error associated with &quot;debug&quot;...">
+      <created>1344628348461</created>
+      <updated>1344628348461</updated>
+    </task>
+    <task id="LOCAL-00022" summary="test_software_assembler:&#10;Trouble initiating Metasim, 'not all key exist'.&#10;Traced back to check_all_optional_parameter, in setting.py&#10;Cannot print statement to check which &quot;c&quot; in optional is missing.&#10;Tried adding a line in test code to append Metasim optional settings; has not worked.">
+      <created>1346089195659</created>
+      <updated>1346089195659</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -963,24 +970,25 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1152" y="1" width="1360" height="768" extended-state="0" />
+    <frame x="1153" y="0" width="1360" height="768" extended-state="6" />
     <editor active="true" />
     <layout>
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32950193" sideWeight="0.67248064" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.41421947" sideWeight="0.98847264" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4127907" sideWeight="0.98847264" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32692307" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.06849315" sideWeight="0.625966" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2108067" sideWeight="0.625966" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.105783865" sideWeight="0.69242656" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2153729" sideWeight="0.69242656" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3990755" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.37403402" sideWeight="0.9946646" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1854714" sideWeight="0.0" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3075734" sideWeight="0.9946646" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18392581" sideWeight="0.0" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32196453" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32177263" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.0" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.6077058" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -1024,7 +1032,7 @@
     <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="basics to initialize test_run_MINE" />
+    <option name="LAST_COMMIT_MESSAGE" value="test_software_assembler:&#10;Trouble initiating Metasim, 'not all key exist'.&#10;Traced back to check_all_optional_parameter, in setting.py&#10;Cannot print statement to check which &quot;c&quot; in optional is missing.&#10;Tried adding a line in test code to append Metasim optional settings; has not worked." />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -1037,9 +1045,6 @@
     <option name="UPDATE_GROUP_BY_CHANGELIST" value="false" />
     <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
-    <MESSAGE value="defined variables in software_assembler&#10;listed valid / essential parameters in setting&#10;added wdir to run_glimmer" />
-    <MESSAGE value="test_RunGenovo is hard!!!" />
-    <MESSAGE value="OOP: inheritance &amp; polymorphism in Glimmer &amp; Genovo.&#10;created run_component" />
     <MESSAGE value="test_run_Glimmer passes&#10;run_glimmer needs work: see #code in setInfileName and setOutfileTag." />
     <MESSAGE value="test_run_Genovo passes&#10;run_Genovo needs work: see #code in setInfileName." />
     <MESSAGE value="test_run_component attempts" />
@@ -1062,112 +1067,115 @@
     <MESSAGE value="3 new files in MetaSim/test_data folder" />
     <MESSAGE value="hopefully up to date!" />
     <MESSAGE value="basics to initialize test_run_MINE" />
+    <MESSAGE value="test_run_MINE: initialize, check parameters" />
+    <MESSAGE value="test_run_MINE: finished other tests.&#10;TODO: resolve MINE.run( ) error associated with &quot;debug&quot;..." />
+    <MESSAGE value="test_software_assembler:&#10;Trouble initiating Metasim, 'not all key exist'.&#10;Traced back to check_all_optional_parameter, in setting.py&#10;Cannot print statement to check which &quot;c&quot; in optional is missing.&#10;Tried adding a line in test code to append Metasim optional settings; has not worked." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/core/component/run_glimmer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="8" selection-start="683" selection-end="758" vertical-scroll-proportion="0.43157893" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/component/run_BLAST.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file:///System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/unittest/case.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="404" column="0" selection-start="14005" selection-end="14005" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/component/run_genovo.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="36" column="16" selection-start="827" selection-end="827" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/component/test_run_genovo.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="245" column="70" selection-start="11090" selection-end="11090" vertical-scroll-proportion="6.098315">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/component/test_run_component.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/assembler/software_assembler.py">
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pycharm/utrunner.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="74" column="0" selection-start="2318" selection-end="2318" vertical-scroll-proportion="0.0" />
+        <state line="142" column="0" selection-start="4366" selection-end="4366" vertical-scroll-proportion="0.57865167" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/component/GO_analysis.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-1.8474576" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/component/run_MINE.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="128" column="0" selection-start="4775" selection-end="4775" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/component/test_run_MINE.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="115" column="0" selection-start="4756" selection-end="4756" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file:///System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/subprocess.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1201" column="0" selection-start="43461" selection-end="43461" vertical-scroll-proportion="0.026642984">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/core/run_ext_prog.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="36" column="8" selection-start="773" selection-end="773" vertical-scroll-proportion="0.0">
+        <state line="65" column="0" selection-start="1688" selection-end="1688" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pycharm/utrunner.py">
+    <entry file="file://$PROJECT_DIR$/src/core/assembler/software_assembler.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="142" column="0" selection-start="4366" selection-end="4366" vertical-scroll-proportion="0.57865167">
+        <state line="41" column="0" selection-start="915" selection-end="915" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/setting.py">
+    <entry file="file://$PROJECT_DIR$/src/core/component/run_MetaSim.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="64" selection-start="777" selection-end="777" vertical-scroll-proportion="0.0">
+        <state line="64" column="0" selection-start="1944" selection-end="1944" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/component/test_run_metasim.py">
+    <entry file="file://$PROJECT_DIR$/src/test/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="143" column="54" selection-start="5208" selection-end="6257" vertical-scroll-proportion="0.0">
+        <state line="29" column="11" selection-start="459" selection-end="459" vertical-scroll-proportion="0.037593983">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/assembler/test_software_assembler.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="41" column="36" selection-start="1951" selection-end="1951" vertical-scroll-proportion="0.0">
           <folding>
-            <element signature="e#57#72#0" expanded="true" />
+            <element signature="e#0#63#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/core/component/run_component.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="43" column="8" selection-start="1292" selection-end="1292" vertical-scroll-proportion="0.0">
+        <state line="21" column="0" selection-start="461" selection-end="461" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/component/run_MINE.py">
+    <entry file="file://$PROJECT_DIR$/src/core/component/run_genovo.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="39" column="19" selection-start="1381" selection-end="1381" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="e#55#76#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/component/run_MetaSim.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="107" column="61" selection-start="3555" selection-end="3555" vertical-scroll-proportion="0.0">
+        <state line="36" column="0" selection-start="811" selection-end="811" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/component/test_run_MINE.py">
+    <entry file="file://$PROJECT_DIR$/src/test/component/test_run_metasim.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="99" column="59" selection-start="4182" selection-end="4182" vertical-scroll-proportion="0.66292137">
-          <folding>
-            <element signature="e#56#71#0" expanded="true" />
-          </folding>
+        <state line="83" column="71" selection-start="3300" selection-end="3363" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/setting.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="59" column="11" selection-start="2011" selection-end="2011" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="113" column="0" selection-start="3455" selection-end="3455" vertical-scroll-proportion="0.61139894">
+          <folding />
         </state>
       </provider>
     </entry>

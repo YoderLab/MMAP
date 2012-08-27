@@ -12,6 +12,7 @@ class TestSoftwareAssembler(unittest.TestCase):
         self.assembly = SoftwareAssembler()
         self.genovo_dir = path_utils.get_data_dir() + "Genovo/"
         self.glimmer_dir = path_utils.get_data_dir() + "Glimmer/"
+        self.metasim_dir = path_utils.get_data_dir() + "MetaSim/"
         self.working_dir = path_utils.get_data_dir() + "test_data/"
 
     def test_SoftwareAssembler_set_all_param(self):
@@ -36,7 +37,8 @@ class TestSoftwareAssembler(unittest.TestCase):
                                     genovo_noI=10, parent_directory="main_pdir")
         self.assembly.add_all_param(glimmer_pdir=self.glimmer_dir)
         self.assembly.add_all_param(wdir=self.working_dir)
-
+        self.assembly.add_all_param(metasim_model_file="ErrorModelSolexa36bp.mconf", metasim_no_reads=10, metasim_pdir=self.metasim_dir,
+                                    metasim_taxon_infile="MetaSim_bint.mprf")
         self.assembly.init_program()
         self.assembly.run()
 
