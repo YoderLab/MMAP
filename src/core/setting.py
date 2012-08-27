@@ -60,6 +60,7 @@ class Setting(object):
         """
         if is_all_exist:
             for c in optional:
+                print "checking %s" %c
                 if not self._check_variables_exist(c):
                     self.add(c, None)
         else:
