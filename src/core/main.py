@@ -66,10 +66,10 @@ def main():
     TODO(Steven Wu): rewrite it with better way to connect them 
     """
 #    infile = "MetaSim_bint-454.20e39f4c.fna"
-    infile_var = "testMetaIDBA.fasta"
+    infile_var = "wdir_all_reads.fa"
     outfile = "testout"
-    genovo_dir = "/Users/erinmckenney/Desktop/Pipeline/metaLem/data/Genovo/"
-    Genovo = RunGenovo(infile=infile_var, outfile=outfile, pdir=genovo_dir, noI=3, thresh=250)
+    genovo_dir = "/Users/erinmckenney/Desktop/Pipeline/metaLem/data/Genovo/test_data"
+    Genovo = RunGenovo(infile=infile_var, outfile=outfile, pdir=genovo_dir, no_iter=3, thresh=250)
 
 
 
@@ -101,16 +101,16 @@ def main():
     infile_var = "VICTORY!!!.fasta"
 #    print infile
 #    Genovo = RunGenovo(infile=infile_var, pdir = data_dir, noI=3, thresh=250)
-    Genovo.setInfileName(infile_var)
+    Genovo.set_infile_name(infile_var)
 
     print Genovo.finalize.get_switch()
 
-    Genovo = RunGenovo(infile=infile_var, outfile=outfile, pdir=genovo_dir, noI=3, thresh=250)
-    Genovo.setFinalizeOutfile("sdif")
+    Genovo = RunGenovo(infile=infile_var, outfile=outfile, pdir=genovo_dir, no_iter=3, thresh=250, check_exist=False)
+    Genovo.set_outfile("sdif")
     print "set outfile to sdif", Genovo.finalize.get_switch()
-    Genovo2 = RunGenovo(infile=infile_var, pdir=genovo_dir, noI=3, thresh=250)   ## outfile == None
+    Genovo2 = RunGenovo(infile=infile_var, pdir=genovo_dir, no_iter=3, thresh=250, check_exist=False)   ## outfile == None
     print "outfile = None = out.test", Genovo2.finalize.get_switch()
-    Genovo2.setCutoff(-2.3)
+#    Genovo2.set_cutoff(-2.3)
 
 #
 #    Genovo.setNumberOfIter(12.54)
