@@ -39,12 +39,10 @@ MATCH_BLAST_WAIT = "<a href=\"blast.cgi?action=get_blast_results&amp;session_id=
 MATCH_BLAST_WAIT_LEN = len(MATCH_BLAST_WAIT)
 MATCH_BLAST_END = "\" title=\"Retrieve your BLAST job\">"
 
-MATCH_BLAST_NOT_COMPLETE = ("Please be patient as your job may take several"
-    "minutes to complete. This page will automatically refresh with the BLAST"
-    "results when the job is done")
+MATCH_BLAST_NOT_COMPLETE = ("Please be patient as your job may take several minutes to complete. This page will automatically refresh with the BLAST results when the job is done.")
 
 amigo_blast_URL = "http://amigo.geneontology.org/cgi-bin/amigo/blast.cgi"
-
+DELAY = 5.0
 
 class GOConnector(object):
     """
@@ -77,16 +75,16 @@ def blast_AmiGO(seq):
 
     seq.web_page = _get_web_page(query_blast, amigo_blast_URL)
 
-    delay = 3.0
+
     is_complete = seq.web_page.find(MATCH_BLAST_NOT_COMPLETE)
     previous = time.time()
 
     while is_complete != -1:
         current = time.time()
-        wait = previous + delay - current
+        wait = previous + DELAY - current
         if wait > 0:
             time.sleep(wait)
-            print("wait %d s" % delay)
+            print("wait %d s" % DELAY)
             previous = current + wait
         else:
             previous = current

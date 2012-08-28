@@ -2,7 +2,7 @@
 __author__ = 'erinmckenney'
 #infile, pdir, wdir, comparison, cv=0, c=15, outfile, check_exist=True
 list_essential_shared = ["parent_directory"]
-list_essential_metasim_only = ["metasim_pdir","metasim_model_infile", "metasim_taxon_infile", "metasim_no_reads"]
+list_essential_metasim_only = ["metasim_pdir", "metasim_model_infile", "metasim_taxon_infile", "metasim_no_reads"]
 list_essential_genovo_only = ["genovo_infile", "genovo_pdir", "genovo_noI", "genovo_thresh"]
 list_essential_glimmer_only = ["glimmer_pdir"]  # dont need outfile
 list_essential_mine_only = ["mine_infile", "mine_pdir", "mine_comparison_style"]
@@ -11,7 +11,7 @@ list_optional_metasim_only = ["metasim_outfile"]
 list_optional_shared = ["wdir", "checkExist"]
 list_optional_genovo_only = ["genovo_outfile", ]
 list_optional_glimmer_only = ["glimmer_infile", "glimmer_outfile"]
-list_optional_mine_only = ["mine_cv","mine_clumps", "mine_jobID"]
+list_optional_mine_only = ["mine_cv", "mine_clumps", "mine_jobID"]
 
 list_ess_par = {
     "shared": list_essential_shared,
@@ -60,7 +60,7 @@ class Setting(object):
         """
         if is_all_exist:
             for c in optional:
-                print "checking %s" %c
+                print "checking %s" % c
                 if not self._check_variables_exist(c):
                     self.add(c, None)
         else:
@@ -81,6 +81,7 @@ class Setting(object):
     def get_all_par(self, program_name):
         is_all_exist = self._check(list_ess_par[program_name] + list_ess_par["shared"])
         optional = list_optional_par[program_name] + list_optional_par["shared"]
+        print optional
         self.check_all_optional_parameter(program_name, is_all_exist, optional)
 
         return self.all_setting
