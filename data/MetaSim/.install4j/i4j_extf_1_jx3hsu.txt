@@ -1,7 +1,0 @@
-MetaSim - Metagenome Simulator
-
-Use of MetaSim requires a license, which is available from www-ab.informatik.uni-tuebingen.de/software/metasim. Academic licenses are issued free of charge for use at non-profit academic institutions only.  For enquires regarding  other types of licenses, please contact: huson@informatik.uni-tuebingen.de. MetaSim is not open source and the whole program remains property of the authors.
-
-This program probably contains many bugs, both apparent and less apparent ones.  We recommend that you cross-validate all results obtained with this software using other programs. We do not accept responsibility for any problems that arise from use of this software. Use entirely at your own risk.  
-
-Authors: Daniel H. Huson and Felix Ott.

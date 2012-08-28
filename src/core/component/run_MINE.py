@@ -16,31 +16,37 @@ from core.run_ext_prog import runExtProg
     # c = factor by which # of clumps may outnumber # of x-axis columns <default = 15>
     # notify = # of variable pairs to analyze before printing a status message as Status.csv output file <default = 100>
     # jobID = string to identify job
+MINE = "java"# -jar MINE.jar" # MINE command call
+offset = 2
 MINE = "java -jar MINE.jar" # MINE command call
-INFILE_POSITION = 1
-COMPARISON_STYLE_POSITION = 2
-CV_THRESHOLD_POSITION = 3
-CLUMPS_POSITION = 4
-JOB_ID_POSITION = 5
+offset = 0
+INFILE_POSITION = 1 + offset
+COMPARISON_STYLE_POSITION = 2 + offset
+CV_THRESHOLD_POSITION = 3 + offset
+CLUMPS_POSITION = 4 + offset
+JOB_ID_POSITION = 5 + offset
 
-ALL_EXTS = ["Results.csv","Status.txt"]
+ALL_EXTS = ["Results.csv", "Status.txt"]
 
 class RunMINE(RunComponent):
     """
     classdocs
     """
 
-    def __init__(self, infile, pdir, wdir, jobID, comparison='-allPairs', cv=0, c=15,  check_exist=True):
+    def __init__(self, infile, pdir, wdir, jobID, comparison='-allPairs', cv=0, c=15, check_exist=True):
         """
         Constructor
         """
-        self.infile = wdir+infile
+        self.infile = wdir + infile
         self.outfile = jobID
         self.all_exts = ALL_EXTS
-        self.parameter_check(pdir, wdir, infile, self.outfile, check_exist,jobID)
+        self.parameter_check(pdir, wdir, infile, self.outfile, check_exist, jobID)
         if self.check_outfiles_exist(self.outfile) and check_exist:
             raise IOError("Warning: outfiles exist!")
-        self.mine = runExtProg(MINE, pdir=self.pdir, length=5, check_OS=True)
+        self.mine = runExtProg(MINE, pdir=self.pdir, length=5 + offset , check_OS=True)
+#        self.mine = runExtProg(MINE, pdir=self.pdir, length=5 +2, check_OS=True)
+#        self.mine.set_param_at("-jar", 1)
+#        self.mine.set_param_at("MINE.jar", 2)
         self.init_prog(comparison, cv, c)
 
 
@@ -82,7 +88,7 @@ class RunMINE(RunComponent):
         type anything here
         TODO: check valid infile, infile exist or not
         """
-        infile = "%s" %self.infile
+        infile = "%s" % self.infile
         self.mine.set_param_at(infile, INFILE_POSITION)
 
     def set_comparison_style(self, style):
@@ -92,7 +98,7 @@ class RunMINE(RunComponent):
 #           raise ValueError("Error: comparison style is currently set to invalid setting: %s. Must be set to -x, -y, or -z." % style
 
     def set_cv_threshold(self, cv):
-        if 1> cv >= 0 and isinstance(cv, float):
+        if 1 > cv >= 0 and isinstance(cv, float):
             self.mine.set_param_at(cv, CV_THRESHOLD_POSITION)
         else:
             if isinstance(cv, str):

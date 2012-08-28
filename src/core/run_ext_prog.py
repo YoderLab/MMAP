@@ -56,7 +56,7 @@ class runExtProg(object):
 
     parameters = property(get_switch, set_switch, doc="switch/parameters")
 
-    def run(self, debug):
+    def run(self, debug=False):
         # TOREAD(Erin): use boolean debug to control how much output to print on the screen
         self._command = [self.program_name]
         self._command.extend(self._switch)
