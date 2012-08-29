@@ -81,7 +81,6 @@ class Setting(object):
     def get_all_par(self, program_name):
         is_all_exist = self._check(list_ess_par[program_name] + list_ess_par["shared"])
         optional = list_optional_par[program_name] + list_optional_par["shared"]
-        print optional
         self.check_all_optional_parameter(program_name, is_all_exist, optional)
 
         return self.all_setting

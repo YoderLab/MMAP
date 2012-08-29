@@ -27,21 +27,21 @@ import unittest
 
 
 
-class TestAll(unittest.TestCase):
-    pass
+#class TestAll(unittest.TestCase):
+#    pass
 
 #def test_main():
 #    '''
 #    Testing method
-#    run test class/module 
+#    run test class/module
 #    '''
-#    #import sys
-#    #import os
-#    #from core.utils import path_utils
-#    #CWD = os.getcwd()
-#    #src_dir = path_utils.get_parent_path(CWD)
-#    #sys.path.append(src_dir)
-#    
+#    import sys
+#    import os
+#    from core.utils import path_utils
+#    CWD = os.getcwd()
+#    src_dir = path_utils.get_parent_path(CWD)
+#    sys.path.append(src_dir)
+#
 #    import unittest
 #    print "\n==start test_main()=="
 #    alltests = unittest.TestSuite()
@@ -54,8 +54,8 @@ class TestAll(unittest.TestCase):
 #    print alltests.countTestCases()
 #    unittest.TextTestRunner(verbosity=2).run(alltests)
 #    print "==end test_main()==\n"
-#    
+#
 #if (__name__ == '__main__') | (__name__ == 'test.main') :
-##     test.main is used for "-m unittest test.main" 
+##     test.main is used for "-m unittest test.main"
 #    test_main()
 

@@ -37,7 +37,7 @@ class TestSoftwareAssembler(unittest.TestCase):
                                     genovo_noI=10, parent_directory="main_pdir")
         self.assembly.add_all_param(glimmer_pdir=self.glimmer_dir)
         self.assembly.add_all_param(wdir=self.working_dir)
-        self.assembly.add_all_param(metasim_model_file="ErrorModelSolexa36bp.mconf", metasim_no_reads=10, metasim_pdir=self.metasim_dir,
+        self.assembly.add_all_param(metasim_model_infile="ErrorModelSolexa36bp.mconf", metasim_no_reads=10, metasim_pdir=self.metasim_dir,
                                     metasim_taxon_infile="MetaSim_bint.mprf")
         self.assembly.init_program()
         self.assembly.run()

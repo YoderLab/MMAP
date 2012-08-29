@@ -31,7 +31,7 @@ class TestClass(unittest.TestCase):
         pass
 
 
-    @unittest.skip("run this later")
+#    @unittest.skip("run this later")
     def test_RunBlast(self):
 
         blast = RunBlast(self.record_index, self.e_value_cut_off)
@@ -45,6 +45,11 @@ class TestClass(unittest.TestCase):
                         })
         for k, v in expected.items():
             seq = blast.results[k]
+#            print seq
+#            print seq.match_ID
+#            print seq.e_value
+#            print seq.each_term
+#            print seq.all_terms
             self.assertEqual(v, seq.all_terms)
 
 #        self.assertEqual(expected, seq.all_terms)
@@ -84,6 +89,7 @@ class TestClass(unittest.TestCase):
 #            print seq.match_ID
 #            print seq.e_value
 #            print seq.each_term
+#            print "====="
             self.assertEqual(v, seq.all_terms)
 
 #

@@ -31,14 +31,14 @@ class TestRunMINE(unittest.TestCase):
 
     def test_RunMINE_init(self):
         infile_var = "Spellman.csv"
-        jobID_var = "Spellman.csv,mv=0,cv=0.0,B=n^0.6,"
+        jobID_var = "Spellman.csv_output"
 
         mine = RunMINE(infile=infile_var, pdir=self.data_dir, wdir=self.working_dir,
             jobID=jobID_var, comparison='-allPairs', cv=0.0, c=15, check_exist=False)
 
         expected_infile = "%s%s" % (self.working_dir, infile_var)
         expected_outfile = "%s%s" % (self.working_dir, jobID_var)
-        expected = [expected_infile, '-allPairs', "0.0", "15", expected_outfile]
+        expected = ["-jar", "MINE.jar",expected_infile, '-allPairs', "0.0", "15", expected_outfile]
 #        print expected
         self.assertEqual(mine.get_switch(), expected)
 
@@ -109,12 +109,12 @@ class TestRunMINE(unittest.TestCase):
 
     def test_RunMINE_run(self):
         infile_var = "Spellman.csv"
-        jobID_var = "Spellman.csv,mv=0,cv=0.0,B=n^0.6,"
+        jobID_var = "Spellman.csv_"
 
         mine = RunMINE(infile=infile_var, pdir=self.data_dir, wdir=self.working_dir,
         jobID=jobID_var, comparison='-allPairs', cv=0.0, c=15, check_exist=False)
         mine.run(debug=True)
         self.assertTrue(mine.check_outfiles_exist(self.working_dir + jobID_var))
-        self.assertTrue(mine.is_file_exist(self.working_dir + "Spellman.csv,mv=0,cv=0.0,B=n^0.6,", "Results.csv", True))
-        self.assertTrue(mine.is_file_exist(self.working_dir + "Spellman.csv,mv=0,cv=0.0,B=n^0.6,", "Status.txt", True))
+        self.assertTrue(mine.is_file_exist(self.working_dir + "Spellman.csv_", "Results.csv", True))
+        self.assertTrue(mine.is_file_exist(self.working_dir + "Spellman.csv_", "Status.txt", True))
         os.remove(self.working_dir + jobID_var)

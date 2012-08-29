@@ -47,7 +47,7 @@ class RunMetaSim(RunComponent):
         Class method
         Create RunGlimmer from dict()
         """
-        metasim = cls(model_infile=setting.get("metasim_model_infile"),
+        metasim = cls(model_file=setting.get("metasim_model_infile"),
             no_reads=setting.get("metasim_no_reads"),
             taxon_infile=setting.get("metasim_taxon_infile"),
             pdir=setting.get("metasim_pdir"),
@@ -68,8 +68,10 @@ class RunMetaSim(RunComponent):
 
     def parameter_check(self, pdir, wdir, model_file, taxon_infile, outfile, check_exist):
         self.check_dirs(pdir, wdir, check_exist)
+        self.generate_outfile_name(taxon_infile, outfile, "_out")
         self.model_infile = self.wdir + model_file
         self.taxon_infile = self.wdir + taxon_infile
+        print self.wdir, outfile
         self.outfile = self.wdir + outfile
         files = [self.model_infile, self.taxon_infile, self.outfile]
         for file in files:

@@ -18,8 +18,6 @@ from core.run_ext_prog import runExtProg
     # jobID = string to identify job
 MINE = "java"# -jar MINE.jar" # MINE command call
 offset = 2
-MINE = "java -jar MINE.jar" # MINE command call
-offset = 0
 INFILE_POSITION = 1 + offset
 COMPARISON_STYLE_POSITION = 2 + offset
 CV_THRESHOLD_POSITION = 3 + offset
@@ -44,9 +42,8 @@ class RunMINE(RunComponent):
         if self.check_outfiles_exist(self.outfile) and check_exist:
             raise IOError("Warning: outfiles exist!")
         self.mine = runExtProg(MINE, pdir=self.pdir, length=5 + offset , check_OS=True)
-#        self.mine = runExtProg(MINE, pdir=self.pdir, length=5 +2, check_OS=True)
-#        self.mine.set_param_at("-jar", 1)
-#        self.mine.set_param_at("MINE.jar", 2)
+        self.mine.set_param_at("-jar", 1)
+        self.mine.set_param_at("MINE.jar", 2)
         self.init_prog(comparison, cv, c)
 
 
