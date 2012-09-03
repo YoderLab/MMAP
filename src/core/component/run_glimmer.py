@@ -28,7 +28,7 @@ class RunGlimmer(RunComponent):
         Constructor
         """
         self.all_exts = ALL_EXTS
-        self.parameter_check(pdir, wdir, infile, outfile, check_exist, "_out")
+        self.parameter_check(pdir, wdir, infile, outfile, orfs, check_exist, "_out")
         self.glimmer = runExtProg(GLIMMER, pdir=self.pdir, length=2, check_OS=True)
         self.extract = runExtProg(EXTRACT, pdir=self.pdir, length=3, check_OS=True)
         self.init_prog()
@@ -60,14 +60,14 @@ class RunGlimmer(RunComponent):
     def create_extract(cls, setting):
         """
         Class method
-        Create RunGlimmer from dict()
+        Create RunExtract from dict()
         """
         extract = cls(infile=setting.get("glimmer_infile"),
-            pdir=setting.get("extract_pdir"),
-            wdir=setting.get("wdir"),
-            outfile=setting.get("glimmer_outfile"),     # Needs to be .run1.predict outfile
-            orfs=setting.get("extract_outfile")
-            check_exist=setting.get("check_exist"))
+                        pdir=setting.get("extract_pdir"),
+                        wdir=setting.get("wdir"),
+                        outfile=setting.get("glimmer_outfile"),     # Needs to be .run1.predict outfile
+                        orfs=setting.get("extract_outfile"),
+                        check_exist=setting.get("check_exist"))
         return extract
 
     @classmethod
@@ -77,7 +77,7 @@ class RunGlimmer(RunComponent):
         Create RunGlimmer from Setting class
         """
         setting = setting_class.get_all_par("extract")
-        extract = RunExtract.create_extract(setting)
+        extract = RunGlimmer.create_extract(setting)
         return extract
 
     def init_prog(self):
@@ -88,11 +88,11 @@ class RunGlimmer(RunComponent):
         self.glimmer.set_param_at(infile, INFILE_POSITION)
         self.extract.set_param_at(infile, INFILE_POSITION)
 
-def set_outfile_tag(self, outfile):
+    def set_outfile_tag(self, outfile):
         self.glimmer.set_param_at(outfile, OUTFILE_POSITION)
         self.extract.set_param_at(outfile, OUTFILE_POSITION)
 
-def run(self):
+    def run(self):
         self.glimmer.run()
 
     def get_switch(self):
