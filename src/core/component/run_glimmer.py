@@ -28,7 +28,7 @@ class RunGlimmer(RunComponent):
         Constructor
         """
         self.all_exts = ALL_EXTS
-        self.parameter_check(pdir, wdir, infile, outfile, orfs, check_exist, "_out")
+        self.parameter_check(pdir, wdir, infile, outfile, orfs, check_exist)
         self.glimmer = runExtProg(GLIMMER, pdir=self.pdir, length=2, check_OS=True)
         self.extract = runExtProg(EXTRACT, pdir=self.pdir, length=3, check_OS=True)
         self.init_prog()
@@ -91,6 +91,9 @@ class RunGlimmer(RunComponent):
     def set_outfile_tag(self, outfile):
         self.glimmer.set_param_at(outfile, OUTFILE_POSITION)
         self.extract.set_param_at(outfile, OUTFILE_POSITION)
+
+    def set_orfs(self, outfile):
+        self.extract.set_param_at(outfile, ORF_POSITION)
 
     def run(self):
         self.glimmer.run()
