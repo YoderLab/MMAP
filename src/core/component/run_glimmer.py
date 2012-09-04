@@ -15,7 +15,7 @@ ORF_POSITION = 3
 
 ALL_EXTS = [".coords", ".detail", ".icm", ".longorfs", ".motif",
             ".predict", ".run1.detail", ".run1.predict", ".train", ".upstream"]
-
+# TODO: add outfile tag for extract
 
 class RunGlimmer(RunComponent):
     """
@@ -28,7 +28,8 @@ class RunGlimmer(RunComponent):
         Constructor
         """
         self.all_exts = ALL_EXTS
-        self.parameter_check(pdir, wdir, infile, outfile, orfs, check_exist)
+        self.parameter_check(pdir, wdir, infile, outfile, check_exist, "_out")
+#def parameter_check(self, pdir, wdir, infile, outfile, check_exist, outfile_tag):
         self.glimmer = runExtProg(GLIMMER, pdir=self.pdir, length=2, check_OS=True)
         self.extract = runExtProg(EXTRACT, pdir=self.pdir, length=3, check_OS=True)
         self.init_prog()
@@ -65,7 +66,7 @@ class RunGlimmer(RunComponent):
         extract = cls(infile=setting.get("glimmer_infile"),
                         pdir=setting.get("extract_pdir"),
                         wdir=setting.get("wdir"),
-                        outfile=setting.get("glimmer_outfile"),     # Needs to be .run1.predict outfile
+                        outfile=setting.get("glimmer_outfile"), # Needs to be .run1.predict outfile
                         orfs=setting.get("extract_outfile"),
                         check_exist=setting.get("check_exist"))
         return extract
@@ -99,8 +100,8 @@ class RunGlimmer(RunComponent):
         self.glimmer.run()
 
     def get_switch(self):
-        return self.glimmer._switch
-        return self.extract._switch
+        return [self.glimmer._switch, self.extract._switch]
+#        return dict({"glimmer:": self.glimmer._switch, "extract:": self.extract._switch })
 
 
         """

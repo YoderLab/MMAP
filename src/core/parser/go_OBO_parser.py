@@ -52,7 +52,7 @@ class OBOParser(object):
         self.version = parse_version(self.data.readline())
         self.date = parse_date(self.data.readline())
 
-        print("Begin parsing database version: %s date: %s" %
+        print("Begin parsing version: %s date: %s" %
               (self.version, self.date))
 
         self.dict_is_a = dict()  # {str(id) : set(is_a)}
