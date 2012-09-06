@@ -15,8 +15,7 @@ class RunComponent(object):
         pass
 #        self.all_exts=[]
 
-    def parameter_check(self, pdir, wdir, infile, outfile, check_exist,
-                        outfile_tag):
+    def parameter_check(self, pdir, wdir, infile, outfile, check_exist, outfile_tag):
         self.check_dirs(pdir, wdir, check_exist)
         self.generate_outfile_name(infile, outfile, outfile_tag)
         self.check_file_exist(self.infile, check_exist)
@@ -56,6 +55,7 @@ class RunComponent(object):
                 namebase = infile
             else:
                 namebase = infile[0:location]
+            print "qq", self.wdir , namebase , outfile_tag
             self.outfile = self.wdir + namebase + outfile_tag
         else:
             self.outfile = self.wdir + outfile

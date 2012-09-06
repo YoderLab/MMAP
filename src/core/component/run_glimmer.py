@@ -44,7 +44,6 @@ class RunGlimmer(RunComponent):
                       pdir=setting.get("glimmer_pdir"),
                       wdir=setting.get("wdir"),
                       outfile=setting.get("glimmer_outfile"),
-                      orfs=setting.get("extract_outfile"),
                       check_exist=setting.get("check_exist"))
         return glimmer
 
@@ -70,31 +69,8 @@ class RunGlimmer(RunComponent):
         self.glimmer.set_param_at(outfile, OUTFILE_POSITION)
         self.extract.set_param_at(outfile, OUTFILE_POSITION)
 
-    def generate_orfs_name(self, outfile, orfs, orf_tag):
-        """
-        infile name
-            check if it exist
-            overwrite or not
-        if os.path.exists(  self.cwd+self.name_only  ):
-        if os.path.exists(  full_file_path  ):
-        """
-        self.outfile = self.wdir + outfile
-        if orfs is None:
-            location = outfile.rfind(".")
-            if location is -1:
-                namebase = outfile
-            else:
-                namebase = outfile[0:location]
-            self.orfs = self.wdir + namebase + orf_tag
-            print "!!!!!!", self.orfs
-        else:
-            self.orfs = self.wdir + orfs
-        print "#######" ,outfile
-        print "$$$$$$$" , orfs
-
-    def set_orfs(self, orfs):
-        self.extract.set_param_at(orfs, ORF_POSITION)
-        print "%%%%%%%%%%", orfs, ORF_POSITION
+    def set_orfs(self, outfile):
+        self.extract.set_param_at(outfile, ORF_POSITION)
 
     def run(self):
         self.glimmer.run()
