@@ -9,8 +9,9 @@ list_essential_mine_only = ["mine_infile", "mine_pdir", "mine_comparison_style"]
 
 list_optional_metasim_only = ["metasim_outfile"]
 list_optional_shared = ["wdir", "checkExist"]
-list_optional_genovo_only = ["genovo_outfile", ]
+list_optional_genovo_only = ["genovo_outfile"]
 list_optional_glimmer_only = ["glimmer_infile", "glimmer_outfile", "extract_outfile"]
+list_optional_blast_only = ["blast_infile", "blast_e-value", "blast_outfile"]
 list_optional_mine_only = ["mine_cv", "mine_clumps", "mine_jobID"]
 
 list_ess_par = {

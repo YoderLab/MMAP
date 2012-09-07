@@ -66,7 +66,7 @@ class runExtProg(object):
                              stderr=subprocess.PIPE, cwd=self.cwd)
         self.output, self.errors = p.communicate()
         if debug:
-            print("debug - output message:\t%s\nerrors message:\t%s \n===end===\n" %
+            print("debug - output message:\n%s\nerrors message:\n%s \n===end===\n" %
                   (self.output, self.errors))
 
     def check_platform(self, check_OS):

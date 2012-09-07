@@ -43,4 +43,4 @@ class RunBlast(object):
 #        for i in self.results.values():
 #            print(i.all_terms)
 
-
+#TODO: Save / export results as a .csv file (= MINE input)

@@ -109,7 +109,7 @@ class TestRunMINE(unittest.TestCase):
 
     def test_RunMINE_run(self):
         infile_var = "Spellman.csv"
-        jobID_var = "Spellman.csv_"
+        jobID_var = "asdfghSpellman.csv"
 
         mine = RunMINE(infile=infile_var, pdir=self.data_dir, wdir=self.working_dir,
         jobID=jobID_var, comparison="0", cv=0.0, c=15, check_exist=False)
@@ -117,4 +117,5 @@ class TestRunMINE(unittest.TestCase):
         self.assertTrue(mine.check_outfiles_exist(self.working_dir + jobID_var))
         self.assertTrue(mine.is_file_exist(self.working_dir + "Spellman.csv_", "Results.csv", True))
         self.assertTrue(mine.is_file_exist(self.working_dir + "Spellman.csv_", "Status.txt", True))
-        os.remove(self.working_dir + jobID_var)
+        os.remove(self.working_dir + jobID_var+ "Results.csv")
+        os.remove(self.working_dir + jobID_var+ "Status.txt")

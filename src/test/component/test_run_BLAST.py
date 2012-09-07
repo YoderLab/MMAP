@@ -93,8 +93,8 @@ class TestClass(unittest.TestCase):
             self.assertEqual(v, seq.all_terms)
 
 #
-#        for k, v in results.items():
-#            print k, v.all_terms
+        for k, v in blast.results.items():
+            print k, v.all_terms
 
 
 #

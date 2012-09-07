@@ -60,6 +60,7 @@ class RunGlimmer(RunComponent):
     def init_prog(self):
         self.set_infile_name(self.infile)
         self.set_outfile_tag(self.outfile)
+        self.set_orfs(self.orfs)
 
     def set_infile_name(self, infile):
         self.glimmer.set_param_at(infile, INFILE_POSITION)
@@ -72,12 +73,34 @@ class RunGlimmer(RunComponent):
     def set_orfs(self, outfile):
         self.extract.set_param_at(outfile, ORF_POSITION)
 
+    def generate_orfs_name(self, outfile, orfs, orf_tag):
+        """
+        infile name
+            check if it exist
+            overwrite or not
+        if os.path.exists(  self.cwd+self.name_only  ):
+        if os.path.exists(  full_file_path  ):
+        """
+        self.outfile = self.wdir + outfile
+        if orfs is None:
+            location = self.outfile.rfind(".")
+            if location is -1:
+                namebase = outfile
+            else:
+                namebase = outfile[0:location]
+            self.orfs = self.wdir + namebase + orf_tag
+            print "!!!!!!", self.orfs
+        else:
+            self.orfs = self.wdir + orfs
+        print "#######" ,self.outfile
+        print "$$$$$$$" , self.orfs
+
     def run(self):
         self.glimmer.run()
 
     def get_switch(self):
         print "*****", self.extract._switch
-        return self.glimmer._switch, self.extract._switch
+        return self.extract._switch
 
 
         """
