@@ -30,8 +30,9 @@ class TestRunGlimmer(unittest.TestCase):
 
         test_glimmer = RunGlimmer(infile_var, pdir=self.data_dir, check_exist=False)
         self.assertEqual(test_glimmer.get_switch()[0], self.data_dir + infile_var)
-        self.assertEqual(test_glimmer.get_switch(), [self.data_dir + infile_var, self.data_dir + "all_reads_out"])
-#
+        self.assertEqual(test_glimmer.get_switch(), [self.data_dir + infile_var, self.data_dir + "all_reads_out",
+                                                     self.data_dir + "all_reads_out_orfs"])
+
 
     def test_RunGlimmer_setInfile(self):
 
@@ -177,7 +178,7 @@ class TestRunGlimmer(unittest.TestCase):
     def test_RunGlimmer_run(self):
         infile_var = "tpall.fna"
         outfile_var = "iterated2"
-        glimmer = RunGlimmer(infile=infile_var, outfile=outfile_var, pdir=self.data_dir)
+        extract = RunGlimmer(infile=infile_var, outfile=outfile_var, pdir=self.data_dir, check_exist=False)
 #        glimmer.run()
 #        self.assertTrue( glimmer.checkG3OutfilesExist() )
 

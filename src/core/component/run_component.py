@@ -29,7 +29,7 @@ class RunComponent(object):
     def check_dirs(self, pdir, wdir, check_exist):
         self.pdir = check_dir_ending(pdir)
         if wdir is None:
-            wdir = self.pdir
+            self.wdir = self.pdir
         self.wdir = check_dir_ending(wdir)
         self._check_dir_exist(check_exist)
 
