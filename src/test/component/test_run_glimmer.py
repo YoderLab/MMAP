@@ -85,7 +85,7 @@ class TestRunGlimmer(unittest.TestCase):
         outfile_var = "test_outfile.fasta"
         extract = RunGlimmer(infile=infile_var, outfile=outfile_var, pdir=self.data_dir, check_exist=False)
         self.assertEqual(extract.get_switch(), [self.data_dir + infile_var, self.data_dir + outfile_var,
-                                                self.data_dir + outfile_var + "_orfs"])
+                                                self.data_dir + "test_outfile_orfs"])
 
         orf_var = "testORF"
         extract = RunGlimmer(infile=infile_var, outfile=outfile_var, orfs=orf_var, pdir=self.data_dir, check_exist=False)
@@ -106,7 +106,7 @@ class TestRunGlimmer(unittest.TestCase):
         outfile_var = "test_outfile.fasta"
         extract = RunGlimmer(infile=infile_var, outfile=outfile_var, pdir=self.data_dir, check_exist=False)
         self.assertEqual(extract.get_switch(), [self.data_dir + infile_var, self.data_dir + outfile_var,
-                                                self.data_dir + outfile_var + "_orfs"])
+                                                self.data_dir + "test_outfile_orfs"])
 
         orf_var = "testORF"
         extract = RunGlimmer(infile=infile_var, outfile=outfile_var, orfs=orf_var, pdir=self.data_dir, check_exist=False)

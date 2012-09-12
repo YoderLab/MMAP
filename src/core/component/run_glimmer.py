@@ -81,14 +81,15 @@ class RunGlimmer(RunComponent):
         if os.path.exists(  self.cwd+self.name_only  ):
         if os.path.exists(  full_file_path  ):
         """
-        self.outfile = self.wdir + outfile
+#        print "????", self.outfile
+#        self.outfile = self.wdir + outfile
         if orfs is None:
             location = self.outfile.rfind(".")
             if location is -1:
-                namebase = outfile
+                namebase = self.outfile
             else:
-                namebase = outfile[0:location]
-            self.orfs = self.wdir + namebase + orf_tag
+                namebase = self.outfile[0:location]
+            self.orfs = namebase + orf_tag
             print "!!!!!!", self.orfs
         else:
             self.orfs = self.wdir + orfs

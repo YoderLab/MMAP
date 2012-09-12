@@ -4,9 +4,14 @@ __author__ = 'erinmckenney'
 
 
 def check_dir_ending(tdir):
+    print "444444444",tdir
     if not tdir.endswith("/"):
-        tdir = tdir + "/"
+        tdir += "/"
+        print "+++++++",tdir
+    else:
+        tdir = tdir
     return tdir
+    print "????????", tdir
 
 
 class RunComponent(object):
@@ -30,7 +35,9 @@ class RunComponent(object):
         self.pdir = check_dir_ending(pdir)
         if wdir is None:
             self.wdir = self.pdir
-        self.wdir = check_dir_ending(wdir)
+        print "33333333", self.wdir
+        self.wdir = check_dir_ending(self.wdir)
+        print "5555555", self.wdir
         self._check_dir_exist(check_exist)
 
     def _check_dir_exist(self, check_exist):
@@ -83,7 +90,7 @@ class RunComponent(object):
         return boolean
         """
         test_file = "%s%s" % (file_tag, ext)
-#        print(test_file)
+        print "%%%%%%%%%%%%%", test_file
         if os.path.exists(test_file):
             is_exist = is_exist and True
         else:
