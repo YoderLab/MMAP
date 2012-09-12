@@ -29,7 +29,7 @@ class RunMetaSim(RunComponent):
     classdocs
     """
 
-    def __init__(self, model_file, no_reads, taxon_infile, pdir, wdir, outfile, check_exist=True):
+    def __init__(self, model_file, no_reads, taxon_infile, pdir, wdir, outfile=None, check_exist=True):
         """
         Constructor
         """
@@ -71,8 +71,8 @@ class RunMetaSim(RunComponent):
         self.generate_outfile_name(taxon_infile, outfile, "_out")
         self.model_infile = self.wdir + model_file
         self.taxon_infile = self.wdir + taxon_infile
-        print self.wdir, outfile
-        self.outfile = self.wdir + outfile
+#        print "SELF.WDIR",self.wdir, "OUTFILE",outfile
+#        self.outfile = self.wdir + outfile
         files = [self.model_infile, self.taxon_infile, self.outfile]
         for file in files:
             self.check_file_exist(file, check_exist)

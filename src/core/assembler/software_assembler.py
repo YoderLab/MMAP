@@ -6,6 +6,7 @@ Created on April 16, 2012
 from core.component.run_MetaSim import RunMetaSim
 from core.component.run_genovo import RunGenovo
 from core.component.run_glimmer import RunGlimmer
+from core.component.run_BLAST import RunBlast
 from core.component.run_MINE import RunMINE
 from core.setting import Setting
 
@@ -43,6 +44,7 @@ class SoftwareAssembler(object):
         self.genovo = RunGenovo.create_genovo_from_setting(self.setting)
         self.update_genovo_setting()
         self.glimmer = RunGlimmer.create_glimmer_from_setting(self.setting)
+        self.blast = RunBlast(self.setting)
         self.mine = RunMINE.create_mine_from_setting(self.setting)
 
     def run(self):
@@ -60,15 +62,14 @@ class SoftwareAssembler(object):
             self.glimmer.run()
         else:
             raise(IOError("Missing genovo output"))
-#        if self.glimmer.check_outfiles_exist(self.setting.get("glimmer_outfile")):
-#            #self.BLAST.run()
-#            #self.GO.run()
-#        else:
-#            raise(IOError("Missing glimmer output"))
-#        if self.GO.check_outfiles_exist(self.setting.get("GO_outfile")):
-#            self.MINE.run()
-#        else:
-#            raise(IOError("Missing GO output"))
+        if self.glimmer.check_outfiles_exist(self.setting.get("glimmer_outfile")):
+            self.blast.run()
+        else:
+            raise(IOError("Missing glimmer output"))
+        if self.blast.check_outfiles_exist(self.setting.get("blast_outfile")):
+            self.MINE.run()
+        else:
+            raise(IOError("Missing GO output"))
 
 
 

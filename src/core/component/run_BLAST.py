@@ -5,7 +5,7 @@ Created on Feb 13, 2012
 """
 from core.connector import go_connector
 from core.sequence import Sequence
-
+from core.component.run_component import RunComponent
 
 class RunBlast(object):
     """

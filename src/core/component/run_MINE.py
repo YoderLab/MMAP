@@ -31,7 +31,7 @@ class RunMINE(RunComponent):
     classdocs
     """
 
-    def __init__(self, infile, pdir, wdir, jobID, comparison='-allPairs', cv=0, c=15, check_exist=True):
+    def __init__(self, infile, pdir, jobID, wdir=None, comparison='-allPairs', cv=0, c=15, check_exist=True):
         """
         Constructor
         """

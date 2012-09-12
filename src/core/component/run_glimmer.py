@@ -90,17 +90,17 @@ class RunGlimmer(RunComponent):
             else:
                 namebase = self.outfile[0:location]
             self.orfs = namebase + orf_tag
-            print "!!!!!!", self.orfs
+#            print "!!!!!!", self.orfs
         else:
             self.orfs = self.wdir + orfs
-        print "#######" ,self.outfile
-        print "$$$$$$$" , self.orfs
+#        print "#######" ,self.outfile
+#        print "$$$$$$$" , self.orfs
 
     def run(self):
         self.glimmer.run()
 
     def get_switch(self):
-        print "*****", self.extract._switch
+#        print "*****", self.extract._switch
         return self.extract._switch
 
 

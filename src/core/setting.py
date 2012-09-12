@@ -5,14 +5,14 @@ list_essential_shared = ["parent_directory"]
 list_essential_metasim_only = ["metasim_pdir", "metasim_model_infile", "metasim_taxon_infile", "metasim_no_reads"]
 list_essential_genovo_only = ["genovo_infile", "genovo_pdir", "genovo_noI", "genovo_thresh"]
 list_essential_glimmer_only = ["glimmer_pdir"]  # dont need outfile
-list_essential_mine_only = ["mine_infile", "mine_pdir", "mine_comparison_style"]
+list_essential_mine_only = [ "mine_pdir", "mine_comparison_style"]
 
 list_optional_metasim_only = ["metasim_outfile"]
 list_optional_shared = ["wdir", "checkExist"]
 list_optional_genovo_only = ["genovo_outfile"]
 list_optional_glimmer_only = ["glimmer_infile", "glimmer_outfile", "extract_outfile"]
 list_optional_blast_only = ["blast_infile", "blast_e-value", "blast_outfile"]
-list_optional_mine_only = ["mine_cv", "mine_clumps", "mine_jobID"]
+list_optional_mine_only = ["mine_infile", "mine_cv", "mine_clumps", "mine_jobID"]
 
 list_ess_par = {
     "shared": list_essential_shared,
@@ -71,10 +71,15 @@ class Setting(object):
             if self.all_setting["glimmer_infile"] is None:
                 self.all_setting["glimmer_infile"] = self.all_setting["genovo_outfile"]
 
+        if program_name is "blast":
+            if self.all_setting["blast_infile"] is None:
+                self.all_setting["blast_infile"] = self.all_setting["extract_outfile"]
+
 #                TODO: once BLAST and GO code is integrated, set GO-term output = MINE infile
-#        if program_name is "mine":
-#            if self.all_setting["mine_infile"] is None:
-#                self.all_setting["mine_infile"] = self.all_setting["_outfile"]
+
+        if program_name is "mine":
+            if self.all_setting["mine_infile"] is None:
+                self.all_setting["mine_infile"] = self.all_setting["blast_outfile"]
 
         if self.all_setting["checkExist"] is None:
             self.all_setting["checkExist"] = True

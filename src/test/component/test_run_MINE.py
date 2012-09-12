@@ -53,7 +53,6 @@ class TestRunMINE(unittest.TestCase):
     def test_parameter_values(self):
         infile_var = "Spellman.csv"
         jobID_var = "Spellman.csv,mv=0,cv=0.0,B=n^0.6,"
-
         mine = RunMINE(infile=infile_var, pdir=self.data_dir, wdir=self.working_dir,
             jobID=jobID_var, comparison='-allPairs', cv=0.0, c=15, check_exist=False)
 
@@ -79,10 +78,14 @@ class TestRunMINE(unittest.TestCase):
                 infile_var = "Spellman.csv"
                 jobID_var = "Spellman.csv,mv=0,cv=0.0,B=n^0.6,"
 
+                mine = RunMINE(infile=infile_var, pdir=self.data_dir, wdir=self.working_dir,
+                    jobID=jobID_var, comparison="0", cv=0.0, c=15, check_exist=False)
+                mine.run(debug=True)
                 with self.assertRaises(IOError):
                     RunMINE(infile=infile_var, pdir=self.data_dir, wdir=self.working_dir,
                         jobID=jobID_var, comparison='-allPairs', cv=0.0, c=15, check_exist=True)
-
+#                os.remove(self.working_dir + jobID_var+ "Results.csv")
+#                os.remove(self.working_dir + jobID_var+ "Status.txt")
 #    def test_check_outfile_exist(self):
 #        """
 #        want to check to make sure output files DO NOT exist, first (before running the program)
@@ -109,13 +112,15 @@ class TestRunMINE(unittest.TestCase):
 
     def test_RunMINE_run(self):
         infile_var = "Spellman.csv"
-        jobID_var = "asdfghSpellman.csv"
+        jobID_var = "Spellman.csv,mv=0,cv=0.0,B=n^0.6,"
 
         mine = RunMINE(infile=infile_var, pdir=self.data_dir, wdir=self.working_dir,
         jobID=jobID_var, comparison="0", cv=0.0, c=15, check_exist=False)
-        mine.run(debug=True)
+#        mine.run(debug=True)
+#        RunMINE(infile=infile_var, pdir=self.data_dir, wdir=self.working_dir,
+#            jobID=jobID_var, comparison='-allPairs', cv=0.0, c=15, check_exist=True)
         self.assertTrue(mine.check_outfiles_exist(self.working_dir + jobID_var))
-        self.assertTrue(mine.is_file_exist(self.working_dir + "Spellman.csv_", "Results.csv", True))
-        self.assertTrue(mine.is_file_exist(self.working_dir + "Spellman.csv_", "Status.txt", True))
-        os.remove(self.working_dir + jobID_var+ "Results.csv")
-        os.remove(self.working_dir + jobID_var+ "Status.txt")
+        self.assertTrue(mine.is_file_exist(self.working_dir + jobID_var + "Results.csv"))
+        self.assertTrue(mine.is_file_exist(self.working_dir + jobID_var + "Status.txt"))
+#        os.remove(self.working_dir + jobID_var+ "Results.csv")
+#        os.remove(self.working_dir + jobID_var+ "Status.txt")
