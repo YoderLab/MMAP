@@ -21,6 +21,10 @@ from test.connector import *
 from test.parser import *
 import unittest
 #
+
+## TODO: remove some files from repositories. tracking too many files
+## git rm --cached filename
+## add file to .gitignores
 #
 
 
