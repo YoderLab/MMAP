@@ -44,7 +44,7 @@ class SoftwareAssembler(object):
         self.genovo = RunGenovo.create_genovo_from_setting(self.setting)
         self.update_genovo_setting()
         self.glimmer = RunGlimmer.create_glimmer_from_setting(self.setting)
-        self.blast = RunBlast(self.setting)
+        self.blast = RunBlast.create_blast_from_setting(self.setting)
         self.mine = RunMINE.create_mine_from_setting(self.setting)
 
     def run(self):
@@ -62,6 +62,10 @@ class SoftwareAssembler(object):
             self.glimmer.run()
         else:
             raise(IOError("Missing genovo output"))
+
+
+
+
         if self.glimmer.check_outfiles_exist(self.setting.get("glimmer_outfile")):
             self.blast.run()
         else:

@@ -3,11 +3,13 @@ Created on Feb 13, 2012
 
 @author: Steven Wu
 """
+import os
+from Bio import SeqIO
 from core.connector import go_connector
 from core.sequence import Sequence
 from core.component.run_component import RunComponent
 
-class RunBlast(object):
+class RunBlast(RunComponent):
     """
     run BLAST
     take record parameter, assumed files read from Bio.SeqIO.index
@@ -26,6 +28,26 @@ class RunBlast(object):
         self.record_index = records
         self.e_value_cut_off = e_value
 
+
+
+    @classmethod
+    def create_blast_from_file(cls, filename, e_value):
+        """
+        Class method
+        Create RunGlimmer from Setting class
+        """
+        if os.path.exists(filename):
+            record_index = SeqIO.index(filename, "fasta")
+            blast = cls(record_index, e_value)
+            return blast
+        else:
+            raise IOError("Blast infile %s does not exist!!! " %filename)
+#        setting = setting_class.get_all_par("glimmer")
+#        glimmer = RunGlimmer.create_glimmer(setting)
+
+
+
+
     def run(self):
 
         print("Running AmiGO:BLAST")
@@ -39,6 +61,10 @@ class RunBlast(object):
             self.seq = go_connector.parse_go_term(self.seq, self.e_value_cut_off)
 #            self.seq.all_terms
             self.results[key] = self.seq
+
+    @classmethod
+    def create_blast_from_setting(cls, setting):
+        pass
 
 #        for i in self.results.values():
 #            print(i.all_terms)

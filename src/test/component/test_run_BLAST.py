@@ -22,13 +22,30 @@ class TestClass(unittest.TestCase):
 
         CWD = os.getcwd()
         data_dir = path_utils.get_data_dir(CWD)
-        infile = data_dir + "AE014075_subTiny5.fasta"#"AE014075_subSmall100.fasta"
+        self.infile = data_dir + "AE014075_subTiny5.fasta"#"AE014075_subSmall100.fasta"
         self.e_value_cut_off = 1e-15
-        self.record_index = SeqIO.index(infile, "fasta")
+        self.record_index = SeqIO.index(self.infile, "fasta")
 
 
     def tearDown(self):
         pass
+
+
+    def test_create_blast_from_file(self):
+        file_var = "NotExist"
+        e_var = 1e-50
+
+        with self.assertRaises(IOError):
+            RunBlast.create_blast_from_file(file_var, e_value=e_var)
+
+        blast= RunBlast.create_blast_from_file(self.infile, e_value=e_var)
+        self.assertEqual(blast.results, dict())
+
+        for key in self.record_index:
+            self.assertEqual(str(self.record_index[key].seq), str(blast.record_index[key].seq))
+            self.assertEqual(str(self.record_index[key].id), str(blast.record_index[key].id))
+
+        self.assertEqual(blast.e_value_cut_off, e_var)
 
 
 #    @unittest.skip("run this later")

@@ -178,8 +178,8 @@ class TestRunGlimmer(unittest.TestCase):
     def test_RunGlimmer_run(self):
         infile_var = "tpall.fna"
         outfile_var = "iterated2"
-        extract = RunGlimmer(infile=infile_var, outfile=outfile_var, pdir=self.data_dir, check_exist=False)
-#        glimmer.run()
+        glimmer = RunGlimmer(infile=infile_var, outfile=outfile_var, pdir=self.data_dir, check_exist=False)
+        glimmer.run()
 #        self.assertTrue( glimmer.checkG3OutfilesExist() )
 
 #

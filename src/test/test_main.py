@@ -23,17 +23,26 @@ import unittest
 #
 
 ## TODO: remove some files from repositories. tracking too many files
+## git ls-files
 ## git rm --cached filename
 ## add file to .gitignores
 #
 
 
 
+class TestRunExtProg(unittest.TestCase):
 
 
 #class TestAll(unittest.TestCase):
-#    pass
-
+##    from test import *
+##    from test.assembler import *
+##    from test.component import *
+##    from test.connector import *
+##    from test.parser import *
+#
+#
+#    def test_main_append_reset_switch(self):
+#       pass
 #def test_main():
 #    '''
 #    Testing method
