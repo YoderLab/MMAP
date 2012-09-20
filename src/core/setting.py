@@ -131,4 +131,17 @@ class Setting(object):
 
         return self.all_setting
 
+    def _get_blast(self):
+        is_all_exist = self._check(list_optional_blast_only + list_essential_shared)
 
+        optional = list_optional_blast_only + list_optional_shared
+        self.check_all_optional_parameter("blast", is_all_exist, optional)
+        return self.all_setting
+
+    def _get_mine(self):
+        is_all_exist = self._check(list_essential_mine_only + list_essential_shared)
+
+        optional = list_optional_mine_only + list_optional_shared
+        self.check_all_optional_parameter("mine", is_all_exist, optional)
+
+        return self.all_setting

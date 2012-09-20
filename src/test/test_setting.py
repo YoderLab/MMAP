@@ -58,26 +58,8 @@ class TestSetting(unittest.TestCase):
         expected.pop("outfile")
         self.assertEqual(expected, setting._get_genovo())
 
-    def test_Setting_get_blast(self):
+    def test_Setting_get_glimmer(self):
         setting = Setting()
-        setting.add_all(outfile="Outfile")
-#        setting.print_all()
-        self.assertRaises(KeyError, setting._get_glimmer)
-
-        setting.add_all(genovo_outfile="infile", glimmer_outfile="glimOut",
-                        glimmer_pdir="glimp_dir", parent_directory="main_pdir")
-        expected = {"glimmer_infile": "infile", "genovo_outfile": "infile",
-                    "outfile": "Outfile", "glimmer_outfile": "glimOut",
-                    "glimmer_pdir": "glimp_dir",
-                    "wdir": None, "checkExist": True,
-                    "parent_directory": "main_pdir"}
-        self.assertEqual(expected, setting._get_glimmer())
-
-        setting.add_all(glimmer_infile="glInfile")
-        expected["glimmer_infile"] = "glInfile"
-
-        def test_Setting_get_glimmer(self):
-            setting = Setting()
         setting.add_all(outfile="Outfile")
         #        setting.print_all()
         self.assertRaises(KeyError, setting._get_glimmer)
@@ -94,7 +76,33 @@ class TestSetting(unittest.TestCase):
         setting.add_all(glimmer_infile="glInfile")
         expected["glimmer_infile"] = "glInfile"
 
-    def test_Setting_get_all_par(self):
+    def test_Setting_get_blast(self):
+        setting = Setting()
+        setting.add_all(blast_infile="bInfile", blast_outfile="bOutfile")
+        #        setting.print_all()
+        self.assertRaises(KeyError, setting._get_blast)
+
+        setting.add("blast_e-value", 1e-15)
+        setting.add_all(blast_pdir="b_p_dir", parent_directory= "main_pdir")
+        expected = {"blast_infile": "bInfile", "blast_outfile": "bOutfile",
+                    "blast_e-value": 1e-15, "blast_pdir": "b_p_dir",
+                    "parent_directory": "main_pdir",
+                    "wdir": None, "checkExist": True}
+        self.assertEqual(expected, setting._get_blast())
+
+        setting.add("wdir", "otherdir")
+        expected["wdir"] = "otherdir"
+        self.assertEqual(expected, setting._get_blast())
+
+        setting = Setting()
+        setting.add_all(blast_infile="bInfile",
+            blast_pdir="b_p_dir", parent_directory="main_pdir")
+        setting.add("wdir", "otherdir")
+#        expected.pop("outfile")
+        self.assertEqual(expected, setting._get_blast())
+
+
+def test_Setting_get_all_par(self):
         setting = Setting()
         setting.add_all(genovo_infile="gInfile", genovo_thresh=14,
                         genovo_pdir="g_p_dir", genovo_noI=2,
