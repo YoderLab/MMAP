@@ -27,6 +27,10 @@ ALL_EXTS = [".fna"]
 class RunMetaSim(RunComponent):
     """
     classdocs
+    
+    run with
+    ./MetaSim cmd -f 100 -r 10 -c -d test_data test_data/test_infile.fasta
+    ./MetaSim cmd --454 -f 200 --454-cycles 99 --454-mate-probability 0 -r20 -c -d outfile_dir infile_name
     """
 
     def __init__(self, model_file, no_reads, taxon_infile, pdir, wdir, outfile=None, check_exist=True):

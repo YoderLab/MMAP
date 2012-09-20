@@ -50,9 +50,10 @@ data/MetaSim/MetaSim.app/
 data/MetaSim/class/
 data/MetaSim/database/
 data/MetaSim/error.log
+data/MetaSim/License.txt
 data/MetaSim/examples/
 data/MetaSim/.install4j/
 data/MetaSim/jars/
 
-
+data/Glimmer/iterated*
 #

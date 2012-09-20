@@ -11,7 +11,14 @@ from core.utils import path_utils
 
 
 class TestRunGlimmer(unittest.TestCase):
-
+    """
+    TODO: Remove some output files that should be generate from running the program
+    maybe separate the name by the nature of the test
+    iterated_run             - files ONLY exist after running the program
+    iterated_preExistFile    - files exist without running the program 
+    
+    maybe different prefix as well?!? 
+    """
     platform = run_ext_prog.get_platform()
 
     def setUp(self):
@@ -174,13 +181,27 @@ class TestRunGlimmer(unittest.TestCase):
         glimmer = RunGlimmer(infile=infile_var, outfile=outfile_var, pdir=self.data_dir, check_exist=False)
         self.assertFalse(glimmer.check_outfiles_exist(self.data_dir + outfile_var))
 
-##
+#    @unittest.skip("take a while to run")
     def test_RunGlimmer_run(self):
+        """
+        with debug=True
+        should be able to see all 8 steps
+        debug - output message:
+        Step 1 of 8:  Finding long orfs for training
+        Step 2 of 8:  Extracting training sequences
+        Step 3 of 8:  Building ICM
+        Step 4 of 8:  Running first Glimmer3
+        Step 5 of 8:  Getting training coordinates
+        Step 6 of 8:  Making PWM from upstream regions
+        Step 7 of 8:  Getting start-codon usage
+        Step 8 of 8:  Running second Glimmer3
+        """
+
         infile_var = "tpall.fna"
-        outfile_var = "iterated2"
+        outfile_var = "iterated_run"
         glimmer = RunGlimmer(infile=infile_var, outfile=outfile_var, pdir=self.data_dir, check_exist=False)
         self.assertFalse(glimmer.check_outfiles_exist(self.data_dir + outfile_var))
-        glimmer.run()
-        self.assertTrue( glimmer.check_outfiles_exist(self.data_dir + outfile_var) )
+        glimmer.run(True)
+        self.assertTrue(glimmer.check_outfiles_exist(self.data_dir + outfile_var))
 
 #

@@ -38,7 +38,7 @@ class TestClass(unittest.TestCase):
         with self.assertRaises(IOError):
             RunBlast.create_blast_from_file(file_var, e_value=e_var)
 
-        blast= RunBlast.create_blast_from_file(self.infile, e_value=e_var)
+        blast = RunBlast.create_blast_from_file(self.infile, e_value=e_var)
         self.assertEqual(blast.results, dict())
 
         for key in self.record_index:
@@ -48,7 +48,7 @@ class TestClass(unittest.TestCase):
         self.assertEqual(blast.e_value_cut_off, e_var)
 
 
-#    @unittest.skip("run this later")
+    @unittest.skip("Take a while to run")
     def test_RunBlast(self):
 
         blast = RunBlast(self.record_index, self.e_value_cut_off)
@@ -62,32 +62,11 @@ class TestClass(unittest.TestCase):
                         })
         for k, v in expected.items():
             seq = blast.results[k]
-#            print seq
-#            print seq.match_ID
-#            print seq.e_value
-#            print seq.each_term
-#            print seq.all_terms
             self.assertEqual(v, seq.all_terms)
 
-#        self.assertEqual(expected, seq.all_terms)
-#        dist_method = MatchingDistance()
-#        dist_matirx = dist_method.cal_dist(seq)
-#        print dist_matirx
 
-#    @unittest.skip("run this later")
-    def test_run_blast(self):#, record_index, e_value_cut_off):
-
-#        results = dict()
-#        for key in self.record_index:
-#            seq = Sequence(self.record_index[key].seq)
-##            print len(seq.data)
-##            print seq.data
-#            seq = go_connector.blast_AmiGO(seq)
-#            seq = go_connector.extract_ID(seq)
-#            seq = go_connector.parse_go_term(seq, 1e-200)
-#
-#            print key, seq, seq.all_terms
-#            results[key] = seq
+    @unittest.skip("Take a while to run")
+    def test_RunBlast_subset(self):
 
         sub_record = dict({'lcl|AE014075.1_gene_4':self.record_index['lcl|AE014075.1_gene_4'],
                            'lcl|AE014075.1_gene_5':self.record_index['lcl|AE014075.1_gene_5']
@@ -101,60 +80,7 @@ class TestClass(unittest.TestCase):
 
         for k, v in expected.items():
             seq = blast.results[k]
-#            print seq
-#            print seq.acc_ID
-#            print seq.match_ID
-#            print seq.e_value
-#            print seq.each_term
-#            print "====="
             self.assertEqual(v, seq.all_terms)
-
 #
         for k, v in blast.results.items():
             print k, v.all_terms
-
-
-#
-#
-#
-#
-#def setup_database():
-#
-#    infile = data_dir + "AE014075_subSmall100.fasta"
-##    infile = data_dir + "MetaSim_bint-454.20e39f4c.fna"
-#    #records = (SeqIO.parse(infile, "fasta"))
-#    #records = list(SeqIO.parse(infile, "fasta"))
-#    #record_dict = SeqIO.to_dict(SeqIO.parse(infile, "fasta"))
-#    record_index = SeqIO.index(infile, "fasta") # use index for large file
-#
-#    #print record_index["lcl|AE014075.1_gene_1"].format("fasta")
-##    data = record_index["lcl|AE014075.1_gene_1"].seq ## short no result
-#    ## TODO mismatch
-#    ## maybe change from *** NONE *** to 
-#    ##  Sorry, your BLAST query returned no results. Please see the raw BLAST data for full details.
-##    data = record_index["lcl|AE014075.1_gene_2"].seq ## good
-##    data = record_index["lcl|AE014075.1_gene_3"].seq ## long search time, implemented waiting time
-#
-#    #data = str(data)
-#    #data = data+data+data+data+data+data
-#
-#    ## do more test here later
-#    ##Test try...except..raise
-#    #try:
-#    #    v = float("12.33")
-#    #except ValueError as e:
-#    #    print 'Exception error is: %s' % e;
-#    #    print "c0", sys.exc_info()[0], sys.exc_info()[1]
-#    #    raise
-#    return record_index
-#
-#
-#
-#def main():
-#    print __name__
-##    time_profile()
-#
-#    record_index = setup_database()
-##    test_single(record_index, e_value_cut_off)
-##    run_blast(record_index, e_value_cut_off)
-#

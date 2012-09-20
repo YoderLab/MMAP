@@ -110,6 +110,7 @@ class TestRunMetaSim(unittest.TestCase):
         check if out file already exists,
         maybe should not raise error, should
         TODO: maybe it should be handle it at different way, auto rename?
+            - MetaSim has auto rename function, need to check outfile
         """
         model_infile_var = "ErrorModelSolexa36bp.mconf"
         taxon_infile_var = "MetaSim_bint.mprf"
@@ -123,6 +124,7 @@ class TestRunMetaSim(unittest.TestCase):
         """
         check if ./MetaSim finished running, should produce 2 output files
         only pass if both exist
+        TODO: need to check -d outfile_dir. MetaSim automatically change the outfile name
         """
         model_infile_var = "ErrorModelSolexa36bp.mconf"
         taxon_infile_var = "MetaSim_bint.mprf"
@@ -131,8 +133,6 @@ class TestRunMetaSim(unittest.TestCase):
         metasim = RunMetaSim(model_file=model_infile_var, no_reads=100,
             taxon_infile=taxon_infile_var, pdir=self.data_dir, wdir=self.working_dir,
             outfile=outfile_var, check_exist=True)
-        print self.working_dir
-        print metasim.outfile
         self.assertTrue(metasim.is_file_exist(self.working_dir + "MetaSim_bint-454.20e39f4c.fna"))
 
 
