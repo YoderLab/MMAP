@@ -70,22 +70,23 @@ class TestRunMINE(unittest.TestCase):
         self.assertRaises(TypeError, mine.set_clumping_factor, "3")
 
     def test_file_already_exist(self):
-                """
-                check if out file already exists,
-                maybe should not raise error, should
-                TODO: maybe it should be handle it at different way, auto rename?
-                """
-                infile_var = "Spellman.csv"
-                jobID_var = "Spellman.csv,mv=0,cv=0.0,B=n^0.6,"
+        """
+        check if out file already exists,
+        maybe should not raise error, should
+        TODO: maybe it should be handle it at different way, auto rename?
+        """
+        infile_var = "Spellman.csv"
+        jobID_var = "Spellman.csv,mv=0,cv=0.0,B=n^0.6,"
 
-                mine = RunMINE(infile=infile_var, pdir=self.data_dir, wdir=self.working_dir,
-                    jobID=jobID_var, comparison="0", cv=0.0, c=15, check_exist=False)
-                mine.run(debug=True)
-                with self.assertRaises(IOError):
-                    RunMINE(infile=infile_var, pdir=self.data_dir, wdir=self.working_dir,
-                        jobID=jobID_var, comparison='-allPairs', cv=0.0, c=15, check_exist=True)
+        mine = RunMINE(infile=infile_var, pdir=self.data_dir, wdir=self.working_dir,
+            jobID=jobID_var, comparison="0", cv=0.0, c=15, check_exist=False)
+        mine.run(debug=True)
+        with self.assertRaises(IOError):
+            RunMINE(infile=infile_var, pdir=self.data_dir, wdir=self.working_dir,
+                jobID=jobID_var, comparison='-allPairs', cv=0.0, c=15, check_exist=True)
 #                os.remove(self.working_dir + jobID_var+ "Results.csv")
 #                os.remove(self.working_dir + jobID_var+ "Status.txt")
+
 #    def test_check_outfile_exist(self):
 #        """
 #        want to check to make sure output files DO NOT exist, first (before running the program)
@@ -116,7 +117,7 @@ class TestRunMINE(unittest.TestCase):
 
         mine = RunMINE(infile=infile_var, pdir=self.data_dir, wdir=self.working_dir,
         jobID=jobID_var, comparison="0", cv=0.0, c=15, check_exist=False)
-#        mine.run(debug=True)
+        mine.run(True)
 #        RunMINE(infile=infile_var, pdir=self.data_dir, wdir=self.working_dir,
 #            jobID=jobID_var, comparison='-allPairs', cv=0.0, c=15, check_exist=True)
         self.assertTrue(mine.check_outfiles_exist(self.working_dir + jobID_var))

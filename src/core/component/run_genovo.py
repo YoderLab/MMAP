@@ -100,7 +100,7 @@ class RunGenovo(RunComponent):
         self.record_index = SeqIO.index(self.outfile, "fasta")
         return self.record_index
 
-    def run(self):
-        self.assemble.run()
-        self.finalize.run()
+    def run(self, debug=False):
+        self.assemble.run(debug)
+        self.finalize.run(debug)
 

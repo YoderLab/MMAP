@@ -83,7 +83,7 @@ class TestSetting(unittest.TestCase):
         self.assertRaises(KeyError, setting._get_blast)
 
         setting.add("blast_e-value", 1e-15)
-        setting.add_all(blast_pdir="b_p_dir", parent_directory= "main_pdir")
+        setting.add_all(blast_pdir="b_p_dir", parent_directory="main_pdir")
         expected = {"blast_infile": "bInfile", "blast_outfile": "bOutfile",
                     "blast_e-value": 1e-15, "blast_pdir": "b_p_dir",
                     "parent_directory": "main_pdir",
@@ -99,11 +99,14 @@ class TestSetting(unittest.TestCase):
             blast_pdir="b_p_dir", parent_directory="main_pdir")
         setting.add("wdir", "otherdir")
 #        expected.pop("outfile")
+#        TODO: debug switch
+        setting.debug = True
         self.assertEqual(expected, setting._get_blast())
 
     def test_Setting_get_mine(self):
         setting = Setting()
         setting.add_all(outfile="Outfile")
+#        setting.debug = True 
         #        setting.print_all()
         self.assertRaises(KeyError, setting._get_mine())
 

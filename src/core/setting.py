@@ -38,6 +38,7 @@ class Setting(object):
         """
         self.all_setting = dict()
         self.add_all(**kwargs)
+        self.debug = False
 
     def add_all(self, **kwargs):
         for k in kwargs.iterkeys():
@@ -61,7 +62,12 @@ class Setting(object):
         """
         if is_all_exist:
             for c in optional:
-                print "checking %s" % c
+                """
+                TODO: error from raise, not here. 
+                is_all_exist is a boolean, doesn't contain any info, 
+                therefore we need to go one level above
+                """
+#                print ("checking %s" % c)
                 if not self._check_variables_exist(c):
                     self.add(c, None)
         else:
@@ -95,6 +101,8 @@ class Setting(object):
         for v in variable:
             isExist = self._check_variables_exist(v)
             if isExist == False:
+                if self.debug:
+                    print("==Error==%s doesn't exist" % v)
                 return isExist
 
         return True
