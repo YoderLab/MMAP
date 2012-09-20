@@ -101,6 +101,23 @@ class TestSetting(unittest.TestCase):
 #        expected.pop("outfile")
         self.assertEqual(expected, setting._get_blast())
 
+    def test_Setting_get_mine(self):
+        setting = Setting()
+        setting.add_all(outfile="Outfile")
+        #        setting.print_all()
+        self.assertRaises(KeyError, setting._get_mine())
+
+        setting.add_all(extract_outfile="infile", mine_outfile="mineOut",
+            mine_pdir="mine_pdir", parent_directory="main_pdir")
+        expected = {"mine_infile": "infile",
+                    "outfile": "Outfile", "mine_outfile": "mineOut",
+                    "mine_pdir": "mine_pdir",
+                    "wdir": None, "checkExist": True,
+                    "parent_directory": "main_pdir"}
+        self.assertEqual(expected, setting._get_mine())
+
+        setting.add_all(mine_infile="mineInfile")
+        expected["mine_infile"] = "mineInfile"
 
 def test_Setting_get_all_par(self):
         setting = Setting()
