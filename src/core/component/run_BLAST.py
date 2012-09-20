@@ -63,7 +63,10 @@ class RunBlast(RunComponent):
             self.results[key] = self.seq
 
     @classmethod
-    def create_blast_from_setting(cls, setting):
+    def create_blast_from_setting(cls, setting_class):
+        setting = setting_class.get_all_par("blast")
+        blast = RunBlast.create_blast_from_file(setting)
+        return blast
         pass
 
 #        for i in self.results.values():

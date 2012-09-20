@@ -58,7 +58,7 @@ class TestSetting(unittest.TestCase):
         expected.pop("outfile")
         self.assertEqual(expected, setting._get_genovo())
 
-    def test_Setting_get_glimmer(self):
+    def test_Setting_get_blast(self):
         setting = Setting()
         setting.add_all(outfile="Outfile")
 #        setting.print_all()
@@ -66,6 +66,24 @@ class TestSetting(unittest.TestCase):
 
         setting.add_all(genovo_outfile="infile", glimmer_outfile="glimOut",
                         glimmer_pdir="glimp_dir", parent_directory="main_pdir")
+        expected = {"glimmer_infile": "infile", "genovo_outfile": "infile",
+                    "outfile": "Outfile", "glimmer_outfile": "glimOut",
+                    "glimmer_pdir": "glimp_dir",
+                    "wdir": None, "checkExist": True,
+                    "parent_directory": "main_pdir"}
+        self.assertEqual(expected, setting._get_glimmer())
+
+        setting.add_all(glimmer_infile="glInfile")
+        expected["glimmer_infile"] = "glInfile"
+
+        def test_Setting_get_glimmer(self):
+            setting = Setting()
+        setting.add_all(outfile="Outfile")
+        #        setting.print_all()
+        self.assertRaises(KeyError, setting._get_glimmer)
+
+        setting.add_all(genovo_outfile="infile", glimmer_outfile="glimOut",
+            glimmer_pdir="glimp_dir", parent_directory="main_pdir")
         expected = {"glimmer_infile": "infile", "genovo_outfile": "infile",
                     "outfile": "Outfile", "glimmer_outfile": "glimOut",
                     "glimmer_pdir": "glimp_dir",
