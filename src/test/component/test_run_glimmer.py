@@ -8,6 +8,7 @@ import unittest
 from core.component.run_glimmer import RunGlimmer
 from core import run_ext_prog
 from core.utils import path_utils
+import os
 
 
 class TestRunGlimmer(unittest.TestCase):
@@ -130,8 +131,8 @@ class TestRunGlimmer(unittest.TestCase):
         """
         check if directory name is valid
         """
-        infile_var = "test_infile.fasta"
-        outfile_var = "testOutfile"
+        infile_var = "pIn"
+        outfile_var = "pOut"
         wrong_dir = self.data_dir[:-1]
         glimmer = RunGlimmer(infile=infile_var, outfile=outfile_var, pdir=wrong_dir, check_exist=False)
         self.assertEqual(glimmer.pdir, self.data_dir)
@@ -160,8 +161,8 @@ class TestRunGlimmer(unittest.TestCase):
         maybe should not raise error, should
         TODO: maybe it should be handle it at different way, auto rename?
         """
-        infile_var = "tpall.fna"
-        outfile_var = "iterated"
+        infile_var = "pIn"
+        outfile_var = "pOut"
         with self.assertRaises(IOError):
             RunGlimmer(infile=self.data_dir + infile_var, outfile=self.data_dir + outfile_var, pdir=self.data_dir, check_exist=True)
 
@@ -171,13 +172,26 @@ class TestRunGlimmer(unittest.TestCase):
         check if ./g3iterated.csh finished running, should produce 10 output files
         only pass if all 10 exist
         """
-        infile_var = "test_infile.fasta"
-        outfile_var = "iterated"
+        infile_var = "tIn.fasta"
+        outfile_var = "tOut.fasta"
         glimmer = RunGlimmer(infile=infile_var, outfile=outfile_var, pdir=self.data_dir, check_exist=False)
+        glimmer.run()
         self.assertTrue(glimmer.check_outfiles_exist(self.data_dir + outfile_var))
+        os.remove(self.data_dir + outfile_var)
+        os.remove(self.data_dir + outfile_var + ".coords")
+        os.remove(self.data_dir + outfile_var + ".detail")
+        os.remove(self.data_dir + outfile_var + ".icm")
+        os.remove(self.data_dir + outfile_var + ".longorfs")
+        os.remove(self.data_dir + outfile_var + ".motif")
+        os.remove(self.data_dir + outfile_var + ".predict")
+        os.remove(self.data_dir + outfile_var + ".run1.detail")
+        os.remove(self.data_dir + outfile_var + ".run1.predict")
+        os.remove(self.data_dir + outfile_var + ".train")
+        os.remove(self.data_dir + outfile_var + ".upstream")
+        os.remove(self.data_dir + outfile_var + ".fasta")
 
         # negative test, outfiles are not suppose to exist
-        outfile_var = "fineNotExist"
+        outfile_var = "fileNotExist"
         glimmer = RunGlimmer(infile=infile_var, outfile=outfile_var, pdir=self.data_dir, check_exist=False)
         self.assertFalse(glimmer.check_outfiles_exist(self.data_dir + outfile_var))
 
