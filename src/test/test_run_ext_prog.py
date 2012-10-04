@@ -63,7 +63,7 @@ class TestRunExtProg(unittest.TestCase):
 #        print "\noutput:\n",self.out
 
     def test_RunExtProg_run_program(self):
-
+# todo removw muscle
         self.outfile = "tempAlignmentOutput.fasta"
         if os.path.isfile(self.data_dir + self.outfile):
             os.remove(self.data_dir + self.outfile)

@@ -19,8 +19,9 @@ from core.run_ext_prog import runExtProg
 METASIM = "./MetaSim" # .MetaSim cmd
 MODEL_INFILE_POSITION = 2
 NO_READS_POSITION = 3
-TAXON_INFILE_POSITION = 4
-OUTFILE_DIRECTORY_POSITION = 5
+OUTFILE_DIRECTORY_POSITION = 4
+TAXON_INFILE_POSITION = 5
+
 
 ALL_EXTS = [".fna"]
 
@@ -111,7 +112,7 @@ class RunMetaSim(RunComponent):
         TODO: check valid infile, infile exist or not
         """
 
-        arg = "-mg %s" % self.model_infile
+        arg = "-mg%s" % self.model_infile
         self.metasim.set_param_at(arg, MODEL_INFILE_POSITION)
 
 
@@ -124,7 +125,7 @@ class RunMetaSim(RunComponent):
         self.metasim.set_param_at(self.taxon_infile, TAXON_INFILE_POSITION)
 
     def set_outfile_directory(self):
-        directory = "-d %s" % self.wdir
+        directory = "-d%s" % self.wdir
         self.metasim.set_param_at(directory, OUTFILE_DIRECTORY_POSITION)
 
     def read_outfile(self):

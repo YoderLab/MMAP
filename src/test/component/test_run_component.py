@@ -17,7 +17,7 @@ class TestRunComponent(unittest.TestCase):
         self.longMessage = True
         self.data_dir = path_utils.get_data_dir() + "Genovo/"
         self.wdir = path_utils.get_data_dir() + "Genovo/test_data/"
-
+#    TODO: rename / consolidate all test_data to unittest_data
     def tearDown(self):
         pass
 

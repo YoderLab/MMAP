@@ -208,9 +208,11 @@ class TestRunGenovo(unittest.TestCase):
         infile_var = "assemble.fasta"
         genovo = RunGenovo(infile=infile_var, pdir=self.data_dir, no_iter=10,
                            thresh=250, check_exist=False)
+        self.assertFalse(genovo.check_outfiles_exist(self.data_dir +
+                                                    infile_var))
         genovo.run()
         self.assertTrue(genovo.check_outfiles_exist(self.data_dir +
-                                                    "assemble.fasta"))
+                                                    infile_var))
         os.remove(self.data_dir + "assemble_out.fasta")
         os.remove(self.data_dir + infile_var + ".dump.best")
         os.remove(self.data_dir + infile_var + ".dump1")

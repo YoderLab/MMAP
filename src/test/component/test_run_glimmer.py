@@ -175,7 +175,8 @@ class TestRunGlimmer(unittest.TestCase):
         infile_var = "tIn.fasta"
         outfile_var = "tOut.fasta"
         glimmer = RunGlimmer(infile=infile_var, outfile=outfile_var, pdir=self.data_dir, check_exist=False)
-        glimmer.run()
+        self.assertFalse(glimmer.check_outfiles_exist(self.data_dir + outfile_var))
+        glimmer.run(True)
         self.assertTrue(glimmer.check_outfiles_exist(self.data_dir + outfile_var))
         os.remove(self.data_dir + outfile_var)
         os.remove(self.data_dir + outfile_var + ".coords")

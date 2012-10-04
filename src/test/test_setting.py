@@ -70,6 +70,7 @@ class TestSetting(unittest.TestCase):
                     "outfile": "Outfile", "glimmer_outfile": "glimOut",
                     "glimmer_pdir": "glimp_dir",
                     "wdir": None, "checkExist": True,
+                    "extract_outfile": None,
                     "parent_directory": "main_pdir"}
         self.assertEqual(expected, setting._get_glimmer())
 
@@ -113,13 +114,17 @@ class TestSetting(unittest.TestCase):
         #        setting.print_all()
 #        self.assertRaises(KeyError, setting._get_mine())
 
-        setting.add_all(extract_outfile="infile", mine_outfile="mineOut",
-            mine_pdir="mine_pdir", comparison="-allPairs",parent_directory="main_pdir")
+        setting.add_all( mine_outfile="mineOut",
+            mine_pdir="mine_pdir", mine_comparison_style="-allPairs",parent_directory="main_pdir")
+        setting.add("mine_infile", "infile")
+
         expected = {"mine_infile": "infile",
                     "outfile": "Outfile", "mine_outfile": "mineOut",
-                    "mine_pdir": "mine_pdir", "mine_comparison_style":"comparison",
+                    "mine_pdir": "mine_pdir", "mine_comparison_style":"-allPairs",
                     "wdir": None, "checkExist": True,
-                    "parent_directory": "main_pdir"}
+                    "parent_directory": "main_pdir",
+                    "mine_cv": None, "mine_clumps":None, "mine_jobID": None}
+
         self.assertEqual(expected, setting._get_mine())
 
         setting.add_all(mine_infile="mineInfile")

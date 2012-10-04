@@ -41,8 +41,8 @@ class TestRunMetaSim(unittest.TestCase):
         expected_model_infile = "-mg %s%s" % (self.working_dir, model_infile_var)
         expected_taxon_infile = self.working_dir + taxon_infile_var
         expected_no_reads = "-r%s" % no_reads_var
-        expected_outfile = "-d %s" % self.working_dir + "wdir_all_reads_out.fasta"
-        expected = ["cmd", expected_model_infile, expected_no_reads, expected_taxon_infile, expected_outfile]
+        expected_directory = "-d %s" % self.working_dir
+        expected = ["cmd", expected_model_infile, expected_no_reads, expected_taxon_infile, expected_directory]
 #
         self.assertEqual(metasim.get_switch(), expected)
 
@@ -174,7 +174,7 @@ class TestRunMetaSim(unittest.TestCase):
                              wdir=self.working_dir, outfile=outfile_var, check_exist=True)
         self.assertFalse(metasim.is_file_exist(self.working_dir + "test_outfile", ".fasta", False))
         metasim.run(debug=True)
-#        print "7777777", self.working_dir, "test_outfile", ".fasta"
+#        print "7777777", self.working_dir,outfile_var
         self.assertTrue(metasim.check_outfiles_exist(self.working_dir + outfile_var))
-        self.assertTrue(metasim.is_file_exist(self.working_dir + "test_outfile", ".fasta", True))
-        os.remove(self.working_dir + outfile_var)
+        self.assertTrue(metasim.is_file_exist(self.working_dir + outfile_var, ".fna", True))
+        os.remove(self.working_dir + outfile_var+".fna")
