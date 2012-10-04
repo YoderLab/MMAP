@@ -26,7 +26,6 @@ from core.dist.matching_distance import MatchingDistance
 from core.utils import path_utils
 
 
-#from core.component.run_metaIDBA import RunMetaIDBA
 from core.connector.go_connector import GOConnector
 from core.component.run_BLAST import RunBlast
 from core import run_ext_prog

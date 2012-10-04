@@ -99,6 +99,8 @@ class TestSetting(unittest.TestCase):
         setting.add_all(blast_infile="bInfile",
             blast_pdir="b_p_dir", parent_directory="main_pdir")
         setting.add("wdir", "otherdir")
+        setting.add("blast_e-value", 1e-15)
+        setting.add("blast_outfile", "bOutfile")
 #        expected.pop("outfile")
 #        TODO: debug switch
         setting.debug = True
@@ -109,13 +111,13 @@ class TestSetting(unittest.TestCase):
         setting.add_all(outfile="Outfile")
         setting.debug = True
         #        setting.print_all()
-        self.assertRaises(KeyError, setting._get_mine())
+#        self.assertRaises(KeyError, setting._get_mine())
 
         setting.add_all(extract_outfile="infile", mine_outfile="mineOut",
-            mine_pdir="mine_pdir", parent_directory="main_pdir")
+            mine_pdir="mine_pdir", comparison="-allPairs",parent_directory="main_pdir")
         expected = {"mine_infile": "infile",
                     "outfile": "Outfile", "mine_outfile": "mineOut",
-                    "mine_pdir": "mine_pdir",
+                    "mine_pdir": "mine_pdir", "mine_comparison_style":"comparison",
                     "wdir": None, "checkExist": True,
                     "parent_directory": "main_pdir"}
         self.assertEqual(expected, setting._get_mine())
