@@ -60,7 +60,7 @@ class TestAll(unittest.TestCase):
 if __name__ == '__main__':
     unittest.main(verbosity=2)
 #    suite = unittest.TestLoader().loadTestsFromTestCase(TestAll)
-    suite = unittest.TestSuite()
-    suite.addTests(unittest.TestLoader().discover(os.getcwd()))
+#    suite = unittest.TestSuite()
+#    suite.addTests(unittest.TestLoader().discover(os.getcwd()))
 #    suite.addTests(unittest.TestLoader().loadTestsFromModule(TestAll))
 #    unittest.TextTestRunner(verbosity=2).run(suite)

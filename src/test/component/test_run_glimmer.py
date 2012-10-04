@@ -203,5 +203,5 @@ class TestRunGlimmer(unittest.TestCase):
         self.assertFalse(glimmer.check_outfiles_exist(self.data_dir + outfile_var))
         glimmer.run(True)
         self.assertTrue(glimmer.check_outfiles_exist(self.data_dir + outfile_var))
-
+#TODO: maybe?? os.remove existing output
 #

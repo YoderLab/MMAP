@@ -55,6 +55,43 @@ def setup_database():
 
 def main():
     print __name__
+
+
+
+
+
+    m = [ [[]] * 3, [[]] * 3,[[]] * 3, [[]] * 3]
+    print m[0]
+    print m[0][0]
+    print m[0][1]
+    print m[1]
+    print m[2]
+    print m[3]
+    print len(m)
+    print( len(m[0]) )
+    print range(12)
+    for i in range( 4 ):
+        for j in range(3):
+            print "i: ", i, "j: ", j
+            m[i][j] = i*3 + j
+
+    print "===="
+    print m[0]
+    print m[1]
+    print m[2]
+    print m[3]
+
+#    print m
+
+
+
+
+
+
+
+
+
+
 #    time_profile()
     e_value_cut_off = 1e-15
     record_index = setup_database()
@@ -69,7 +106,7 @@ def main():
     infile_var = "wdir_all_reads.fa"
     outfile = "testout"
     genovo_dir = "/Users/erinmckenney/Desktop/Pipeline/metaLem/data/Genovo/test_data"
-    Genovo = RunGenovo(infile=infile_var, outfile=outfile, pdir=genovo_dir, no_iter=3, thresh=250)
+#    Genovo = RunGenovo(infile=infile_var, outfile=outfile, pdir=genovo_dir, no_iter=3, thresh=250)
 
 
 
@@ -98,18 +135,18 @@ def main():
 #    Genovo.setCutoff(-16)
 #    print "set Cutoff to -16", Genovo.finalize.get_switch()
 
-    infile_var = "VICTORY!!!.fasta"
-#    print infile
-#    Genovo = RunGenovo(infile=infile_var, pdir = data_dir, noI=3, thresh=250)
-    Genovo.set_infile_name(infile_var)
+#    infile_var = "VICTORY!!!.fasta"
+##    print infile
+##    Genovo = RunGenovo(infile=infile_var, pdir = data_dir, noI=3, thresh=250)
+#    Genovo.set_infile_name(infile_var)
+#
+#    print Genovo.finalize.get_switch()
 
-    print Genovo.finalize.get_switch()
-
-    Genovo = RunGenovo(infile=infile_var, outfile=outfile, pdir=genovo_dir, no_iter=3, thresh=250, check_exist=False)
-    Genovo.set_outfile("sdif")
-    print "set outfile to sdif", Genovo.finalize.get_switch()
-    Genovo2 = RunGenovo(infile=infile_var, pdir=genovo_dir, no_iter=3, thresh=250, check_exist=False)   ## outfile == None
-    print "outfile = None = out.test", Genovo2.finalize.get_switch()
+#    Genovo = RunGenovo(infile=infile_var, outfile=outfile, pdir=genovo_dir, no_iter=3, thresh=250, check_exist=False)
+#    Genovo.set_outfile("sdif")
+#    print "set outfile to sdif", Genovo.finalize.get_switch()
+#    Genovo2 = RunGenovo(infile=infile_var, pdir=genovo_dir, no_iter=3, thresh=250, check_exist=False)   ## outfile == None
+#    print "outfile = None = out.test", Genovo2.finalize.get_switch()
 #    Genovo2.set_cutoff(-2.3)
 
 #

@@ -61,13 +61,15 @@ class Setting(object):
         default checkExist = Ture (not None)
         """
         if is_all_exist:
+
             for c in optional:
                 """
                 TODO: error from raise, not here. 
                 is_all_exist is a boolean, doesn't contain any info, 
                 therefore we need to go one level above
                 """
-#                print ("checking %s" % c)
+                if self.debug:
+                    print ("checking %s" % c)
                 if not self._check_variables_exist(c):
                     self.add(c, None)
         else:

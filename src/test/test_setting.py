@@ -88,6 +88,7 @@ class TestSetting(unittest.TestCase):
                     "blast_e-value": 1e-15, "blast_pdir": "b_p_dir",
                     "parent_directory": "main_pdir",
                     "wdir": None, "checkExist": True}
+#        setting.debug = True
         self.assertEqual(expected, setting._get_blast())
 
         setting.add("wdir", "otherdir")
@@ -106,7 +107,7 @@ class TestSetting(unittest.TestCase):
     def test_Setting_get_mine(self):
         setting = Setting()
         setting.add_all(outfile="Outfile")
-#        setting.debug = True 
+        setting.debug = True
         #        setting.print_all()
         self.assertRaises(KeyError, setting._get_mine())
 

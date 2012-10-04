@@ -35,7 +35,7 @@ class RunComponent(object):
         self.pdir = check_dir_ending(pdir)
         if wdir is None:
             self.wdir = self.pdir
-#        print "33333333", self.wdir
+#            print "33333333", self.wdir
         else:
             self.wdir = wdir
         self.wdir = check_dir_ending(self.wdir)

@@ -96,14 +96,14 @@ class TestRunMetaSim(unittest.TestCase):
             taxon_infile=taxon_infile_var, pdir=self.data_dir, wdir=self.working_dir,
             outfile=outfile_var, check_exist=True)
 
-        self.assertEqual(metasim.get_switch()[4], "-d %swdir_all_reads_out.fasta" % self.working_dir)
+        self.assertEqual(metasim.get_switch()[4], "-d %s" % self.working_dir)
 
-        outfile_var = "new_outfile.fasta"
+        dir_var = self.data_dir
         metasim = RunMetaSim(model_file=model_infile_var, no_reads=100,
-            taxon_infile=taxon_infile_var, pdir=self.data_dir, wdir=self.working_dir,
-            outfile=outfile_var, check_exist=True)
+            taxon_infile=taxon_infile_var, pdir=self.data_dir, wdir=dir_var,
+            outfile=outfile_var, check_exist=False)
         metasim.set_outfile_directory()
-        self.assertEqual(metasim.get_switch()[4], "-d %snew_outfile.fasta" % self.working_dir)
+        self.assertEqual(metasim.get_switch()[4], "-d %s" % self.data_dir)
 
     def test_file_already_exist(self):
         """
@@ -172,7 +172,9 @@ class TestRunMetaSim(unittest.TestCase):
         metasim = RunMetaSim(model_file=model_infile_var, no_reads=100,
                              taxon_infile=taxon_infile_var, pdir=self.data_dir,
                              wdir=self.working_dir, outfile=outfile_var, check_exist=True)
+        self.assertFalse(metasim.is_file_exist(self.working_dir + "test_outfile", ".fasta", False))
         metasim.run(debug=True)
+#        print "7777777", self.working_dir, "test_outfile", ".fasta"
         self.assertTrue(metasim.check_outfiles_exist(self.working_dir + outfile_var))
         self.assertTrue(metasim.is_file_exist(self.working_dir + "test_outfile", ".fasta", True))
         os.remove(self.working_dir + outfile_var)
