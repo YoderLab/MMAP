@@ -211,11 +211,23 @@ class TestRunGlimmer(unittest.TestCase):
         Step 8 of 8:  Running second Glimmer3
         """
 
-        infile_var = "tpall.fna"
-        outfile_var = "iterated_run"
+        infile_var = "tIn.fasta"
+        outfile_var = "tOut"
         glimmer = RunGlimmer(infile=infile_var, outfile=outfile_var, pdir=self.data_dir, check_exist=False)
         self.assertFalse(glimmer.check_outfiles_exist(self.data_dir + outfile_var))
         glimmer.run(True)
         self.assertTrue(glimmer.check_outfiles_exist(self.data_dir + outfile_var))
+        os.remove(self.data_dir + outfile_var)
+        os.remove(self.data_dir + outfile_var + ".coords")
+        os.remove(self.data_dir + outfile_var + ".detail")
+        os.remove(self.data_dir + outfile_var + ".icm")
+        os.remove(self.data_dir + outfile_var + ".longorfs")
+        os.remove(self.data_dir + outfile_var + ".motif")
+        os.remove(self.data_dir + outfile_var + ".predict")
+        os.remove(self.data_dir + outfile_var + ".run1.detail")
+        os.remove(self.data_dir + outfile_var + ".run1.predict")
+        os.remove(self.data_dir + outfile_var + ".train")
+        os.remove(self.data_dir + outfile_var + ".upstream")
+        os.remove(self.data_dir + outfile_var + ".fasta")
 #TODO: maybe?? os.remove existing output
 #
