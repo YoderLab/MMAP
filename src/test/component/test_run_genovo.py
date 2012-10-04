@@ -166,7 +166,7 @@ class TestRunGenovo(unittest.TestCase):
         """
         check if directory name is valid
         """
-        infile_var = "test_infile.fasta"
+        infile_var = "pIn"
         wrong_dir = self.data_dir[:-1]
         genovo = RunGenovo(infile=infile_var, pdir=wrong_dir, no_iter=3,
                            thresh=250, check_exist=False)
@@ -194,8 +194,8 @@ class TestRunGenovo(unittest.TestCase):
         maybe should not raise error, should
         TODO: maybe it should be handle it at different way, auto rename?
         """
-        infile_var = self.data_dir + "test_infile.fasta"
-        outfile_var = self.data_dir + "testOutFileAlreadyExist.fasta"
+        infile_var = self.data_dir + "pIn"
+        outfile_var = self.data_dir + "pOut"
         with self.assertRaises(IOError):
             RunGenovo(infile=infile_var, outfile=outfile_var,
                       pdir=self.data_dir, no_iter=3, thresh=250, check_exist=True)
@@ -205,19 +205,22 @@ class TestRunGenovo(unittest.TestCase):
         check if ./assemble finished running, should produce 3 output files
         only pass if all 3 exist
         """
-        infile_var = "test_infile.fasta"
+        infile_var = "assemble.fasta"
         genovo = RunGenovo(infile=infile_var, pdir=self.data_dir, no_iter=10,
                            thresh=250, check_exist=False)
-#        print genovo.checkAssembleOutfilesExist("test_infile.fasta")
+        genovo.run()
         self.assertTrue(genovo.check_outfiles_exist(self.data_dir +
-                                                    "test_infile.fasta"))
+                                                    "assemble.fasta"))
+        os.remove(self.data_dir + "assemble_out.fasta")
+        os.remove(self.data_dir + infile_var + ".dump.best")
+        os.remove(self.data_dir + infile_var + ".dump1")
+        os.remove(self.data_dir + infile_var + ".status")
 
         # negative test, outfiles are not suppose to exist
         infile_var = "fileNotExist.fasta"
-        genovo = RunGenovo(infile=infile_var, pdir=self.data_dir, no_iter=10,
+        genovo = RunGenovo(infile=infile_var, pdir=self.data_dir, wdir= self.working_dir, no_iter=10,
                            thresh=250, check_exist=False)
-#        print genovo.checkAssembleOutfilesExist("fileNotExist_out")
-        self.assertFalse(genovo.check_outfiles_exist(self.data_dir + "fileNotExist_out"))
+        self.assertFalse(genovo.check_outfiles_exist(self.working_dir + "fileNotExist_out"))
 
     def test_RunGenovo_read_finalize_outfile(self):
         """
@@ -225,8 +228,8 @@ class TestRunGenovo(unittest.TestCase):
         TODO: have check what happen in the file format is invalid,
         assuming its the correct fasta now
         """
-        infile_var = "test_infile.fasta"
-        outfile_var = "test_outfile.fasta"
+        infile_var = "fIn.fasta"
+        outfile_var = "fOut.fasta"
         genovo = RunGenovo(infile=infile_var, outfile=outfile_var,
                            pdir=self.data_dir, no_iter=10, thresh=250,
                            check_exist=False)
@@ -240,16 +243,20 @@ class TestRunGenovo(unittest.TestCase):
             self.assertEqual(len(result[key]), expected[i])
 
     def test_RunGenovo_run(self):
-        infile_var = "test_infile.fasta"
-        outfile_var = "test_run_outfile.fasta"
+        infile_var = "tIn.fasta"
+        outfile_var = "tOut.fasta"
         genovo = RunGenovo(infile=infile_var, outfile=outfile_var,
                            pdir=self.data_dir, no_iter=10, thresh=100,
                            check_exist=True)
+        self.assertFalse(genovo.check_outfiles_exist(self.data_dir+infile_var))
         genovo.run()
         self.assertTrue(genovo.check_outfiles_exist(self.data_dir + infile_var))
-        self.assertTrue(genovo.is_file_exist(self.data_dir + "test_run_outfile", ".fasta", True))
+        self.assertTrue(genovo.is_file_exist(self.data_dir + "tOut", ".fasta", True))
         os.remove(self.data_dir + outfile_var)
-        print self.data_dir + outfile_var
+        os.remove(self.data_dir + infile_var + ".dump.best")
+        os.remove(self.data_dir + infile_var + ".dump1")
+        os.remove(self.data_dir + infile_var + ".status")
+#        print self.data_dir + outfile_var
 #        raise Exception("pass the test with/without remove outfile!")
         #TODO: fix "pass" without removing the existing file, something wrong with the outfile check
 
