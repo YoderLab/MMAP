@@ -3,7 +3,7 @@ Created on May 30, 2012
 @author: Erin McKenney
 """
 from Bio import SeqIO
-
+import os
 from core.component.run_component import RunComponent
 from core.run_ext_prog import runExtProg
 
@@ -127,6 +127,38 @@ class RunMetaSim(RunComponent):
     def set_outfile_directory(self):
         directory = "-d%s" % self.wdir
         self.metasim.set_param_at(directory, OUTFILE_DIRECTORY_POSITION)
+
+    def generate_outfile_name(self, infile, outfile, error_model):
+        """
+        infile name
+            check if it exist
+            if yes, append <namebase>.#
+        if os.path.exists(  self.cwd+self.name_only  ):
+        if os.path.exists(  full_file_path  ):
+        """
+        self.infile = self.wdir + infile
+        location = infile.rfind(".")
+        if location is -1:
+            namebase = infile
+        else:
+            namebase = infile[0:location]
+            #            print "qq", self.wdir ,namebase , outfile_tag
+        self.outfile = self.wdir + namebase
+#        now append model type
+        if error_model=="-454" or "-Sanger" or "-Empirical":
+            self.outfile = self.wdir + namebase + error_model
+        else:
+            raise TypeError("Error: invalid error model: %s" %error_model)
+#        now self.outfile = /dir/namebase-Model
+#        if doesn't exist, append
+        if not os.path.exists(self.outfile+".fna"):
+            self.outfile = self.wdir + namebase + error_model + ".fna"
+        else:
+            version = 1
+            while os.path.exists(self.wdir + namebase + error_model + ".%.fna" %version):
+                version = version + 1
+            self.outfile = self.wdir + namebase + error_model + ".%.fna" %version
+
 
     def read_outfile(self):
         """
