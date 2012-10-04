@@ -38,11 +38,11 @@ class TestRunMetaSim(unittest.TestCase):
             taxon_infile=taxon_infile_var, pdir=self.data_dir, wdir=self.working_dir,
             outfile=outfile_var, check_exist=True)
 
-        expected_model_infile = "-mg %s%s" % (self.working_dir, model_infile_var)
+        expected_model_infile = "-mg%s%s" % (self.working_dir, model_infile_var)
         expected_taxon_infile = self.working_dir + taxon_infile_var
         expected_no_reads = "-r%s" % no_reads_var
-        expected_directory = "-d %s" % self.working_dir
-        expected = ["cmd", expected_model_infile, expected_no_reads, expected_taxon_infile, expected_directory]
+        expected_directory = "-d%s" % self.working_dir
+        expected = ["cmd", expected_model_infile, expected_no_reads, expected_directory, expected_taxon_infile]
 #
         self.assertEqual(metasim.get_switch(), expected)
 
@@ -65,7 +65,7 @@ class TestRunMetaSim(unittest.TestCase):
                 taxon_infile=taxon_infile_var, pdir=self.data_dir, wdir=self.working_dir,
                 outfile=outfile_var, check_exist=True)
 
-        taxon_infile_var = "MetaSim_bint.mprf"
+        taxon_infile_var = "incorrect_bint.mprf"
         outfile_var = "incorrect_outfile.fasta"     # test outfile
 
         with self.assertRaises(IOError):
@@ -96,29 +96,29 @@ class TestRunMetaSim(unittest.TestCase):
             taxon_infile=taxon_infile_var, pdir=self.data_dir, wdir=self.working_dir,
             outfile=outfile_var, check_exist=True)
 
-        self.assertEqual(metasim.get_switch()[4], "-d %s" % self.working_dir)
+        self.assertEqual(metasim.get_switch()[3], "-d%s" % self.working_dir)
 
         dir_var = self.data_dir
         metasim = RunMetaSim(model_file=model_infile_var, no_reads=100,
             taxon_infile=taxon_infile_var, pdir=self.data_dir, wdir=dir_var,
             outfile=outfile_var, check_exist=False)
         metasim.set_outfile_directory()
-        self.assertEqual(metasim.get_switch()[4], "-d %s" % self.data_dir)
+        self.assertEqual(metasim.get_switch()[3], "-d%s" % self.data_dir)
 
-    def test_file_already_exist(self):
-        """
-        check if out file already exists,
-        maybe should not raise error, should
-        TODO: maybe it should be handle it at different way, auto rename?
-            - MetaSim has auto rename function, need to check outfile
-        """
-        model_infile_var = "ErrorModelSolexa36bp.mconf"
-        taxon_infile_var = "MetaSim_bint.mprf"
-        outfile_var = self.working_dir + "testOutFileAlreadyExist.fasta"
-        with self.assertRaises(IOError):
-            RunMetaSim(model_file=model_infile_var, no_reads=100,
-                taxon_infile=taxon_infile_var, pdir=self.data_dir, wdir=self.working_dir,
-                outfile=outfile_var, check_exist=True)
+#    def test_file_already_exist(self):
+#        """
+#        check if out file already exists,
+#        maybe should not raise error, should
+#        TODO: Should we just delete this, now that it names outfiles with version numbers?
+#            - MetaSim has auto rename function, need to check outfile
+#        """
+#        model_infile_var = "ErrorModelSolexa36bp.mconf"
+#        taxon_infile_var = "MetaSim_bint.mprf"
+#        outfile_var = self.working_dir + "MetaSim_bint-454.fna"
+#        with self.assertRaises(IOError):
+#            RunMetaSim(model_file=model_infile_var, no_reads=100,
+#                taxon_infile=taxon_infile_var, pdir=self.data_dir, wdir=self.working_dir,
+#                outfile=outfile_var, check_exist=True)
 
     def test_check_outfile_exist(self):
         """
@@ -133,15 +133,16 @@ class TestRunMetaSim(unittest.TestCase):
         metasim = RunMetaSim(model_file=model_infile_var, no_reads=100,
             taxon_infile=taxon_infile_var, pdir=self.data_dir, wdir=self.working_dir,
             outfile=outfile_var, check_exist=True)
-        self.assertTrue(metasim.is_file_exist(self.working_dir + "MetaSim_bint-454.20e39f4c.fna"))
+        metasim.run()
+        self.assertTrue(metasim.is_file_exist(self.working_dir + "MetaSim_bint-454.fna"))
 
 
-        # negative test, outfiles are not suppose to exist
-        outfile_var = "fileNotExist.fasta"
-        with self.assertRaises(IOError):
-            RunMetaSim(model_file=model_infile_var, no_reads=100,
-                taxon_infile=taxon_infile_var, pdir=self.data_dir, wdir=self.working_dir,
-                outfile=outfile_var, check_exist=True)
+        # test for an additional run: able to append subsequent versions?
+        metasim.run()
+        self.assertTrue(metasim.is_file_exist(self.working_dir + "MetaSim_bint-454.1.fna"))
+
+        metasim.run()
+        self.assertTrue(metasim.is_file_exist(self.working_dir + "MetaSim_bint-454.2.fna"))
 
     def test_read_outfile(self):
         """
