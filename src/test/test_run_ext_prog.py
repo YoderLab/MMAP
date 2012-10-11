@@ -61,9 +61,9 @@ class TestRunExtProg(unittest.TestCase):
         self.assertTrue(self.out.find("test_run_ext_prog.py"))
 
 #        print "\noutput:\n",self.out
-
+    @unittest.skip("# todo removw muscle")
     def test_RunExtProg_run_program(self):
-# todo removw muscle
+
         self.outfile = "tempAlignmentOutput.fasta"
         if os.path.isfile(self.data_dir + self.outfile):
             os.remove(self.data_dir + self.outfile)

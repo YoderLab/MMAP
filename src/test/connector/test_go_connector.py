@@ -35,7 +35,7 @@ class TestGoConnector(unittest.TestCase):
         expected = set([])
         self.assertEqual(expected, seq.all_terms)
 
-
+    @unittest.skip("")
     def test_GoConnector_short(self):
 
         data = self.record_index["lcl|AE014075.1_gene_2"].seq ## good
@@ -47,7 +47,7 @@ class TestGoConnector(unittest.TestCase):
         expected = set(['GO:0004803', 'GO:0006313'])
         self.assertEqual(expected, seq.all_terms)
 
-
+    @unittest.skip("")
     def test_GoConnector_long(self):
 
         data = self.record_index["lcl|AE014075.1_gene_3"].seq ## good
