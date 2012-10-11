@@ -178,7 +178,6 @@ class TestRunGlimmer(unittest.TestCase):
         self.assertFalse(glimmer.check_outfiles_exist(self.data_dir + outfile_var))
         glimmer.run(True)
         self.assertTrue(glimmer.check_outfiles_exist(self.data_dir + outfile_var))
-        os.remove(self.data_dir + outfile_var)
         os.remove(self.data_dir + outfile_var + ".coords")
         os.remove(self.data_dir + outfile_var + ".detail")
         os.remove(self.data_dir + outfile_var + ".icm")
@@ -189,7 +188,7 @@ class TestRunGlimmer(unittest.TestCase):
         os.remove(self.data_dir + outfile_var + ".run1.predict")
         os.remove(self.data_dir + outfile_var + ".train")
         os.remove(self.data_dir + outfile_var + ".upstream")
-        os.remove(self.data_dir + outfile_var + ".fasta")
+        os.remove(self.data_dir + outfile_var + ".orfs")
 
         # negative test, outfiles are not suppose to exist
         outfile_var = "fileNotExist"
@@ -216,9 +215,8 @@ class TestRunGlimmer(unittest.TestCase):
         outfile_var = "tOut"
         glimmer = RunGlimmer(infile=infile_var, outfile=outfile_var, pdir=self.data_dir, check_exist=False)
         self.assertFalse(glimmer.check_outfiles_exist(self.data_dir + outfile_var))
-        glimmer.run(True)
+        glimmer.run(False)
         self.assertTrue(glimmer.check_outfiles_exist(self.data_dir + outfile_var))
-        os.remove(self.data_dir + outfile_var)
         os.remove(self.data_dir + outfile_var + ".coords")
         os.remove(self.data_dir + outfile_var + ".detail")
         os.remove(self.data_dir + outfile_var + ".icm")
@@ -229,6 +227,6 @@ class TestRunGlimmer(unittest.TestCase):
         os.remove(self.data_dir + outfile_var + ".run1.predict")
         os.remove(self.data_dir + outfile_var + ".train")
         os.remove(self.data_dir + outfile_var + ".upstream")
-        os.remove(self.data_dir + outfile_var + ".fasta")
+        os.remove(self.data_dir + outfile_var + ".orfs")
 #TODO: maybe?? os.remove existing output
 #

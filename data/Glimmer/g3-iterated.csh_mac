@@ -35,7 +35,7 @@ set onestep = $4
 set awkpath = ./awk
 #set glimmerpath = ./linux
 set glimmerpath = ./mac
-set elphbin = /usr/bin/elph
+set elphbin = ./mac/elph
 
 # add/change glimmer options here
 set glimmeropts = "-o50 -g110 -t30"
