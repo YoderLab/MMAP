@@ -134,15 +134,19 @@ class TestRunMetaSim(unittest.TestCase):
             taxon_infile=taxon_infile_var, pdir=self.data_dir, wdir=self.working_dir,
             outfile=outfile_var, check_exist=True)
         metasim.run()
-        self.assertTrue(metasim.is_file_exist(self.working_dir + "MetaSim_bint-454.fna"))
+        self.assertTrue(metasim.is_file_exist(self.working_dir + "MetaSim_bint-Empirical.fna"))
 
 
         # test for an additional run: able to append subsequent versions?
         metasim.run()
-        self.assertTrue(metasim.is_file_exist(self.working_dir + "MetaSim_bint-454.1.fna"))
+        self.assertTrue(metasim.is_file_exist(self.working_dir + "MetaSim_bint-Empirical.1.fna"))
 
         metasim.run()
-        self.assertTrue(metasim.is_file_exist(self.working_dir + "MetaSim_bint-454.2.fna"))
+        self.assertTrue(metasim.is_file_exist(self.working_dir + "MetaSim_bint-Empirical.2.fna"))
+
+        os.remove(self.working_dir + "MetaSim_bint-Empirical.fna")
+        os.remove(self.working_dir + "MetaSim_bint-Empirical.1.fna")
+        os.remove(self.working_dir + "MetaSim_bint-Empirical.2.fna")
 
     def test_read_outfile(self):
         """
@@ -152,7 +156,7 @@ class TestRunMetaSim(unittest.TestCase):
         """
         model_infile_var = "ErrorModelSolexa36bp.mconf"
         taxon_infile_var = "MetaSim_bint.mprf"
-        outfile_var = "test_outfile.fasta"
+        outfile_var = "MetaSim_bint-Empirical"
         metasim = RunMetaSim(model_file=model_infile_var, no_reads=100,
             taxon_infile=taxon_infile_var, pdir=self.data_dir, wdir=self.working_dir,
             outfile=outfile_var, check_exist=True)
@@ -169,7 +173,7 @@ class TestRunMetaSim(unittest.TestCase):
     def test_RunMetaSim_run(self):
         model_infile_var = "ErrorModelSolexa36bp.mconf"
         taxon_infile_var = "MetaSim_bint.mprf"
-        outfile_var = "test_outfile.fasta"
+        outfile_var = "MetaSim_bint-Empirical"
         metasim = RunMetaSim(model_file=model_infile_var, no_reads=100,
                              taxon_infile=taxon_infile_var, pdir=self.data_dir,
                              wdir=self.working_dir, outfile=outfile_var, check_exist=True)
