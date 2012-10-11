@@ -77,9 +77,9 @@ class TestRunExtProg(unittest.TestCase):
         prog2.add_switch(self._switch)
         prog2.run()
         self.out = prog2.errors #not sure why output capture by stderr, but it works
-
+#TODO(Steven Wu): remove testing muscle
         self.assertTrue(os.listdir(self.data_dir).count(self.outfile))
-        self.assertTrue(self.out.find("MUSCLE v3.8.31"))
+        self.assertTrue(self.out.find("aoeuMUSCLE v3.8.31"))
         self.assertTrue(self.out.find("testAlignmentInput 2 seqs"))
 
         #clean up

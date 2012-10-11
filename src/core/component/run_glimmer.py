@@ -103,7 +103,7 @@ class RunGlimmer(RunComponent):
 #    TODO: once outfiles are created, use terminal command to extract ORFs and pipe to fasta for BLAST
 #        ./multi-extract tpall.fna iterated2.run1.predict > ~/Desktop/Pipeline/metaLem/data/Glimmer/mac/tpall_output.fasta
         """
-#        self.extract.run(debug)
+        self.extract.run(True)
 
     def get_switch(self):
 #        print "*****", self.extract._switch
