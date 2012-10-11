@@ -3,7 +3,9 @@ Created on May 7, 2012
 
 @author: Erin McKenney
 """
+import os
 import unittest
+
 from core.component.run_component import RunComponent
 from core import run_ext_prog
 from core.utils import path_utils
@@ -15,7 +17,7 @@ class TestRunComponent(unittest.TestCase):
 
     def setUp(self):
         self.longMessage = True
-        self.data_dir = path_utils.get_data_dir() + "Genovo/"
+        self.data_dir = path_utils.get_data_dir() + "unittest_data/"
         self.wdir = path_utils.get_data_dir() + "Genovo/test_data/"
 #    TODO: rename / consolidate all test_data to unittest_data
     def tearDown(self):
@@ -32,7 +34,7 @@ class TestRunComponent(unittest.TestCase):
         #        print genovo.checkAssembleOutfilesExist("test_infile.fasta")
 
     def test_check_outfiles_exist(self):
-        infile_tag = "test_infile.fasta"
+        infile_tag = "pIn"
         exts = [".dump1", ".status"]
         comp = RunComponent()
         self.assertTrue(comp.is_multi_files_exist(file_tag=self.data_dir + infile_tag, all_exts=exts))
