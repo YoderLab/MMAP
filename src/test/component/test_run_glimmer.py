@@ -228,5 +228,5 @@ class TestRunGlimmer(unittest.TestCase):
         os.remove(self.data_dir + outfile_var + ".train")
         os.remove(self.data_dir + outfile_var + ".upstream")
         os.remove(self.data_dir + outfile_var + ".orfs")
-#TODO: maybe?? os.remove existing output
+
 #

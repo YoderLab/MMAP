@@ -61,7 +61,7 @@ class TestRunExtProg(unittest.TestCase):
         self.assertTrue(self.out.find("test_run_ext_prog.py"))
 
 #        print "\noutput:\n",self.out
-    @unittest.skip("# todo removw muscle")
+    @unittest.skip("#TODO: not testing muscle alignment")
     def test_RunExtProg_run_program(self):
 
         self.outfile = "tempAlignmentOutput.fasta"
@@ -76,10 +76,9 @@ class TestRunExtProg(unittest.TestCase):
 
         prog2.add_switch(self._switch)
         prog2.run()
-        self.out = prog2.errors #not sure why output capture by stderr, but it works
-#TODO(Steven Wu): remove testing muscle
+        self.out = prog2.errors  #not sure why output capture by stderr, but it works
         self.assertTrue(os.listdir(self.data_dir).count(self.outfile))
-        self.assertTrue(self.out.find("aoeuMUSCLE v3.8.31"))
+        self.assertTrue(self.out.find("MUSCLE v3.8.31"))
         self.assertTrue(self.out.find("testAlignmentInput 2 seqs"))
 
         #clean up
