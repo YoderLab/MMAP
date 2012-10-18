@@ -33,6 +33,10 @@ class TestClass(unittest.TestCase):
                         'S4':set(['GO:03', 'GO:04', 'GO:05']),
                         'S5':set(['GO:01', 'GO:05', 'GO:06', 'GO:07']),
                         })
+        self.template_set_small = dict({
+            'S3':set(['GO:01', 'GO:03', 'GO:04']),
+            'S4':set(['GO:03', 'GO:04', 'GO:05']),
+            })
         self.S1 = self.template_set.get("S1")
         self.S2 = self.template_set.get("S2")
         self.S3 = self.template_set.get("S3")
@@ -123,15 +127,15 @@ class TestClass(unittest.TestCase):
         self.assertTrue("GO:03" not in self.S2)
 
         #TODO: change the following None to sefl.S*
-        self.assertTrue("GO:04" in None)
-        self.assertTrue("GO:05" in None)
-        self.assertTrue("GO:06" not in None)
-        self.assertTrue("GO:07" not in None)
+        self.assertTrue("GO:04" in self.S3)
+        self.assertTrue("GO:05" in self.S4)
+        self.assertTrue("GO:06" not in self.S1)
+        self.assertTrue("GO:07" not in self.S2)
 
-        self.assertFalse("GO:03" in None)
-        self.assertFalse("GO:04" in None)
-        self.assertFalse("GO:05" not in None)
-        self.assertFalse("GO:06" not in None)
+        self.assertFalse("GO:03" in self.S5)
+        self.assertFalse("GO:04" in self.S2)
+        self.assertFalse("GO:05" not in self.S4)
+        self.assertFalse("GO:06" not in self.S5)
 
     def test_RunBlast_set_union(self): # A OR B (A|B)
         """
@@ -143,24 +147,24 @@ class TestClass(unittest.TestCase):
         new_set = self.S2 | self.S5
         self.assertEqual(expected, new_set)
 
-        expected = set([]) #TODO
+        expected = set(["GO:01", "GO:03", "GO:04", "GO:05", "GO:06", "GO:07"]) #TODO
         new_set = self.S4 | self.S5
         self.assertEqual(expected, new_set)
 
-        expected = set([]) #TODO
+        expected = set(["GO:01", "GO:02", "GO:03", "GO:04", "GO:05", "GO:06", "GO:07"]) #TODO
         new_set = self.S2 | self.S4 | self.S5
         self.assertEqual(expected, new_set)
 
         expected = set(["GO:01", "GO:02", "GO:03", "GO:04"])
-        new_set = None #using self.S2 and self.S3
+        new_set = self.S2 | self.S3
         self.assertEqual(expected, new_set)
 
         expected = set(["GO:01", "GO:02", "GO:03", "GO:04", "GO:05"])
-        new_set = None
+        new_set = self.S2 | self.S4
         self.assertEqual(expected, new_set)
 
         expected = set(["GO:01", "GO:03", "GO:04", "GO:05"])
-        new_set = None
+        new_set = self.S3 | self.S4
         self.assertEqual(expected, new_set)
 
 
@@ -171,21 +175,26 @@ class TestClass(unittest.TestCase):
         set & other & ...
         Return a new set with elements common to the set and all others.
         """
-        expected = set([]) #TODO GO:05
+        expected = set(["GO:05"]) #TODO GO:05
         new_set = self.S4 & self.S5
         self.assertEqual(expected, new_set)
+
 
         expected = set([]) #TODO
         new_set = self.S2 & self.S4 & self.S5
         self.assertEqual(expected, new_set)
 
-        expected = set(["GO:03", "GO:04"])
-        new_set = None
+        expected = set(["GO:04", "GO:03"])
+        new_set = self.S3 & self.S4
         self.assertEqual(expected, new_set)
 
         expected = set(["GO:05"])
-        new_set = None
+        new_set = self.S4 & self.S5
         self.assertEqual(expected, new_set)
+
+        expected = set(["GO:03"])
+        new_set = self.S3 & self.S4
+        self.assertNotEqual(expected, new_set)
 
 
     def test_RunBlast_set_difference(self):
@@ -194,20 +203,25 @@ class TestClass(unittest.TestCase):
         set - other - ...
         Return a new set with elements in the set that are not in the others.
         """
-        expected = set([]) #TODO GO:03, GO:04
+        expected = set(["GO:03", "GO:04"]) #TODO GO:03, GO:04
         new_set = self.S4 - self.S5
         self.assertEqual(expected, new_set)
 
-        expected = set([]) #TODO
-        new_set = self.S2 - self.S4
+        expected = set(["GO:01", "GO:06", "GO:07"])
+        new_set = self.S5 - self.S4
+        self.assertEqual(expected, new_set)
+
+
+        expected = set(["GO:02"]) #TODO
+        new_set = self.S2 - self.S3
         self.assertEqual(expected, new_set)
 
         expected = set(["GO:01"])
-        new_set = None
+        new_set = self.S3 - self.S4
         self.assertEqual(expected, new_set)
 
         expected = set(["GO:05"])
-        new_set = None
+        new_set = self.S4 - self.S3
         self.assertEqual(expected, new_set)
 
 
@@ -217,30 +231,41 @@ class TestClass(unittest.TestCase):
         set ^ other
         Return a new set with elements in either the set or other but not both.
         """
-        expected = set([]) #TODO GO01, GO03 GO04 GO06 GO07
+        expected = set(["GO:03", "GO:04", "GO:01", "GO:06", "GO:07"]) #TODO GO01, GO03 GO04 GO06 GO07
         new_set = self.S4 ^ self.S5
         self.assertEqual(expected, new_set)
 
-        expected = set([]) #TODO
+        expected = set(["GO:05", "GO:01"]) #TODO
         new_set = self.S3 ^ self.S4
         self.assertEqual(expected, new_set)
 
         expected = set(["GO:02", "GO:03", "GO:04"])
-        new_set = None
+        new_set = self.S3 ^ self.S2
         self.assertEqual(expected, new_set)
 
         expected = set(["GO:03", "GO:04", "GO:05", "GO:06", "GO:07"])
-        new_set = None
+        new_set = self.S3 ^ self.S5
         self.assertEqual(expected, new_set)
 
     def test_RunBlast_set_count(self):
 
         expected = dict({"GO:01":1,
-                         "GO:02":2,
                          "GO:03":2,
                          "GO:04":2,
                          "GO:05":1, })
-        new_dict = None
+
+
+#        union = self.S3 | self.S4
+        print(self.template_set_small)
+        new_dict = self.init_dict(self.template_set_small, 0)
+
+
+        print(new_dict)
+#        new_dict=self.update_counter_from_set(new_dict, self.S3)
+#        new_dict=self.update_counter_from_set(new_dict, self.S4)
+
+        self.update_counter_from_dictionaries(new_dict, self.template_set_small)
+        print(new_dict)
         self.assertEqual(expected, new_dict)
 
         expected = dict({"GO:01":3,
@@ -250,8 +275,41 @@ class TestClass(unittest.TestCase):
                          "GO:05":2,
                          "GO:06":1,
                          "GO:07":1 })
-        new_dict = None
+
+        new_dict = self.init_dict(self.template_set, 0)
+        self.update_counter_from_dictionaries(new_dict, self.template_set)
+
+        print(new_dict)
         self.assertEqual(expected, new_dict)
+
+    def init_dict(self, allterms, default_value=0):
+        new_dict = dict()
+        master_value = set([])
+        for v in allterms.values():
+            master_value=master_value | v
+
+        for k in master_value:
+        #            new_dict.setdefault(k, default_value)
+            new_dict[k]=default_value
+        return new_dict
+
+    def init_dict_old(self, union, default_value=0):
+        new_dict = dict()
+        for k in union:
+        #            new_dict.setdefault(k, default_value)
+            new_dict[k]=default_value
+        return new_dict
+
+    def update_counter_from_dictionaries(self, counter, allterms):
+#        print allterms
+#        print(allterms.values())
+        for v in allterms.values():
+            counter = self.update_counter_from_set(counter,v)
+
+    def update_counter_from_set(self, counter, each_set):
+        for k in each_set:
+            counter[k]= counter[k]+1
+        return counter
 
 #    def test_RunBlast_generateOutputMatrix(self):
 #

@@ -61,6 +61,8 @@ class RunBlast(RunComponent):
             self.seq = go_connector.parse_go_term(self.seq, self.e_value_cut_off)
 #            self.seq.all_terms
             self.results[key] = self.seq
+            new_dict = self.init_dict(self.results, 0)
+            self.counter = self.update_counter_from_dictionaries(new_dict, self.results)
 
     @classmethod
     def create_blast_from_setting(cls, setting_class):
@@ -69,6 +71,37 @@ class RunBlast(RunComponent):
         return blast
         pass
 
+    new_dict = self.init_dict(self.results, 0)
+    self.update_counter_from_dictionaries(new_dict, self.results)
+
+    def init_dict(self, allterms, default_value=0):
+        new_dict = dict()
+        master_value = set([])
+        for v in allterms.values():
+            master_value=master_value | v
+
+        for k in master_value:
+        #            new_dict.setdefault(k, default_value)
+            new_dict[k]=default_value
+        return new_dict
+
+    def init_dict_old(self, union, default_value=0):
+        new_dict = dict()
+        for k in union:
+        #            new_dict.setdefault(k, default_value)
+            new_dict[k]=default_value
+        return new_dict
+
+    def update_counter_from_dictionaries(self, counter, allterms):
+    #        print allterms
+    #        print(allterms.values())
+        for v in allterms.values():
+            counter = self.update_counter_from_set(counter,v)
+
+    def update_counter_from_set(self, counter, each_set):
+        for k in each_set:
+            counter[k]= counter[k]+1
+        return counter
 #        for i in self.results.values():
 #            print(i.all_terms)
 
