@@ -5,6 +5,7 @@ Created on Feb 13, 2012
 """
 import os
 from Bio import SeqIO
+import csv
 from core.connector import go_connector
 from core.sequence import Sequence
 from core.component.run_component import RunComponent
@@ -17,7 +18,7 @@ class RunBlast(RunComponent):
 
     TODO(Steven Wu): copy/pasted from old main.py. Add test class
     """
-    def __init__(self, records, e_value):
+    def __init__(self, records, e_value, outfile):
         """
         Constructor
         records: collection of Bio.SeqRecord.SeqRecord
@@ -27,7 +28,7 @@ class RunBlast(RunComponent):
         self.results = dict()
         self.record_index = records
         self.e_value_cut_off = e_value
-
+        self.outfile = self.wdir + outfile
 
 
     @classmethod
@@ -63,6 +64,9 @@ class RunBlast(RunComponent):
             self.results[key] = self.seq
             new_dict = self.init_dict(self.results, 0)
             self.counter = self.update_counter_from_dictionaries(new_dict, self.results)
+            new_outfile = self.init_output(self.counter,0)
+            self.sample = self.update_sample_from_counters(new_outfile, self.counter)
+            self.outfile = RunBlast.output_csv()
 
     @classmethod
     def create_blast_from_setting(cls, setting_class):
@@ -71,8 +75,6 @@ class RunBlast(RunComponent):
         return blast
         pass
 
-    new_dict = self.init_dict(self.results, 0)
-    self.update_counter_from_dictionaries(new_dict, self.results)
 
     def init_dict(self, allterms, default_value=0):
         new_dict = dict()
@@ -81,13 +83,6 @@ class RunBlast(RunComponent):
             master_value=master_value | v
 
         for k in master_value:
-        #            new_dict.setdefault(k, default_value)
-            new_dict[k]=default_value
-        return new_dict
-
-    def init_dict_old(self, union, default_value=0):
-        new_dict = dict()
-        for k in union:
         #            new_dict.setdefault(k, default_value)
             new_dict[k]=default_value
         return new_dict
@@ -106,3 +101,32 @@ class RunBlast(RunComponent):
 #            print(i.all_terms)
 
 #TODO: Save / export results as a .csv file (= MINE input)
+
+    def init_output(self, counter, default_value=0):
+        new_sample = dict()
+        master_file = set([])
+        for v in counter.values():
+            master_file=master_file | v
+
+        for k in master_file:
+        #            new_dict.setdefault(k, default_value)
+            new_sample[k]=default_value
+        return new_sample
+
+    def update_sample_from_counters(self, sample, counter):
+        for v in counter.values():
+            sample = self.update_sample_from_set(sample, v)
+
+    def update_sample_from_set(self, sample, each_set):
+        for k in each_set:
+            sample[k]= sample[k]+1
+        return sample
+    #        for i in self.results.values():
+#            print(i.all_terms)
+
+    def output_csv(self):
+        with open(self.outfile, 'b') as csvfile:
+            writer = csv.writer(csvfile, delimiter='    ', quotechar='|', quoting=csv.QUOTE_NONE)
+            for row in self.sample:
+                    writer.writerow([row])
+
