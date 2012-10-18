@@ -158,6 +158,7 @@ class RunMetaSim(RunComponent):
             while os.path.exists(self.wdir + namebase + error_model + ".%.fna" %version):
                 version = version + 1
             self.outfile = self.wdir + namebase + error_model + ".%.fna" %version
+            print "?????????????",self.outfile
 
 
     def read_outfile(self):
