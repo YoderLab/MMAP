@@ -12,7 +12,9 @@ from core.utils import path_utils
 import os
 
 class TestGoConnector(unittest.TestCase):
-
+    '''
+    
+    '''
     def setUp(self):
         CWD = os.getcwd()
         data_dir = path_utils.get_data_dir(CWD)
@@ -35,10 +37,10 @@ class TestGoConnector(unittest.TestCase):
         expected = set([])
         self.assertEqual(expected, seq.all_terms)
 
-    @unittest.skip("")
+#    @unittest.skip("")
     def test_GoConnector_short(self):
 
-        data = self.record_index["lcl|AE014075.1_gene_2"].seq ## good
+        data = self.record_index["lcl|AE014075.1_gene_2"].seq  ## good
         seq = Sequence(data)
         seq = go_connector.blast_AmiGO(seq)
         seq = go_connector.extract_ID(seq)
@@ -47,7 +49,7 @@ class TestGoConnector(unittest.TestCase):
         expected = set(['GO:0004803', 'GO:0006313'])
         self.assertEqual(expected, seq.all_terms)
 
-    @unittest.skip("")
+#    @unittest.skip("")
     def test_GoConnector_long(self):
 
         data = self.record_index["lcl|AE014075.1_gene_3"].seq ## good

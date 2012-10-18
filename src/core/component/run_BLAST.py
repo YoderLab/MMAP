@@ -41,7 +41,7 @@ class RunBlast(RunComponent):
             blast = cls(record_index, e_value)
             return blast
         else:
-            raise IOError("Blast infile %s does not exist!!! " %filename)
+            raise IOError("Blast infile %s does not exist!!! " % filename)
 #        setting = setting_class.get_all_par("glimmer")
 #        glimmer = RunGlimmer.create_glimmer(setting)
 
