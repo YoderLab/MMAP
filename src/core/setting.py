@@ -83,6 +83,8 @@ class Setting(object):
         if program_name is "blast":
             if self.all_setting["blast_infile"] is None:
                 self.all_setting["blast_infile"] = self.all_setting["extract_outfile"]
+            if self.all_setting["blast_e-value"] is None:
+                self.all_setting["blast_e-value"] = "1e-15"
 
 #                TODO: once BLAST and GO code is integrated, set GO-term output = MINE infile
 

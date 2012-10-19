@@ -39,7 +39,7 @@ class RunBlast(RunComponent):
         """
         if os.path.exists(filename):
             record_index = SeqIO.index(filename, "fasta")
-            blast = cls(record_index, e_value)
+            blast = cls(record_index, e_value, self.outfile)
             return blast
         else:
             raise IOError("Blast infile %s does not exist!!! " % filename)
