@@ -160,6 +160,7 @@ class TestRunMetaSim(unittest.TestCase):
         metasim = RunMetaSim(model_file=model_infile_var, no_reads=100,
             taxon_infile=taxon_infile_var, pdir=self.data_dir, wdir=self.working_dir,
             outfile=outfile_var, check_exist=True)
+        metasim.run()
         result = metasim.read_outfile()
         self.assertEqual(len(result), 2)
         self.assertEqual(result.keys(), ["1", "2"])
