@@ -282,16 +282,18 @@ class TestClass(unittest.TestCase):
         print(new_dict)
         self.assertEqual(expected, new_dict)
 
-    def init_dict(self, allterms, default_value=0):
-        new_dict = dict()
-        master_value = set([])
-        for v in allterms.values():
-            master_value=master_value | v
+    def test_init_dict(self): # allterms, default_value=0)
+        expected = dict({"GO:01":0,
+                         "GO:02":0,
+                         "GO:03":0,
+                         "GO:04":0,
+                         "GO:05":0,
+                         "GO:06":0,
+                         "GO:07":0 })
 
-        for k in master_value:
-        #            new_dict.setdefault(k, default_value)
-            new_dict[k]=default_value
-        return new_dict
+        new_dict = RunBlast(records, e_value, outfile)
+        new_dict.init_dict(self, self.template_set, 0)
+        self.assertEqual(expected, new_dict)
 
     def init_dict_old(self, union, default_value=0):
         new_dict = dict()
