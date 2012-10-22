@@ -18,7 +18,7 @@ class RunBlast(RunComponent):
 
     TODO(Steven Wu): copy/pasted from old main.py. Add test class
     """
-    def __init__(self, records, e_value, outfile):
+    def __init__(self, records, e_value, outfile=None):
         """
         Constructor
         records: collection of Bio.SeqRecord.SeqRecord
@@ -28,7 +28,7 @@ class RunBlast(RunComponent):
         self.results = dict()
         self.record_index = records
         self.e_value_cut_off = e_value
-        self.outfile = self.wdir + outfile
+#        self.outfile = self.wdir + outfile
 
 
     @classmethod

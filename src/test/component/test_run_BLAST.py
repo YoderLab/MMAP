@@ -291,8 +291,8 @@ class TestClass(unittest.TestCase):
                          "GO:06":0,
                          "GO:07":0 })
 
-        new_dict = RunBlast(records, e_value, outfile)
-        new_dict.init_dict(self, self.template_set, 0)
+        new_dict = RunBlast(records=self.record_index, e_value=self.e_value_cut_off, outfile=None)
+        new_dict.init_dict(self.template_set_small,0)
         self.assertEqual(expected, new_dict)
 
     def init_dict_old(self, union, default_value=0):
