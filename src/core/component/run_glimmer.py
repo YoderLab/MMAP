@@ -8,7 +8,7 @@ from core.component.run_component import RunComponent
 from core.run_ext_prog import runExtProg
 
 GLIMMER = "./g3-iterated.csh"
-EXTRACT = "./extract"
+EXTRACT = "./multi-extract"
 INFILE_POSITION = 1
 OUTFILE_POSITION = 2
 COORDS_POSITION = 2
