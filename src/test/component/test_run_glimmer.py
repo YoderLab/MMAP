@@ -173,7 +173,7 @@ class TestRunGlimmer(unittest.TestCase):
         only pass if all 10 exist
         """
         infile_var = "tIn.fasta"
-        outfile_var = "tOut.fasta"
+        outfile_var = "tOut"
         glimmer = RunGlimmer(infile=infile_var, outfile=outfile_var, pdir=self.data_dir, check_exist=False)
         self.assertFalse(glimmer.check_outfiles_exist(self.data_dir + outfile_var))
         glimmer.run(False)
