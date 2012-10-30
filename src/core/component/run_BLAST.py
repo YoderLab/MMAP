@@ -18,7 +18,7 @@ class RunBlast(RunComponent):
 
     TODO(Steven Wu): copy/pasted from old main.py. Add test class
     """
-    def __init__(self, records, e_value, outfile=None):
+    def __init__(self, records, e_value, wdir, outfile=None):
         """
         Constructor
         records: collection of Bio.SeqRecord.SeqRecord
@@ -28,7 +28,8 @@ class RunBlast(RunComponent):
         self.results = dict()
         self.record_index = records
         self.e_value_cut_off = e_value
-#        self.outfile = self.wdir + outfile
+        self.wdir = wdir
+        self.outfile = self.wdir + outfile
 
 
     @classmethod
@@ -77,15 +78,15 @@ class RunBlast(RunComponent):
 
 
     def init_dict(self, allterms, default_value=0):
-        new_dict = dict()
+        default_dict = dict()
         master_value = set([])
         for v in allterms.values():
             master_value=master_value | v
 
         for k in master_value:
         #            new_dict.setdefault(k, default_value)
-            new_dict[k]=default_value
-        return new_dict
+            default_dict[k]=default_value
+        return default_dict
 
     def update_counter_from_dictionaries(self, counter, allterms):
     #        print allterms
@@ -124,9 +125,42 @@ class RunBlast(RunComponent):
     #        for i in self.results.values():
 #            print(i.all_terms)
 
-    def output_csv(self):
-        with open(self.outfile, 'b') as csvfile:
-            writer = csv.writer(csvfile, delimiter='    ', quotechar='|', quoting=csv.QUOTE_NONE)
-            for row in self.sample:
-                    writer.writerow([row])
+    def output_csv(self, header, template):
+        """template should be a dictionary object
+        """
+        with open(self.outfile, 'wb') as csvfile:
+            writer = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_NONE)
+#            writer.writerow(template)
+#            dict.
+            firstrow = ["GOterm", header]
+            writer.writerow(firstrow)
+            for key in template.iterkeys():
+                temp=[key, template[key]]
+                print temp, type(temp)
+                writer.writerow(temp)
 
+
+    def update_output_csv(self, header, template, existing_csv):
+        """
+        template = dictionary object
+        header = header
+        existing_csv = "filename" full path
+        """
+        with open(self.outfile, 'wb') as csvfile:
+            writer = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_NONE)
+
+            with open(existing_csv, 'rb') as f:
+                reader = csv.reader(f)
+                for i, row in enumerate(reader):
+                    if i==0:
+                        row.append(header)
+                    else:
+                        key = row[0]
+                        if template.has_key(key):
+                            row.append(template[key])
+                        else:
+                            row.append(0)
+                        print i, key, row
+
+
+                    writer.writerow(row)

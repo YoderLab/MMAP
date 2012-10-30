@@ -203,7 +203,7 @@ class TestClass(unittest.TestCase):
         set - other - ...
         Return a new set with elements in the set that are not in the others.
         """
-        expected = set(["GO:03", "GO:04"]) #TODO GO:03, GO:04
+        expected = set(["GO:03", "GO:04"])
         new_set = self.S4 - self.S5
         self.assertEqual(expected, new_set)
 
@@ -212,7 +212,7 @@ class TestClass(unittest.TestCase):
         self.assertEqual(expected, new_set)
 
 
-        expected = set(["GO:02"]) #TODO
+        expected = set(["GO:02"])
         new_set = self.S2 - self.S3
         self.assertEqual(expected, new_set)
 
@@ -231,11 +231,11 @@ class TestClass(unittest.TestCase):
         set ^ other
         Return a new set with elements in either the set or other but not both.
         """
-        expected = set(["GO:03", "GO:04", "GO:01", "GO:06", "GO:07"]) #TODO GO01, GO03 GO04 GO06 GO07
+        expected = set(["GO:03", "GO:04", "GO:01", "GO:06", "GO:07"])
         new_set = self.S4 ^ self.S5
         self.assertEqual(expected, new_set)
 
-        expected = set(["GO:05", "GO:01"]) #TODO
+        expected = set(["GO:05", "GO:01"])
         new_set = self.S3 ^ self.S4
         self.assertEqual(expected, new_set)
 
@@ -284,31 +284,34 @@ class TestClass(unittest.TestCase):
 
     def test_init_dict(self): # allterms, default_value=0)
         expected = dict({"GO:01":0,
-                         "GO:02":0,
                          "GO:03":0,
                          "GO:04":0,
                          "GO:05":0,
-                         "GO:06":0,
-                         "GO:07":0 })
+                         })
 
         new_dict = RunBlast(records=self.record_index, e_value=self.e_value_cut_off, outfile=None)
-        new_dict.init_dict(self.template_set_small,0)
-        self.assertEqual(expected, new_dict)
+        default_dict = new_dict.init_dict(self.template_set_small,0)
+        self.assertEqual(expected, default_dict)
+        print new_dict.e_value_cut_off
+#        print(new_dict.default_dict)
 
-    def init_dict_old(self, union, default_value=0):
+    def test_init_dict_old(self, union, default_value=0):
+#        TODO: write code to test function
         new_dict = dict()
         for k in union:
         #            new_dict.setdefault(k, default_value)
             new_dict[k]=default_value
         return new_dict
 
-    def update_counter_from_dictionaries(self, counter, allterms):
+    def test_update_counter_from_dictionaries(self, counter, allterms):
+#        TODO: write code to test function
 #        print allterms
 #        print(allterms.values())
         for v in allterms.values():
             counter = self.update_counter_from_set(counter,v)
 
-    def update_counter_from_set(self, counter, each_set):
+    def test_update_counter_from_set(self, counter, each_set):
+#        TODO: write code to test function
         for k in each_set:
             counter[k]= counter[k]+1
         return counter
@@ -339,3 +342,27 @@ class TestClass(unittest.TestCase):
 #            blast.results[k] = Sequence(k)
 #            blast.results[k].all_terms = v
 #        print "aoeu", blast.results
+
+
+    def test_output_csv(self):
+#        TODO add test code
+        new_dict = RunBlast(records=self.record_index, e_value=self.e_value_cut_off,
+            wdir="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/BLAST/",outfile="test.csv")
+        print new_dict.e_value_cut_off
+        data = dict({"GO:01":1,
+                         "GO:03":2,
+                         "GO:04":2,
+                         "GO:05":1, })
+        new_dict.output_csv("Sample",data)
+#        new_dict.output_csv(['Spam'] * 6 + ['Baked Beans'])
+
+
+    def test_update_output_csv(self):
+        new_dict = RunBlast(records=self.record_index, e_value=self.e_value_cut_off,
+            wdir="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/BLAST/",outfile="test2.csv")
+        print new_dict.e_value_cut_off
+        data = dict({"GO:01":7,
+                     "GO:02":9,
+                     "GO:04":2,
+                     "GO:05":8, })
+        new_dict.update_output_csv("Species",data, "/Users/erinmckenney/Desktop/Pipeline/metaLem/data/BLAST/test.csv")
