@@ -5,6 +5,7 @@ list_essential_shared = ["parent_directory"]
 list_essential_metasim_only = ["metasim_pdir", "metasim_model_infile", "metasim_taxon_infile", "metasim_no_reads"]
 list_essential_genovo_only = ["genovo_infile", "genovo_pdir", "genovo_noI", "genovo_thresh"]
 list_essential_glimmer_only = ["glimmer_pdir"]  # dont need outfile
+list_essential_blast_only = ["blast_wdir"]
 list_essential_mine_only = [ "mine_pdir", "mine_comparison_style"]
 
 
@@ -20,6 +21,7 @@ list_ess_par = {
     "metasim": list_essential_metasim_only,
     "genovo": list_essential_genovo_only,
     "glimmer": list_essential_glimmer_only,
+    "blast": list_essential_blast_only,
     "mine": list_essential_mine_only
 }
 
@@ -28,6 +30,7 @@ list_optional_par = {
     "metasim": list_optional_metasim_only,
     "genovo": list_optional_genovo_only,
     "glimmer": list_optional_glimmer_only,
+    "blast": list_optional_blast_only,
     "mine": list_optional_mine_only
 }
 
@@ -85,6 +88,7 @@ class Setting(object):
                 self.all_setting["blast_infile"] = self.all_setting["extract_outfile"]
             if self.all_setting["blast_e-value"] is None:
                 self.all_setting["blast_e-value"] = "1e-15"
+
 
 #                TODO: once BLAST and GO code is integrated, set GO-term output = MINE infile
 
