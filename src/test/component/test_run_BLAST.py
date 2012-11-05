@@ -257,14 +257,15 @@ class TestClass(unittest.TestCase):
 
 #        union = self.S3 | self.S4
         print(self.template_set_small)
-        new_dict = self.init_dict(self.template_set_small, 0)
+        new_dict = RunBlast(records=self.record_index, e_value=self.e_value_cut_off,
+            wdir="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/BLAST/", outfile="BlastOut")
+        default_dict = new_dict.init_dict(self.template_set_small,0)
 
-
-        print(new_dict)
+        print(default_dict)
 #        new_dict=self.update_counter_from_set(new_dict, self.S3)
 #        new_dict=self.update_counter_from_set(new_dict, self.S4)
 
-        self.update_counter_from_dictionaries(new_dict, self.template_set_small)
+        new_dict.update_counter_from_dictionaries(new_dict, self.template_set_small)
         print(new_dict)
         self.assertEqual(expected, new_dict)
 
@@ -276,8 +277,8 @@ class TestClass(unittest.TestCase):
                          "GO:06":1,
                          "GO:07":1 })
 
-        new_dict = self.init_dict(self.template_set, 0)
-        self.update_counter_from_dictionaries(new_dict, self.template_set)
+        default_dict = new_dict.init_dict(self.template_set, 0)
+        new_dict.update_counter_from_dictionaries(default_dict, self.template_set)
 
         print(new_dict)
         self.assertEqual(expected, new_dict)
@@ -289,26 +290,41 @@ class TestClass(unittest.TestCase):
                          "GO:05":0,
                          })
 
-        new_dict = RunBlast(records=self.record_index, e_value=self.e_value_cut_off, outfile=None)
+        new_dict = RunBlast(records=self.record_index, e_value=self.e_value_cut_off,
+            wdir="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/BLAST/", outfile="BlastOut")
         default_dict = new_dict.init_dict(self.template_set_small,0)
         self.assertEqual(expected, default_dict)
-        print new_dict.e_value_cut_off
+#        print new_dict.e_value_cut_off
 #        print(new_dict.default_dict)
 
-    def test_init_dict_old(self, union, default_value=0):
-#        TODO: write code to test function
-        new_dict = dict()
-        for k in union:
-        #            new_dict.setdefault(k, default_value)
-            new_dict[k]=default_value
-        return new_dict
+    def test_update_counter(self):
+#        start with empty dictionary
+        new_dict = RunBlast(records=self.record_index, e_value=self.e_value_cut_off,
+            wdir="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/BLAST/", outfile="BlastOut")
+        new_dict.init_dict(self.template_set_small,0)
+#        now update with new values
+        expected = dict({"GO:01":1,
+                         "GO:03":2,
+                         "GO:04":2,
+                         "GO:05":1, })
+        #        union = self.S3 | self.S4
+        new_dict.update_counter_from_dictionaries(new_dict, self.template_set_small)
+        print(new_dict)
+        self.assertEqual(expected, new_dict)
 
-    def test_update_counter_from_dictionaries(self, counter, allterms):
-#        TODO: write code to test function
-#        print allterms
-#        print(allterms.values())
-        for v in allterms.values():
-            counter = self.update_counter_from_set(counter,v)
+#        now update with another set
+        new_expected = dict({"GO:01":3,
+                         "GO:02":1,
+                         "GO:03":2,
+                         "GO:04":2,
+                         "GO:05":2,
+                         "GO:06":1,
+                         "GO:07":1 })
+        default_dict = new_dict.init_dict(self.template_set, 0)
+        new_dict.update_counter_from_dictionaries(default_dict, self.template_set)
+        print(new_dict)
+        self.assertEqual(new_expected, new_dict)
+
 
     def test_update_counter_from_set(self, counter, each_set):
 #        TODO: write code to test function

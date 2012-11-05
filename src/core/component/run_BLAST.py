@@ -96,7 +96,7 @@ class RunBlast(RunComponent):
 
     def update_counter_from_set(self, counter, each_set):
         for k in each_set:
-            counter[k]= counter[k]+1
+            counter[k] += 1
         return counter
 #        for i in self.results.values():
 #            print(i.all_terms)
