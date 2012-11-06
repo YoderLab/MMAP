@@ -16,12 +16,14 @@ from core.sequence import Sequence
 
 
 
-class TestClass(unittest.TestCase):
+class TestRunBlast(unittest.TestCase):
 
     def setUp(self):
 
         CWD = os.getcwd()
         data_dir = path_utils.get_data_dir(CWD)
+
+        self.Blast_dir = data_dir + "BLAST/"
         self.infile = data_dir + "AE014075_subTiny5.fasta"  #"AE014075_subSmall100.fasta"
         self.e_value_cut_off = 1e-15
         self.record_index = SeqIO.index(self.infile, "fasta")
@@ -51,11 +53,12 @@ class TestClass(unittest.TestCase):
     def test_create_blast_from_file(self):
         file_var = "NotExist"
         e_var = 1e-50
+        outfile_var = "foolname"
 
         with self.assertRaises(IOError):
-            RunBlast.create_blast_from_file(file_var, e_value=e_var)
+            RunBlast.create_blast_from_file(file_var, e_value=e_var, wdir=self.Blast_dir,outfile=outfile_var)
 
-        blast = RunBlast.create_blast_from_file(self.infile, e_value=e_var)
+        blast = RunBlast.create_blast_from_file(self.infile, e_value=e_var, wdir=self.Blast_dir, outfile=outfile_var)
         self.assertEqual(blast.results, dict())
 
         for key in self.record_index:
@@ -257,15 +260,15 @@ class TestClass(unittest.TestCase):
 
 #        union = self.S3 | self.S4
         print(self.template_set_small)
-        new_dict = RunBlast(records=self.record_index, e_value=self.e_value_cut_off,
-            wdir="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/BLAST/", outfile="BlastOut")
-        default_dict = new_dict.init_dict(self.template_set_small,0)
+        new_Blast = RunBlast(records=self.record_index, e_value=self.e_value_cut_off,
+            wdir=self.Blast_dir, outfile="BlastOut")
+        new_dict = new_Blast.init_dict(self.template_set_small,0)
 
-        print(default_dict)
+        print(new_dict)
 #        new_dict=self.update_counter_from_set(new_dict, self.S3)
 #        new_dict=self.update_counter_from_set(new_dict, self.S4)
 
-        new_dict.update_counter_from_dictionaries(new_dict, self.template_set_small)
+        new_Blast.update_counter_from_dictionaries(new_dict, self.template_set_small)
         print(new_dict)
         self.assertEqual(expected, new_dict)
 
@@ -277,8 +280,8 @@ class TestClass(unittest.TestCase):
                          "GO:06":1,
                          "GO:07":1 })
 
-        default_dict = new_dict.init_dict(self.template_set, 0)
-        new_dict.update_counter_from_dictionaries(default_dict, self.template_set)
+        new_dict = new_Blast.init_dict(self.template_set, 0)
+        new_Blast.update_counter_from_dictionaries(new_dict, self.template_set)
 
         print(new_dict)
         self.assertEqual(expected, new_dict)
@@ -291,46 +294,41 @@ class TestClass(unittest.TestCase):
                          })
 
         new_dict = RunBlast(records=self.record_index, e_value=self.e_value_cut_off,
-            wdir="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/BLAST/", outfile="BlastOut")
+            wdir=self.Blast_dir, outfile="BlastOut")
         default_dict = new_dict.init_dict(self.template_set_small,0)
         self.assertEqual(expected, default_dict)
 #        print new_dict.e_value_cut_off
 #        print(new_dict.default_dict)
 
-    def test_update_counter(self):
+    def test_update_counter_from_dictionaries(self):
 #        start with empty dictionary
-        new_dict = RunBlast(records=self.record_index, e_value=self.e_value_cut_off,
-            wdir="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/BLAST/", outfile="BlastOut")
-        new_dict.init_dict(self.template_set_small,0)
+        new_Blast = RunBlast(records=self.record_index, e_value=self.e_value_cut_off,
+            wdir=self.Blast_dir, outfile="BlastOut")
+        new_dict = new_Blast.init_dict(self.template_set_small,0)
 #        now update with new values
         expected = dict({"GO:01":1,
                          "GO:03":2,
                          "GO:04":2,
                          "GO:05":1, })
         #        union = self.S3 | self.S4
-        new_dict.update_counter_from_dictionaries(new_dict, self.template_set_small)
-        print(new_dict)
+#        print type(new_Blast), new_Blast
+        new_Blast.update_counter_from_dictionaries(new_dict, self.template_set_small)
+#        print(new_dict)
         self.assertEqual(expected, new_dict)
 
-#        now update with another set
-        new_expected = dict({"GO:01":3,
+
+        expected = dict({"GO:01":3,
                          "GO:02":1,
                          "GO:03":2,
                          "GO:04":2,
                          "GO:05":2,
                          "GO:06":1,
                          "GO:07":1 })
-        default_dict = new_dict.init_dict(self.template_set, 0)
-        new_dict.update_counter_from_dictionaries(default_dict, self.template_set)
-        print(new_dict)
-        self.assertEqual(new_expected, new_dict)
+        new_dict = new_Blast.init_dict(self.template_set,0)
+        new_Blast.update_counter_from_dictionaries(new_dict, self.template_set)
 
+        self.assertEqual(expected, new_dict)
 
-    def test_update_counter_from_set(self, counter, each_set):
-#        TODO: write code to test function
-        for k in each_set:
-            counter[k]= counter[k]+1
-        return counter
 
 #    def test_RunBlast_generateOutputMatrix(self):
 #
@@ -362,23 +360,93 @@ class TestClass(unittest.TestCase):
 
     def test_output_csv(self):
 #        TODO add test code
-        new_dict = RunBlast(records=self.record_index, e_value=self.e_value_cut_off,
-            wdir="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/BLAST/",outfile="test.csv")
-        print new_dict.e_value_cut_off
+        new_dict = RunBlast(records=self.record_index, e_value=self.e_value_cut_off, wdir=self.Blast_dir,outfile="test.csv")
         data = dict({"GO:01":1,
                          "GO:03":2,
                          "GO:04":2,
                          "GO:05":1, })
         new_dict.output_csv("Sample",data)
+        f = open(self.Blast_dir+"test.csv","r")
+        expected_header = "GOterm,Sample\r\n"
+        expected_content = ["GO:01,1\r\n",
+                            "GO:03,2\r\n",
+                            "GO:04,2\r\n",
+                            "GO:05,1\r\n"]
+
+        for i, line in enumerate(f):
+            if i == 0:
+                self.assertEqual(line, expected_header)
+            else:
+                self.assertIn(line, expected_content)
+
+
+        self.assertEqual(i,4)
+        os.remove(self.Blast_dir+"test.csv")
 #        new_dict.output_csv(['Spam'] * 6 + ['Baked Beans'])
 
 
     def test_update_output_csv(self):
+        new_dict = RunBlast(records=self.record_index, e_value=self.e_value_cut_off, wdir=self.Blast_dir,outfile="test.csv")
+        data = dict({"GO:01":1,
+                     "GO:03":2,
+                     "GO:04":2,
+                     "GO:05":1, })
+        new_dict.output_csv("Sample",data)
         new_dict = RunBlast(records=self.record_index, e_value=self.e_value_cut_off,
-            wdir="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/BLAST/",outfile="test2.csv")
-        print new_dict.e_value_cut_off
+            wdir=self.Blast_dir,outfile="test2.csv")
         data = dict({"GO:01":7,
                      "GO:02":9,
                      "GO:04":2,
                      "GO:05":8, })
-        new_dict.update_output_csv("Species",data, "/Users/erinmckenney/Desktop/Pipeline/metaLem/data/BLAST/test.csv")
+        new_dict.update_output_csv("Species",data, self.Blast_dir+ "test.csv")
+
+        f = open(self.Blast_dir+"test2.csv","r")
+        expected_header = "GOterm,Sample,Species\r\n"
+        expected_content = ["GO:01,1,7\r\n",
+                            "GO:03,2,0\r\n",
+                            "GO:04,2,2\r\n",
+                            "GO:05,1,8\r\n",
+                            "GO:02,0,9\r\n"]
+
+        for i, line in enumerate(f):
+            if i == 0:
+                self.assertEqual(line, expected_header)
+            else:
+                self.assertIn(line, expected_content)
+
+        self.assertEqual(i,5)
+
+        new_dict = RunBlast(records=self.record_index, e_value=self.e_value_cut_off,
+            wdir=self.Blast_dir,outfile="test3.csv")
+        new_data = dict({"GO:01":3,
+                         "GO:02":1,
+                         "GO:03":2,
+                         "GO:04":2,
+                         "GO:05":2,
+                         "GO:06":1,
+                         "GO:07":1 })
+        new_dict.update_output_csv("Something",new_data, self.Blast_dir+ "test2.csv")
+
+        f = open(self.Blast_dir+"test3.csv","r")
+        expected_header = "GOterm,Sample,Species,Something\r\n"
+        expected_content = ["GO:01,1,7,3\r\n",
+                            "GO:03,2,0,2\r\n",
+                            "GO:04,2,2,2\r\n",
+                            "GO:05,1,8,2\r\n",
+                            "GO:02,0,9,1\r\n",
+                            "GO:06,0,0,1\r\n",
+                            "GO:07,0,0,1\r\n"]
+
+        for i, line in enumerate(f):
+            if i == 0:
+                self.assertEqual(line, expected_header)
+            else:
+                self.assertIn(line, expected_content)
+
+        self.assertEqual(i,7)
+
+        os.remove(self.Blast_dir+ "test.csv")
+        os.remove(self.Blast_dir+ "test2.csv")
+        os.remove(self.Blast_dir+ "test3.csv")
+
+

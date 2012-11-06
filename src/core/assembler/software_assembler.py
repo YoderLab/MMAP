@@ -46,6 +46,7 @@ class SoftwareAssembler(object):
         self.glimmer = RunGlimmer.create_glimmer_from_setting(self.setting)
         self.blast = RunBlast.create_blast_from_setting(self.setting)
         self.mine = RunMINE.create_mine_from_setting(self.setting)
+run_
 
     def run(self):
 
@@ -71,7 +72,7 @@ class SoftwareAssembler(object):
         else:
             raise(IOError("Missing glimmer output"))
         if self.blast.check_outfiles_exist(self.setting.get("blast_outfile")):
-            self.MINE.run()
+            self.mine.run()
         else:
             raise(IOError("Missing GO output"))
 
