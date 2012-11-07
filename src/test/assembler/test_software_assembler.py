@@ -42,7 +42,7 @@ class TestSoftwareAssembler(unittest.TestCase):
         self.assembly.add_all_param(metasim_model_infile="ErrorModelSolexa36bp.mconf", metasim_no_reads=10, metasim_pdir=self.metasim_dir,
                                     metasim_taxon_infile="MetaSim_bint.mprf")
         self.assembly.add_all_param(mine_pdir=self.mine_dir, mine_comparison_style="-allPairs")
-        self.assembly.add_all_param(blast_wdir=self.blast_dir, records="dictionary", e_value=1e-15, outfile=None)
+        self.assembly.add_all_param(blast_infile="dictionary", blast_e_value=1e-15, blast_wdir=self.blast_dir, blast_outfile=None)
         self.assembly.init_program()
         self.assembly.run()
 

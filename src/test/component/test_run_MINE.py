@@ -125,10 +125,3 @@ class TestRunMINE(unittest.TestCase):
         self.assertTrue(mine.is_file_exist(self.working_dir + jobID_var + "Status.txt"))
 #        os.remove(self.working_dir + jobID_var+ "Results.csv")
 #        os.remove(self.working_dir + jobID_var+ "Status.txt")
-
-
-    def test_matrix(self):
-        m = [[]] * 10
-        for i in range(10):
-            m[i] = i
-        print m

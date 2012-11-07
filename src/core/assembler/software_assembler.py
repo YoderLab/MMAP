@@ -46,7 +46,7 @@ class SoftwareAssembler(object):
         self.glimmer = RunGlimmer.create_glimmer_from_setting(self.setting)
         self.blast = RunBlast.create_blast_from_setting(self.setting)
         self.mine = RunMINE.create_mine_from_setting(self.setting)
-run_
+
 
     def run(self):
 
@@ -56,21 +56,20 @@ run_
             self.metasim.is_file_exist(self.setting.get("metasim_outfile"))):
             pass
 #          self.genovo.run()
+
         file_tag = self.setting.get("wdir") + self.setting.get("genovo_infile")
         if (self.genovo.check_outfiles_exist(file_tag) and
             self.genovo.is_file_exist(self.setting.get("genovo_outfile"))):
             # and os.path.exists(self.genovo.readFinalizeOutfile):
             self.glimmer.run()
         else:
-            raise(IOError("Missing genovo output"))
-
-
-
+            raise(IOError("Missing Genovo output"))
 
         if self.glimmer.check_outfiles_exist(self.setting.get("glimmer_outfile")):
             self.blast.run()
         else:
-            raise(IOError("Missing glimmer output"))
+            raise(IOError("Missing Glimmer output"))
+
         if self.blast.check_outfiles_exist(self.setting.get("blast_outfile")):
             self.mine.run()
         else:

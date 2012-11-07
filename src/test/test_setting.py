@@ -23,6 +23,39 @@ class TestSetting(unittest.TestCase):
                     "noI": 6, "outfile2": "12345"}
         self.assertEqual(setting.all_setting, expected)
 
+    def test_Setting_get_metasim(self): #"metasim_pdir", "metasim_model_infile", "metasim_taxon_infile", "metasim_no_reads"
+        setting = Setting()
+        setting.add_all(metasim_model_infile="mmInfile",
+            outfile="mOutfile", metasim_no_reads=200)
+        #        setting.print_all()
+        self.assertRaises(KeyError, setting._get_metasim)
+
+        setting = Setting()
+        setting.add_all(metasim_model_infile="mmInfile",
+            outfile="mOutfile", metasim_taxon_infile="tInfile")
+        self.assertRaises(KeyError, setting._get_metasim)
+
+        setting.add("metasim_pdir", "m_p_dir")
+        setting.add_all(metasim_no_reads=250, parent_directory="main_pdir")
+        expected = {"metasim_model_infile": "mmInfile", "outfile": "mOutfile",
+                    "metasim_taxon_infile": "tInfile", "metasim_pdir": "m_p_dir",
+                    "parent_directory": "main_pdir", "metasim_no_reads":250,
+                    "wdir":None, "checkExist": True,
+                    "metasim_outfile": None}
+        self.assertEqual(expected, setting._get_metasim())
+
+        setting.add("wdir", "otherdir")
+        expected["wdir"] = "otherdir"
+        self.assertEqual(expected, setting._get_metasim())
+
+        setting = Setting()
+        setting.add_all(metasim_model_infile="mmInfile", metasim_no_reads=250,
+            metasim_taxon_infile="tInfile", metasim_pdir="m_p_dir",
+            parent_directory="main_pdir")
+        setting.add("wdir", "otherdir")
+        expected.pop("outfile")
+        self.assertEqual(expected, setting._get_metasim())
+
     def test_Setting_get_genovo(self):
 
         setting = Setting()
@@ -86,7 +119,7 @@ class TestSetting(unittest.TestCase):
         setting.add("blast_e-value", 1e-15)
         setting.add_all(blast_pdir="b_p_dir", parent_directory="main_pdir")
         expected = {"blast_infile": "bInfile", "blast_outfile": "bOutfile",
-                    "blast_e-value": 1e-15, "blast_pdir": "b_p_dir",
+                    "blast_e_value": 1e-15, "blast_pdir": "b_p_dir",
                     "parent_directory": "main_pdir",
                     "wdir": None, "checkExist": True}
 #        setting.debug = True
@@ -100,7 +133,7 @@ class TestSetting(unittest.TestCase):
         setting.add_all(blast_infile="bInfile",
             blast_pdir="b_p_dir", parent_directory="main_pdir")
         setting.add("wdir", "otherdir")
-        setting.add("blast_e-value", 1e-15)
+        setting.add("blast_e_value", 1e-15)
         setting.add("blast_outfile", "bOutfile")
 #        expected.pop("outfile")
 #        TODO: debug switch

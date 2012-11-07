@@ -13,7 +13,7 @@ list_optional_shared = ["wdir", "checkExist"]
 list_optional_metasim_only = ["metasim_outfile"]
 list_optional_genovo_only = ["genovo_outfile"]
 list_optional_glimmer_only = ["glimmer_infile", "glimmer_outfile", "extract_outfile"]
-list_optional_blast_only = ["blast_infile", "blast_e-value", "blast_outfile"]
+list_optional_blast_only = ["blast_infile", "blast_e_value", "blast_outfile"]
 list_optional_mine_only = ["mine_infile", "mine_cv", "mine_clumps", "mine_jobID"]
 
 list_ess_par = {
@@ -86,11 +86,8 @@ class Setting(object):
         if program_name is "blast":
             if self.all_setting["blast_infile"] is None:
                 self.all_setting["blast_infile"] = self.all_setting["extract_outfile"]
-            if self.all_setting["blast_e-value"] is None:
-                self.all_setting["blast_e-value"] = "1e-15"
-
-
-#                TODO: once BLAST and GO code is integrated, set GO-term output = MINE infile
+            if self.all_setting["blast_e_value"] is None:
+                self.all_setting["blast_e_value"] = "1e-15"
 
         if program_name is "mine":
             if self.all_setting["mine_infile"] is None:
