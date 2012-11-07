@@ -61,4 +61,44 @@ def main():
 if __name__ == "__main__":
     main()
 
+#    TODO: read in all parameters from controlfile
+#    TODO: feed paramters into setting class instance (below)
+    # Should we use setting.get(), or write a controlfile.get()?
 
+    @classmethod
+    def create_setting_from_controlfile(cls, controlfile):
+        setting = cls(parent_directory=setting.get("parent_directory"),
+                    metasim_pdir=setting.get("parent_directory"),
+                    metasim_model_infile=setting.get("metasim_model_infile"),
+                    metasim_taxon_infile=setting.get("metasim_taxon_infile"),
+                    metasim_no_reads=setting.get("metasim_no_reads"),
+                    genovo_infile=setting.get("genovo_infile"),
+                    genovo_pdir=setting.get("genovo_pdir"),
+                    genovo_noI=setting.get("genovo_noI"),
+                    genovo_thresh=setting.get("genovo_thresh"),
+                    glimmer_pdir=setting.get("glimmer_pdir"),
+                    blast_wdir=setting.get("blast_wdir"),
+                    mine_pdir=setting.get("mine_pdir"),
+                    mine_comparison_style=setting.get("mine_comparison_style"),
+                    wdir=setting.get("wdir"),
+                    checkExist=setting.get("checkExist"),
+                    metasim_outfile=setting.get("metasim_outfile"),
+                    genovo_outfile=setting.get("genovo_outfile"),
+                    glimmer_infile=setting.get("glimmer_infile"),
+                    glimmer_outfile=setting.get("glimmer_outfile"),
+                    extract_outfile=setting.get("extract_outfile"),
+                    blast_infile=setting.get("blast_infile"),
+                    blast_e_value=setting.get("blast_e_value"),
+                    blast_outfile=setting.get("blast_outfile"),
+                    mine_infile=setting.get("mine_infile"),
+                    mine_cv=setting.get("mine_cv"),
+                    mine_clumps=setting.get("mine_clumps"),
+                    mine_jobID=setting.get("mine_jobID"))
+        return setting
+
+
+    def create_SoftwareAssembler_from_setting(cls, setting):
+        assembler = cls(setting.get_all_par("all"))
+        return assembler
+
+#        TODO: call software_assembler.run()

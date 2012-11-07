@@ -7,7 +7,9 @@ list_essential_genovo_only = ["genovo_infile", "genovo_pdir", "genovo_noI", "gen
 list_essential_glimmer_only = ["glimmer_pdir"]  # dont need outfile
 list_essential_blast_only = ["blast_wdir"]
 list_essential_mine_only = [ "mine_pdir", "mine_comparison_style"]
-
+list_all_essentials = ["metasim_pdir", "metasim_model_infile", "metasim_taxon_infile", "metasim_no_reads",
+                       "genovo_infile", "genovo_pdir", "genovo_noI", "genovo_thresh", "glimmer_pdir",
+                       "blast_wdir", "mine_pdir", "mine_comparison_style"]
 
 list_optional_shared = ["wdir", "checkExist"]
 list_optional_metasim_only = ["metasim_outfile"]
@@ -15,6 +17,8 @@ list_optional_genovo_only = ["genovo_outfile"]
 list_optional_glimmer_only = ["glimmer_infile", "glimmer_outfile", "extract_outfile"]
 list_optional_blast_only = ["blast_infile", "blast_e_value", "blast_outfile"]
 list_optional_mine_only = ["mine_infile", "mine_cv", "mine_clumps", "mine_jobID"]
+list_all_optionals = ["metasim_outfile", "genovo_outfile", "glimmer_infile", "glimmer_outfile", "extract_outfile",
+                      "blast_infile", "blast_e_value", "blast_outfile", "mine_infile", "mine_cv", "mine_clumps", "mine_jobID"]
 
 list_ess_par = {
     "shared": list_essential_shared,
@@ -22,7 +26,8 @@ list_ess_par = {
     "genovo": list_essential_genovo_only,
     "glimmer": list_essential_glimmer_only,
     "blast": list_essential_blast_only,
-    "mine": list_essential_mine_only
+    "mine": list_essential_mine_only,
+    "all": list_all_essentials
 }
 
 list_optional_par = {
@@ -31,7 +36,8 @@ list_optional_par = {
     "genovo": list_optional_genovo_only,
     "glimmer": list_optional_glimmer_only,
     "blast": list_optional_blast_only,
-    "mine": list_optional_mine_only
+    "mine": list_optional_mine_only,
+    "all" : list_all_optionals
 }
 
 
