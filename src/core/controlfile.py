@@ -55,3 +55,15 @@ list_optional_mine_only
 "mine_cv":
 "mine_clumps":
 "mine_jobID":
+
+class ControlFile(object):
+
+    def __init__(self, **kwargs):
+        """
+        """
+        self.all_arguments = dict()
+#        self.add_all(**kwargs)
+        self.debug = False
+
+    def get(self, key):
+        return self.all_arguments[key]

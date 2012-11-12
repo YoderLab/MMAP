@@ -19,6 +19,7 @@ import Bio
 
 
 from Bio import SeqIO
+from core import controlfile
 from core.component.run_genovo import RunGenovo
 from core.connector import go_connector
 from core.sequence import Sequence
@@ -67,38 +68,39 @@ if __name__ == "__main__":
 
     @classmethod
     def create_setting_from_controlfile(cls, controlfile):
-        setting = cls(parent_directory=setting.get("parent_directory"),
-                    metasim_pdir=setting.get("parent_directory"),
-                    metasim_model_infile=setting.get("metasim_model_infile"),
-                    metasim_taxon_infile=setting.get("metasim_taxon_infile"),
-                    metasim_no_reads=setting.get("metasim_no_reads"),
-                    genovo_infile=setting.get("genovo_infile"),
-                    genovo_pdir=setting.get("genovo_pdir"),
-                    genovo_noI=setting.get("genovo_noI"),
-                    genovo_thresh=setting.get("genovo_thresh"),
-                    glimmer_pdir=setting.get("glimmer_pdir"),
-                    blast_wdir=setting.get("blast_wdir"),
-                    mine_pdir=setting.get("mine_pdir"),
-                    mine_comparison_style=setting.get("mine_comparison_style"),
-                    wdir=setting.get("wdir"),
-                    checkExist=setting.get("checkExist"),
-                    metasim_outfile=setting.get("metasim_outfile"),
-                    genovo_outfile=setting.get("genovo_outfile"),
-                    glimmer_infile=setting.get("glimmer_infile"),
-                    glimmer_outfile=setting.get("glimmer_outfile"),
-                    extract_outfile=setting.get("extract_outfile"),
-                    blast_infile=setting.get("blast_infile"),
-                    blast_e_value=setting.get("blast_e_value"),
-                    blast_outfile=setting.get("blast_outfile"),
-                    mine_infile=setting.get("mine_infile"),
-                    mine_cv=setting.get("mine_cv"),
-                    mine_clumps=setting.get("mine_clumps"),
-                    mine_jobID=setting.get("mine_jobID"))
+        setting = cls(parent_directory=controlfile.get("parent_directory"),
+                    metasim_pdir=controlfile.get("parent_directory"),
+                    metasim_model_infile=controlfile.get("metasim_model_infile"),
+                    metasim_taxon_infile=controlfile.get("metasim_taxon_infile"),
+                    metasim_no_reads=controlfile.get("metasim_no_reads"),
+                    genovo_infile=controlfile.get("genovo_infile"),
+                    genovo_pdir=controlfile.get("genovo_pdir"),
+                    genovo_noI=controlfile.get("genovo_noI"),
+                    genovo_thresh=controlfile.get("genovo_thresh"),
+                    glimmer_pdir=controlfile.get("glimmer_pdir"),
+                    blast_wdir=controlfile.get("blast_wdir"),
+                    mine_pdir=controlfile.get("mine_pdir"),
+                    mine_comparison_style=controlfile.get("mine_comparison_style"),
+                    wdir=controlfile.get("wdir"),
+                    checkExist=controlfile.get("checkExist"),
+                    metasim_outfile=controlfile.get("metasim_outfile"),
+                    genovo_outfile=controlfile.get("genovo_outfile"),
+                    glimmer_infile=controlfile.get("glimmer_infile"),
+                    glimmer_outfile=controlfile.get("glimmer_outfile"),
+                    extract_outfile=controlfile.get("extract_outfile"),
+                    blast_infile=controlfile.get("blast_infile"),
+                    blast_e_value=controlfile.get("blast_e_value"),
+                    blast_outfile=controlfile.get("blast_outfile"),
+                    mine_infile=controlfile.get("mine_infile"),
+                    mine_cv=controlfile.get("mine_cv"),
+                    mine_clumps=controlfile.get("mine_clumps"),
+                    mine_jobID=controlfile.get("mine_jobID"))
         return setting
 
-
+    @classmethod
     def create_SoftwareAssembler_from_setting(cls, setting):
         assembler = cls(setting.get_all_par("all"))
         return assembler
 
 #        TODO: call software_assembler.run()
+
