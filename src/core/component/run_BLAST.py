@@ -25,6 +25,7 @@ class RunBlast(RunComponent):
                 can be created by Bio.SeqIO.index
                 OR dict(key=Bio.SeqRecord.SeqRecord, ...)
         """
+        print "weNFASMDN",outfile, wdir
         self.results = dict()
         self.record_index = records
         self.e_value_cut_off = e_value
@@ -33,14 +34,14 @@ class RunBlast(RunComponent):
 
 
     @classmethod
-    def create_blast_from_file(cls, filename, e_value):
+    def create_blast_from_file(cls, filename, e_value, wdir, outfile):
         """
         Class method
         Create RunGlimmer from Setting class
         """
         if os.path.exists(filename):
             record_index = SeqIO.index(filename, "fasta")
-            blast = cls(record_index, e_value, self.outfile)
+            blast = cls(record_index, e_value, wdir, outfile=outfile)
             return blast
         else:
             raise IOError("Blast infile %s does not exist!!! " % filename)
@@ -148,19 +149,37 @@ class RunBlast(RunComponent):
         """
         with open(self.outfile, 'wb') as csvfile:
             writer = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_NONE)
-
+            all_GOterms = set()
             with open(existing_csv, 'rb') as f:
                 reader = csv.reader(f)
                 for i, row in enumerate(reader):
                     if i==0:
+                        zeroes = len(row)-1
                         row.append(header)
                     else:
                         key = row[0]
+                        all_GOterms.add(key)
                         if template.has_key(key):
                             row.append(template[key])
                         else:
                             row.append(0)
-                        print i, key, row
-
-
                     writer.writerow(row)
+                print all_GOterms
+                for key in template.iterkeys():
+                    if key not in all_GOterms:
+                        newlist = [key]
+                        newlist.extend(["0"]*zeroes)
+                        newlist.append(template[key])
+                        print newlist
+                        writer.writerow(newlist)
+#
+#                    adder = csv.reader(template)
+#
+#            if "%s"%key not in f:
+#                print key, "is not in the existing csv"
+#                #                            add new row with key in row[0]
+#                #                            row.append(0) for previous values
+#                #                            row.append(key) in "current" location
+#                row[0].append(key)
+#
+#            print i, key, row
