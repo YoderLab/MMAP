@@ -147,8 +147,8 @@ class TestSetting(unittest.TestCase):
         #        setting.print_all()
 #        self.assertRaises(KeyError, setting._get_mine())
 
-        setting.add_all( mine_outfile="mineOut",
-            mine_pdir="mine_pdir", mine_comparison_style="-allPairs",parent_directory="main_pdir")
+        setting.add_all(mine_outfile="mineOut",
+            mine_pdir="mine_pdir", mine_comparison_style="-allPairs", parent_directory="main_pdir")
         setting.add("mine_infile", "infile")
 
         expected = {"mine_infile": "infile",

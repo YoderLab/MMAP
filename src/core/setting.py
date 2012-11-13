@@ -7,6 +7,15 @@ list_essential_genovo_only = ["genovo_infile", "genovo_pdir", "genovo_noI", "gen
 list_essential_glimmer_only = ["glimmer_pdir"]  # dont need outfile
 list_essential_blast_only = ["blast_wdir"]
 list_essential_mine_only = [ "mine_pdir", "mine_comparison_style"]
+
+#list_all_essentials = list_essential_shared
+#list_all_essentials.extend(list_essential_metasim_only)
+#list_all_essentials.extend(list_essential_genovo_only)
+#list_all_essentials.extend(list_essential_glimmer_only)
+#list_all_essentials.extend(list_essential_blast_only)
+#list_all_essentials.extend(list_essential_mine_only)
+
+
 list_all_essentials = ["metasim_pdir", "metasim_model_infile", "metasim_taxon_infile", "metasim_no_reads",
                        "genovo_infile", "genovo_pdir", "genovo_noI", "genovo_thresh", "glimmer_pdir",
                        "blast_wdir", "mine_pdir", "mine_comparison_style"]
@@ -46,6 +55,8 @@ class Setting(object):
     def __init__(self, **kwargs):
         """
         """
+#        self.a = list_all_essentials2
+#        self.b = list_all_essentials
         self.all_setting = dict()
         self.add_all(**kwargs)
         self.debug = False
