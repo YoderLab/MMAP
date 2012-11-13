@@ -98,7 +98,7 @@ class RunComponent(object):
             is_exist = is_exist and True
         else:
             is_exist = False
-#            print is_exist, test_file, os.path.exists(test_file)
+            print is_exist, test_file, os.path.exists(test_file)
 
         return is_exist
 

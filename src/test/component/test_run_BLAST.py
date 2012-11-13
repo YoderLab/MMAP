@@ -259,7 +259,7 @@ class TestClass(unittest.TestCase):
         print(self.template_set_small)
         new_dict = RunBlast(records=self.record_index, e_value=self.e_value_cut_off,
             wdir="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/BLAST/", outfile="BlastOut")
-        default_dict = new_dict.init_dict(self.template_set_small,0)
+        default_dict = new_dict.init_dict(self.template_set_small, 0)
 
         print(default_dict)
 #        new_dict=self.update_counter_from_set(new_dict, self.S3)
@@ -292,7 +292,7 @@ class TestClass(unittest.TestCase):
 
         new_dict = RunBlast(records=self.record_index, e_value=self.e_value_cut_off,
             wdir="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/BLAST/", outfile="BlastOut")
-        default_dict = new_dict.init_dict(self.template_set_small,0)
+        default_dict = new_dict.init_dict(self.template_set_small, 0)
         self.assertEqual(expected, default_dict)
 #        print new_dict.e_value_cut_off
 #        print(new_dict.default_dict)
@@ -301,7 +301,7 @@ class TestClass(unittest.TestCase):
 #        start with empty dictionary
         new_dict = RunBlast(records=self.record_index, e_value=self.e_value_cut_off,
             wdir="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/BLAST/", outfile="BlastOut")
-        new_dict.init_dict(self.template_set_small,0)
+        new_dict.init_dict(self.template_set_small, 0)
 #        now update with new values
         expected = dict({"GO:01":1,
                          "GO:03":2,
@@ -329,7 +329,7 @@ class TestClass(unittest.TestCase):
     def test_update_counter_from_set(self, counter, each_set):
 #        TODO: write code to test function
         for k in each_set:
-            counter[k]= counter[k]+1
+            counter[k] = counter[k] + 1
         return counter
 
 #    def test_RunBlast_generateOutputMatrix(self):
@@ -363,22 +363,22 @@ class TestClass(unittest.TestCase):
     def test_output_csv(self):
 #        TODO add test code
         new_dict = RunBlast(records=self.record_index, e_value=self.e_value_cut_off,
-            wdir="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/BLAST/",outfile="test.csv")
+            wdir="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/BLAST/", outfile="test.csv")
         print new_dict.e_value_cut_off
         data = dict({"GO:01":1,
                          "GO:03":2,
                          "GO:04":2,
                          "GO:05":1, })
-        new_dict.output_csv("Sample",data)
+        new_dict.output_csv("Sample", data)
 #        new_dict.output_csv(['Spam'] * 6 + ['Baked Beans'])
 
 
     def test_update_output_csv(self):
         new_dict = RunBlast(records=self.record_index, e_value=self.e_value_cut_off,
-            wdir="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/BLAST/",outfile="test2.csv")
+            wdir="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/BLAST/", outfile="test2.csv")
         print new_dict.e_value_cut_off
         data = dict({"GO:01":7,
                      "GO:02":9,
                      "GO:04":2,
                      "GO:05":8, })
-        new_dict.update_output_csv("Species",data, "/Users/erinmckenney/Desktop/Pipeline/metaLem/data/BLAST/test.csv")
+        new_dict.update_output_csv("Species", data, "/Users/erinmckenney/Desktop/Pipeline/metaLem/data/BLAST/test.csv")

@@ -69,7 +69,6 @@ class runExtProg(object):
         p = subprocess.Popen(self._command, stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE, cwd=self.cwd)
         self.output, self.errors = p.communicate()
-        print debug, (debug is 2)
         if debug is 2:
             print("debug - output message:\n%s\n===end===\n" % (self.output))
         elif debug:
