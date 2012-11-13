@@ -20,10 +20,13 @@ import Bio
 
 from Bio import SeqIO
 from core import controlfile
+from core.assembler.software_assembler import SoftwareAssembler
 from core.component.run_genovo import RunGenovo
 from core.connector import go_connector
+from core.controlfile import ControlFile
 from core.sequence import Sequence
 from core.dist.matching_distance import MatchingDistance
+from core.setting import Setting
 from core.utils import path_utils
 
 
@@ -55,8 +58,13 @@ def setup_database():
 
 def main():
     print __name__
-
-
+    file="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/unittest_data/testControlFile"
+    test = ControlFile()
+    test.add_all(file)
+    setting=Setting.create_setting_from_controlfile(test)
+    assembler = SoftwareAssembler.create_SoftwareAssembler_from_setting(setting)
+    assembler.init_program()
+    assembler.run()
 
 
 if __name__ == "__main__":
@@ -66,41 +74,7 @@ if __name__ == "__main__":
 #    TODO: feed paramters into setting class instance (below)
     # Should we use setting.get(), or write a controlfile.get()?
 
-    @classmethod
-    def create_setting_from_controlfile(cls, controlfile):
-        setting = cls(parent_directory=controlfile.get("parent_directory"),
-                    metasim_pdir=controlfile.get("parent_directory"),
-                    metasim_model_infile=controlfile.get("metasim_model_infile"),
-                    metasim_taxon_infile=controlfile.get("metasim_taxon_infile"),
-                    metasim_no_reads=controlfile.get("metasim_no_reads"),
-                    genovo_infile=controlfile.get("genovo_infile"),
-                    genovo_pdir=controlfile.get("genovo_pdir"),
-                    genovo_noI=controlfile.get("genovo_noI"),
-                    genovo_thresh=controlfile.get("genovo_thresh"),
-                    glimmer_pdir=controlfile.get("glimmer_pdir"),
-                    blast_wdir=controlfile.get("blast_wdir"),
-                    mine_pdir=controlfile.get("mine_pdir"),
-                    mine_comparison_style=controlfile.get("mine_comparison_style"),
-                    wdir=controlfile.get("wdir"),
-                    checkExist=controlfile.get("checkExist"),
-                    metasim_outfile=controlfile.get("metasim_outfile"),
-                    genovo_outfile=controlfile.get("genovo_outfile"),
-                    glimmer_infile=controlfile.get("glimmer_infile"),
-                    glimmer_outfile=controlfile.get("glimmer_outfile"),
-                    extract_outfile=controlfile.get("extract_outfile"),
-                    blast_infile=controlfile.get("blast_infile"),
-                    blast_e_value=controlfile.get("blast_e_value"),
-                    blast_outfile=controlfile.get("blast_outfile"),
-                    mine_infile=controlfile.get("mine_infile"),
-                    mine_cv=controlfile.get("mine_cv"),
-                    mine_clumps=controlfile.get("mine_clumps"),
-                    mine_jobID=controlfile.get("mine_jobID"))
-        return setting
 
-    @classmethod
-    def create_SoftwareAssembler_from_setting(cls, setting):
-        assembler = cls(setting.get_all_par("all"))
-        return assembler
 
 #        TODO: call software_assembler.run()
 

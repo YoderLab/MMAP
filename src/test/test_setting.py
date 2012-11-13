@@ -1,3 +1,4 @@
+from core.controlfile import ControlFile
 from core.setting import Setting
 import unittest
 
@@ -117,10 +118,10 @@ class TestSetting(unittest.TestCase):
         self.assertRaises(KeyError, setting._get_blast)
 
         setting.add("blast_e-value", 1e-15)
-        setting.add_all(blast_pdir="b_p_dir", parent_directory="main_pdir")
+        setting.add_all(blast_pdir="b_p_dir", parent_directory="main_pdir", blast_wdir="b_wdir", checkExist=True)
         expected = {"blast_infile": "bInfile", "blast_outfile": "bOutfile",
                     "blast_e_value": 1e-15, "blast_pdir": "b_p_dir",
-                    "parent_directory": "main_pdir",
+                    "parent_directory": "main_pdir", "blast_wdir": "b_wdir",
                     "wdir": None, "checkExist": True}
 #        setting.debug = True
         self.assertEqual(expected, setting._get_blast())
@@ -163,16 +164,16 @@ class TestSetting(unittest.TestCase):
         setting.add_all(mine_infile="mineInfile")
         expected["mine_infile"] = "mineInfile"
 
-def test_Setting_get_all_par(self):
+    def test_Setting_get_all_par(self):
         setting = Setting()
         setting.add_all(genovo_infile="gInfile", genovo_thresh=14,
                         genovo_pdir="g_p_dir", genovo_noI=2,
-                        parent_directory="main_pdir", wdir="otherdir")
+                        parent_directory="main_pdir", wdir="otherdir",
+                        checkExist=True)
         expected = {"genovo_infile": "gInfile", "genovo_noI": 2,
                     "genovo_thresh": 14, "genovo_pdir": "g_p_dir",
                     "checkExist": True, "genovo_outfile": None,
                     "parent_directory": "main_pdir", "wdir": "otherdir"}
-
         self.assertEqual(expected, setting.get_all_par("genovo"))
         self.assertEqual(setting._get_genovo(), expected)
 
@@ -194,3 +195,12 @@ def test_Setting_get_all_par(self):
         self.assertEqual(expected, setting.get_all_par("glimmer"))
         self.assertEqual(setting._get_glimmer(), expected)
 
+    def test_create_setting_from_control_file(self):
+        file="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/unittest_data/testControlFileOp1"
+        test = ControlFile()
+        test.add_all(file)
+        dict = test.all_arguments
+        setting=Setting.create_setting_from_controlfile(test)
+        print "????", setting.all_setting
+        print dict
+        self.assertEqual(setting.all_setting, dict)

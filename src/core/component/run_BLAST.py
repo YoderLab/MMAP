@@ -34,14 +34,17 @@ class RunBlast(RunComponent):
 
 
     @classmethod
-    def create_blast_from_file(cls, filename, e_value, wdir, outfile):
+    def create_blast_from_file(cls, filename, setting):
         """
         Class method
         Create RunGlimmer from Setting class
         """
         if os.path.exists(filename):
             record_index = SeqIO.index(filename, "fasta")
-            blast = cls(record_index, e_value, wdir, outfile=outfile)
+            blast = cls(record_index=setting.get("blast_infile"),
+                e_value=setting.get("blast_e_value"),
+                wdir=setting.get("blast_wdir"),
+                outfile=setting.get("blast_outfile"))
             return blast
         else:
             raise IOError("Blast infile %s does not exist!!! " % filename)

@@ -30,6 +30,12 @@ class SoftwareAssembler(object):
         """
         self.setting = Setting(**kwargs)
 
+    @classmethod
+    def create_SoftwareAssembler_from_setting(cls, setting):
+        assembler = cls(setting.get_all_par("all"))
+        return assembler
+
+
     def add_all_param(self, **kwargs):
         self.setting.add_all(**kwargs)
 

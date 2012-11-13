@@ -57,14 +57,20 @@ class ControlFile(object):
     def add_all(self, controlfile):
         file = open(controlfile)
         for line in file:
-            if line.startswith("#"):
+            line=line.strip()
+            if line.startswith("#") or line=="":
                 pass
             else:
-                location = line.rfind(":")
-                key = line[0:location]
-                value = line[location+1:-1]
+
+                location = line.rfind("=")
+
+                key = line[0:location].strip()
+                value = line[location+1:len(line)].strip()
+#                print line, "z",key, "z",value
                 self.all_arguments[key]= value
-                return self.all_arguments
+
+
+        return self.all_arguments
 
 
     def get(self, key):

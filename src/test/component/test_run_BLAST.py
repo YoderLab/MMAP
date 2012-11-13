@@ -56,9 +56,9 @@ class TestRunBlast(unittest.TestCase):
         outfile_var = "foolname"
 
         with self.assertRaises(IOError):
-            RunBlast.create_blast_from_file(file_var, e_value=e_var, wdir=self.Blast_dir,outfile=outfile_var)
+            RunBlast.create_blast_from_file(file_var)
 
-        blast = RunBlast.create_blast_from_file(self.infile, e_value=e_var, wdir=self.Blast_dir, outfile=outfile_var)
+        blast = RunBlast.create_blast_from_file(self.infile)
         self.assertEqual(blast.results, dict())
 
         for key in self.record_index:

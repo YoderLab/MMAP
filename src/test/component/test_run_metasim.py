@@ -156,7 +156,7 @@ class TestRunMetaSim(unittest.TestCase):
         """
         model_infile_var = "ErrorModelSolexa36bp.mconf"
         taxon_infile_var = "MetaSim_bint.mprf"
-        outfile_var = "MetaSim_bint-Empirical"
+        outfile_var = "zMetaSim_bint-454.fna"
         metasim = RunMetaSim(model_file=model_infile_var, no_reads=100,
             taxon_infile=taxon_infile_var, pdir=self.data_dir, wdir=self.working_dir,
             outfile=outfile_var, check_exist=True)

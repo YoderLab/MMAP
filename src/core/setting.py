@@ -8,17 +8,12 @@ list_essential_glimmer_only = ["glimmer_pdir"]  # dont need outfile
 list_essential_blast_only = ["blast_wdir"]
 list_essential_mine_only = [ "mine_pdir", "mine_comparison_style"]
 
-#list_all_essentials = list_essential_shared
-#list_all_essentials.extend(list_essential_metasim_only)
-#list_all_essentials.extend(list_essential_genovo_only)
-#list_all_essentials.extend(list_essential_glimmer_only)
-#list_all_essentials.extend(list_essential_blast_only)
-#list_all_essentials.extend(list_essential_mine_only)
-
-
-list_all_essentials = ["metasim_pdir", "metasim_model_infile", "metasim_taxon_infile", "metasim_no_reads",
-                       "genovo_infile", "genovo_pdir", "genovo_noI", "genovo_thresh", "glimmer_pdir",
-                       "blast_wdir", "mine_pdir", "mine_comparison_style"]
+list_all_essentials = list_essential_shared
+list_all_essentials.extend(list_essential_metasim_only)
+list_all_essentials.extend(list_essential_genovo_only)
+list_all_essentials.extend(list_essential_glimmer_only)
+list_all_essentials.extend(list_essential_blast_only)
+list_all_essentials.extend(list_essential_mine_only)
 
 list_optional_shared = ["wdir", "checkExist"]
 list_optional_metasim_only = ["metasim_outfile"]
@@ -26,8 +21,14 @@ list_optional_genovo_only = ["genovo_outfile"]
 list_optional_glimmer_only = ["glimmer_infile", "glimmer_outfile", "extract_outfile"]
 list_optional_blast_only = ["blast_infile", "blast_e_value", "blast_outfile"]
 list_optional_mine_only = ["mine_infile", "mine_cv", "mine_clumps", "mine_jobID"]
-list_all_optionals = ["metasim_outfile", "genovo_outfile", "glimmer_infile", "glimmer_outfile", "extract_outfile",
-                      "blast_infile", "blast_e_value", "blast_outfile", "mine_infile", "mine_cv", "mine_clumps", "mine_jobID"]
+
+list_all_optionals = list_optional_shared
+list_all_optionals.extend(list_optional_metasim_only)
+list_all_optionals.extend(list_optional_genovo_only)
+list_all_optionals.extend(list_optional_glimmer_only)
+list_all_optionals.extend(list_optional_blast_only)
+list_all_optionals.extend(list_optional_mine_only)
+
 
 list_ess_par = {
     "shared": list_essential_shared,
@@ -60,6 +61,55 @@ class Setting(object):
         self.all_setting = dict()
         self.add_all(**kwargs)
         self.debug = False
+
+
+    @classmethod
+    def create_setting_from_controlfile(cls, controlfile):
+
+
+
+
+        setting = cls(parent_directory=controlfile.get("parent_directory"),
+            metasim_pdir=controlfile.get("metasim_pdir"),
+            metasim_model_infile=controlfile.get("metasim_model_infile"),
+            metasim_taxon_infile=controlfile.get("metasim_taxon_infile"),
+            metasim_no_reads=controlfile.get("metasim_no_reads"),
+            genovo_infile=controlfile.get("genovo_infile"),
+            genovo_pdir=controlfile.get("genovo_pdir"),
+            genovo_noI=controlfile.get("genovo_noI"),
+            genovo_thresh=controlfile.get("genovo_thresh"),
+            glimmer_pdir=controlfile.get("glimmer_pdir"),
+            blast_wdir=controlfile.get("blast_wdir"),
+            mine_pdir=controlfile.get("mine_pdir"),
+            mine_comparison_style=controlfile.get("mine_comparison_style"))
+
+        keys=controlfile.all_arguments.keys()
+        print keys
+        for parameter in list_all_optionals:
+
+            if parameter in keys:
+                setting.add(parameter, controlfile.get(parameter))
+                print parameter
+
+
+            #            wdir=controlfile.get("wdir"),
+#            checkExist=controlfile.get("checkExist"),
+#            metasim_outfile=controlfile.get("metasim_outfile"),
+#            genovo_outfile=controlfile.get("genovo_outfile"),
+#            glimmer_infile=controlfile.get("glimmer_infile"),
+#            glimmer_outfile=controlfile.get("glimmer_outfile"),
+#            extract_outfile=controlfile.get("extract_outfile"),
+#            blast_infile=controlfile.get("blast_infile"),
+#            blast_e_value=controlfile.get("blast_e_value"),
+#            blast_outfile=controlfile.get("blast_outfile"),
+#            mine_infile=controlfile.get("mine_infile"),
+#            mine_cv=controlfile.get("mine_cv"),
+#            mine_clumps=controlfile.get("mine_clumps"),
+#            mine_jobID=controlfile.get("mine_jobID"))
+        return setting
+
+
+
 
     def add_all(self, **kwargs):
         for k in kwargs.iterkeys():
