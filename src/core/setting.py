@@ -84,12 +84,12 @@ class Setting(object):
             mine_comparison_style=controlfile.get("mine_comparison_style"))
 
         keys=controlfile.all_arguments.keys()
-        print keys
+#        print keys
         for parameter in list_all_optionals:
 
             if parameter in keys:
                 setting.add(parameter, controlfile.get(parameter))
-                print parameter
+#                print parameter
 
 
             #            wdir=controlfile.get("wdir"),
@@ -124,6 +124,7 @@ class Setting(object):
             print "key = %s, value = %s" % (k, self.all_setting[k])
 
     def get(self, key):
+        print "Q", key, type(key)
         return self.all_setting[key]
 
     def check_all_optional_parameter(self, program_name, is_all_exist, optional):

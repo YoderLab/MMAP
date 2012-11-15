@@ -1,4 +1,6 @@
 from core.assembler.software_assembler import SoftwareAssembler
+from core.controlfile import ControlFile
+from core.setting import Setting
 from core.utils import path_utils
 
 __author__ = 'erinmckenney'
@@ -46,6 +48,47 @@ class TestSoftwareAssembler(unittest.TestCase):
         self.assembly.init_program()
         self.assembly.run()
 
+
+    def test_create_SoftwareAssembler_from_setting(self):
+        file="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/unittest_data/testControlFileOp1"
+        test = ControlFile()
+        test.add_all(file)
+        setting=Setting.create_setting_from_controlfile(test)
+        assembler = SoftwareAssembler.create_SoftwareAssembler_from_setting(setting)
+        print "3", assembler
+        dict = test.all_arguments
+        self.assertEqual(assembler.all_setting, dict)
+
+'''
+#    When not all essential parameters exist, should fail.
+        file="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/unittest_data/missedEssentials"
+        test = ControlFile()
+        test.add_all(file)
+        setting=Setting.create_setting_from_controlfile(test)
+        with self.assertRaises(IOError):
+            SoftwareAssembler.create_SoftwareAssembler_from_setting(setting)
+
+#    When all essential parameters exist and all optional parameters exist, should pass.
+        file="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/unittest_data/allPass"
+        test = ControlFile()
+        test.add_all(file)
+        setting=Setting.create_setting_from_controlfile(test)
+        SoftwareAssembler.create_SoftwareAssembler_from_setting(setting)
+
+#    When not all essential parameters exist but no optional parameters exist, should pass.
+        file="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/unittest_data/testControlFile"
+        test = ControlFile()
+        test.add_all(file)
+        setting=Setting.create_setting_from_controlfile(test)
+        SoftwareAssembler.create_SoftwareAssembler_from_setting(setting)
+
+#    When not all essential parameters exist, should fail.
+        file="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/unittest_data/testControlFileOp1"
+        test = ControlFile()
+        test.add_all(file)
+        setting=Setting.create_setting_from_controlfile(test)
+        SoftwareAssembler.create_SoftwareAssembler_from_setting(setting)
+'''
 
 if __name__ == '__main__':
     unittest.main()

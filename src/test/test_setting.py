@@ -196,11 +196,39 @@ class TestSetting(unittest.TestCase):
         self.assertEqual(setting._get_glimmer(), expected)
 
     def test_create_setting_from_control_file(self):
+#    When not all essential parameters exist but no optional parameters exist, should pass.
         file="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/unittest_data/testControlFileOp1"
         test = ControlFile()
         test.add_all(file)
         dict = test.all_arguments
         setting=Setting.create_setting_from_controlfile(test)
-        print "????", setting.all_setting
-        print dict
+#        print "????", setting.all_setting
+#        print dict
+        self.assertEqual(setting.all_setting, dict)
+
+#    When not all essential parameters exist, should fail.
+        file="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/unittest_data/missedEssentials"
+        test = ControlFile()
+        test.add_all(file)
+        with self.assertRaises(IOError):
+            Setting.create_setting_from_controlfile(test)
+
+#    When all essential parameters exist and all optional parameters exist, should pass.
+        file="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/unittest_data/allPass"
+        test = ControlFile()
+        test.add_all(file)
+        dict = test.all_arguments
+        setting=Setting.create_setting_from_controlfile(test)
+        #        print "????", setting.all_setting
+        #        print dict
+        self.assertEqual(setting.all_setting, dict)
+
+#    When not all essential parameters exist, should fail.
+        file="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/unittest_data/testControlFileOp1"
+        test = ControlFile()
+        test.add_all(file)
+        dict = test.all_arguments
+        setting=Setting.create_setting_from_controlfile(test)
+        #        print "????", setting.all_setting
+        #        print dict
         self.assertEqual(setting.all_setting, dict)

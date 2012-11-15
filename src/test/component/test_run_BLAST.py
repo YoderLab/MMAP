@@ -8,6 +8,7 @@ import os
 
 
 from core.connector import go_connector
+from core.setting import Setting
 from core.utils import path_utils
 from core.component.run_BLAST import RunBlast
 from Bio import SeqIO
@@ -54,11 +55,13 @@ class TestRunBlast(unittest.TestCase):
         file_var = "NotExist"
         e_var = 1e-50
         outfile_var = "foolname"
+        setting = Setting()
+        infile_var = self.Blast_dir + "bIn"
 
         with self.assertRaises(IOError):
-            RunBlast.create_blast_from_file(file_var)
+            RunBlast.create_blast_from_file(file_var, setting_class=setting)
 
-        blast = RunBlast.create_blast_from_file(self.infile)
+        blast = RunBlast.create_blast_from_file(infile_var, setting)
         self.assertEqual(blast.results, dict())
 
         for key in self.record_index:
