@@ -210,7 +210,7 @@ class TestSetting(unittest.TestCase):
         file="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/unittest_data/missedEssentials"
         test = ControlFile()
         test.add_all(file)
-        with self.assertRaises(IOError):
+        with self.assertRaises(KeyError):
             Setting.create_setting_from_controlfile(test)
 
 #    When all essential parameters exist and all optional parameters exist, should pass.

@@ -62,7 +62,7 @@ class ControlFile(object):
                 pass
             else:
 
-                location = line.rfind("=")
+                location = line.find("=")
 
                 key = line[0:location].strip()
                 value = line[location+1:len(line)].strip()
@@ -74,4 +74,5 @@ class ControlFile(object):
 
 
     def get(self, key):
+        print key, self.all_arguments[key]
         return self.all_arguments[key]

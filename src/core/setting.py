@@ -124,7 +124,7 @@ class Setting(object):
             print "key = %s, value = %s" % (k, self.all_setting[k])
 
     def get(self, key):
-        print "Q", key, type(key)
+        print "Q", key, type(key), self.all_setting[key]
         return self.all_setting[key]
 
     def check_all_optional_parameter(self, program_name, is_all_exist, optional):

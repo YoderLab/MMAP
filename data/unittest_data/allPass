@@ -17,6 +17,7 @@ blast_wdir=\Blast\
 #list_essential_mine_only
 mine_pdir=\mine\
 mine_comparison_style=-allPairs
+mine_jobID=MinIn.csv,mv=0,cv=0.0,B=n^0.6
 #list_optional_shared
 wdir=\wdir\
 checkExist=True

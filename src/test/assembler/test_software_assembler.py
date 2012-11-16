@@ -59,14 +59,14 @@ class TestSoftwareAssembler(unittest.TestCase):
         dict = test.all_arguments
         self.assertEqual(assembler.all_setting, dict)
 
-'''
-#    When not all essential parameters exist, should fail.
-        file="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/unittest_data/missedEssentials"
-        test = ControlFile()
-        test.add_all(file)
-        setting=Setting.create_setting_from_controlfile(test)
-        with self.assertRaises(IOError):
-            SoftwareAssembler.create_SoftwareAssembler_from_setting(setting)
+#
+##    When not all essential parameters exist, should fail.
+#        file="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/unittest_data/missedEssentials"
+#        test = ControlFile()
+#        test.add_all(file)
+#        setting=Setting.create_setting_from_controlfile(test)
+#        with self.assertRaises(KeyError):
+#            SoftwareAssembler.create_SoftwareAssembler_from_setting(setting)
 
 #    When all essential parameters exist and all optional parameters exist, should pass.
         file="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/unittest_data/allPass"
@@ -88,7 +88,7 @@ class TestSoftwareAssembler(unittest.TestCase):
         test.add_all(file)
         setting=Setting.create_setting_from_controlfile(test)
         SoftwareAssembler.create_SoftwareAssembler_from_setting(setting)
-'''
+
 
 if __name__ == '__main__':
     unittest.main()
