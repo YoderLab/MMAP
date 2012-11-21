@@ -5,10 +5,11 @@ list_essential_shared = ["parent_directory"]
 list_essential_metasim_only = ["metasim_pdir", "metasim_model_infile", "metasim_taxon_infile", "metasim_no_reads"]
 list_essential_genovo_only = ["genovo_infile", "genovo_pdir", "genovo_noI", "genovo_thresh"]
 list_essential_glimmer_only = ["glimmer_pdir"]  # dont need outfile
-list_essential_blast_only = ["blast_wdir"]
+list_essential_blast_only = ["blast_wdir"] #TODO: double-check whether this should be blast_pdir or wdir
 list_essential_mine_only = [ "mine_pdir", "mine_comparison_style"]
 
-list_all_essentials = list_essential_shared
+list_all_essentials = []
+list_all_essentials.extend(list_essential_shared)
 list_all_essentials.extend(list_essential_metasim_only)
 list_all_essentials.extend(list_essential_genovo_only)
 list_all_essentials.extend(list_essential_glimmer_only)
@@ -22,7 +23,8 @@ list_optional_glimmer_only = ["glimmer_infile", "glimmer_outfile", "extract_outf
 list_optional_blast_only = ["blast_infile", "blast_e_value", "blast_outfile"]
 list_optional_mine_only = ["mine_infile", "mine_cv", "mine_clumps", "mine_jobID"]
 
-list_all_optionals = list_optional_shared
+list_all_optionals = []
+list_all_optionals.extend(list_optional_shared)
 list_all_optionals.extend(list_optional_metasim_only)
 list_all_optionals.extend(list_optional_genovo_only)
 list_all_optionals.extend(list_optional_glimmer_only)
@@ -124,7 +126,7 @@ class Setting(object):
             print "key = %s, value = %s" % (k, self.all_setting[k])
 
     def get(self, key):
-        print "Q", key, type(key), self.all_setting[key]
+#        print "Q", key, type(key), self.all_setting[key]
         return self.all_setting[key]
 
     def check_all_optional_parameter(self, program_name, is_all_exist, optional):
@@ -192,6 +194,7 @@ class Setting(object):
         is_all_exist = self._check(list_essential_metasim_only + list_essential_shared)
 
         optional = list_optional_metasim_only + list_optional_shared
+
         self.check_all_optional_parameter("metasim", is_all_exist, optional)
 
         return self.all_setting
@@ -214,7 +217,7 @@ class Setting(object):
         return self.all_setting
 
     def _get_blast(self):
-        is_all_exist = self._check(list_optional_blast_only + list_essential_shared)
+        is_all_exist = self._check(list_essential_blast_only + list_essential_shared)
 
         optional = list_optional_blast_only + list_optional_shared
         self.check_all_optional_parameter("blast", is_all_exist, optional)

@@ -43,6 +43,7 @@ class TestSetting(unittest.TestCase):
                     "parent_directory": "main_pdir", "metasim_no_reads":250,
                     "wdir":None, "checkExist": True,
                     "metasim_outfile": None}
+        setting.debug=0
         self.assertEqual(expected, setting._get_metasim())
 
         setting.add("wdir", "otherdir")
@@ -117,13 +118,13 @@ class TestSetting(unittest.TestCase):
         #        setting.print_all()
         self.assertRaises(KeyError, setting._get_blast)
 
-        setting.add("blast_e-value", 1e-15)
+        setting.add("blast_e_value", 1e-15)
         setting.add_all(blast_pdir="b_p_dir", parent_directory="main_pdir", blast_wdir="b_wdir", checkExist=True)
         expected = {"blast_infile": "bInfile", "blast_outfile": "bOutfile",
                     "blast_e_value": 1e-15, "blast_pdir": "b_p_dir",
                     "parent_directory": "main_pdir", "blast_wdir": "b_wdir",
                     "wdir": None, "checkExist": True}
-#        setting.debug = True
+        setting.debug = True
         self.assertEqual(expected, setting._get_blast())
 
         setting.add("wdir", "otherdir")
@@ -136,6 +137,7 @@ class TestSetting(unittest.TestCase):
         setting.add("wdir", "otherdir")
         setting.add("blast_e_value", 1e-15)
         setting.add("blast_outfile", "bOutfile")
+        setting.add("blast_wdir", "b_wdir")
 #        expected.pop("outfile")
 #        TODO: debug switch
         setting.debug = True
@@ -165,8 +167,8 @@ class TestSetting(unittest.TestCase):
         expected["mine_infile"] = "mineInfile"
 
     def test_Setting_get_all_par(self):
-        setting = Setting()
-        setting.add_all(genovo_infile="gInfile", genovo_thresh=14,
+        setting = Setting(genovo_infile="gInfile", genovo_thresh=14)
+        setting.add_all(
                         genovo_pdir="g_p_dir", genovo_noI=2,
                         parent_directory="main_pdir", wdir="otherdir",
                         checkExist=True)
@@ -174,6 +176,7 @@ class TestSetting(unittest.TestCase):
                     "genovo_thresh": 14, "genovo_pdir": "g_p_dir",
                     "checkExist": True, "genovo_outfile": None,
                     "parent_directory": "main_pdir", "wdir": "otherdir"}
+        print "W", setting.get_all_par("genovo")
         self.assertEqual(expected, setting.get_all_par("genovo"))
         self.assertEqual(setting._get_genovo(), expected)
 
@@ -186,8 +189,11 @@ class TestSetting(unittest.TestCase):
                     "outfile": "Outfile", "glimmer_outfile": "glimOut",
                     "glimmer_pdir": "glimp_dir",
                     "wdir": None, "checkExist": True,
-                    "parent_directory": "main_pdir"}
+                    "parent_directory": "main_pdir",
+                    "extract_outfile":None}
+        print setting.get_all_par("glimmer")
         self.assertEqual(expected, setting.get_all_par("glimmer"))
+
         self.assertEqual(setting._get_glimmer(), expected)
 
         setting.add("glimmer_infile", "glInfile")

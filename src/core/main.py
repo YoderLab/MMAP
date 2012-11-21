@@ -58,11 +58,14 @@ def setup_database():
 
 def main():
     print __name__
-    file="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/unittest_data/testControlFile"
+
+
+    file="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/test_run/first_test"
     test = ControlFile()
     test.add_all(file)
     setting=Setting.create_setting_from_controlfile(test)
-    assembler = SoftwareAssembler.create_SoftwareAssembler_from_setting(setting)
+    print setting.all_setting
+    assembler = SoftwareAssembler(setting)
     assembler.init_program()
     assembler.run()
 

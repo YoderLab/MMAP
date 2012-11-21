@@ -5,6 +5,7 @@ Created on Mar 20, 2012
 """
 import unittest
 import os
+from core.component import run_genovo
 from core.component.run_genovo import RunGenovo
 from core import run_ext_prog
 from core.utils import path_utils
@@ -143,10 +144,12 @@ class TestRunGenovo(unittest.TestCase):
         infile_var = "test_infile.fasta"
         genovo = RunGenovo(infile=infile_var, pdir=self.data_dir, no_iter=3,
                            thresh=250, check_exist=False)
-        self.assertRaises(TypeError, genovo.set_number_of_iter, 1.1)
-        self.assertRaises(TypeError, genovo.set_number_of_iter, -1)
-        self.assertRaises(TypeError, genovo.set_number_of_iter, "string")
-        self.assertRaises(TypeError, genovo.set_number_of_iter, "5")
+        self.assertRaises(ValueError, genovo.set_number_of_iter, 1.1)
+        self.assertRaises(ValueError, genovo.set_number_of_iter, -1)
+        self.assertRaises(ValueError, genovo.set_number_of_iter, "string")
+        self.assertRaises(ValueError, genovo.set_number_of_iter, "5.9")
+        genovo.set_number_of_iter("300")
+        self.assertEqual(genovo.assemble.get_switch()[run_genovo.ASSEMBLE_NO_ITER_POSITION-1],"300")
 
     def test_RunGenovo_set_cutoff(self):
         """

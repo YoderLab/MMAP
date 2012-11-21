@@ -54,10 +54,9 @@ class TestSoftwareAssembler(unittest.TestCase):
         test = ControlFile()
         test.add_all(file)
         setting=Setting.create_setting_from_controlfile(test)
-        assembler = SoftwareAssembler.create_SoftwareAssembler_from_setting(setting)
-        print "3", assembler
+        assembler = SoftwareAssembler(setting)
         dict = test.all_arguments
-        self.assertEqual(assembler.all_setting, dict)
+        self.assertEqual(assembler.get_all_par(), dict)
 
 #
 ##    When not all essential parameters exist, should fail.
@@ -73,21 +72,27 @@ class TestSoftwareAssembler(unittest.TestCase):
         test = ControlFile()
         test.add_all(file)
         setting=Setting.create_setting_from_controlfile(test)
-        SoftwareAssembler.create_SoftwareAssembler_from_setting(setting)
+        assembler = SoftwareAssembler(setting)
+        dict = test.all_arguments
+        self.assertEqual(assembler.get_all_par(), dict)
 
 #    When not all essential parameters exist but no optional parameters exist, should pass.
         file="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/unittest_data/testControlFile"
         test = ControlFile()
         test.add_all(file)
         setting=Setting.create_setting_from_controlfile(test)
-        SoftwareAssembler.create_SoftwareAssembler_from_setting(setting)
+        assembler = SoftwareAssembler(setting)
+        dict = test.all_arguments
+        self.assertEqual(assembler.get_all_par(), dict)
 
 #    When not all essential parameters exist, should fail.
         file="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/unittest_data/testControlFileOp1"
         test = ControlFile()
         test.add_all(file)
         setting=Setting.create_setting_from_controlfile(test)
-        SoftwareAssembler.create_SoftwareAssembler_from_setting(setting)
+        assembler = SoftwareAssembler(setting)
+        dict = test.all_arguments
+        self.assertEqual(assembler.get_all_par(), dict)
 
 
 if __name__ == '__main__':

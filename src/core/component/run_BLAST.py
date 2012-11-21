@@ -34,14 +34,16 @@ class RunBlast(RunComponent):
 
 
     @classmethod
-    def create_blast_from_file(cls, filename, setting_class):
+    def create_blast_from_file(cls, setting_class):
         """
         Class method
         Create RunGlimmer from Setting class
         """
+#        print setting_class.all_setting
+        filename =setting_class.get("wdir")+setting_class.get("blast_infile")
         if os.path.exists(filename):
-            record_index = SeqIO.index(filename, "fasta")
-            blast = cls(record_index=setting_class.get("blast_infile"),
+            record_index=SeqIO.index(filename, "fasta")
+            blast = cls(records=record_index,
                 e_value=setting_class.get("blast_e_value"),
                 wdir=setting_class.get("blast_wdir"),
                 outfile=setting_class.get("blast_outfile"))

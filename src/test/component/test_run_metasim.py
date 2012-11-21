@@ -6,6 +6,7 @@ Created on Mar 20, 2012
 
 import unittest
 import os
+from core.component import run_MetaSim
 from core.component.run_MetaSim import RunMetaSim
 from core import run_ext_prog
 from core.utils import path_utils
@@ -81,11 +82,14 @@ class TestRunMetaSim(unittest.TestCase):
         metasim = RunMetaSim(model_file=model_infile_var, no_reads=100,
             taxon_infile=taxon_infile_var, pdir=self.data_dir, wdir=self.working_dir,
             outfile=outfile_var, check_exist=True)
-        self.assertRaises(ValueError, metasim.set_number_of_reads, 1.1)
+        self.assertRaises(ValueError, metasim.set_number_of_reads, 1.9)
         self.assertRaises(ValueError, metasim.set_number_of_reads, -1)
         self.assertRaises(ValueError, metasim.set_number_of_reads, -2.5)
-        self.assertRaises(TypeError, metasim.set_number_of_reads, "string")
-        self.assertRaises(TypeError, metasim.set_number_of_reads, "3")
+        self.assertRaises(ValueError, metasim.set_number_of_reads, "string")
+        self.assertRaises(ValueError, metasim.set_number_of_reads, "3.6")
+#        self.assertRaises(TypeError, metasim.set_number_of_reads, "3")
+        metasim.set_number_of_reads("3")
+        self.assertEqual(metasim.get_switch()[run_MetaSim.NO_READS_POSITION-1],"-r3")
 
     def test_set_outfile_directory(self):
         model_infile_var = "ErrorModelSolexa36bp.mconf"
@@ -156,7 +160,7 @@ class TestRunMetaSim(unittest.TestCase):
         """
         model_infile_var = "ErrorModelSolexa36bp.mconf"
         taxon_infile_var = "MetaSim_bint.mprf"
-        outfile_var = "zMetaSim_bint-454.fna"
+        outfile_var = "MetaSim_bint-Empirical.fna"
         metasim = RunMetaSim(model_file=model_infile_var, no_reads=100,
             taxon_infile=taxon_infile_var, pdir=self.data_dir, wdir=self.working_dir,
             outfile=outfile_var, check_exist=True)

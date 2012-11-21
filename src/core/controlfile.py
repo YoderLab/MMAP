@@ -46,7 +46,8 @@ mine_clumps:
 mine_jobID:
 """
 class ControlFile(object):
-
+    #TODO: check what happens if the same key shows up multiple times in the control file
+    #FIXME: individual program directories should append to parent_directory [with some sort of check]
     def __init__(self, **kwargs):
         """
         """
@@ -74,5 +75,5 @@ class ControlFile(object):
 
 
     def get(self, key):
-        print key, self.all_arguments[key]
+#        print key, self.all_arguments[key]
         return self.all_arguments[key]

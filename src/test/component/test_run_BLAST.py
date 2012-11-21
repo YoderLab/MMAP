@@ -58,6 +58,9 @@ class TestRunBlast(unittest.TestCase):
         setting = Setting()
         infile_var = self.Blast_dir + "bIn"
 
+        self.record_index=SeqIO.index(infile_var, "fasta")
+        setting.add_all(blast_e_value=e_var, blast_wdir=self.Blast_dir, blast_outfile=outfile_var )
+
         with self.assertRaises(IOError):
             RunBlast.create_blast_from_file(file_var, setting_class=setting)
 

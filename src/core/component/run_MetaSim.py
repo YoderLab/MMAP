@@ -38,7 +38,7 @@ class RunMetaSim(RunComponent):
         """
         Constructor
         """
-
+    #FIXME: allow 454 or Sanger model; put on -c switch.
         self.all_exts = ALL_EXTS
         self.parameter_check(pdir, wdir, model_file, taxon_infile, outfile, check_exist)
         self.metasim = runExtProg(METASIM, pdir=self.pdir, length=5, check_OS=True)
@@ -52,6 +52,7 @@ class RunMetaSim(RunComponent):
         Class method
         Create RunGlimmer from dict()
         """
+        print setting.get("metasim_no_reads"), type(setting.get("metasim_no_reads"))
         metasim = cls(model_file=setting.get("metasim_model_infile"),
             no_reads=setting.get("metasim_no_reads"),
             taxon_infile=setting.get("metasim_taxon_infile"),
@@ -93,14 +94,23 @@ class RunMetaSim(RunComponent):
 
 
     def set_number_of_reads(self, param):
-        if param > 0 and isinstance(param, (int, long)):
-            arg = "-r%s" % param
+
+
+        try:
+            v = int(param)
+            print param, v
+            if str(v) != str(param):
+                raise ValueError("ValueError: %s " %param)
+        except ValueError as e:
+            raise ValueError("ValueError: %s " %param)
+#
+        if v > 0:
+            arg = "-r%s" % v
             self.metasim.set_param_at(arg, NO_READS_POSITION)
+#        if int(param):
+
         else:
-            if isinstance(param, str):
-                raise TypeError("Error: number of reads set as string: %s" % param)
-            else:
-                raise ValueError("Error: number of reads set to: %s" % param)
+            raise ValueError("Error: number of reads set to : %s" % param)
 
 #        TODO: if NONE, set to default # of reads
 #        in setting.py or __init__ (as with check_exist)?
@@ -111,7 +121,7 @@ class RunMetaSim(RunComponent):
         type anything here
         TODO: check valid infile, infile exist or not
         """
-
+    #FIXME: Allow 454 or Sanger model
         arg = "-mg%s" % self.model_infile
         self.metasim.set_param_at(arg, MODEL_INFILE_POSITION)
 
@@ -136,6 +146,7 @@ class RunMetaSim(RunComponent):
         if os.path.exists(  self.cwd+self.name_only  ):
         if os.path.exists(  full_file_path  ):
         """
+
         self.infile = self.wdir + infile
         location = infile.rfind(".")
         if location is -1:
@@ -143,22 +154,27 @@ class RunMetaSim(RunComponent):
         else:
             namebase = infile[0:location]
             #            print "qq", self.wdir ,namebase , outfile_tag
-        self.outfile = self.wdir + namebase
-#        now append model type
-        if error_model=="-454" or "-Sanger" or "-Empirical":
-            self.outfile = self.wdir + namebase + error_model
+        if outfile==None:
+            self.outfile = self.wdir + namebase
+            if error_model=="-454" or "-Sanger" or "-Empirical":
+                self.outfile = self.outfile + error_model
+            else:
+                raise TypeError("Error: invalid error model: %s" %error_model)
         else:
-            raise TypeError("Error: invalid error model: %s" %error_model)
+            self.outfile = self.wdir + outfile
+#        now append model type
+
 #        now self.outfile = /dir/namebase-Model
 #        if doesn't exist, append
+        print "??@@fsd",self.outfile
         if not os.path.exists(self.outfile+".fna"):
-            self.outfile = self.wdir + namebase + error_model + ".fna"
+            self.outfile = self.outfile + ".fna"
         else:
             version = 1
-            while os.path.exists(self.wdir + namebase + error_model + ".%s.fna" %version):
+            while os.path.exists(self.outfile + ".%s.fna" %version):
                 version = version + 1
-            self.outfile = self.wdir + namebase + error_model + ".%s.fna" %version
-#            print "?????????????",self.outfile
+            self.outfile = self.outfile + ".%s.fna" %version
+        print "?????????????",self.outfile
 
 
     def read_outfile(self):

@@ -65,10 +65,24 @@ class RunGenovo(RunComponent):
         self.set_cutoff(thresh)
 
     def set_number_of_iter(self, param):
-        if param > 0 and isinstance(param, (int, long)):
-            self.assemble.set_param_at(param, ASSEMBLE_NO_ITER_POSITION)
+
+
+        try:
+            v = int(param)
+            print param, v
+            if str(v) != str(param):
+                raise ValueError("ValueError: %s " %param)
+        except ValueError as e:
+            raise ValueError("ValueError: %s " %param)
+        #
+        if v > 0:
+
+            #        if int(param):
+            self.assemble.set_param_at(v, ASSEMBLE_NO_ITER_POSITION)
         else:
-            raise TypeError("Error: unacceptable value for param: %s" % param)
+            raise ValueError("Error: number of reads set to : %s" % param)
+
+
 
     def set_infile_name(self, infile):
         """
@@ -82,14 +96,25 @@ class RunGenovo(RunComponent):
     def set_outfile(self, outfile):
         self.finalize.set_param_at(outfile, FINALIZE_OUTFILE_POSITION)
 
-    def set_cutoff(self, v):
-        if v > 0 and isinstance(v, (int, long)):
+    def set_cutoff(self, param):
+
+
+        try:
+            v = int(param)
+            print param, v
+            if str(v) != str(param):
+                raise ValueError("ValueError: %s " %param)
+        except ValueError as e:
+            raise ValueError("ValueError: %s " %param)
+            #
+        if v > 0:
+
+            #        if int(param):
             self.finalize.set_param_at(v, FINALIZE_CUTOFF_POSITION)
         else:
-            if isinstance(v, str):
-                raise TypeError('Error: cutoff set as string "%s"' % v)
-            else:
-                raise ValueError('Error: cutoff set to:', v)
+            raise ValueError("Error: cutoff set to : %s" % param)
+
+
 
     def read_outfile(self):
         """

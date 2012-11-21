@@ -18,7 +18,6 @@ mine_pdir=\MINE\
 mine_comparison_style=-allPairs
 blast_e_value=1e-10
 mine_cv=99
-
 ##list_optional_mine_only
 #mine_infile:
 #mine_cv:

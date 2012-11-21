@@ -8,7 +8,7 @@ from core.component.run_component import RunComponent
 from core.run_ext_prog import runExtProg
 
 GLIMMER = "./g3-iterated.csh"
-EXTRACT = "./multi-extract"
+EXTRACT = "./extract"
 INFILE_POSITION = 1
 OUTFILE_POSITION = 2
 COORDS_POSITION = 2
@@ -29,6 +29,7 @@ class RunGlimmer(RunComponent):
         """
         Constructor
         """
+        #FIXME: check outfile name for wdir path before adding wdir to self.outfile
         self.all_exts = ALL_EXTS
         self.parameter_check(pdir, wdir, infile, outfile, check_exist, "_out")
         self.generate_orfs_name( )

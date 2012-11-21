@@ -15,7 +15,7 @@ def check_dir_ending(tdir):
 
 
 class RunComponent(object):
-
+    #FIXME: check outfile name for wdir path before adding wdir to self.outfile
     def __init__(self):
         pass
 #        self.all_exts=[]
@@ -68,7 +68,10 @@ class RunComponent(object):
             self.outfile = self.wdir + namebase + outfile_tag
 #            print "mm", self.outfile
         else:
-            self.outfile = self.wdir + outfile
+            if outfile.find(self.wdir)>0:
+                self.outfile = outfile
+            else:
+                self.outfile = self.wdir + outfile
 
     def check_outfiles_exist(self, outfile_tag):
         """
@@ -93,7 +96,7 @@ class RunComponent(object):
         return boolean
         """
         test_file = "%s%s" % (file_tag, ext)
-#        print "%%%%%%%%%%%%%", test_file
+        print "%%%%%%%%%%%%%", test_file
         if os.path.exists(test_file):
             is_exist = is_exist and True
         else:
