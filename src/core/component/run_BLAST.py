@@ -9,6 +9,7 @@ import csv
 from core.connector import go_connector
 from core.sequence import Sequence
 from core.component.run_component import RunComponent
+from core.setting import Setting
 
 class RunBlast(RunComponent):
     """
@@ -18,7 +19,7 @@ class RunBlast(RunComponent):
 
     TODO(Steven Wu): copy/pasted from old main.py. Add test class
     """
-    def __init__(self, records, e_value, wdir, outfile=None):
+    def __init__(self, records, e_value, wdir, infile=None, outfile=None):
         """
         Constructor
         records: collection of Bio.SeqRecord.SeqRecord
@@ -30,7 +31,8 @@ class RunBlast(RunComponent):
         self.record_index = records
         self.e_value_cut_off = e_value
         self.wdir = wdir
-        self.outfile = self.wdir + outfile
+        self.infile = infile
+        self.generate_outfile_name(outfile)
 
 
     @classmethod
@@ -46,6 +48,7 @@ class RunBlast(RunComponent):
             blast = cls(records=record_index,
                 e_value=setting_class.get("blast_e_value"),
                 wdir=setting_class.get("blast_wdir"),
+                infile=setting_class.get("blast_infile"),
                 outfile=setting_class.get("blast_outfile"))
             return blast
         else:
@@ -130,6 +133,33 @@ class RunBlast(RunComponent):
         return sample
     #        for i in self.results.values():
 #            print(i.all_terms)
+
+    def generate_outfile_name(self, outfile):
+        """
+        infile name
+            check if it exist
+            if yes, append <namebase>.#
+        if os.path.exists(  self.cwd+self.name_only  ):
+        if os.path.exists(  full_file_path  ):
+        """
+        location = self.infile.rfind(".")
+        if location is -1:
+            namebase = self.infile
+        else:
+            namebase = self.infile[0:location]
+        if outfile==None:
+            self.outfile = self.wdir + namebase
+        else:
+            self.outfile = self.wdir + outfile
+
+        if not os.path.exists(self.outfile+".csv"):
+            self.outfile = self.outfile + ".csv"
+        else:
+            version = 1
+            while os.path.exists(self.outfile + ".%s.csv" %version):
+                version = version + 1
+            self.outfile = self.outfile + ".%s.csv" %version
+        print "?????????????",self.outfile
 
     def output_csv(self, header, template):
         """template should be a dictionary object
