@@ -84,7 +84,7 @@ class SoftwareAssembler(object):
             )))
 
         if self.glimmer.check_outfiles_exist(self.setting.get("glimmer_outfile")):
-            self.blast = RunBlast.create_blast_from_setting(self.setting) #FIXME
+            self.blast = RunBlast.create_blast_from_setting(self.setting)
             self.blast.run()
         else:
             raise(IOError("Missing Glimmer output"))

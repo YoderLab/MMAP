@@ -11,6 +11,8 @@ from core.sequence import Sequence
 from core.component.run_component import RunComponent
 from core.setting import Setting
 
+ALL_EXTS = [".csv"]
+
 class RunBlast(RunComponent):
     """
     run BLAST
@@ -26,13 +28,14 @@ class RunBlast(RunComponent):
                 can be created by Bio.SeqIO.index
                 OR dict(key=Bio.SeqRecord.SeqRecord, ...)
         """
-        print "weNFASMDN",outfile, wdir
+#        print "weNFASMDN",outfile, wdir
         self.results = dict()
         self.record_index = records
         self.e_value_cut_off = e_value
         self.wdir = wdir
         self.infile = infile
         self.generate_outfile_name(outfile)
+        self.all_exts = ALL_EXTS
 
 
     @classmethod
@@ -76,7 +79,7 @@ class RunBlast(RunComponent):
             self.counter = self.update_counter_from_dictionaries(new_dict, self.results)
             new_outfile = self.init_output(self.counter,0)
             self.sample = self.update_sample_from_counters(new_outfile, self.counter)
-            self.outfile = RunBlast.output_csv()
+            self.outfile = self.output_csv(self.infile, self.sample)
 
     @classmethod
     def create_blast_from_setting(cls, setting_class):
@@ -90,7 +93,7 @@ class RunBlast(RunComponent):
         default_dict = dict()
         master_value = set([])
         for v in allterms.values():
-            master_value=master_value | v
+            master_value.add(v)
 
         for k in master_value:
         #            new_dict.setdefault(k, default_value)
@@ -100,12 +103,13 @@ class RunBlast(RunComponent):
     def update_counter_from_dictionaries(self, counter, allterms):
     #        print allterms
     #        print(allterms.values())
-        for v in allterms.values():
-            counter = self.update_counter_from_set(counter,v)
+        entry_list = allterms.values()
+        return self.update_counter_from_set(counter,entry_list)
 
     def update_counter_from_set(self, counter, each_set):
-        for k in each_set:
-            counter[k] += 1
+        print "9876543",type (each_set)
+        for element in each_set:
+            counter[element] += 1
         return counter
 #        for i in self.results.values():
 #            print(i.all_terms)
@@ -116,7 +120,7 @@ class RunBlast(RunComponent):
         new_sample = dict()
         master_file = set([])
         for v in counter.values():
-            master_file=master_file | v
+            master_file.add(v)
 
         for k in master_file:
         #            new_dict.setdefault(k, default_value)
@@ -124,8 +128,8 @@ class RunBlast(RunComponent):
         return new_sample
 
     def update_sample_from_counters(self, sample, counter):
-        for v in counter.values():
-            sample = self.update_sample_from_set(sample, v)
+        set = counter.values()
+        return self.update_sample_from_set(sample, set)
 
     def update_sample_from_set(self, sample, each_set):
         for k in each_set:
