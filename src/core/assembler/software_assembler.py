@@ -52,7 +52,11 @@ class SoftwareAssembler(object):
         self.setting.add("extract_outfile", self.glimmer.orfs)
 
     def update_blast_setting(self):
+        self.setting.add("blast_infile", self.glimmer.orfs)
+        self.setting.add("blast_outfile", self.blast.outfile)
 
+#    def update_mine_setting(self):
+#        self.setting.add("mine_infile", self.blast.outfile)
 
     def init_program(self):
         self.metasim = RunMetaSim.create_metasim_from_setting(self.setting)
@@ -60,11 +64,11 @@ class SoftwareAssembler(object):
         self.update_genovo_setting()
         self.glimmer = RunGlimmer.create_glimmer_from_setting(self.setting)
         self.update_glimmer_setting()
-
         self.blast = RunBlast.create_blast_from_setting(self.setting)
         self.update_blast_setting()
         #TODO: check blast setting, except for record_index
         self.mine = RunMINE.create_mine_from_setting(self.setting)
+#        self.update_mine_setting()
         #TODO: fix MINE/Blast setting
 
     def run(self):

@@ -64,7 +64,7 @@ class RunComponent(object):
                 namebase = infile
             else:
                 namebase = infile[0:location]
-#            print "qq", self.wdir ,namebase , outfile_tag
+            print "qq", self.wdir ,namebase , outfile_tag
             self.outfile = self.wdir + namebase + outfile_tag
 #            print "mm", self.outfile
         else:

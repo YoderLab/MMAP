@@ -53,7 +53,7 @@ class RunMINE(RunComponent):
         Class method
         Create RunGlimmer from dict()
         """
-        mine = cls(model_infile=setting.get("mine_infile"),
+        mine = cls(infile=setting.get("mine_infile"),
             pdir=setting.get("mine_pdir"),
             wdir=setting.get("wdir"),
             comparison=setting.get("mine_comparison_style"),
