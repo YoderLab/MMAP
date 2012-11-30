@@ -5,7 +5,7 @@ list_essential_shared = ["parent_directory"]
 list_essential_metasim_only = ["metasim_pdir", "metasim_model_infile", "metasim_taxon_infile", "metasim_no_reads"]
 list_essential_genovo_only = ["genovo_infile", "genovo_pdir", "genovo_noI", "genovo_thresh"]
 list_essential_glimmer_only = ["glimmer_pdir"]  # dont need outfile
-list_essential_blast_only = ["blast_wdir"] #TODO: double-check whether this should be blast_pdir or wdir
+list_essential_blast_only = []
 list_essential_mine_only = [ "mine_pdir", "mine_comparison_style"]
 
 list_all_essentials = []
@@ -81,7 +81,7 @@ class Setting(object):
             genovo_noI=controlfile.get("genovo_noI"),
             genovo_thresh=controlfile.get("genovo_thresh"),
             glimmer_pdir=controlfile.get("glimmer_pdir"),
-            blast_wdir=controlfile.get("blast_wdir"),
+            blast_wdir=controlfile.get("wdir"),
             mine_pdir=controlfile.get("mine_pdir"),
             mine_comparison_style=controlfile.get("mine_comparison_style"))
 

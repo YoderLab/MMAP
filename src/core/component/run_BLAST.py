@@ -6,6 +6,7 @@ Created on Feb 13, 2012
 import os
 from Bio import SeqIO
 import csv
+import datetime
 from core.connector import go_connector
 from core.sequence import Sequence
 from core.component.run_component import RunComponent
@@ -21,7 +22,7 @@ class RunBlast(RunComponent):
 
     TODO(Steven Wu): copy/pasted from old main.py. Add test class
     """
-    def __init__(self, records, e_value, wdir, infile=None, outfile=None):
+    def __init__(self, e_value, wdir, infile=None,  records=None, outfile=None):
         """
         Constructor
         records: collection of Bio.SeqRecord.SeqRecord
@@ -30,11 +31,12 @@ class RunBlast(RunComponent):
         """
 #        print "weNFASMDN",outfile, wdir
         self.results = dict()
-        self.record_index = records
-        self.e_value_cut_off = e_value
         self.wdir = wdir
-        self.infile = infile
-        self.generate_outfile_name(outfile)
+        self.generate_record_index(infile, records, outfile)
+        self.e_value_cut_off = e_value
+
+
+
         self.all_exts = ALL_EXTS
 
 
@@ -45,10 +47,10 @@ class RunBlast(RunComponent):
         Create RunGlimmer from Setting class
         """
 #        print setting_class.all_setting
-        filename =setting_class.get("wdir")+setting_class.get("blast_infile")
+        filename =setting_class.get("blast_wdir")+setting_class.get("blast_infile")
         if os.path.exists(filename):
-            record_index=SeqIO.index(filename, "fasta")
-            blast = cls(records=record_index,
+#            record_index=SeqIO.index(filename, "fasta")
+            blast = cls(
                 e_value=setting_class.get("blast_e_value"),
                 wdir=setting_class.get("blast_wdir"),
                 infile=setting_class.get("blast_infile"),
@@ -65,7 +67,7 @@ class RunBlast(RunComponent):
     def run(self):
 
         print("Running AmiGO:BLAST")
-
+        all_orfs = dict()
         for key in self.record_index:
 
             self.seq = Sequence(self.record_index[key].seq) #Bio.SeqRecord.SeqRecord
@@ -75,11 +77,18 @@ class RunBlast(RunComponent):
             self.seq = go_connector.parse_go_term(self.seq, self.e_value_cut_off)
 #            self.seq.all_terms
             self.results[key] = self.seq
-            new_dict = self.init_dict(self.results, 0)
-            self.counter = self.update_counter_from_dictionaries(new_dict, self.results)
-            new_outfile = self.init_output(self.counter,0)
-            self.sample = self.update_sample_from_counters(new_outfile, self.counter)
-            self.outfile = self.output_csv(self.infile, self.sample)
+            print key, "\neachterm", self.seq.each_term
+            print "allterm", self.seq.all_terms
+
+            print"\n\n"
+
+            all_orfs[key]=self.seq.all_terms
+
+        new_dict = self.init_dict(all_orfs, 0)
+        self.counter = self.update_counter_from_dictionaries(new_dict, all_orfs)
+#        new_outfile = self.init_output(self.counter,0)
+#        self.sample = self.update_sample_from_counters(new_outfile, self.counter)
+        self.outfile = self.output_csv(self.infile, self.counter)
 
     @classmethod
     def create_blast_from_setting(cls, setting_class):
@@ -93,7 +102,8 @@ class RunBlast(RunComponent):
         default_dict = dict()
         master_value = set([])
         for v in allterms.values():
-            master_value.add(v)
+            print v
+            master_value=master_value | v
 
         for k in master_value:
         #            new_dict.setdefault(k, default_value)
@@ -103,13 +113,14 @@ class RunBlast(RunComponent):
     def update_counter_from_dictionaries(self, counter, allterms):
     #        print allterms
     #        print(allterms.values())
-        entry_list = allterms.values()
-        return self.update_counter_from_set(counter,entry_list)
+        for v in allterms.values():
+            counter = self.update_counter_from_set(counter,v)
+        return counter
 
     def update_counter_from_set(self, counter, each_set):
         print "9876543",type (each_set)
-        for element in each_set:
-            counter[element] += 1
+        for k in each_set:
+            counter[k] += 1
         return counter
 #        for i in self.results.values():
 #            print(i.all_terms)
@@ -120,7 +131,7 @@ class RunBlast(RunComponent):
         new_sample = dict()
         master_file = set([])
         for v in counter.values():
-            master_file.add(v)
+            master_file=master_file | v
 
         for k in master_file:
         #            new_dict.setdefault(k, default_value)
@@ -128,8 +139,8 @@ class RunBlast(RunComponent):
         return new_sample
 
     def update_sample_from_counters(self, sample, counter):
-        set = counter.values()
-        return self.update_sample_from_set(sample, set)
+        for v in counter.values():
+            sample = self.update_sample_from_set(sample, v)
 
     def update_sample_from_set(self, sample, each_set):
         for k in each_set:
@@ -138,7 +149,24 @@ class RunBlast(RunComponent):
     #        for i in self.results.values():
 #            print(i.all_terms)
 
-    def generate_outfile_name(self, outfile):
+    def generate_record_index(self, infile, records, outfile):
+        if infile==None and records==None:
+            raise TypeError("Neither Blast infile nor records variable exists!!! ")
+        elif infile==None:
+            self.record_index = records
+            now = datetime.datetime.now()
+            namebase = now.strftime("%Y.%m.%d_%H.%M")
+        elif records==None:
+            self.infile =  infile
+            self.record_index = SeqIO.index(self.wdir +infile, "fasta")
+            namebase = None
+        else:
+            raise TypeError("Blast infile and records both exist! Pick one!")
+
+        self.generate_outfile_name(outfile, namebase)
+
+
+    def generate_outfile_name(self, outfile, namebase):
         """
         infile name
             check if it exist
@@ -146,15 +174,20 @@ class RunBlast(RunComponent):
         if os.path.exists(  self.cwd+self.name_only  ):
         if os.path.exists(  full_file_path  ):
         """
-        location = self.infile.rfind(".")
-        if location is -1:
-            namebase = self.infile
-        else:
-            namebase = self.infile[0:location]
+        if namebase ==None:
+            location = self.infile.rfind(".")
+            if location is -1:
+                namebase = self.infile
+            else:
+                namebase = self.infile[0:location]
         if outfile==None:
             self.outfile = self.wdir + namebase
         else:
-            self.outfile = self.wdir + outfile
+            if outfile.endswith(".csv"):
+                location = outfile.rfind(".")
+                self.outfile = self.wdir +outfile[0:location]
+            else:
+                self.outfile = self.wdir + outfile
 
         if not os.path.exists(self.outfile+".csv"):
             self.outfile = self.outfile + ".csv"
