@@ -110,13 +110,19 @@ class RunMINE(RunComponent):
 
 
     def set_clumping_factor(self, c):
-        if c > 0 and isinstance(c, (int, long)):
-            self.mine.set_param_at(c, CLUMPS_POSITION)
+        try:
+            v = int(c)
+            print c, v
+            if str(v) != str(c):
+                raise ValueError("ValueError: %s " %c)
+        except ValueError as e:
+            raise ValueError("ValueError: %s " %c)
+            #
+        if v > 0 and isinstance(v, (int, long)):
+            self.mine.set_param_at(v, CLUMPS_POSITION)
         else:
-            if isinstance(c, str):
-                raise TypeError("Error: clumping factor set as string: %s" % c)
-            else:
-                raise ValueError("Error: unacceptable value for clumping factor: %s" % c)
+            raise ValueError("Error: clumping factor set to : %s" % v)
+
 
     def set_outfile_tag(self, jobID):
         self.mine.set_param_at(jobID, JOB_ID_POSITION)
