@@ -1,6 +1,7 @@
 from core.controlfile import ControlFile
 from core.setting import Setting
 import unittest
+from core.utils import path_utils
 
 __author__ = 'erinmckenney'
 
@@ -8,7 +9,7 @@ __author__ = 'erinmckenney'
 class TestSetting(unittest.TestCase):
 
     def setUp(self):
-        pass
+        self.data_dir = path_utils.get_data_dir() + "unittest_data/"
 
     def tearDown(self):
         pass
@@ -43,7 +44,7 @@ class TestSetting(unittest.TestCase):
                     "parent_directory": "main_pdir", "metasim_no_reads":250,
                     "wdir":None, "checkExist": True,
                     "metasim_outfile": None}
-        setting.debug=0
+        setting.debug = 0
         self.assertEqual(expected, setting._get_metasim())
 
         setting.add("wdir", "otherdir")
@@ -203,38 +204,38 @@ class TestSetting(unittest.TestCase):
 
     def test_create_setting_from_control_file(self):
 #    When not all essential parameters exist but no optional parameters exist, should pass.
-        file="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/unittest_data/testControlFileOp1"
+        file = self.data_dir + "testControlFileOp1"
         test = ControlFile()
         test.add_all(file)
         dict = test.all_arguments
-        setting=Setting.create_setting_from_controlfile(test)
+        setting = Setting.create_setting_from_controlfile(test)
 #        print "????", setting.all_setting
 #        print dict
         self.assertEqual(setting.all_setting, dict)
 #
 #    When not all essential parameters exist, should fail.
-        file="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/unittest_data/missedEssentials"
+        file = "/Users/erinmckenney/Desktop/Pipeline/metaLem/data/unittest_data/missedEssentials"
         test = ControlFile()
         test.add_all(file)
         with self.assertRaises(KeyError):
             Setting.create_setting_from_controlfile(test)
 
 #    When all essential parameters exist and all optional parameters exist, should pass.
-        file="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/unittest_data/allPass"
+        file = "/Users/erinmckenney/Desktop/Pipeline/metaLem/data/unittest_data/allPass"
         test = ControlFile()
         test.add_all(file)
         dict = test.all_arguments
-        setting=Setting.create_setting_from_controlfile(test)
+        setting = Setting.create_setting_from_controlfile(test)
         print "????", setting.all_setting
         print dict
         self.assertEqual(setting.all_setting, dict)
 
 #    When not all essential parameters exist and some optional parameters exist, should pass.
-        file="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/unittest_data/testControlFileOp1"
+        file = "/Users/erinmckenney/Desktop/Pipeline/metaLem/data/unittest_data/testControlFileOp1"
         test = ControlFile()
         test.add_all(file)
         dict = test.all_arguments
-        setting=Setting.create_setting_from_controlfile(test)
+        setting = Setting.create_setting_from_controlfile(test)
         #        print "????", setting.all_setting
         #        print dict
         self.assertEqual(setting.all_setting, dict)

@@ -149,7 +149,7 @@ class TestRunGenovo(unittest.TestCase):
         self.assertRaises(ValueError, genovo.set_number_of_iter, "string")
         self.assertRaises(ValueError, genovo.set_number_of_iter, "5.9")
         genovo.set_number_of_iter("300")
-        self.assertEqual(genovo.assemble.get_switch()[run_genovo.ASSEMBLE_NO_ITER_POSITION-1],"300")
+        self.assertEqual(genovo.assemble.get_switch()[run_genovo.ASSEMBLE_NO_ITER_POSITION - 1], "300")
 
     def test_RunGenovo_set_cutoff(self):
         """
@@ -223,7 +223,7 @@ class TestRunGenovo(unittest.TestCase):
 
         # negative test, outfiles are not suppose to exist
         infile_var = "fileNotExist.fasta"
-        genovo = RunGenovo(infile=infile_var, pdir=self.data_dir, wdir= self.working_dir, no_iter=10,
+        genovo = RunGenovo(infile=infile_var, pdir=self.data_dir, wdir=self.working_dir, no_iter=10,
                            thresh=250, check_exist=False)
         self.assertFalse(genovo.check_outfiles_exist(self.working_dir + "fileNotExist_out"))
 
@@ -253,7 +253,7 @@ class TestRunGenovo(unittest.TestCase):
         genovo = RunGenovo(infile=infile_var, outfile=outfile_var,
                            pdir=self.data_dir, no_iter=10, thresh=100,
                            check_exist=True)
-        self.assertFalse(genovo.check_outfiles_exist(self.data_dir+infile_var))
+        self.assertFalse(genovo.check_outfiles_exist(self.data_dir + infile_var))
         genovo.run()
         self.assertTrue(genovo.check_outfiles_exist(self.data_dir + infile_var))
         self.assertTrue(genovo.is_file_exist(self.data_dir + "tOut", ".fasta", True))

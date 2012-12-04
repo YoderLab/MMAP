@@ -56,7 +56,7 @@ class TestRunGlimmer(unittest.TestCase):
 
         infile_var = "VICTORY.fasta"
         extract.set_infile_name(infile_var)
-        self.assertEqual(extract.get_switch(), ["VICTORY.fasta", self.data_dir + outfile_var+ ".coords"," > ",
+        self.assertEqual(extract.get_switch(), ["VICTORY.fasta", self.data_dir + outfile_var + ".coords", " > ",
                                                 self.data_dir + "testOutfile.orfs"])
 
 
@@ -77,7 +77,7 @@ class TestRunGlimmer(unittest.TestCase):
 #                                                self.data_dir + orf_var])
 
         infile_var = "test_infile.xyz.fasta.abc"
-        extract = RunGlimmer(infile=infile_var, outfile=outfile_var,  pdir=self.data_dir, check_exist=False)
+        extract = RunGlimmer(infile=infile_var, outfile=outfile_var, pdir=self.data_dir, check_exist=False)
         self.assertEqual(extract.get_switch(), [self.data_dir + infile_var, self.data_dir + outfile_var + ".coords",
                                                 " > ", self.data_dir + outfile_var + ".orfs"])
 
@@ -106,7 +106,7 @@ class TestRunGlimmer(unittest.TestCase):
 
         outfile_var = "test_outfile2.fasta"
         extract.set_outfile_tag(outfile_var)
-        self.assertEqual(extract.get_switch(), ["test_infile2.fasta", self.data_dir +"test_outfile" + ".coords",
+        self.assertEqual(extract.get_switch(), ["test_infile2.fasta", self.data_dir + "test_outfile" + ".coords",
                                                 " > ", self.data_dir + "test_outfile.orfs"])
 
     def test_RunGlimmer_set_orfs(self):

@@ -1,11 +1,16 @@
+from core.utils import path_utils
 __author__ = 'erinmckenney'
 
 import unittest
 from core.controlfile import ControlFile
 
 class TestControlFile(unittest.TestCase):
+    def setUp(self):
+        self.data_dir = path_utils.get_data_dir() + "unittest_data/"
+
+
     def test_add_all(self):
-        file="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/unittest_data/testControlFile"
+        file = self.data_dir + "testControlFile"
         test = ControlFile()
         test.add_all(file)
         dict = test.all_arguments
@@ -23,7 +28,7 @@ class TestControlFile(unittest.TestCase):
         "blast_wdir":"\\BLAST\\",
         "mine_pdir":"\\MINE\\",
         "mine_comparison_style":"-allPairs"}
-        
+
         print "!!!!!!!!!!", test.all_arguments
 
 

@@ -57,17 +57,18 @@ class TestRunMINE(unittest.TestCase):
             jobID=jobID_var, comparison='-allPairs', cv=0.0, c=15, check_exist=False)
 
         self.assertRaises(ValueError, mine.set_cv_threshold, 1.1)
+        self.assertRaises(ValueError, mine.set_cv_threshold, 0)
         self.assertRaises(ValueError, mine.set_cv_threshold, -1)
         self.assertRaises(ValueError, mine.set_cv_threshold, -2.5)
         self.assertRaises(TypeError, mine.set_cv_threshold, "string")
-        self.assertRaises(TypeError, mine.set_cv_threshold, "3")
+        self.assertRaises(TypeError, mine.set_cv_threshold, "0.3")
 
         self.assertRaises(ValueError, mine.set_clumping_factor, 1.1)
         self.assertRaises(ValueError, mine.set_clumping_factor, 0)
         self.assertRaises(ValueError, mine.set_clumping_factor, -1)
         self.assertRaises(ValueError, mine.set_clumping_factor, -2.5)
         self.assertRaises(TypeError, mine.set_clumping_factor, "string")
-        self.assertRaises(TypeError, mine.set_clumping_factor, "3")
+        self.assertRaises(TypeError, mine.set_clumping_factor, "3.3")
 
     def test_file_already_exist(self):
         """

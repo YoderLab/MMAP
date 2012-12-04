@@ -49,6 +49,21 @@ class RunComponent(object):
             if not os.path.exists(self.pdir):
                 raise IOError("Error: invalid program directory: %s" % self.pdir)
 
+
+    def _checkValue(self, s, convert):
+#        convert
+        try:
+            v = convert(s)
+            print s, v, type(s), type(v)
+            if str(v) != str(s):
+                raise ValueError("ValueError: %s " % s)
+        except ValueError as e:
+            if type(s) is str:
+                raise TypeError("TypeError: %s is str" % s)
+            else:
+                raise ValueError("ValueError: %s " % s)
+        return v
+
     def generate_outfile_name(self, infile, outfile, outfile_tag):
         """
         infile name
@@ -64,14 +79,14 @@ class RunComponent(object):
                 namebase = infile
             else:
                 namebase = infile[0:location]
-            print "qq", self.wdir ,namebase , outfile_tag
+            print "qq", self.wdir , namebase , outfile_tag
             if outfile_tag is None:
                 self.outfile = self.wdir + namebase
             else:
                 self.outfile = self.wdir + namebase + outfile_tag
 #            print "mm", self.outfile
         else:
-            if outfile.find(self.wdir)>0:
+            if outfile.find(self.wdir) > 0:
                 self.outfile = outfile
             else:
                 self.outfile = self.wdir + outfile

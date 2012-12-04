@@ -11,7 +11,9 @@ import unittest
 class TestSoftwareAssembler(unittest.TestCase):
 
     def setUp(self):
-        self.assembly = SoftwareAssembler()
+        self.unittest_dir = path_utils.get_data_dir() + "unittest_data/"
+        setting = Setting();
+        self.assembly = SoftwareAssembler(setting)
         self.genovo_dir = path_utils.get_data_dir() + "Genovo/"
         self.glimmer_dir = path_utils.get_data_dir() + "Glimmer/"
         self.metasim_dir = path_utils.get_data_dir() + "MetaSim/"
@@ -50,10 +52,10 @@ class TestSoftwareAssembler(unittest.TestCase):
 
 
     def test_create_SoftwareAssembler_from_setting(self):
-        file="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/unittest_data/testControlFileOp1"
+        file = "/Users/erinmckenney/Desktop/Pipeline/metaLem/data/unittest_data/testControlFileOp1"
         test = ControlFile()
         test.add_all(file)
-        setting=Setting.create_setting_from_controlfile(test)
+        setting = Setting.create_setting_from_controlfile(test)
         assembler = SoftwareAssembler(setting)
         dict = test.all_arguments
         self.assertEqual(assembler.get_all_par(), dict)
@@ -68,28 +70,28 @@ class TestSoftwareAssembler(unittest.TestCase):
 #            SoftwareAssembler.create_SoftwareAssembler_from_setting(setting)
 
 #    When all essential parameters exist and all optional parameters exist, should pass.
-        file="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/unittest_data/allPass"
+        file = "/Users/erinmckenney/Desktop/Pipeline/metaLem/data/unittest_data/allPass"
         test = ControlFile()
         test.add_all(file)
-        setting=Setting.create_setting_from_controlfile(test)
+        setting = Setting.create_setting_from_controlfile(test)
         assembler = SoftwareAssembler(setting)
         dict = test.all_arguments
         self.assertEqual(assembler.get_all_par(), dict)
 
 #    When not all essential parameters exist but no optional parameters exist, should pass.
-        file="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/unittest_data/testControlFile"
+        file = "/Users/erinmckenney/Desktop/Pipeline/metaLem/data/unittest_data/testControlFile"
         test = ControlFile()
         test.add_all(file)
-        setting=Setting.create_setting_from_controlfile(test)
+        setting = Setting.create_setting_from_controlfile(test)
         assembler = SoftwareAssembler(setting)
         dict = test.all_arguments
         self.assertEqual(assembler.get_all_par(), dict)
 
 #    When not all essential parameters exist, should fail.
-        file="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/unittest_data/testControlFileOp1"
+        file = "/Users/erinmckenney/Desktop/Pipeline/metaLem/data/unittest_data/testControlFileOp1"
         test = ControlFile()
         test.add_all(file)
-        setting=Setting.create_setting_from_controlfile(test)
+        setting = Setting.create_setting_from_controlfile(test)
         assembler = SoftwareAssembler(setting)
         dict = test.all_arguments
         self.assertEqual(assembler.get_all_par(), dict)

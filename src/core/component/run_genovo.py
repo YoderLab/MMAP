@@ -66,14 +66,13 @@ class RunGenovo(RunComponent):
 
     def set_number_of_iter(self, param):
 
-
         try:
             v = int(param)
             print param, v
             if str(v) != str(param):
-                raise ValueError("ValueError: %s " %param)
+                raise ValueError("ValueError: %s " % param)
         except ValueError as e:
-            raise ValueError("ValueError: %s " %param)
+            raise ValueError("ValueError: %s " % param)
         #
         if v > 0:
 
@@ -103,9 +102,13 @@ class RunGenovo(RunComponent):
             v = int(param)
             print param, v
             if str(v) != str(param):
-                raise ValueError("ValueError: %s " %param)
+                raise ValueError("ValueError: %s " % param)
         except ValueError as e:
-            raise ValueError("ValueError: %s " %param)
+            if type(param) is str:
+                raise TypeError("TypeError: %s is str" % param)
+            else:
+                raise ValueError("ValueError: %s " % param)
+
             #
         if v > 0:
 
