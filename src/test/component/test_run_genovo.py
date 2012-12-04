@@ -211,10 +211,10 @@ class TestRunGenovo(unittest.TestCase):
         infile_var = "assemble.fasta"
         genovo = RunGenovo(infile=infile_var, pdir=self.data_dir, no_iter=10,
                            thresh=250, check_exist=False)
-        self.assertFalse(genovo.check_outfiles_exist(self.data_dir +
+        self.assertFalse(genovo.check_outfiles_with_filetag_exist(self.data_dir +
                                                     infile_var))
         genovo.run()
-        self.assertTrue(genovo.check_outfiles_exist(self.data_dir +
+        self.assertTrue(genovo.check_outfiles_with_filetag_exist(self.data_dir +
                                                     infile_var))
         os.remove(self.data_dir + "assemble_out.fasta")
         os.remove(self.data_dir + infile_var + ".dump.best")
@@ -225,7 +225,7 @@ class TestRunGenovo(unittest.TestCase):
         infile_var = "fileNotExist.fasta"
         genovo = RunGenovo(infile=infile_var, pdir=self.data_dir, wdir=self.working_dir, no_iter=10,
                            thresh=250, check_exist=False)
-        self.assertFalse(genovo.check_outfiles_exist(self.working_dir + "fileNotExist_out"))
+        self.assertFalse(genovo.check_outfiles_with_filetag_exist(self.working_dir + "fileNotExist_out"))
 
     def test_RunGenovo_read_finalize_outfile(self):
         """
@@ -253,9 +253,9 @@ class TestRunGenovo(unittest.TestCase):
         genovo = RunGenovo(infile=infile_var, outfile=outfile_var,
                            pdir=self.data_dir, no_iter=10, thresh=100,
                            check_exist=True)
-        self.assertFalse(genovo.check_outfiles_exist(self.data_dir + infile_var))
+        self.assertFalse(genovo.check_outfiles_with_filetag_exist(self.data_dir + infile_var))
         genovo.run()
-        self.assertTrue(genovo.check_outfiles_exist(self.data_dir + infile_var))
+        self.assertTrue(genovo.check_outfiles_with_filetag_exist(self.data_dir + infile_var))
         self.assertTrue(genovo.is_file_exist(self.data_dir + "tOut", ".fasta", True))
         os.remove(self.data_dir + outfile_var)
         os.remove(self.data_dir + infile_var + ".dump.best")

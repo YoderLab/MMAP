@@ -106,7 +106,7 @@ class RunGlimmer(RunComponent):
 #    TODO: once outfiles are created, use terminal command to extract ORFs and pipe to fasta for BLAST
 #        ./multi-extract tpall.fna iterated2.run1.predict > ~/Desktop/Pipeline/metaLem/data/Glimmer/mac/tpall_output.fasta
         """
-        self.extract.run(True)
+        self.extract.run(debug)
         filehandler = open(self.orfs,'w')
         filehandler.write (self.extract.output)
         filehandler.close()

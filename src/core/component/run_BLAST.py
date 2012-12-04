@@ -22,7 +22,7 @@ class RunBlast(RunComponent):
 
     TODO(Steven Wu): copy/pasted from old main.py. Add test class
     """
-    def __init__(self, e_value, wdir, infile=None,  records=None, outfile=None):
+    def __init__(self, e_value, wdir, infile=None,  records=None, outfile=None, comparison_file=None):
         """
         Constructor
         records: collection of Bio.SeqRecord.SeqRecord
@@ -32,7 +32,12 @@ class RunBlast(RunComponent):
 #        print "weNFASMDN",outfile, wdir
         self.results = dict()
         self.wdir = wdir
-        self.generate_record_index(infile, records, outfile)
+        self.record_index = records
+        self.generate_outfile_name(infile, records, outfile)
+        if comparison_file is not None:
+            self.comparison_file=self.wdir+comparison_file
+            self.check_file_exist(self.comparison_file, True)
+
         self.e_value_cut_off = e_value
 
 
@@ -47,17 +52,18 @@ class RunBlast(RunComponent):
         Create RunGlimmer from Setting class
         """
 #        print setting_class.all_setting
-        filename =setting_class.get("blast_wdir")+setting_class.get("blast_infile")
-        if os.path.exists(filename):
+#        filename =setting_class.get("blast_infile")
+#        if os.path.exists(filename):
 #            record_index=SeqIO.index(filename, "fasta")
-            blast = cls(
-                e_value=setting_class.get("blast_e_value"),
-                wdir=setting_class.get("blast_wdir"),
-                infile=setting_class.get("blast_infile"),
-                outfile=setting_class.get("blast_outfile"))
-            return blast
-        else:
-            raise IOError("Blast infile %s does not exist!!! " % filename)
+        blast = cls(
+            e_value=setting_class.get("blast_e_value"),
+            wdir=setting_class.get("blast_wdir"),
+            infile=setting_class.get("blast_infile"),
+            outfile=setting_class.get("blast_outfile"),
+            comparison_file=setting_class.get("blast_comparison_file"))
+        return blast
+#        else:
+#            raise IOError("Blast infile %s does not exist!!! " % filename)
 #        setting = setting_class.get_all_par("glimmer")
 #        glimmer = RunGlimmer.create_glimmer(setting)
 
@@ -67,7 +73,11 @@ class RunBlast(RunComponent):
     def run(self):
 
         print("Running AmiGO:BLAST")
+        if self.record_index==None:
+            self.record_index = SeqIO.index(self.infile, "fasta")
+
         all_orfs = dict()
+
         for key in self.record_index:
 
             self.seq = Sequence(self.record_index[key].seq) #Bio.SeqRecord.SeqRecord
@@ -77,10 +87,7 @@ class RunBlast(RunComponent):
             self.seq = go_connector.parse_go_term(self.seq, self.e_value_cut_off)
 #            self.seq.all_terms
             self.results[key] = self.seq
-            print key, "\neachterm", self.seq.each_term
-            print "allterm", self.seq.all_terms
 
-            print"\n\n"
 
             all_orfs[key]=self.seq.all_terms
 
@@ -149,24 +156,10 @@ class RunBlast(RunComponent):
     #        for i in self.results.values():
 #            print(i.all_terms)
 
-    def generate_record_index(self, infile, records, outfile):
-        if infile==None and records==None:
-            raise TypeError("Neither Blast infile nor records variable exists!!! ")
-        elif infile==None:
-            self.record_index = records
-            now = datetime.datetime.now()
-            namebase = now.strftime("%Y.%m.%d_%H.%M")
-        elif records==None:
-            self.infile =  infile
-            self.record_index = SeqIO.index(self.wdir +infile, "fasta")
-            namebase = None
-        else:
-            raise TypeError("Blast infile and records both exist! Pick one!")
-
-        self.generate_outfile_name(outfile, namebase)
 
 
-    def generate_outfile_name(self, outfile, namebase):
+
+    def generate_outfile_name(self, infile, records, outfile):
         """
         infile name
             check if it exist
@@ -174,29 +167,72 @@ class RunBlast(RunComponent):
         if os.path.exists(  self.cwd+self.name_only  ):
         if os.path.exists(  full_file_path  ):
         """
-        if namebase ==None:
-            location = self.infile.rfind(".")
-            if location is -1:
-                namebase = self.infile
-            else:
-                namebase = self.infile[0:location]
-        if outfile==None:
-            self.outfile = self.wdir + namebase
-        else:
-            if outfile.endswith(".csv"):
-                location = outfile.rfind(".")
-                self.outfile = self.wdir +outfile[0:location]
-            else:
-                self.outfile = self.wdir + outfile
 
-        if not os.path.exists(self.outfile+".csv"):
-            self.outfile = self.outfile + ".csv"
+        if infile==None and records==None:
+            raise TypeError("Neither Blast infile nor records variable exists!!! ")
+
+        elif infile==None:
+            now = datetime.datetime.now()
+            namebase = now.strftime("%Y.%m.%d_%H.%M")
+
+        elif records==None:
+            if infile.find(self.wdir) > -1:
+                self.infile = infile
+            else:
+                self.infile =  self.wdir +infile
+            namebase = None
         else:
+            raise TypeError("Blast infile and records both exist! Pick one!")
+
+#        self.generate_outfile_name(outfile, namebase)
+#
+
+
+
+#        if namebase ==None:
+#            location = self.infile.rfind(".")
+#            if location is -1:
+#                namebase = self.infile
+#            else:
+#                namebase = self.infile[0:location]
+#        if outfile==None:
+#            self.outfile = self.wdir + namebase
+#        else:
+#
+#            if outfile.endswith(".csv"):
+#                location = outfile.rfind(".")
+#                self.outfile = self.wdir +outfile[0:location]
+#            else:
+#                self.outfile = self.wdir + outfile
+#
+#        print self.wdir, namebase
+        if outfile is not None:
+            self.outfile = self.wdir + outfile
+        elif namebase ==None:
+            self.outfile = self.infile
+        else:
+            self.outfile = self.wdir + namebase
+        print "?1????????????",self.outfile
+        if self.outfile.endswith(".csv"):
+            location = self.outfile.rfind(".")
+            print location
+            self.outfile = self.outfile[0:location]
+
+        print("?2???????????", self.outfile)
+        if not os.path.exists(self.outfile+".csv"):
+            self.outfile = self.outfile+".csv"
+        else:
+#            location = self.outfile.rfind(".")
+#            if location is -1:
+#                self.outfile = self.outfile
+#            else:
+#
             version = 1
             while os.path.exists(self.outfile + ".%s.csv" %version):
                 version = version + 1
-            self.outfile = self.outfile + ".%s.csv" %version
-        print "?????????????",self.outfile
+#            print "#####",self.outfile, location
+            self.outfile = self.outfile+ ".%s.csv" %version
+        print "?3????????????",self.outfile
 
     def output_csv(self, header, template):
         """template should be a dictionary object
@@ -209,11 +245,11 @@ class RunBlast(RunComponent):
             writer.writerow(firstrow)
             for key in template.iterkeys():
                 temp=[key, template[key]]
-                print temp, type(temp)
+
                 writer.writerow(temp)
 
 
-    def update_output_csv(self, header, template, existing_csv):
+    def update_output_csv(self, header, template):
         """
         template = dictionary object
         header = header
@@ -222,7 +258,7 @@ class RunBlast(RunComponent):
         with open(self.outfile, 'wb') as csvfile:
             writer = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_NONE)
             all_GOterms = set()
-            with open(existing_csv, 'rb') as f:
+            with open(self.comparison_file, 'rb') as f:
                 reader = csv.reader(f)
                 for i, row in enumerate(reader):
                     if i==0:

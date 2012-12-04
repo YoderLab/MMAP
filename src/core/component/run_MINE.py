@@ -39,7 +39,7 @@ class RunMINE(RunComponent):
         self.outfile = jobID
         self.all_exts = ALL_EXTS
         self.parameter_check(pdir, wdir, infile, self.outfile, check_exist, jobID)
-        if self.check_outfiles_exist(self.outfile) and check_exist:
+        if self.check_outfiles_with_filetag_exist(self.outfile) and check_exist:
             raise IOError("Warning: outfiles exist!")
         self.mine = runExtProg(MINE, pdir=self.pdir, length=5 + offset , check_OS=True)
         self.mine.set_param_at("-jar", 1)

@@ -72,26 +72,39 @@ class RunComponent(object):
         if os.path.exists(  self.cwd+self.name_only  ):
         if os.path.exists(  full_file_path  ):
         """
-        self.infile = self.wdir + infile
+
+
+
+
+
+
+
+
+        if infile.find(self.wdir) > -1:
+            self.infile = infile
+        else:
+            self.infile = self.wdir + infile
+
+
         if outfile is None:
-            location = infile.rfind(".")
+            location = self.infile.rfind(".")
             if location is -1:
-                namebase = infile
+                self.outfile = self.infile
             else:
-                namebase = infile[0:location]
-            print "qq", self.wdir , namebase , outfile_tag
-            if outfile_tag is None:
-                self.outfile = self.wdir + namebase
-            else:
-                self.outfile = self.wdir + namebase + outfile_tag
+                self.outfile = self.infile[0:location]
+            print "qq", self.infile, self.wdir  , outfile_tag
+
+
+            if outfile_tag is not None:
+                self.outfile = self.outfile + outfile_tag
 #            print "mm", self.outfile
         else:
-            if outfile.find(self.wdir) > 0:
+            if outfile.find(self.wdir) > -1:
                 self.outfile = outfile
             else:
                 self.outfile = self.wdir + outfile
 
-    def check_outfiles_exist(self, outfile_tag):
+    def check_outfiles_with_filetag_exist(self, outfile_tag):
         """
         check with default exts for each program
         """
@@ -114,7 +127,7 @@ class RunComponent(object):
         return boolean
         """
         test_file = "%s%s" % (file_tag, ext)
-        print "%%%%%%%%%%%%%", test_file
+#        print "%%is_file_exist%%%%%%%%%%%", test_file
         if os.path.exists(test_file):
             is_exist = is_exist and True
         else:

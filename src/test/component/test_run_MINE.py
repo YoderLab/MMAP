@@ -113,15 +113,15 @@ class TestRunMINE(unittest.TestCase):
 #        ...for now, can only check to make sure output file is not empty.#
 
     def test_RunMINE_run(self):
-        infile_var = "Spellman.csv"
-        jobID_var = "Spellman.csv,mv=0,cv=0.0,B=n^0.6,"
+        infile_var = "Spellman2.csv"
+        jobID_var = "Spellman.csv_out"
 
         mine = RunMINE(infile=infile_var, pdir=self.data_dir, wdir=self.working_dir,
-        jobID=jobID_var, comparison="0", cv=0.0, c=15, check_exist=False)
+        jobID=jobID_var, comparison="-allPairs", cv=0.0, c=15, check_exist=False)
         mine.run(True)
 #        RunMINE(infile=infile_var, pdir=self.data_dir, wdir=self.working_dir,
 #            jobID=jobID_var, comparison='-allPairs', cv=0.0, c=15, check_exist=True)
-        self.assertTrue(mine.check_outfiles_exist(self.working_dir + jobID_var))
+        self.assertTrue(mine.check_outfiles_with_filetag_exist(self.working_dir + jobID_var))
         self.assertTrue(mine.is_file_exist(self.working_dir + jobID_var + "Results.csv"))
         self.assertTrue(mine.is_file_exist(self.working_dir + jobID_var + "Status.txt"))
 #        os.remove(self.working_dir + jobID_var+ "Results.csv")

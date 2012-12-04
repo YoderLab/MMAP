@@ -185,6 +185,6 @@ class TestRunMetaSim(unittest.TestCase):
         self.assertFalse(metasim.is_file_exist(self.working_dir + "test_outfile", ".fasta", False))
         metasim.run(debug=True)
 #        print "7777777", self.working_dir,outfile_var
-        self.assertTrue(metasim.check_outfiles_exist(self.working_dir + outfile_var))
+        self.assertTrue(metasim.check_outfiles_with_filetag_exist(self.working_dir + outfile_var))
         self.assertTrue(metasim.is_file_exist(self.working_dir + outfile_var, ".fna", True))
         os.remove(self.working_dir + outfile_var+".fna")

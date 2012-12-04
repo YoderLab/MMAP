@@ -175,9 +175,9 @@ class TestRunGlimmer(unittest.TestCase):
         infile_var = "tIn.fasta"
         outfile_var = "tOut"
         glimmer = RunGlimmer(infile=infile_var, outfile=outfile_var, pdir=self.data_dir, check_exist=False)
-        self.assertFalse(glimmer.check_outfiles_exist(self.data_dir + outfile_var))
+        self.assertFalse(glimmer.check_outfiles_with_filetag_exist(self.data_dir + outfile_var))
         glimmer.run(False)
-        self.assertTrue(glimmer.check_outfiles_exist(self.data_dir + outfile_var))
+        self.assertTrue(glimmer.check_outfiles_with_filetag_exist(self.data_dir + outfile_var))
         os.remove(self.data_dir + outfile_var + ".coords")
         os.remove(self.data_dir + outfile_var + ".detail")
         os.remove(self.data_dir + outfile_var + ".icm")
@@ -193,7 +193,7 @@ class TestRunGlimmer(unittest.TestCase):
         # negative test, outfiles are not suppose to exist
         outfile_var = "fileNotExist"
         glimmer = RunGlimmer(infile=infile_var, outfile=outfile_var, pdir=self.data_dir, check_exist=False)
-        self.assertFalse(glimmer.check_outfiles_exist(self.data_dir + outfile_var))
+        self.assertFalse(glimmer.check_outfiles_with_filetag_exist(self.data_dir + outfile_var))
 
 #    @unittest.skip("take a while to run")
     def test_RunGlimmer_run(self):
@@ -214,9 +214,9 @@ class TestRunGlimmer(unittest.TestCase):
         infile_var = "tIn.fasta"
         outfile_var = "tOut"
         glimmer = RunGlimmer(infile=infile_var, outfile=outfile_var, pdir=self.data_dir, check_exist=False)
-        self.assertFalse(glimmer.check_outfiles_exist(self.data_dir + outfile_var))
+        self.assertFalse(glimmer.check_outfiles_with_filetag_exist(self.data_dir + outfile_var))
         glimmer.run(False)
-        self.assertTrue(glimmer.check_outfiles_exist(self.data_dir + outfile_var))
+        self.assertTrue(glimmer.check_outfiles_with_filetag_exist(self.data_dir + outfile_var))
         os.remove(self.data_dir + outfile_var + ".coords")
         os.remove(self.data_dir + outfile_var + ".detail")
         os.remove(self.data_dir + outfile_var + ".icm")

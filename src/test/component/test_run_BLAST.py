@@ -394,19 +394,20 @@ class TestRunBlast(unittest.TestCase):
 
 
     def test_update_output_csv(self):
-        new_dict = RunBlast(records=self.record_index, e_value=self.e_value_cut_off, wdir=self.Blast_dir,outfile="test.csv")
+        new_dict = RunBlast(records=self.record_index, e_value=self.e_value_cut_off,
+            wdir=self.Blast_dir,outfile="test.csv")
         data = dict({"GO:01":1,
                      "GO:03":2,
                      "GO:04":2,
                      "GO:05":1, })
         new_dict.output_csv("Sample",data)
         new_dict = RunBlast(records=self.record_index, e_value=self.e_value_cut_off,
-            wdir=self.Blast_dir,outfile="test2.csv")
+            wdir=self.Blast_dir,outfile="test2.csv", comparison_file="test.csv")
         data = dict({"GO:01":7,
                      "GO:02":9,
                      "GO:04":2,
                      "GO:05":8, })
-        new_dict.update_output_csv("Species",data, self.Blast_dir+ "test.csv")
+        new_dict.update_output_csv("Species",data)
 
         f = open(self.Blast_dir+"test2.csv","r")
         expected_header = "GOterm,Sample,Species\r\n"
@@ -425,7 +426,7 @@ class TestRunBlast(unittest.TestCase):
         self.assertEqual(i,5)
 
         new_dict = RunBlast(records=self.record_index, e_value=self.e_value_cut_off,
-            wdir=self.Blast_dir,outfile="test3.csv")
+            wdir=self.Blast_dir,outfile="test3.csv", comparison_file= "test2.csv")
         new_data = dict({"GO:01":3,
                          "GO:02":1,
                          "GO:03":2,
@@ -433,7 +434,7 @@ class TestRunBlast(unittest.TestCase):
                          "GO:05":2,
                          "GO:06":1,
                          "GO:07":1 })
-        new_dict.update_output_csv("Something",new_data, self.Blast_dir+ "test2.csv")
+        new_dict.update_output_csv("Something",new_data)
 
         f = open(self.Blast_dir+"test3.csv","r")
         expected_header = "GOterm,Sample,Species,Something\r\n"

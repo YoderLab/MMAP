@@ -66,18 +66,19 @@ def main():
     setting=Setting.create_setting_from_controlfile(test)
     print setting.all_setting
     assembler = SoftwareAssembler(setting)
-    assembler.init_program()
+#    assembler.run()
+
+
+    file="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/test_run/second_test"
+    test = ControlFile()
+    test.add_all(file)
+    setting=Setting.create_setting_from_controlfile(test)
+    print setting.all_setting
+    assembler = SoftwareAssembler(setting)
     assembler.run()
 
 
 if __name__ == "__main__":
     main()
 
-#    TODO: read in all parameters from controlfile
-#    TODO: feed paramters into setting class instance (below)
-    # Should we use setting.get(), or write a controlfile.get()?
-
-
-
-#        TODO: call software_assembler.run()
 

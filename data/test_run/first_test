@@ -1,0 +1,39 @@
+#list_essential_shared
+parent_directory=/Users/erinmckenney/Desktop/Pipeline/metaLem/data
+#list_essential_metasim_only
+metasim_pdir=/Users/erinmckenney/Desktop/Pipeline/metaLem/data/MetaSim
+metasim_model_infile= ErrorModelSolexa36bp.mconf
+metasim_taxon_infile = MetaSim_bint.mprf
+metasim_no_reads= 100
+#list_essential_genovo_only
+genovo_infile= 1stRun.fna
+genovo_pdir= /Users/erinmckenney/Desktop/Pipeline/metaLem/data/Genovo/
+genovo_noI= 10
+genovo_thresh= 300
+#list_essential_glimmer_only
+glimmer_pdir=/Users/erinmckenney/Desktop/Pipeline/metaLem/data/Glimmer/
+#list_essential_blast_only
+blast_wdir=/Users/erinmckenney/Desktop/Pipeline/metaLem/data/Blast/
+#list_essential_mine_only
+mine_pdir=/Users/erinmckenney/Desktop/Pipeline/metaLem/data/MINE/
+mine_comparison_style=-allPairs
+mine_jobID=MinIn.csv,mv=0,cv=0.0,B=n^0.6
+#list_optional_shared
+wdir=/Users/erinmckenney/Desktop/Pipeline/metaLem/data/test_run/ 
+checkExist=True
+#list_optional_metasim_only
+metasim_outfile=1stRun
+## list_optional_genovo_only
+## genovo_outfile=genOut
+## list_optional_glimmer_only
+## glimmer_infile=1k_out.fasta
+## glimmer_outfile=glimmerOut
+## extract_outfile=extrOut
+## list_optional_blast_only
+## blast_infile=1k_out_out.orfs
+blast_e_value=1e-20
+#blast_outfile=BlOut
+#list_optional_mine_only
+#mine_infile=MinIn
+mine_cv=0.0
+mine_clumps=23

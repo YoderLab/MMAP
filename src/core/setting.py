@@ -20,7 +20,7 @@ list_optional_shared = ["wdir", "checkExist"]
 list_optional_metasim_only = ["metasim_outfile"]
 list_optional_genovo_only = ["genovo_outfile"]
 list_optional_glimmer_only = ["glimmer_infile", "glimmer_outfile", "extract_outfile"]
-list_optional_blast_only = ["blast_infile", "blast_e_value", "blast_outfile"]
+list_optional_blast_only = ["blast_infile", "blast_e_value", "blast_outfile", "blast_comparison_file"]
 list_optional_mine_only = ["mine_infile", "mine_cv", "mine_clumps", "mine_jobID"]
 
 list_all_optionals = []
@@ -160,8 +160,9 @@ class Setting(object):
                 self.all_setting["blast_e_value"] = "1e-15"
 
         if program_name is "mine":
-            if self.all_setting["mine_infile"] is None:
+            if self.all_setting["mine_infile"] is None and self.all_setting["blast_comparison_file"] is not None:
                 self.all_setting["mine_infile"] = self.all_setting["blast_outfile"]
+
 
         if self.all_setting["checkExist"] is None:
             self.all_setting["checkExist"] = True
