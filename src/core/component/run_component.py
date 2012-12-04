@@ -65,7 +65,10 @@ class RunComponent(object):
             else:
                 namebase = infile[0:location]
             print "qq", self.wdir ,namebase , outfile_tag
-            self.outfile = self.wdir + namebase + outfile_tag
+            if outfile_tag is None:
+                self.outfile = self.wdir + namebase
+            else:
+                self.outfile = self.wdir + namebase + outfile_tag
 #            print "mm", self.outfile
         else:
             if outfile.find(self.wdir)>0:
