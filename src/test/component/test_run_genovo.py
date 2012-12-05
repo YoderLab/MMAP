@@ -146,7 +146,7 @@ class TestRunGenovo(unittest.TestCase):
                            thresh=250, check_exist=False)
         self.assertRaises(ValueError, genovo.set_number_of_iter, 1.1)
         self.assertRaises(ValueError, genovo.set_number_of_iter, -1)
-        self.assertRaises(ValueError, genovo.set_number_of_iter, "string")
+        self.assertRaises(TypeError, genovo.set_number_of_iter, "string")
         self.assertRaises(ValueError, genovo.set_number_of_iter, "5.9")
         genovo.set_number_of_iter("300")
         self.assertEqual(genovo.assemble.get_switch()[run_genovo.ASSEMBLE_NO_ITER_POSITION - 1], "300")

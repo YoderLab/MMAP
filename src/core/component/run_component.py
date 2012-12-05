@@ -45,23 +45,23 @@ class RunComponent(object):
     def _check_dir_exist(self, check_exist):
         if check_exist:
             if not os.path.exists(self.wdir):
-                raise IOError("Error: invalid working directory: %s" % self.wdir)
+                raise(IOError("Error: invalid working directory: %s" % self.wdir))
             if not os.path.exists(self.pdir):
-                raise IOError("Error: invalid program directory: %s" % self.pdir)
+                raise(IOError("Error: invalid program directory: %s" % self.pdir))
 
 
-    def _check_value(self, s, convert):
+    def check_valid_value(self, s, convert):
 #        convert
         try:
             v = convert(s)
 #            print s, v, type(s), type(v)
             if str(v) != str(s):
-                raise ValueError("ValueError: %s " % s)
+                raise(ValueError("ValueError: %s " % s))
         except ValueError as e:
             if type(s) is str:
-                raise TypeError("TypeError: %s is str" % s)
+                raise(TypeError("TypeError: %s is str" % s))
             else:
-                raise ValueError("ValueError: %s " % s)
+                raise(ValueError("ValueError: %s " % s))
         return v
 
     def generate_outfile_name(self, infile, outfile, outfile_tag):

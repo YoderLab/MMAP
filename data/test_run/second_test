@@ -1,27 +1,35 @@
 ##### list_essential_shared
 ## parent_directory=/Users/erinmckenney/Desktop/Pipeline/metaLem/data/
 parent_directory=/home/sw167/Postdoc/Project_Lemur/MMAP/data/
+
 ##### list_essential_metasim_only
 metasim_pdir=MetaSim
 metasim_model_infile= ErrorModelSolexa36bp.mconf
 metasim_taxon_infile = MetaSim_bint.mprf
 metasim_no_reads= 500
+
 ##### list_essential_genovo_only
 genovo_infile= 2ndRun.fna
 genovo_pdir= Genovo/
 genovo_noI= 3
-genovo_thresh= 200
+genovo_thresh= 250
+
 ##### list_essential_glimmer_only
 glimmer_pdir=Glimmer/
+
 ##### list_essential_blast_only
 blast_wdir=Blast/
+
 ##### list_essential_mine_only
 mine_pdir=MINE/
 mine_comparison_style=-allPairs
 mine_jobID=outall
-###### list_optional_shared
+
+####################
+##### list_optional_shared
 wdir=test_run/ 
 checkExist=True
+
 ##### list_optional_metasim_only
 metasim_outfile=2ndRun
 ## list_optional_genovo_only
@@ -30,11 +38,13 @@ metasim_outfile=2ndRun
 ## glimmer_infile=1k_out.fasta
 ## glimmer_outfile=glimmerOut
 ## extract_outfile=extrOut
-## list_optional_blast_only
+
+##### list_optional_blast_only
 ## blast_infile=1k_out_out.orfs
-blast_e_value=1e-20
+blast_e_value=1e-10
 ## blast_outfile=BlOut
 blast_comparison_file=1stRun_out_out.orfs.csv
+
 ##### list_optional_mine_only
 ## mine_infile=MinIn
 mine_cv=0.0

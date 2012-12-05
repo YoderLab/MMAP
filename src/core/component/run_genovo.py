@@ -66,7 +66,7 @@ class RunGenovo(RunComponent):
 
     def set_number_of_iter(self, param):
 
-        v = self._check_value(param, int)
+        v = self.check_valid_value(param, int)
 #        try:
 #            v = int(param)
 #            if str(v) != str(param):
@@ -95,7 +95,7 @@ class RunGenovo(RunComponent):
 
     def set_cutoff(self, param):
 
-        v = self._check_value(param, int)
+        v = self.check_valid_value(param, int)
 #        try:
 #            v = int(param)
 #            if str(v) != str(param):

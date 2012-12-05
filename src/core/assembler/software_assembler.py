@@ -97,7 +97,7 @@ class SoftwareAssembler(object):
         if (self.genovo.check_outfiles_with_filetag_exist(file_tag) and
             self.genovo.is_file_exist(self.setting.get("genovo_outfile"))):
             # and os.path.exists(self.genovo.readFinalizeOutfile):
-            self.glimmer.run(1)
+            self.glimmer.run(0)
         else:
             raise(IOError("Missing Genovo output %s \t %s" % (self.genovo.check_outfiles_with_filetag_exist(file_tag) ,
                                                              self.genovo.is_file_exist(self.setting.get("genovo_outfile"))

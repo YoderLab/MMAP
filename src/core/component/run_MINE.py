@@ -106,7 +106,7 @@ class RunMINE(RunComponent):
 #           raise ValueError("Error: comparison style is currently set to invalid setting: %s. Must be set to -x, -y, or -z." % style
 
     def set_cv_threshold(self, c):
-        v = self._check_value(c, float)
+        v = self.check_valid_value(c, float)
             #
         if 1 > v >= 0 and isinstance(v, float):
             self.mine.set_param_at(v, CV_THRESHOLD_POSITION)
@@ -115,7 +115,7 @@ class RunMINE(RunComponent):
 
 
     def set_clumping_factor(self, c):
-        v = self._check_value(c, int)
+        v = self.check_valid_value(c, int)
         if v > 0 and isinstance(v, (int, long)):
             self.mine.set_param_at(v, CLUMPS_POSITION)
         else:
