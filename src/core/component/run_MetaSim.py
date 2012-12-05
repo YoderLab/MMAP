@@ -52,7 +52,7 @@ class RunMetaSim(RunComponent):
         Class method
         Create RunGlimmer from dict()
         """
-        print setting.get("metasim_no_reads"), type(setting.get("metasim_no_reads"))
+
         metasim = cls(model_file=setting.get("metasim_model_infile"),
             no_reads=setting.get("metasim_no_reads"),
             taxon_infile=setting.get("metasim_taxon_infile"),
@@ -78,7 +78,7 @@ class RunMetaSim(RunComponent):
         self.generate_outfile_name(taxon_infile, outfile, error_model="-454" or "-Sanger" or "-Empirical")
         self.model_infile = self.wdir + model_file
         self.taxon_infile = self.wdir + taxon_infile
-#        print "SELF.WDIR",self.wdir, "OUTFILE",outfile
+
 #        self.outfile = self.wdir + outfile
         files = [self.model_infile, self.taxon_infile]
         for file in files:
@@ -95,14 +95,13 @@ class RunMetaSim(RunComponent):
 
     def set_number_of_reads(self, param):
 
-
-        try:
-            v = int(param)
-            print param, v
-            if str(v) != str(param):
-                raise ValueError("ValueError: %s " %param)
-        except ValueError as e:
-            raise ValueError("ValueError: %s " %param)
+        v = self._check_value(param, int)
+#        try:
+#            v = int(param)
+#            if str(v) != str(param):
+#                raise ValueError("ValueError: %s " % param)
+#        except ValueError as e:
+#            raise ValueError("ValueError: %s " % param)
 #
         if v > 0:
             arg = "-r%s" % v
@@ -154,27 +153,27 @@ class RunMetaSim(RunComponent):
         else:
             namebase = infile[0:location]
             #            print "qq", self.wdir ,namebase , outfile_tag
-        if outfile==None:
+        if outfile == None:
             self.outfile = self.wdir + namebase
-            if error_model=="-454" or "-Sanger" or "-Empirical":
+            if error_model == "-454" or "-Sanger" or "-Empirical":
                 self.outfile = self.outfile + error_model
             else:
-                raise TypeError("Error: invalid error model: %s" %error_model)
+                raise TypeError("Error: invalid error model: %s" % error_model)
         else:
             self.outfile = self.wdir + outfile
 #        now append model type
 
 #        now self.outfile = /dir/namebase-Model
 #        if doesn't exist, append
-        print "??@@fsd",self.outfile
-        if not os.path.exists(self.outfile+".fna"):
+
+        if not os.path.exists(self.outfile + ".fna"):
             self.outfile = self.outfile + ".fna"
         else:
             version = 1
-            while os.path.exists(self.outfile + ".%s.fna" %version):
+            while os.path.exists(self.outfile + ".%s.fna" % version):
                 version = version + 1
-            self.outfile = self.outfile + ".%s.fna" %version
-        print "?????????????",self.outfile
+            self.outfile = self.outfile + ".%s.fna" % version
+
 
 
     def read_outfile(self):

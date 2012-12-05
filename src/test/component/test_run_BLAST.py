@@ -58,17 +58,20 @@ class TestRunBlast(unittest.TestCase):
         setting = Setting()
         infile_var = self.Blast_dir + "bIn"
 
-        self.record_index=SeqIO.index(infile_var, "fasta")
-        setting.add_all(blast_e_value=e_var, blast_wdir=self.Blast_dir, blast_infile=file_var,blast_outfile=outfile_var )
 
-        with self.assertRaises(IOError):
-            RunBlast.create_blast_from_file(setting_class=setting)
+        setting.add_all(blast_e_value=e_var, blast_wdir=self.Blast_dir,
+                        blast_infile=file_var, blast_outfile=outfile_var,
+                        blast_comparison_file=None)
 
-        setting.add("blast_infile","bIn")
-        blast = RunBlast.create_blast_from_file( setting)
+#        with self.assertRaises(IOError):
+#            RunBlast.create_blast_from_file(setting_class=setting)
+
+        setting.add("blast_infile", "bIn")
+        blast = RunBlast.create_blast_from_file(setting)
         self.assertEqual(blast.results, dict())
-
+        self.record_index = SeqIO.index(infile_var, "fasta")
         for key in self.record_index:
+#            print key
             self.assertEqual(str(self.record_index[key].seq), str(blast.record_index[key].seq))
             self.assertEqual(str(self.record_index[key].id), str(blast.record_index[key].id))
 
@@ -268,8 +271,8 @@ class TestRunBlast(unittest.TestCase):
 #        union = self.S3 | self.S4
         print(self.template_set_small)
         new_Blast = RunBlast(records=self.record_index, e_value=self.e_value_cut_off,
-            wdir=self.Blast_dir,outfile="BlastOut")
-        new_dict = new_Blast.init_dict(self.template_set_small,0)
+            wdir=self.Blast_dir, outfile="BlastOut")
+        new_dict = new_Blast.init_dict(self.template_set_small, 0)
 
         print(new_dict)
 #        new_dict=self.update_counter_from_set(new_dict, self.S3)
@@ -301,8 +304,8 @@ class TestRunBlast(unittest.TestCase):
                          })
 
         new_dict = RunBlast(records=self.record_index, e_value=self.e_value_cut_off,
-            wdir=self.Blast_dir,outfile="BlastOut")
-        default_dict = new_dict.init_dict(self.template_set_small,0)
+            wdir=self.Blast_dir, outfile="BlastOut")
+        default_dict = new_dict.init_dict(self.template_set_small, 0)
         self.assertEqual(expected, default_dict)
 #        print new_dict.e_value_cut_off
 #        print(new_dict.default_dict)
@@ -311,7 +314,7 @@ class TestRunBlast(unittest.TestCase):
 #        start with empty dictionary
         new_Blast = RunBlast(records=self.record_index, e_value=self.e_value_cut_off,
             wdir=self.Blast_dir, outfile="BlastOut")
-        new_dict = new_Blast.init_dict(self.template_set_small,0)
+        new_dict = new_Blast.init_dict(self.template_set_small, 0)
 #        now update with new values
         expected = dict({"GO:01":1,
                          "GO:03":2,
@@ -331,7 +334,7 @@ class TestRunBlast(unittest.TestCase):
                          "GO:05":2,
                          "GO:06":1,
                          "GO:07":1 })
-        new_dict = new_Blast.init_dict(self.template_set,0)
+        new_dict = new_Blast.init_dict(self.template_set, 0)
         new_Blast.update_counter_from_dictionaries(new_dict, self.template_set)
 
         self.assertEqual(expected, new_dict)
@@ -368,13 +371,13 @@ class TestRunBlast(unittest.TestCase):
     def test_output_csv(self):
 #        TODO add test code
         blast = RunBlast(records=self.record_index, e_value=self.e_value_cut_off, wdir=self.Blast_dir,
-                            infile=None,outfile="test.csv")
+                            infile=None, outfile="test.csv")
         data = dict({"GO:01":1,
                          "GO:03":2,
                          "GO:04":2,
                          "GO:05":1, })
-        blast.output_csv("Sample",data)
-        f = open(self.Blast_dir+"test.csv","r")
+        blast.output_csv("Sample", data)
+        f = open(self.Blast_dir + "test.csv", "r")
         expected_header = "GOterm,Sample\r\n"
         expected_content = ["GO:01,1\r\n",
                             "GO:03,2\r\n",
@@ -388,28 +391,28 @@ class TestRunBlast(unittest.TestCase):
                 self.assertIn(line, expected_content)
 
 
-        self.assertEqual(i,4)
-        os.remove(self.Blast_dir+"test.csv")
+        self.assertEqual(i, 4)
+        os.remove(self.Blast_dir + "test.csv")
 #        new_dict.output_csv(['Spam'] * 6 + ['Baked Beans'])
 
 
     def test_update_output_csv(self):
         new_dict = RunBlast(records=self.record_index, e_value=self.e_value_cut_off,
-            wdir=self.Blast_dir,outfile="test.csv")
+            wdir=self.Blast_dir, outfile="test.csv")
         data = dict({"GO:01":1,
                      "GO:03":2,
                      "GO:04":2,
                      "GO:05":1, })
-        new_dict.output_csv("Sample",data)
+        new_dict.output_csv("Sample", data)
         new_dict = RunBlast(records=self.record_index, e_value=self.e_value_cut_off,
-            wdir=self.Blast_dir,outfile="test2.csv", comparison_file="test.csv")
+            wdir=self.Blast_dir, outfile="test2.csv", comparison_file="test.csv")
         data = dict({"GO:01":7,
                      "GO:02":9,
                      "GO:04":2,
                      "GO:05":8, })
-        new_dict.update_output_csv("Species",data)
+        new_dict.update_output_csv("Species", data)
 
-        f = open(self.Blast_dir+"test2.csv","r")
+        f = open(self.Blast_dir + "test2.csv", "r")
         expected_header = "GOterm,Sample,Species\r\n"
         expected_content = ["GO:01,1,7\r\n",
                             "GO:03,2,0\r\n",
@@ -423,10 +426,10 @@ class TestRunBlast(unittest.TestCase):
             else:
                 self.assertIn(line, expected_content)
 
-        self.assertEqual(i,5)
+        self.assertEqual(i, 5)
 
         new_dict = RunBlast(records=self.record_index, e_value=self.e_value_cut_off,
-            wdir=self.Blast_dir,outfile="test3.csv", comparison_file= "test2.csv")
+            wdir=self.Blast_dir, outfile="test3.csv", comparison_file="test2.csv")
         new_data = dict({"GO:01":3,
                          "GO:02":1,
                          "GO:03":2,
@@ -434,9 +437,9 @@ class TestRunBlast(unittest.TestCase):
                          "GO:05":2,
                          "GO:06":1,
                          "GO:07":1 })
-        new_dict.update_output_csv("Something",new_data)
+        new_dict.update_output_csv("Something", new_data)
 
-        f = open(self.Blast_dir+"test3.csv","r")
+        f = open(self.Blast_dir + "test3.csv", "r")
         expected_header = "GOterm,Sample,Species,Something\r\n"
         expected_content = ["GO:01,1,7,3\r\n",
                             "GO:03,2,0,2\r\n",
@@ -452,10 +455,10 @@ class TestRunBlast(unittest.TestCase):
             else:
                 self.assertIn(line, expected_content)
 
-        self.assertEqual(i,7)
+        self.assertEqual(i, 7)
 
-        os.remove(self.Blast_dir+ "test.csv")
-        os.remove(self.Blast_dir+ "test2.csv")
-        os.remove(self.Blast_dir+ "test3.csv")
+        os.remove(self.Blast_dir + "test.csv")
+        os.remove(self.Blast_dir + "test2.csv")
+        os.remove(self.Blast_dir + "test3.csv")
 
 

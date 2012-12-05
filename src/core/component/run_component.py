@@ -50,11 +50,11 @@ class RunComponent(object):
                 raise IOError("Error: invalid program directory: %s" % self.pdir)
 
 
-    def _checkValue(self, s, convert):
+    def _check_value(self, s, convert):
 #        convert
         try:
             v = convert(s)
-            print s, v, type(s), type(v)
+#            print s, v, type(s), type(v)
             if str(v) != str(s):
                 raise ValueError("ValueError: %s " % s)
         except ValueError as e:
@@ -74,12 +74,6 @@ class RunComponent(object):
         """
 
 
-
-
-
-
-
-
         if infile.find(self.wdir) > -1:
             self.infile = infile
         else:
@@ -92,7 +86,7 @@ class RunComponent(object):
                 self.outfile = self.infile
             else:
                 self.outfile = self.infile[0:location]
-            print "qq", self.infile, self.wdir  , outfile_tag
+#            print "qq", self.infile, self.wdir  , outfile_tag
 
 
             if outfile_tag is not None:

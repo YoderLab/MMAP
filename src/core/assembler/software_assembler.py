@@ -49,12 +49,15 @@ class SoftwareAssembler(object):
     def update_glimmer_setting(self):
         self.setting.add("glimmer_infile", self.glimmer.infile)
         self.setting.add("glimmer_outfile", self.glimmer.outfile)
-        self.setting.add("extract_outfile", self.glimmer.orfs)
+        self.setting.add("extract_outfile", self.glimmer.orfs_file)
 
     def update_blast_setting(self):
-        self.setting.add("blast_infile", self.glimmer.orfs)
+        self.setting.add("blast_infile", self.glimmer.orfs_file)
         self.setting.add("blast_outfile", self.blast.outfile)
-
+        try:
+            self.setting.add("blast_merged_file", self.blast.merged_file)
+        except:
+            pass
 #    def update_mine_setting(self):
 #        self.setting.add("mine_infile", self.blast.outfile)
 
@@ -66,9 +69,15 @@ class SoftwareAssembler(object):
         self.update_glimmer_setting()
         self.blast = RunBlast.create_blast_from_setting(self.setting)
         self.update_blast_setting()
+
         if self.setting.get("blast_comparison_file") is not None:
             self.mine = RunMINE.create_mine_from_setting(self.setting)
-#        self.update_mine_setting()
+
+#        try:
+#            self.mine = RunMINE.create_mine_from_setting(self.setting)
+#        except StandardError as e:
+#            print e
+
 
 
     def run(self):
@@ -78,19 +87,19 @@ class SoftwareAssembler(object):
         file_tag = self.setting.get("wdir") + self.setting.get("metasim_outfile")
         if (self.metasim.check_outfiles_with_filetag_exist(file_tag)):
 
-            self.genovo.run(debug=False)
+            self.genovo.run(debug=0)
         else:
             #TODO: fix MetaSim outfile name (can't overwrite program default)
             #TODO: use -454 error model!!
-            raise(IOError("Missing MetaSim output %s" %file_tag))
+            raise(IOError("Missing MetaSim output %s" % file_tag))
 
         file_tag = self.setting.get("wdir") + self.setting.get("genovo_infile")
         if (self.genovo.check_outfiles_with_filetag_exist(file_tag) and
             self.genovo.is_file_exist(self.setting.get("genovo_outfile"))):
             # and os.path.exists(self.genovo.readFinalizeOutfile):
-            self.glimmer.run()
+            self.glimmer.run(1)
         else:
-            raise(IOError("Missing Genovo output %s \t %s" %(self.genovo.check_outfiles_with_filetag_exist(file_tag) ,
+            raise(IOError("Missing Genovo output %s \t %s" % (self.genovo.check_outfiles_with_filetag_exist(file_tag) ,
                                                              self.genovo.is_file_exist(self.setting.get("genovo_outfile"))
             )))
 
@@ -105,7 +114,7 @@ class SoftwareAssembler(object):
                 print "===running MINE==="
                 self.mine.run(1)
             else:
-                raise(IOError("Missing GO output\t %s" %self.setting.get("blast_outfile")))
+                raise(IOError("Missing GO output\t %s" % self.setting.get("blast_outfile")))
 
 
 

@@ -25,14 +25,14 @@ class RunGlimmer(RunComponent):
     """
 
 
-    def __init__(self, infile, pdir, wdir=None, outfile=None,  check_exist=True):
+    def __init__(self, infile, pdir, wdir=None, outfile=None, check_exist=True):
         """
         Constructor
         """
         #FIXME: check outfile name for wdir path before adding wdir to self.outfile
         self.all_exts = ALL_EXTS
         self.parameter_check(pdir, wdir, infile, outfile, check_exist, "_out")
-        self.generate_orfs_name( )
+        self.generate_orfs_name()
         self.glimmer = runExtProg(GLIMMER, pdir=self.pdir, length=2, check_OS=True)
         self.extract = runExtProg(EXTRACT, pdir=self.pdir, length=4, check_OS=True)
         self.init_prog()
@@ -63,8 +63,8 @@ class RunGlimmer(RunComponent):
     def init_prog(self):
         self.set_infile_name(self.infile)
         self.set_outfile_tag(self.outfile)
-        self.set_coords(self.coords)
-        self.set_orfs(self.orfs)
+        self.set_coords(self.coords_file)
+        self.set_orfs(self.orfs_file)
 
     def set_infile_name(self, infile):
         self.glimmer.set_param_at(infile, INFILE_POSITION)
@@ -94,21 +94,32 @@ class RunGlimmer(RunComponent):
             namebase = self.outfile
         else:
             namebase = self.outfile[0:location]
-        self.orfs = namebase + ".orfs"
-        self.coords = namebase + ".coords"
-#            print "!!!!!!", self.orfs
+        self.orfs_file = namebase + ".orfs"
+        self.coords_file = namebase + ".coords"
+#            print "!!!!!!", self.orfs_file
 
 
     def run(self, debug=False):
-        self.glimmer.run(debug)
-
         """
 #    TODO: once outfiles are created, use terminal command to extract ORFs and pipe to fasta for BLAST
 #        ./multi-extract tpall.fna iterated2.run1.predict > ~/Desktop/Pipeline/metaLem/data/Glimmer/mac/tpall_output.fasta
         """
+        print "Running Glimmer..."
+        self.glimmer.run(debug)
+        print "Running Glimmer extract..."
+
         self.extract.run(debug)
-        filehandler = open(self.orfs,'w')
-        filehandler.write (self.extract.output)
+        filehandler = open(self.orfs_file, 'w')
+        newLine = ""
+        count = 0
+
+        for line in self.extract.output:
+            if line.startswith(">"):
+                newLine += (line + "_" + str(count))
+                count += 1
+            else:
+                newLine += line
+        filehandler.write (newLine)
         filehandler.close()
 
     def get_switch(self):

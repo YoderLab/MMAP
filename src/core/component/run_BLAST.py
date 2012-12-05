@@ -22,25 +22,25 @@ class RunBlast(RunComponent):
 
     TODO(Steven Wu): copy/pasted from old main.py. Add test class
     """
-    def __init__(self, e_value, wdir, infile=None,  records=None, outfile=None, comparison_file=None):
+    def __init__(self, e_value, wdir, infile=None, records=None, outfile=None, comparison_file=None):
         """
         Constructor
         records: collection of Bio.SeqRecord.SeqRecord
                 can be created by Bio.SeqIO.index
                 OR dict(key=Bio.SeqRecord.SeqRecord, ...)
+        comparison_file = pre-exist result file
+        merged_file = merged result
         """
 #        print "weNFASMDN",outfile, wdir
         self.results = dict()
         self.wdir = wdir
+        self.e_value_cut_off = e_value
         self.record_index = records
         self.generate_outfile_name(infile, records, outfile)
         if comparison_file is not None:
-            self.comparison_file=self.wdir+comparison_file
+            self.comparison_file = self.wdir + comparison_file
             self.check_file_exist(self.comparison_file, True)
-
-        self.e_value_cut_off = e_value
-
-
+            self.merged_file = self.outfile + "_merge"
 
         self.all_exts = ALL_EXTS
 
@@ -73,7 +73,7 @@ class RunBlast(RunComponent):
     def run(self):
 
         print("Running AmiGO:BLAST")
-        if self.record_index==None:
+        if self.record_index == None:
             self.record_index = SeqIO.index(self.infile, "fasta")
 
         all_orfs = dict()
@@ -89,43 +89,46 @@ class RunBlast(RunComponent):
             self.results[key] = self.seq
 
 
-            all_orfs[key]=self.seq.all_terms
+            all_orfs[key] = self.seq.all_terms
 
         new_dict = self.init_dict(all_orfs, 0)
         self.counter = self.update_counter_from_dictionaries(new_dict, all_orfs)
 #        new_outfile = self.init_output(self.counter,0)
 #        self.sample = self.update_sample_from_counters(new_outfile, self.counter)
-        self.outfile = self.output_csv(self.infile, self.counter)
+#       hasattr
+
+        self.output_csv(self.infile, self.counter)
+        if hasattr(self, "comparison_file"):
+            print "PRINT self.comparison_file", self.comparison_file
+            self.update_output_csv(self.infile, self.counter)
 
     @classmethod
     def create_blast_from_setting(cls, setting_class):
         setting = setting_class.get_all_par("blast")
         blast = RunBlast.create_blast_from_file(setting)
         return blast
-        pass
+
 
 
     def init_dict(self, allterms, default_value=0):
         default_dict = dict()
         master_value = set([])
         for v in allterms.values():
-            print v
-            master_value=master_value | v
+            master_value = master_value | v
 
         for k in master_value:
         #            new_dict.setdefault(k, default_value)
-            default_dict[k]=default_value
+            default_dict[k] = default_value
         return default_dict
 
     def update_counter_from_dictionaries(self, counter, allterms):
     #        print allterms
     #        print(allterms.values())
         for v in allterms.values():
-            counter = self.update_counter_from_set(counter,v)
+            counter = self.update_counter_from_set(counter, v)
         return counter
 
     def update_counter_from_set(self, counter, each_set):
-        print "9876543",type (each_set)
         for k in each_set:
             counter[k] += 1
         return counter
@@ -138,20 +141,20 @@ class RunBlast(RunComponent):
         new_sample = dict()
         master_file = set([])
         for v in counter.values():
-            master_file=master_file | v
+            master_file = master_file | v
 
         for k in master_file:
         #            new_dict.setdefault(k, default_value)
-            new_sample[k]=default_value
+            new_sample[k] = default_value
         return new_sample
 
     def update_sample_from_counters(self, sample, counter):
         for v in counter.values():
-            sample = self.update_sample_from_set(sample, v)
+            sample = self._update_sample_from_set(sample, v)
 
-    def update_sample_from_set(self, sample, each_set):
+    def _update_sample_from_set(self, sample, each_set):
         for k in each_set:
-            sample[k]= sample[k]+1
+            sample[k] = sample[k] + 1
         return sample
     #        for i in self.results.values():
 #            print(i.all_terms)
@@ -168,71 +171,43 @@ class RunBlast(RunComponent):
         if os.path.exists(  full_file_path  ):
         """
 
-        if infile==None and records==None:
+        if infile == None and records == None:
             raise TypeError("Neither Blast infile nor records variable exists!!! ")
 
-        elif infile==None:
+        elif infile == None:
             now = datetime.datetime.now()
             namebase = now.strftime("%Y.%m.%d_%H.%M")
 
-        elif records==None:
+        elif records == None:
             if infile.find(self.wdir) > -1:
                 self.infile = infile
             else:
-                self.infile =  self.wdir +infile
+                self.infile = self.wdir + infile
             namebase = None
         else:
             raise TypeError("Blast infile and records both exist! Pick one!")
 
-#        self.generate_outfile_name(outfile, namebase)
-#
-
-
-
-#        if namebase ==None:
-#            location = self.infile.rfind(".")
-#            if location is -1:
-#                namebase = self.infile
-#            else:
-#                namebase = self.infile[0:location]
-#        if outfile==None:
-#            self.outfile = self.wdir + namebase
-#        else:
-#
-#            if outfile.endswith(".csv"):
-#                location = outfile.rfind(".")
-#                self.outfile = self.wdir +outfile[0:location]
-#            else:
-#                self.outfile = self.wdir + outfile
-#
-#        print self.wdir, namebase
         if outfile is not None:
             self.outfile = self.wdir + outfile
-        elif namebase ==None:
+        elif namebase == None:
             self.outfile = self.infile
         else:
             self.outfile = self.wdir + namebase
-        print "?1????????????",self.outfile
+
         if self.outfile.endswith(".csv"):
             location = self.outfile.rfind(".")
-            print location
             self.outfile = self.outfile[0:location]
 
-        print("?2???????????", self.outfile)
-        if not os.path.exists(self.outfile+".csv"):
-            self.outfile = self.outfile+".csv"
+        if not os.path.exists(self.outfile + ".csv"):
+            self.outfile = self.outfile + ".csv"
         else:
-#            location = self.outfile.rfind(".")
-#            if location is -1:
-#                self.outfile = self.outfile
-#            else:
-#
+
             version = 1
-            while os.path.exists(self.outfile + ".%s.csv" %version):
+            while os.path.exists(self.outfile + ".%s.csv" % version):
                 version = version + 1
 #            print "#####",self.outfile, location
-            self.outfile = self.outfile+ ".%s.csv" %version
-        print "?3????????????",self.outfile
+            self.outfile = self.outfile + ".%s.csv" % version
+
 
     def output_csv(self, header, template):
         """template should be a dictionary object
@@ -244,7 +219,7 @@ class RunBlast(RunComponent):
             firstrow = ["GOterm", header]
             writer.writerow(firstrow)
             for key in template.iterkeys():
-                temp=[key, template[key]]
+                temp = [key, template[key]]
 
                 writer.writerow(temp)
 
@@ -255,28 +230,29 @@ class RunBlast(RunComponent):
         header = header
         existing_csv = "filename" full path
         """
-        with open(self.outfile, 'wb') as csvfile:
+        with open(self.merged_file, 'wb') as csvfile:
             writer = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_NONE)
             all_GOterms = set()
             with open(self.comparison_file, 'rb') as f:
                 reader = csv.reader(f)
                 for i, row in enumerate(reader):
-                    if i==0:
-                        zeroes = len(row)-1
+                    if i == 0:
+                        zeroes = len(row) - 1
                         row.append(header)
                     else:
                         key = row[0]
                         all_GOterms.add(key)
-                        if template.has_key(key):
+                        if key in template:
                             row.append(template[key])
                         else:
                             row.append(0)
+                    row.pop(0)
                     writer.writerow(row)
                 print all_GOterms
                 for key in template.iterkeys():
                     if key not in all_GOterms:
-                        newlist = [key]
-                        newlist.extend(["0"]*zeroes)
+#                        newlist = [key]
+                        newlist = (["0"] * zeroes)
                         newlist.append(template[key])
                         print newlist
                         writer.writerow(newlist)

@@ -59,21 +59,23 @@ def setup_database():
 def main():
     print __name__
 
+    test_run_dir = path_utils.get_data_dir() + "test_run/"
+    file = test_run_dir + "first_test"
 
-    file="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/test_run/first_test"
+
     test = ControlFile()
     test.add_all(file)
-    setting=Setting.create_setting_from_controlfile(test)
-    print setting.all_setting
+    setting = Setting.create_setting_from_controlfile(test)
+    print file, setting.all_setting
     assembler = SoftwareAssembler(setting)
 #    assembler.run()
 
 
-    file="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/test_run/second_test"
+    file = test_run_dir + "second_test"
     test = ControlFile()
     test.add_all(file)
-    setting=Setting.create_setting_from_controlfile(test)
-    print setting.all_setting
+    setting = Setting.create_setting_from_controlfile(test)
+    print file, setting.all_setting
     assembler = SoftwareAssembler(setting)
     assembler.run()
 

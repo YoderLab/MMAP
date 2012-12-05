@@ -66,17 +66,15 @@ class RunGenovo(RunComponent):
 
     def set_number_of_iter(self, param):
 
-        try:
-            v = int(param)
-            print param, v
-            if str(v) != str(param):
-                raise ValueError("ValueError: %s " % param)
-        except ValueError as e:
-            raise ValueError("ValueError: %s " % param)
+        v = self._check_value(param, int)
+#        try:
+#            v = int(param)
+#            if str(v) != str(param):
+#                raise ValueError("ValueError: %s " % param)
+#        except ValueError as e:
+#            raise ValueError("ValueError: %s " % param)
         #
         if v > 0:
-
-            #        if int(param):
             self.assemble.set_param_at(v, ASSEMBLE_NO_ITER_POSITION)
         else:
             raise ValueError("Error: number of reads set to : %s" % param)
@@ -97,22 +95,19 @@ class RunGenovo(RunComponent):
 
     def set_cutoff(self, param):
 
-
-        try:
-            v = int(param)
-            print param, v
-            if str(v) != str(param):
-                raise ValueError("ValueError: %s " % param)
-        except ValueError as e:
-            if type(param) is str:
-                raise TypeError("TypeError: %s is str" % param)
-            else:
-                raise ValueError("ValueError: %s " % param)
+        v = self._check_value(param, int)
+#        try:
+#            v = int(param)
+#            if str(v) != str(param):
+#                raise ValueError("ValueError: %s " % param)
+#        except ValueError as e:
+#            if type(param) is str:
+#                raise TypeError("TypeError: %s is str" % param)
+#            else:
+#                raise ValueError("ValueError: %s " % param)
 
             #
         if v > 0:
-
-            #        if int(param):
             self.finalize.set_param_at(v, FINALIZE_CUTOFF_POSITION)
         else:
             raise ValueError("Error: cutoff set to : %s" % param)
@@ -129,6 +124,8 @@ class RunGenovo(RunComponent):
         return self.record_index
 
     def run(self, debug=False):
+        print "Running Genovo assemble..."
         self.assemble.run(debug)
+        print "Running Genovo finalize..."
         self.finalize.run(debug)
 

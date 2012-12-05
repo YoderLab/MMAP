@@ -69,28 +69,30 @@ class Setting(object):
     def create_setting_from_controlfile(cls, controlfile):
 
 
+        pdir = controlfile.get("parent_directory")
 
-
-        setting = cls(parent_directory=controlfile.get("parent_directory"),
+        setting = cls(parent_directory=pdir,
             metasim_pdir=controlfile.get("metasim_pdir"),
             metasim_model_infile=controlfile.get("metasim_model_infile"),
             metasim_taxon_infile=controlfile.get("metasim_taxon_infile"),
             metasim_no_reads=controlfile.get("metasim_no_reads"),
             genovo_infile=controlfile.get("genovo_infile"),
-            genovo_pdir=controlfile.get("genovo_pdir"),
+            genovo_pdir=pdir + controlfile.get("genovo_pdir"),
             genovo_noI=controlfile.get("genovo_noI"),
             genovo_thresh=controlfile.get("genovo_thresh"),
-            glimmer_pdir=controlfile.get("glimmer_pdir"),
-            blast_wdir=controlfile.get("wdir"),
-            mine_pdir=controlfile.get("mine_pdir"),
+            glimmer_pdir=pdir + controlfile.get("glimmer_pdir"),
+            blast_wdir=pdir + controlfile.get("wdir"),
+            mine_pdir=pdir + controlfile.get("mine_pdir"),
             mine_comparison_style=controlfile.get("mine_comparison_style"))
 
-        keys=controlfile.all_arguments.keys()
+        keys = controlfile.all_arguments.keys()
 #        print keys
         for parameter in list_all_optionals:
-
             if parameter in keys:
                 setting.add(parameter, controlfile.get(parameter))
+            if parameter is "wdir":
+                setting.add(parameter, pdir + controlfile.get(parameter))
+
 #                print parameter
 
 
@@ -161,7 +163,7 @@ class Setting(object):
 
         if program_name is "mine":
             if self.all_setting["mine_infile"] is None and self.all_setting["blast_comparison_file"] is not None:
-                self.all_setting["mine_infile"] = self.all_setting["blast_outfile"]
+                self.all_setting["mine_infile"] = self.all_setting["blast_merged_file"]
 
 
         if self.all_setting["checkExist"] is None:

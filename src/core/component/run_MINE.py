@@ -24,7 +24,7 @@ CV_THRESHOLD_POSITION = 3 + offset
 CLUMPS_POSITION = 4 + offset
 JOB_ID_POSITION = 5 + offset
 
-ALL_EXTS = ["Results.csv", "Status.txt"]
+ALL_EXTS = [",Results.csv", ",Status.txt"]
 
 class RunMINE(RunComponent):
     """
@@ -35,24 +35,45 @@ class RunMINE(RunComponent):
         """
         Constructor
         """
-        self.infile = wdir + infile
-        self.outfile = jobID
+#        self.infile = wdir + infile
+#        self.outfile = jobID
+        if jobID is None:
+            self.jobID = "out"
+        else:
+            self.jobID = jobID
         self.all_exts = ALL_EXTS
-        self.parameter_check(pdir, wdir, infile, self.outfile, check_exist, jobID)
-        if self.check_outfiles_with_filetag_exist(self.outfile) and check_exist:
-            raise IOError("Warning: outfiles exist!")
+        self.parameter_check(pdir, wdir, infile, infile, check_exist, jobID)
+#        if self.check_outfiles_with_filetag_exist(self.outfile) and check_exist:
+#            raise IOError("Warning: outfiles exist!")
         self.mine = runExtProg(MINE, pdir=self.pdir, length=5 + offset , check_OS=True)
         self.mine.set_param_at("-jar", 1)
         self.mine.set_param_at("MINE.jar", 2)
         self.init_prog(comparison, cv, c)
 
+#
+#    @classmethod
+#    def create_mine(cls, setting):
+#        """
+#        Class method
+#        Create RunGlimmer from dict()
+#        """
+#        mine = cls(infile=setting.get("mine_infile"),
+#            pdir=setting.get("mine_pdir"),
+#            wdir=setting.get("wdir"),
+#            comparison=setting.get("mine_comparison_style"),
+#            cv=setting.get("mine_cv"),
+#            c=setting.get("mine_clumps"),
+#            jobID=setting.get("mine_outfile"),
+#            check_exist=setting.get("check_exist"))
+#        return mine
 
     @classmethod
-    def create_mine(cls, setting):
+    def create_mine_from_setting(cls, setting_class):
         """
         Class method
-        Create RunGlimmer from dict()
+        Create RunMINE from Setting class
         """
+        setting = setting_class.get_all_par("mine")
         mine = cls(infile=setting.get("mine_infile"),
             pdir=setting.get("mine_pdir"),
             wdir=setting.get("wdir"),
@@ -63,19 +84,9 @@ class RunMINE(RunComponent):
             check_exist=setting.get("check_exist"))
         return mine
 
-    @classmethod
-    def create_mine_from_setting(cls, setting_class):
-        """
-        Class method
-        Create RunMINE from Setting class
-        """
-        setting = setting_class.get_all_par("mine")
-        mine = RunMINE.create_mine(setting)
-        return mine
-
     def init_prog(self, style, cv, c):
         self.set_infile_name(self.infile)
-        self.set_outfile_tag(self.outfile)
+        self.set_outfile_tag()
         self.set_comparison_style(style)
         self.set_cv_threshold(cv)
         self.set_clumping_factor(c)
@@ -95,7 +106,7 @@ class RunMINE(RunComponent):
 #           raise ValueError("Error: comparison style is currently set to invalid setting: %s. Must be set to -x, -y, or -z." % style
 
     def set_cv_threshold(self, c):
-        v = self._checkValue(c, float)
+        v = self._check_value(c, float)
             #
         if 1 > v >= 0 and isinstance(v, float):
             self.mine.set_param_at(v, CV_THRESHOLD_POSITION)
@@ -104,15 +115,18 @@ class RunMINE(RunComponent):
 
 
     def set_clumping_factor(self, c):
-        v = self._checkValue(c, int)
+        v = self._check_value(c, int)
         if v > 0 and isinstance(v, (int, long)):
             self.mine.set_param_at(v, CLUMPS_POSITION)
         else:
             raise ValueError("Error: clumping factor set to : %s" % v)
 
 
-    def set_outfile_tag(self, jobID):
-        self.mine.set_param_at(jobID, JOB_ID_POSITION)
+    def set_outfile_tag(self):
+        if self.jobID is None:
+            self.jobID = "out"
+        arg = "id=%s" % self.jobID
+        self.mine.set_param_at(arg, JOB_ID_POSITION)
 
 #def read_outfile(self):
 #        """
