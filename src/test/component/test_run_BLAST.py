@@ -13,6 +13,8 @@ from core.utils import path_utils
 from core.component.run_BLAST import RunBlast
 from Bio import SeqIO
 from core.sequence import Sequence
+from core.file_utility import append_before_ext
+from core.component import run_BLAST
 
 
 
@@ -56,17 +58,16 @@ class TestRunBlast(unittest.TestCase):
         e_var = 1e-50
         outfile_var = "foolname"
         setting = Setting()
-        infile_var = self.Blast_dir + "bIn"
-
 
         setting.add_all(blast_e_value=e_var, blast_wdir=self.Blast_dir,
                         blast_infile=file_var, blast_outfile=outfile_var,
                         blast_comparison_file=None)
 
-#        with self.assertRaises(IOError):
-#            RunBlast.create_blast_from_file(setting_class=setting)
+        with self.assertRaises(IOError):
+            RunBlast.create_blast_from_file(setting_class=setting)
 
-        setting.add("blast_infile", "bIn")
+        infile_var = self.Blast_dir + "bIn"
+        setting.add("blast_infile", infile_var)
         blast = RunBlast.create_blast_from_file(setting)
         self.assertEqual(blast.results, dict())
         self.record_index = SeqIO.index(infile_var, "fasta")
@@ -410,15 +411,22 @@ class TestRunBlast(unittest.TestCase):
                      "GO:02":9,
                      "GO:04":2,
                      "GO:05":8, })
+        new_dict.output_csv("Species", data)
         new_dict.update_output_csv("Species", data)
 
-        f = open(self.Blast_dir + "test2.csv", "r")
-        expected_header = "GOterm,Sample,Species\r\n"
-        expected_content = ["GO:01,1,7\r\n",
-                            "GO:03,2,0\r\n",
-                            "GO:04,2,2\r\n",
-                            "GO:05,1,8\r\n",
-                            "GO:02,0,9\r\n"]
+        f = open(self.Blast_dir + append_before_ext("test2.csv", run_BLAST.MINE_TAG), "r")
+#        expected_header = "GOterm,Sample,Species\r\n"
+#        expected_content = ["GO:01,1,7\r\n",
+#                            "GO:03,2,0\r\n",
+#                            "GO:04,2,2\r\n",
+#                            "GO:05,1,8\r\n",
+#                            "GO:02,0,9\r\n"]
+        expected_header = "Sample,Species\r\n"
+        expected_content = ["1,7\r\n",
+                            "2,0\r\n",
+                            "2,2\r\n",
+                            "1,8\r\n",
+                            "0,9\r\n"]
 
         for i, line in enumerate(f):
             if i == 0:
@@ -429,7 +437,7 @@ class TestRunBlast(unittest.TestCase):
         self.assertEqual(i, 5)
 
         new_dict = RunBlast(records=self.record_index, e_value=self.e_value_cut_off,
-            wdir=self.Blast_dir, outfile="test3.csv", comparison_file="test2.csv")
+            wdir=self.Blast_dir, outfile="test3.csv", comparison_file="test2_MINE.csv")
         new_data = dict({"GO:01":3,
                          "GO:02":1,
                          "GO:03":2,
@@ -437,17 +445,18 @@ class TestRunBlast(unittest.TestCase):
                          "GO:05":2,
                          "GO:06":1,
                          "GO:07":1 })
+        new_dict.output_csv("Something", new_data)
         new_dict.update_output_csv("Something", new_data)
 
-        f = open(self.Blast_dir + "test3.csv", "r")
-        expected_header = "GOterm,Sample,Species,Something\r\n"
-        expected_content = ["GO:01,1,7,3\r\n",
-                            "GO:03,2,0,2\r\n",
-                            "GO:04,2,2,2\r\n",
-                            "GO:05,1,8,2\r\n",
-                            "GO:02,0,9,1\r\n",
-                            "GO:06,0,0,1\r\n",
-                            "GO:07,0,0,1\r\n"]
+        f = open(self.Blast_dir + append_before_ext("test3.csv", run_BLAST.MINE_TAG), "r")
+        expected_header = "Sample,Species,Something\r\n"
+        expected_content = ["1,7,3\r\n",
+                            "2,0,2\r\n",
+                            "2,2,2\r\n",
+                            "1,8,2\r\n",
+                            "0,9,1\r\n",
+                            "0,0,1\r\n",
+                            "0,0,1\r\n"]
 
         for i, line in enumerate(f):
             if i == 0:

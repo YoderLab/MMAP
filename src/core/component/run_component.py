@@ -51,7 +51,7 @@ class RunComponent(object):
 
 
     def check_valid_value(self, s, convert):
-#        convert
+#        FIXME: handle int/float rounding and "int"/"float" properly
         try:
             v = convert(s)
 #            print s, v, type(s), type(v)

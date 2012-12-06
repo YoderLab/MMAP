@@ -3,16 +3,19 @@ Created on Feb 13, 2012
 
 @author: Steven Wu
 """
-import os
 from Bio import SeqIO
+from core.component.run_component import RunComponent
+from core.connector import go_connector
+
+from core.sequence import Sequence
+from core.setting import Setting
 import csv
 import datetime
-from core.connector import go_connector
-from core.sequence import Sequence
-from core.component.run_component import RunComponent
-from core.setting import Setting
+import os
+from core import file_utility
 
 ALL_EXTS = [".csv"]
+MINE_TAG = "_MINE"
 
 class RunBlast(RunComponent):
     """
@@ -40,7 +43,7 @@ class RunBlast(RunComponent):
         if comparison_file is not None:
             self.comparison_file = self.wdir + comparison_file
             self.check_file_exist(self.comparison_file, True)
-            self.merged_file = self.outfile + "_merge"
+            self.merged_file = file_utility.append_before_ext(self.outfile , MINE_TAG)
 
         self.all_exts = ALL_EXTS
 
@@ -52,22 +55,33 @@ class RunBlast(RunComponent):
         Create RunGlimmer from Setting class
         """
 #        print setting_class.all_setting
-#        filename =setting_class.get("blast_infile")
-#        if os.path.exists(filename):
-#            record_index=SeqIO.index(filename, "fasta")
+        filename = setting_class.get("blast_infile")
+        if os.path.exists(filename):
+            record_index = SeqIO.index(filename, "fasta")
+            blast = cls(
+                e_value=setting_class.get("blast_e_value"),
+                wdir=setting_class.get("blast_wdir"),
+#                infile=setting_class.get("blast_infile"),
+                records=record_index,
+                outfile=setting_class.get("blast_outfile"),
+                comparison_file=setting_class.get("blast_comparison_file"))
+            return blast
+        else:
+            raise IOError("Blast infile %s does not exist!!! " % filename)
+
+
+    @classmethod
+    def create_blast_from_setting(cls, setting_class):
+
+        setting = setting_class.get_all_par("blast")
+
         blast = cls(
-            e_value=setting_class.get("blast_e_value"),
-            wdir=setting_class.get("blast_wdir"),
-            infile=setting_class.get("blast_infile"),
-            outfile=setting_class.get("blast_outfile"),
-            comparison_file=setting_class.get("blast_comparison_file"))
+            e_value=setting.get("blast_e_value"),
+            wdir=setting.get("blast_wdir"),
+            infile=setting.get("blast_infile"),
+            outfile=setting.get("blast_outfile"),
+            comparison_file=setting.get("blast_comparison_file"))
         return blast
-#        else:
-#            raise IOError("Blast infile %s does not exist!!! " % filename)
-#        setting = setting_class.get_all_par("glimmer")
-#        glimmer = RunGlimmer.create_glimmer(setting)
-
-
 
 
     def run(self):
@@ -102,11 +116,6 @@ class RunBlast(RunComponent):
             print "PRINT self.comparison_file", self.comparison_file
             self.update_output_csv(self.infile, self.counter)
 
-    @classmethod
-    def create_blast_from_setting(cls, setting_class):
-        setting = setting_class.get_all_par("blast")
-        blast = RunBlast.create_blast_from_file(setting)
-        return blast
 
 
 
@@ -246,7 +255,7 @@ class RunBlast(RunComponent):
                             row.append(template[key])
                         else:
                             row.append(0)
-                    row.pop(0)
+#                    row.pop(0)
                     writer.writerow(row)
                 print all_GOterms
                 for key in template.iterkeys():
@@ -256,6 +265,51 @@ class RunBlast(RunComponent):
                         newlist.append(template[key])
                         print newlist
                         writer.writerow(newlist)
+
+    def merge_output_csv_to_MINE(self, file1, file2, outfile, isMine=False):
+
+        template = dict()
+        with open(file2, 'rb') as f:
+            reader = csv.reader(f)
+            for i, row in enumerate(reader):
+                if i is 0:
+                    template_zeroes = len(row) - 1
+                    template_name = row[1:]
+                else:
+                    template[row[0]] = row[1:]
+
+        with open(outfile, 'wb') as csvfile:
+            writer = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_NONE)
+            all_GOterms = set()
+            with open(file1, 'rb') as f:
+                reader = csv.reader(f)
+                for i, row in enumerate(reader):
+                    if i == 0:
+                        zeroes = len(row) - 1
+                        row.append(file2)
+#                        row = template_name.append(file2)
+                    else:
+                        key = row[0]
+                        all_GOterms.add(key)
+                        if key in template:
+                            row.extend(template[key])
+                        else:
+                            row.extend((["0"] * template_zeroes))
+                    if isMine:
+                        row.pop(0)
+                    print row
+                    writer.writerow(row)
+                print "A", all_GOterms
+                for key in template.iterkeys():
+                    if key not in all_GOterms:
+                        newlist = []
+                        if not isMine:
+                            newlist.append(key)
+                        newlist.extend((["0"] * zeroes))
+                        newlist.extend(template[key])
+                        print newlist
+                        writer.writerow(newlist)
+
 #
 #                    adder = csv.reader(template)
 #

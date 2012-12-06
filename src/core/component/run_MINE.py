@@ -85,19 +85,14 @@ class RunMINE(RunComponent):
         return mine
 
     def init_prog(self, style, cv, c):
-        self.set_infile_name(self.infile)
+        self.set_infile_name()
         self.set_outfile_tag()
         self.set_comparison_style(style)
         self.set_cv_threshold(cv)
         self.set_clumping_factor(c)
 #
-    def set_infile_name(self, infile):
-        """
-        type anything here
-        TODO: check valid infile, infile exist or not
-        """
-        infile = "%s" % self.infile
-        self.mine.set_param_at(infile, INFILE_POSITION)
+    def set_infile_name(self):
+        self.mine.set_param_at(self.infile, INFILE_POSITION)
 
     def set_comparison_style(self, style):
 #        if set to acceptable parameter (3 choices),
@@ -107,7 +102,6 @@ class RunMINE(RunComponent):
 
     def set_cv_threshold(self, c):
         v = self.check_valid_value(c, float)
-            #
         if 1 > v >= 0 and isinstance(v, float):
             self.mine.set_param_at(v, CV_THRESHOLD_POSITION)
         else:

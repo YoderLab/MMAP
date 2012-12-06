@@ -60,9 +60,9 @@ def main():
     print __name__
 
     test_run_dir = path_utils.get_data_dir() + "test_run/"
+
+
     file = test_run_dir + "first_test"
-
-
     test = ControlFile()
     test.add_all(file)
     setting = Setting.create_setting_from_controlfile(test)
@@ -80,7 +80,65 @@ def main():
     assembler.run()
 
 
+def mainBeachMark1():
+    print __name__
+
+    test_run_dir = path_utils.get_data_dir() + "benchMark1/"
+
+#
+#    file = test_run_dir + "primateA/benchMarkControl1"
+#    test = ControlFile()
+#    test.add_all(file)
+#    setting = Setting.create_setting_from_controlfile(test)
+#    print file, setting.all_setting
+#    assembler = SoftwareAssembler(setting)
+#    assembler.run()
+
+    file = test_run_dir + "primateB/benchMarkControl1"
+    test = ControlFile()
+    test.add_all(file)
+    setting = Setting.create_setting_from_controlfile(test)
+    print file, setting.all_setting
+    assembler = SoftwareAssembler(setting)
+    assembler.runMine()
+
+
+    file = test_run_dir + "FPV/benchMarkControl1"
+    test = ControlFile()
+    test.add_all(file)
+    setting = Setting.create_setting_from_controlfile(test)
+    print file, setting.all_setting
+    assembler = SoftwareAssembler(setting)
+#    assembler.run()
+
+
+    file = test_run_dir + "primateC/benchMarkControl1"
+    test = ControlFile()
+    test.add_all(file)
+    setting = Setting.create_setting_from_controlfile(test)
+    print file, setting.all_setting
+    assembler = SoftwareAssembler(setting)
+#    assembler.run()
+
+    file = test_run_dir + "primateD/benchMarkControl1"
+    test = ControlFile()
+    test.add_all(file)
+    setting = Setting.create_setting_from_controlfile(test)
+    print file, setting.all_setting
+    assembler = SoftwareAssembler(setting)
+#    assembler.run()
+
+#    file = test_run_dir + "primateE/benchMarkControl1"
+#    test = ControlFile()
+#    test.add_all(file)
+#    setting = Setting.create_setting_from_controlfile(test)
+#    print file, setting.all_setting
+#    assembler = SoftwareAssembler(setting)
+#    assembler.run()
+
+
+
 if __name__ == "__main__":
-    main()
+    mainBeachMark1()
 
 

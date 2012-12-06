@@ -86,7 +86,6 @@ class SoftwareAssembler(object):
         #TODO: add metasim.run back later.
         file_tag = self.setting.get("wdir") + self.setting.get("metasim_outfile")
         if (self.metasim.check_outfiles_with_filetag_exist(file_tag)):
-
             self.genovo.run(debug=0)
         else:
             #TODO: fix MetaSim outfile name (can't overwrite program default)
@@ -95,16 +94,14 @@ class SoftwareAssembler(object):
 
         file_tag = self.setting.get("wdir") + self.setting.get("genovo_infile")
         if (self.genovo.check_outfiles_with_filetag_exist(file_tag) and
-            self.genovo.is_file_exist(self.setting.get("genovo_outfile"))):
-            # and os.path.exists(self.genovo.readFinalizeOutfile):
+                self.genovo.is_file_exist(self.setting.get("genovo_outfile"))):
             self.glimmer.run(0)
         else:
-            raise(IOError("Missing Genovo output %s \t %s" % (self.genovo.check_outfiles_with_filetag_exist(file_tag) ,
-                                                             self.genovo.is_file_exist(self.setting.get("genovo_outfile"))
-            )))
+            raise(IOError("Missing Genovo output %s \t %s" %
+                          (self.genovo.check_outfiles_with_filetag_exist(file_tag) ,
+                          self.genovo.is_file_exist(self.setting.get("genovo_outfile")))))
 
         if self.glimmer.check_outfiles_with_filetag_exist(self.setting.get("glimmer_outfile")):
-#            self.blast = RunBlast.create_blast_from_setting(self.setting)
             self.blast.run()
         else:
             raise(IOError("Missing Glimmer output"))
@@ -116,6 +113,28 @@ class SoftwareAssembler(object):
             else:
                 raise(IOError("Missing GO output\t %s" % self.setting.get("blast_outfile")))
 
+
+    def runMine(self):
+
+        f1 = "/home/sw167/Postdoc/Project_Lemur/MMAP/data/benchMark1/primateA/primateA_out_out.orfs.csv"
+        f2 = "/home/sw167/Postdoc/Project_Lemur/MMAP/data/benchMark1/primateB/primateB_out_out.orfs.csv"
+        f3 = "/home/sw167/Postdoc/Project_Lemur/MMAP/data/benchMark1/primateC/primateC_out_out.orfs.csv"
+        f4 = "/home/sw167/Postdoc/Project_Lemur/MMAP/data/benchMark1/primateD/primateD_out_out.orfs.csv"
+        f5 = "/home/sw167/Postdoc/Project_Lemur/MMAP/data/benchMark1/FPV/FPV-454_out_out.orfs.csv"
+
+        f12 = "/home/sw167/Postdoc/Project_Lemur/MMAP/data/benchMark1/f12.csv"
+        f123 = "/home/sw167/Postdoc/Project_Lemur/MMAP/data/benchMark1/f123.csv"
+        f1234 = "/home/sw167/Postdoc/Project_Lemur/MMAP/data/benchMark1/f1234.csv"
+        f12345 = "/home/sw167/Postdoc/Project_Lemur/MMAP/data/benchMark1/primateB/f12345.csv"
+#        self.blast.merge_output_csv_to_MINE(f1, f2, f12, isMine=False)
+#        self.blast.merge_output_csv_to_MINE(f12, f3, f123, isMine=False)
+#        self.blast.merge_output_csv_to_MINE(f123, f4, f1234, isMine=False)
+#        self.blast.merge_output_csv_to_MINE(f1234, f5, f12345, isMine=True)
+
+        self.setting.add("mine_infile", f12345)
+        self.mine = RunMINE.create_mine_from_setting(self.setting)
+#        self.mine.infile = outfile
+        self.mine.run(1)
 
 
 
