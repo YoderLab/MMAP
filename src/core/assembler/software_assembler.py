@@ -125,16 +125,16 @@ class SoftwareAssembler(object):
         f12 = "/home/sw167/Postdoc/Project_Lemur/MMAP/data/benchMark1/f12.csv"
         f123 = "/home/sw167/Postdoc/Project_Lemur/MMAP/data/benchMark1/f123.csv"
         f1234 = "/home/sw167/Postdoc/Project_Lemur/MMAP/data/benchMark1/f1234.csv"
-        f12345 = "/home/sw167/Postdoc/Project_Lemur/MMAP/data/benchMark1/primateB/f12345.csv"
-#        self.blast.merge_output_csv_to_MINE(f1, f2, f12, isMine=False)
-#        self.blast.merge_output_csv_to_MINE(f12, f3, f123, isMine=False)
-#        self.blast.merge_output_csv_to_MINE(f123, f4, f1234, isMine=False)
-#        self.blast.merge_output_csv_to_MINE(f1234, f5, f12345, isMine=True)
+        f12345 = "/home/sw167/Postdoc/Project_Lemur/MMAP/data/benchMark1/f12345.csv"
+        self.blast.merge_output_csv_to_MINE(f12, [f1, f2])
+        self.blast.merge_output_csv_to_MINE(f123, [f1, f3, f4])
+        self.blast.merge_output_csv_to_MINE(f1234, [f1, f2, f3, f4])
+        self.blast.merge_output_csv_to_MINE(f12345, [f1, f2, f3, f4, f5])
 
-        self.setting.add("mine_infile", f12345)
-        self.mine = RunMINE.create_mine_from_setting(self.setting)
-#        self.mine.infile = outfile
-        self.mine.run(1)
+#        self.setting.add("mine_infile", f12345)
+#        self.mine = RunMINE.create_mine_from_setting(self.setting)
+##        self.mine.infile = outfile
+#        self.mine.run(1)
 
 
 

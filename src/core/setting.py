@@ -1,7 +1,8 @@
+from core.controlfile import ControlFile
 
 __author__ = 'erinmckenney'
 #infile, pdir, wdir, comparison, cv=0, c=15, outfile, check_exist=True
-list_essential_shared = ["parent_directory"]
+list_essential_shared = ["parent_directory", "wdir"]
 list_essential_metasim_only = ["metasim_pdir", "metasim_model_infile", "metasim_taxon_infile", "metasim_no_reads"]
 list_essential_genovo_only = ["genovo_infile", "genovo_pdir", "genovo_noI", "genovo_thresh"]
 list_essential_glimmer_only = ["glimmer_pdir"]  # dont need outfile
@@ -16,7 +17,7 @@ list_all_essentials.extend(list_essential_glimmer_only)
 list_all_essentials.extend(list_essential_blast_only)
 list_all_essentials.extend(list_essential_mine_only)
 
-list_optional_shared = ["wdir", "checkExist"]
+list_optional_shared = ["checkExist"]
 list_optional_metasim_only = ["metasim_outfile"]
 list_optional_genovo_only = ["genovo_outfile"]
 list_optional_glimmer_only = ["glimmer_infile", "glimmer_outfile", "extract_outfile"]
@@ -66,13 +67,17 @@ class Setting(object):
 
 
     @classmethod
-    def create_setting_from_controlfile(cls, controlfile):
+    def create_setting_from_file(cls, filepath):
 
+
+        controlfile = ControlFile()
+        controlfile.add_all(filepath)
 
         pdir = controlfile.get("parent_directory")
 
         setting = cls(parent_directory=pdir,
-            metasim_pdir=controlfile.get("metasim_pdir"),
+            wdir=pdir + controlfile.get("wdir"),
+            metasim_pdir=pdir + controlfile.get("metasim_pdir"),
             metasim_model_infile=controlfile.get("metasim_model_infile"),
             metasim_taxon_infile=controlfile.get("metasim_taxon_infile"),
             metasim_no_reads=controlfile.get("metasim_no_reads"),
@@ -81,7 +86,6 @@ class Setting(object):
             genovo_noI=controlfile.get("genovo_noI"),
             genovo_thresh=controlfile.get("genovo_thresh"),
             glimmer_pdir=pdir + controlfile.get("glimmer_pdir"),
-            blast_wdir=pdir + controlfile.get("wdir"),
             mine_pdir=pdir + controlfile.get("mine_pdir"),
             mine_comparison_style=controlfile.get("mine_comparison_style"))
 
@@ -90,8 +94,6 @@ class Setting(object):
         for parameter in list_all_optionals:
             if parameter in keys:
                 setting.add(parameter, controlfile.get(parameter))
-            if parameter is "wdir":
-                setting.add(parameter, pdir + controlfile.get(parameter))
 
 #                print parameter
 
@@ -131,25 +133,34 @@ class Setting(object):
 #        print "Q", key, type(key), self.all_setting[key]
         return self.all_setting[key]
 
-    def check_all_optional_parameter(self, program_name, is_all_exist, optional):
+    def get_all_par(self, program):
+
+        self._get_par_program(program)
+
+        return self.all_setting
+
+
+
+    def _check_essential_keys(self, program_name):
+        par = list_ess_par[program_name] + list_ess_par["shared"]
+        for v in par:
+            isExist = self._check_variables_exist(v)
+            if isExist == False:
+#                print("==Error== %s doesn't exist" % v)
+                raise KeyError("not all key exist: %s" % v)
+
+
+    def _check_all_optional_keys(self, program_name):
         """
         default glimmer_infile = genove_outfile
         default checkExist = Ture (not None)
         """
-        if is_all_exist:
-
-            for c in optional:
-                """
-                TODO: error from raise, not here. 
-                is_all_exist is a boolean, doesn't contain any info, 
-                therefore we need to go one level above
-                """
-                if self.debug:
-                    print ("checking %s" % c)
-                if not self._check_variables_exist(c):
-                    self.add(c, None)
-        else:
-            raise KeyError("not all key exist")
+        optional = list_optional_par[program_name] + list_optional_shared
+        for c in optional:
+            if self.debug:
+                print ("checking %s" % c)
+            if not self._check_variables_exist(c):
+                self.add(c, None)
 
         if program_name is "glimmer":
             if self.all_setting["glimmer_infile"] is None:
@@ -169,12 +180,7 @@ class Setting(object):
         if self.all_setting["checkExist"] is None:
             self.all_setting["checkExist"] = True
 
-    def get_all_par(self, program_name):
-        is_all_exist = self._check(list_ess_par[program_name] + list_ess_par["shared"])
-        optional = list_optional_par[program_name] + list_optional_par["shared"]
-        self.check_all_optional_parameter(program_name, is_all_exist, optional)
 
-        return self.all_setting
 
     def _check(self, variable):
         for v in variable:
@@ -193,43 +199,30 @@ class Setting(object):
 
         return False
 
+
+    def _get_par_program(self, program):
+        self._check_essential_keys(program)
+        self._check_all_optional_keys(program)
+
     def _get_metasim(self):
-        is_all_exist = self._check(list_essential_metasim_only + list_essential_shared)
-
-        optional = list_optional_metasim_only + list_optional_shared
-
-        self.check_all_optional_parameter("metasim", is_all_exist, optional)
+        self._get_par_program("metasim")
 
         return self.all_setting
 
     def _get_genovo(self):
-        essential = list_essential_genovo_only + list_essential_shared
-        is_all_exist = self._check(essential)
-
-        optional = list_optional_genovo_only + list_optional_shared
-        self.check_all_optional_parameter("genovo", is_all_exist, optional)
-
+        self._get_par_program("genovo")
         return self.all_setting
 
     def _get_glimmer(self):
-        is_all_exist = self._check(list_essential_glimmer_only + list_essential_shared)
 
-        optional = list_optional_glimmer_only + list_optional_shared
-        self.check_all_optional_parameter("glimmer", is_all_exist, optional)
-
+        self._get_par_program("glimmer")
         return self.all_setting
 
     def _get_blast(self):
-        is_all_exist = self._check(list_essential_blast_only + list_essential_shared)
-
-        optional = list_optional_blast_only + list_optional_shared
-        self.check_all_optional_parameter("blast", is_all_exist, optional)
+        self._get_par_program("blast")
         return self.all_setting
 
     def _get_mine(self):
-        is_all_exist = self._check(list_essential_mine_only + list_essential_shared)
-
-        optional = list_optional_mine_only + list_optional_shared
-        self.check_all_optional_parameter("mine", is_all_exist, optional)
+        self._get_par_program("mine")
 
         return self.all_setting

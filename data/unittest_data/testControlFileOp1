@@ -12,12 +12,13 @@ genovo_thresh= 300
 #list_essential_glimmer_only
 glimmer_pdir=   \glimmer\
 #list_essential_blast_only
-   blast_wdir  =\BLAST\
+#   blast_wdir  =\BLAST\
 #list_essential_mine_only
 mine_pdir=\MINE\
 mine_comparison_style=-allPairs
 blast_e_value=1e-10
 mine_cv=99
+wdir=workingDir
 ##list_optional_mine_only
 #mine_infile:
 #mine_cv:

@@ -10,6 +10,8 @@ class TestSetting(unittest.TestCase):
 
     def setUp(self):
         self.data_dir = path_utils.get_data_dir() + "unittest_data/"
+        self.wdir = "working_dir"
+        self.maxDiff = None
 
     def tearDown(self):
         pass
@@ -38,11 +40,12 @@ class TestSetting(unittest.TestCase):
         self.assertRaises(KeyError, setting._get_metasim)
 
         setting.add("metasim_pdir", "m_p_dir")
-        setting.add_all(metasim_no_reads=250, parent_directory="main_pdir")
+        setting.add_all(metasim_no_reads=250, parent_directory="main_pdir",
+                        wdir=self.wdir)
         expected = {"metasim_model_infile": "mmInfile", "outfile": "mOutfile",
                     "metasim_taxon_infile": "tInfile", "metasim_pdir": "m_p_dir",
                     "parent_directory": "main_pdir", "metasim_no_reads":250,
-                    "wdir":None, "checkExist": True,
+                    "wdir":self.wdir, "checkExist": True,
                     "metasim_outfile": None}
         setting.debug = 0
         self.assertEqual(expected, setting._get_metasim())
@@ -73,12 +76,12 @@ class TestSetting(unittest.TestCase):
         self.assertRaises(KeyError, setting._get_genovo)
 
         setting.add("genovo_thresh", 10)
-        setting.add_all(genovo_thresh=14,
-                        genovo_pdir="g_p_dir", parent_directory="main_pdir")
+        setting.add_all(genovo_thresh=14, genovo_pdir="g_p_dir", parent_directory="main_pdir",
+                        wdir=self.wdir)
         expected = {"genovo_infile": "gInfile", "outfile": "gOutfile",
                     "genovo_noI": 2, "genovo_thresh": 14,
                     "genovo_pdir": "g_p_dir", "parent_directory": "main_pdir",
-                    "wdir": None, "checkExist": True,
+                    "wdir": self.wdir, "checkExist": True,
                     "genovo_outfile": None}
         self.assertEqual(expected, setting._get_genovo())
 
@@ -101,11 +104,11 @@ class TestSetting(unittest.TestCase):
         self.assertRaises(KeyError, setting._get_glimmer)
 
         setting.add_all(genovo_outfile="infile", glimmer_outfile="glimOut",
-            glimmer_pdir="glimp_dir", parent_directory="main_pdir")
+            glimmer_pdir="glimp_dir", parent_directory="main_pdir", wdir=self.wdir)
         expected = {"glimmer_infile": "infile", "genovo_outfile": "infile",
                     "outfile": "Outfile", "glimmer_outfile": "glimOut",
                     "glimmer_pdir": "glimp_dir",
-                    "wdir": None, "checkExist": True,
+                    "wdir": self.wdir, "checkExist": True,
                     "extract_outfile": None,
                     "parent_directory": "main_pdir"}
         self.assertEqual(expected, setting._get_glimmer())
@@ -120,11 +123,11 @@ class TestSetting(unittest.TestCase):
         self.assertRaises(KeyError, setting._get_blast)
 
         setting.add("blast_e_value", 1e-15)
-        setting.add_all(blast_pdir="b_p_dir", parent_directory="main_pdir", blast_wdir="b_wdir", checkExist=True)
+        setting.add_all(parent_directory="main_pdir", wdir="working_dir", checkExist=True)
         expected = {"blast_infile": "bInfile", "blast_outfile": "bOutfile",
-                    "blast_e_value": 1e-15, "blast_pdir": "b_p_dir",
-                    "parent_directory": "main_pdir", "blast_wdir": "b_wdir",
-                    "wdir": None, "checkExist": True}
+                    "blast_e_value": 1e-15,
+                    "parent_directory": "main_pdir",
+                    "wdir": "working_dir", "checkExist": True, "blast_comparison_file":None}
         setting.debug = True
         self.assertEqual(expected, setting._get_blast())
 
@@ -133,12 +136,10 @@ class TestSetting(unittest.TestCase):
         self.assertEqual(expected, setting._get_blast())
 
         setting = Setting()
-        setting.add_all(blast_infile="bInfile",
-            blast_pdir="b_p_dir", parent_directory="main_pdir")
+        setting.add_all(blast_infile="bInfile", parent_directory="main_pdir")
         setting.add("wdir", "otherdir")
         setting.add("blast_e_value", 1e-15)
         setting.add("blast_outfile", "bOutfile")
-        setting.add("blast_wdir", "b_wdir")
 #        expected.pop("outfile")
 #        TODO: debug switch
         setting.debug = True
@@ -154,11 +155,12 @@ class TestSetting(unittest.TestCase):
         setting.add_all(mine_outfile="mineOut",
             mine_pdir="mine_pdir", mine_comparison_style="-allPairs", parent_directory="main_pdir")
         setting.add("mine_infile", "infile")
+        setting.add("wdir", "working_dir")
 
         expected = {"mine_infile": "infile",
                     "outfile": "Outfile", "mine_outfile": "mineOut",
                     "mine_pdir": "mine_pdir", "mine_comparison_style":"-allPairs",
-                    "wdir": None, "checkExist": True,
+                    "wdir": "working_dir", "checkExist": True,
                     "parent_directory": "main_pdir",
                     "mine_cv": None, "mine_clumps":None, "mine_jobID": None}
 
@@ -184,12 +186,12 @@ class TestSetting(unittest.TestCase):
         setting = Setting()
         setting.add_all(outfile="Outfile", genovo_outfile="infile",
                         glimmer_outfile="glimOut", glimmer_pdir="glimp_dir",
-                        parent_directory="main_pdir")
+                        parent_directory="main_pdir", wdir="working_dir")
 
         expected = {"glimmer_infile": "infile", "genovo_outfile": "infile",
                     "outfile": "Outfile", "glimmer_outfile": "glimOut",
                     "glimmer_pdir": "glimp_dir",
-                    "wdir": None, "checkExist": True,
+                    "wdir": "working_dir", "checkExist": True,
                     "parent_directory": "main_pdir",
                     "extract_outfile":None}
         print setting.get_all_par("glimmer")
@@ -202,40 +204,45 @@ class TestSetting(unittest.TestCase):
         self.assertEqual(expected, setting.get_all_par("glimmer"))
         self.assertEqual(setting._get_glimmer(), expected)
 
+
     def test_create_setting_from_control_file(self):
 #    When not all essential parameters exist but no optional parameters exist, should pass.
         file = self.data_dir + "testControlFileOp1"
-        test = ControlFile()
-        test.add_all(file)
-        dict = test.all_arguments
-        setting = Setting.create_setting_from_controlfile(test)
-#        print "????", setting.all_setting
-#        print dict
-        self.assertEqual(setting.all_setting, dict)
+        setting = Setting.create_setting_from_file(file)
+        expected = {"parent_directory":"\\someDir\\subDir\\",
+            "wdir":"workingDir",
+            "metasim_pdir":"\\someDir\\subDir\\\\metaSim",
+            "metasim_model_infile":  "metaSimInfile",
+            "metasim_taxon_infile" : "metasim_taxon_infiles",
+            "metasim_no_reads": "20",
+            "genovo_infile": "genovoInfile",
+            "genovo_pdir": "\\someDir\\subDir\\genevo\\",
+            "genovo_noI": "10",
+            "genovo_thresh": "300",
+            "glimmer_pdir":"\\someDir\\subDir\\\\glimmer\\",
+            "mine_pdir":"\\someDir\\subDir\\\\MINE\\",
+            "mine_comparison_style":"-allPairs",
+            "wdir" :"\\someDir\\subDir\\workingDir",
+            "blast_e_value":"1e-10",
+            "mine_cv":"99"}
+
+
+        self.assertEqual(setting.all_setting, expected)
 #
 #    When not all essential parameters exist, should fail.
-        file = "/Users/erinmckenney/Desktop/Pipeline/metaLem/data/unittest_data/missedEssentials"
-        test = ControlFile()
-        test.add_all(file)
+        file = self.data_dir + "missedEssentials"
         with self.assertRaises(KeyError):
-            Setting.create_setting_from_controlfile(test)
+            Setting.create_setting_from_file(file)
 
 #    When all essential parameters exist and all optional parameters exist, should pass.
-        file = "/Users/erinmckenney/Desktop/Pipeline/metaLem/data/unittest_data/allPass"
-        test = ControlFile()
-        test.add_all(file)
-        dict = test.all_arguments
-        setting = Setting.create_setting_from_controlfile(test)
-        print "????", setting.all_setting
-        print dict
-        self.assertEqual(setting.all_setting, dict)
+        file = self.data_dir + "allPass"
+        setting = Setting.create_setting_from_file(file)
+
+#        self.assertEqual(setting.all_setting, dict)
 
 #    When not all essential parameters exist and some optional parameters exist, should pass.
-        file = "/Users/erinmckenney/Desktop/Pipeline/metaLem/data/unittest_data/testControlFileOp1"
-        test = ControlFile()
-        test.add_all(file)
-        dict = test.all_arguments
-        setting = Setting.create_setting_from_controlfile(test)
+        file = self.data_dir + "testControlFileOp1"
+        setting = Setting.create_setting_from_file(file)
         #        print "????", setting.all_setting
         #        print dict
-        self.assertEqual(setting.all_setting, dict)
+#        self.assertEqual(setting.all_setting, dict)

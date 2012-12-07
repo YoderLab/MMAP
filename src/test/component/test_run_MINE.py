@@ -60,15 +60,22 @@ class TestRunMINE(unittest.TestCase):
         self.assertRaises(ValueError, mine.set_cv_threshold, 0)
         self.assertRaises(ValueError, mine.set_cv_threshold, -1)
         self.assertRaises(ValueError, mine.set_cv_threshold, -2.5)
-        self.assertRaises(TypeError, mine.set_cv_threshold, "string")
-        self.assertRaises(TypeError, mine.set_cv_threshold, "0.3")
+        self.assertRaises(ValueError, mine.set_cv_threshold, "string")
+        try:
+            mine.set_cv_threshold("0.3")
+        except ValueError as e:
+            self.fail(e)
 
         self.assertRaises(ValueError, mine.set_clumping_factor, 1.1)
         self.assertRaises(ValueError, mine.set_clumping_factor, 0)
         self.assertRaises(ValueError, mine.set_clumping_factor, -1)
         self.assertRaises(ValueError, mine.set_clumping_factor, -2.5)
-        self.assertRaises(TypeError, mine.set_clumping_factor, "string")
-        self.assertRaises(TypeError, mine.set_clumping_factor, "3.3")
+        self.assertRaises(ValueError, mine.set_clumping_factor, "string")
+        try:
+            mine.set_clumping_factor("3")
+        except ValueError as e:
+            self.fail(e)
+
 
     def test_file_already_exist(self):
         """

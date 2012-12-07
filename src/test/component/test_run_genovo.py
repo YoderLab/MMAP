@@ -146,9 +146,12 @@ class TestRunGenovo(unittest.TestCase):
                            thresh=250, check_exist=False)
         self.assertRaises(ValueError, genovo.set_number_of_iter, 1.1)
         self.assertRaises(ValueError, genovo.set_number_of_iter, -1)
-        self.assertRaises(TypeError, genovo.set_number_of_iter, "string")
+        self.assertRaises(ValueError, genovo.set_number_of_iter, "string")
         self.assertRaises(ValueError, genovo.set_number_of_iter, "5.9")
-        genovo.set_number_of_iter("300")
+        try:
+            genovo.set_number_of_iter("300")
+        except ValueError as e:
+            self.fail(e)
         self.assertEqual(genovo.assemble.get_switch()[run_genovo.ASSEMBLE_NO_ITER_POSITION - 1], "300")
 
     def test_RunGenovo_set_cutoff(self):
@@ -162,8 +165,11 @@ class TestRunGenovo(unittest.TestCase):
         self.assertRaises(ValueError, genovo.set_cutoff, 1.1)
         self.assertRaises(ValueError, genovo.set_cutoff, -1)
         self.assertRaises(ValueError, genovo.set_cutoff, -2.5)
-        self.assertRaises(TypeError, genovo.set_cutoff, "string")
-        self.assertRaises(TypeError, genovo.set_cutoff, "3")
+        self.assertRaises(ValueError, genovo.set_cutoff, "string")
+        try:
+            genovo.set_cutoff("3")
+        except ValueError as e:
+            self.fail(e)
 
     def test_RunGenovo_check_directory_name(self):
         """

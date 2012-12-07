@@ -25,12 +25,9 @@ class TestControlFile(unittest.TestCase):
         "genovo_noI": "10",
         "genovo_thresh": "300",
         "glimmer_pdir":"\\glimmer\\",
-        "blast_wdir":"\\BLAST\\",
         "mine_pdir":"\\MINE\\",
-        "mine_comparison_style":"-allPairs"}
-
-        print "!!!!!!!!!!", test.all_arguments
-
+        "mine_comparison_style":"-allPairs",
+        "wdir" :"workingDir"}
 
         self.assertEqual(expected, dict)
 

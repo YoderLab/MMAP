@@ -12,7 +12,7 @@ from core.setting import Setting
 import csv
 import datetime
 import os
-from core import file_utility
+from core.utils import file_utility
 
 ALL_EXTS = [".csv"]
 MINE_TAG = "_MINE"
@@ -229,20 +229,19 @@ class RunBlast(RunComponent):
             writer.writerow(firstrow)
             for key in template.iterkeys():
                 temp = [key, template[key]]
-
                 writer.writerow(temp)
 
 
-    def update_output_csv(self, header, template):
+    def _update_output_csv(self, header, template, existing_csv):
         """
         template = dictionary object
         header = header
         existing_csv = "filename" full path
         """
-        with open(self.merged_file, 'wb') as csvfile:
+        with open(self.outfile, 'wb') as csvfile:
             writer = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_NONE)
             all_GOterms = set()
-            with open(self.comparison_file, 'rb') as f:
+            with open(existing_csv, 'rb') as f:
                 reader = csv.reader(f)
                 for i, row in enumerate(reader):
                     if i == 0:
@@ -257,67 +256,54 @@ class RunBlast(RunComponent):
                             row.append(0)
 #                    row.pop(0)
                     writer.writerow(row)
-                print all_GOterms
+#                print all_GOterms
                 for key in template.iterkeys():
                     if key not in all_GOterms:
-#                        newlist = [key]
-                        newlist = (["0"] * zeroes)
+                        newlist = [key]
+                        newlist.extend([0] * zeroes)
                         newlist.append(template[key])
-                        print newlist
+
                         writer.writerow(newlist)
 
-    def merge_output_csv_to_MINE(self, file1, file2, outfile, isMine=False):
+    def merge_output_csv_to_MINE(self, outfile, csv_files, isMINE=True):
 
+
+        header = []
+        if not isMINE:
+            header.append("GOterm")
         template = dict()
-        with open(file2, 'rb') as f:
-            reader = csv.reader(f)
-            for i, row in enumerate(reader):
-                if i is 0:
-                    template_zeroes = len(row) - 1
-                    template_name = row[1:]
-                else:
-                    template[row[0]] = row[1:]
-
-        with open(outfile, 'wb') as csvfile:
-            writer = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_NONE)
-            all_GOterms = set()
-            with open(file1, 'rb') as f:
+        for zeroes, infile in enumerate(csv_files):
+            all_new_key = []
+            with open(infile, 'rb') as f:
                 reader = csv.reader(f)
                 for i, row in enumerate(reader):
                     if i == 0:
-                        zeroes = len(row) - 1
-                        row.append(file2)
-#                        row = template_name.append(file2)
+#                        zeroes = len(row) - 1
+                        index = row[1].rfind(os.sep) + 1
+                        if index > -1:
+                            row[1] = row[1][index:]
+                        header.append("%s_%d" % (row[1], zeroes))
                     else:
                         key = row[0]
-                        all_GOterms.add(key)
+                        all_new_key.append(key)
                         if key in template:
-                            row.extend(template[key])
+                            template[key].append(row[1])
                         else:
-                            row.extend((["0"] * template_zeroes))
-                    if isMine:
-                        row.pop(0)
-                    print row
-                    writer.writerow(row)
-                print "A", all_GOterms
-                for key in template.iterkeys():
-                    if key not in all_GOterms:
-                        newlist = []
-                        if not isMine:
-                            newlist.append(key)
-                        newlist.extend((["0"] * zeroes))
-                        newlist.extend(template[key])
-                        print newlist
-                        writer.writerow(newlist)
+                            newlist = ([0] * zeroes)
+                            newlist.append(row[1])
+                            template[key] = newlist
 
-#
-#                    adder = csv.reader(template)
-#
-#            if "%s"%key not in f:
-#                print key, "is not in the existing csv"
-#                #                            add new row with key in row[0]
-#                #                            row.append(0) for previous values
-#                #                            row.append(key) in "current" location
-#                row[0].append(key)
-#
-#            print i, key, row
+                for key in template:
+                    if key not in all_new_key:
+                        template[key].append(0)
+        with open(outfile, 'wb') as csvfile:
+            writer = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_NONE)
+            writer.writerow(header)
+            if isMINE:
+                for row in template.values():
+                    writer.writerow(row)
+            else:
+                for key in template:
+                    temp = [key]
+                    temp.extend(template[key])
+                    writer.writerow(temp)

@@ -52,16 +52,20 @@ class RunComponent(object):
 
     def check_valid_value(self, s, convert):
 #        FIXME: handle int/float rounding and "int"/"float" properly
+
         try:
             v = convert(s)
 #            print s, v, type(s), type(v)
             if str(v) != str(s):
                 raise(ValueError("ValueError: %s " % s))
         except ValueError as e:
-            if type(s) is str:
-                raise(TypeError("TypeError: %s is str" % s))
-            else:
-                raise(ValueError("ValueError: %s " % s))
+            raise ValueError("%s: converting %s to %s" % (e, s, convert))
+#        except TypeError as e:
+#            raise e
+#            if type(s) is str:
+#                raise(TypeError("TypeError: %s is str" % s))
+#            else:
+#                raise(ValueError("ValueError: %s%s " % (e, s)))
         return v
 
     def generate_outfile_name(self, infile, outfile, outfile_tag):
