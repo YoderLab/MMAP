@@ -62,20 +62,13 @@ def main():
     test_run_dir = path_utils.get_data_dir() + "test_run/"
 
 
-    file = test_run_dir + "first_test"
-    test = ControlFile()
-    test.add_all(file)
-    setting = Setting.create_setting_from_controlfile(test)
-    print file, setting.all_setting
+    filepath = test_run_dir + "first_test"
+    setting = Setting.create_setting_from_file(filepath)
     assembler = SoftwareAssembler(setting)
-#    assembler.run()
+    assembler.run()
 
-
-    file = test_run_dir + "second_test"
-    test = ControlFile()
-    test.add_all(file)
-    setting = Setting.create_setting_from_controlfile(test)
-    print file, setting.all_setting
+    filepath = test_run_dir + "2_test"
+    setting = Setting.create_setting_from_file(filepath)
     assembler = SoftwareAssembler(setting)
     assembler.run()
 
@@ -95,35 +88,27 @@ def mainBeachMark1():
 #    assembler.run()
 
     file = test_run_dir + "primateB/benchMarkControl1"
-    test = ControlFile()
-    test.add_all(file)
-    setting = Setting.create_setting_from_controlfile(test)
+    setting = Setting.create_setting_from_file(file)
     print file, setting.all_setting
     assembler = SoftwareAssembler(setting)
     assembler.runMine()
 
 
     file = test_run_dir + "FPV/benchMarkControl1"
-    test = ControlFile()
-    test.add_all(file)
-    setting = Setting.create_setting_from_controlfile(test)
+    setting = Setting.create_setting_from_file(file)
     print file, setting.all_setting
     assembler = SoftwareAssembler(setting)
 #    assembler.run()
 
 
     file = test_run_dir + "primateC/benchMarkControl1"
-    test = ControlFile()
-    test.add_all(file)
-    setting = Setting.create_setting_from_controlfile(test)
+    setting = Setting.create_setting_from_file(file)
     print file, setting.all_setting
     assembler = SoftwareAssembler(setting)
 #    assembler.run()
 
     file = test_run_dir + "primateD/benchMarkControl1"
-    test = ControlFile()
-    test.add_all(file)
-    setting = Setting.create_setting_from_controlfile(test)
+    setting = Setting.create_setting_from_file(file)
     print file, setting.all_setting
     assembler = SoftwareAssembler(setting)
 #    assembler.run()
@@ -137,8 +122,31 @@ def mainBeachMark1():
 #    assembler.run()
 
 
+def mainBeachMark2():
+    print __name__
+
+    test_run_dir = path_utils.get_data_dir() + "BenchMark2/"
+    filepath = test_run_dir + "Lac_5k_1/control"
+    setting = Setting.create_setting_from_file(filepath)
+    print file, setting.all_setting
+    assembler = SoftwareAssembler(setting)
+    assembler.run()
+
+def runControlFile(filepath):
+    setting = Setting.create_setting_from_file(filepath)
+    print filepath, setting.all_setting
+    assembler = SoftwareAssembler(setting)
+    assembler.run()
+
 
 if __name__ == "__main__":
-    mainBeachMark1()
-
-
+#    mainBeachMark1()
+    test_run_dir = path_utils.get_data_dir() + "BenchMark2/"
+    runControlFile(test_run_dir + "Lac_5k_1/control")
+    runControlFile(test_run_dir + "Lac_5k_2/control")
+    runControlFile(test_run_dir + "Lac_5k_3/control")
+    runControlFile(test_run_dir + "Lac_20k_0/control")
+    runControlFile(test_run_dir + "Lac_20k_1/control")
+    runControlFile(test_run_dir + "Lac_20k_2/control")
+    runControlFile(test_run_dir + "Lac_20k_3/control")
+    pass

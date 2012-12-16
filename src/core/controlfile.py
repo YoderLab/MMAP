@@ -4,6 +4,7 @@ Created on Nov 7, 2012
 @author: Erin McKenney
 """
 #TODO: format correctly
+import warnings
 """
 #list_essential_shared
 parent_directory:
@@ -45,12 +46,17 @@ mine_cv:
 mine_clumps:
 mine_jobID:
 """
+
+
 class ControlFile(object):
     #TODO: check what happens if the same key shows up multiple times in the control file
     #FIXME: individual program directories should append to parent_directory [with some sort of check]
     def __init__(self, **kwargs):
         """
         """
+        warnings.warn("deprecated", DeprecationWarning)
+
+
         self.all_arguments = dict()
 #        self.add_all(**kwargs)
         self.debug = False
@@ -58,17 +64,17 @@ class ControlFile(object):
     def add_all(self, controlfile):
         file = open(controlfile)
         for line in file:
-            line=line.strip()
-            if line.startswith("#") or line=="":
+            line = line.strip()
+            if line.startswith("#") or line == "":
                 pass
             else:
 
                 location = line.find("=")
 
                 key = line[0:location].strip()
-                value = line[location+1:len(line)].strip()
+                value = line[location + 1:len(line)].strip()
 #                print line, "z",key, "z",value
-                self.all_arguments[key]= value
+                self.all_arguments[key] = value
 
 
         return self.all_arguments

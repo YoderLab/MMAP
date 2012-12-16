@@ -76,8 +76,8 @@ class RunBlast(RunComponent):
         setting = setting_class.get_all_par("blast")
 
         blast = cls(
+            wdir=setting.get("wdir"),
             e_value=setting.get("blast_e_value"),
-            wdir=setting.get("blast_wdir"),
             infile=setting.get("blast_infile"),
             outfile=setting.get("blast_outfile"),
             comparison_file=setting.get("blast_comparison_file"))
@@ -87,6 +87,8 @@ class RunBlast(RunComponent):
     def run(self):
 
         print("Running AmiGO:BLAST")
+
+        temp_output = open(self.infile + "_temp", "w")
         if self.record_index == None:
             self.record_index = SeqIO.index(self.infile, "fasta")
 
@@ -94,16 +96,16 @@ class RunBlast(RunComponent):
 
         for key in self.record_index:
 
-            self.seq = Sequence(self.record_index[key].seq) #Bio.SeqRecord.SeqRecord
-
-            self.seq = go_connector.blast_AmiGO(self.seq)
-            self.seq = go_connector.extract_ID(self.seq)
-            self.seq = go_connector.parse_go_term(self.seq, self.e_value_cut_off)
-#            self.seq.all_terms
-            self.results[key] = self.seq
+            this_seq = Sequence(self.record_index[key].seq) #Bio.SeqRecord.SeqRecord
 
 
-            all_orfs[key] = self.seq.all_terms
+            this_seq = go_connector.blast_AmiGO(this_seq)
+            this_seq = go_connector.extract_ID(this_seq)
+            this_seq = go_connector.parse_go_term(this_seq, self.e_value_cut_off)
+#            seq.all_terms
+            self.results[key] = this_seq
+            all_orfs[key] = this_seq.all_terms
+            temp_output.write("%s \t %s\n" % (key, this_seq.all_terms))
 
         new_dict = self.init_dict(all_orfs, 0)
         self.counter = self.update_counter_from_dictionaries(new_dict, all_orfs)

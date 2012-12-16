@@ -32,6 +32,7 @@ class RunMetaSim(RunComponent):
     run with
     ./MetaSim cmd -f 100 -r 10 -c -d test_data test_data/test_infile.fasta
     ./MetaSim cmd --454 -f 200 --454-cycles 99 --454-mate-probability 0 -r20 -c -d outfile_dir infile_name
+    ./MetaSim cmd --454 -f 400 --454-cycles 150 --454-mate-probability 0 -r100000 -c -d testData testData/jt20.fasta
     """
 
     def __init__(self, model_file, no_reads, taxon_infile, pdir, wdir, outfile=None, check_exist=True):

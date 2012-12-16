@@ -65,7 +65,6 @@ class Setting(object):
         self.add_all(**kwargs)
         self.debug = False
 
-
     @classmethod
     def create_setting_from_file(cls, filepath):
 

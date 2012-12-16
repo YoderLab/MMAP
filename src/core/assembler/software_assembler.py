@@ -62,7 +62,7 @@ class SoftwareAssembler(object):
 #        self.setting.add("mine_infile", self.blast.outfile)
 
     def init_program(self):
-        self.metasim = RunMetaSim.create_metasim_from_setting(self.setting)
+#        self.metasim = RunMetaSim.create_metasim_from_setting(self.setting)
         self.genovo = RunGenovo.create_genovo_from_setting(self.setting)
         self.update_genovo_setting()
         self.glimmer = RunGlimmer.create_glimmer_from_setting(self.setting)
@@ -84,14 +84,15 @@ class SoftwareAssembler(object):
 
 #        self.metasim.run(debug=0)
         #TODO: add metasim.run back later.
-        file_tag = self.setting.get("wdir") + self.setting.get("metasim_outfile")
-        if (self.metasim.check_outfiles_with_filetag_exist(file_tag)):
+        #TODO: fix MetaSim outfile name (can't overwrite program default)
+        #TODO: use -454 error model!!
+        file_tag = self.setting.get("wdir") + self.setting.get("genovo_infile")
+        if (self.genovo.is_file_exist(file_tag)):
             self.genovo.run(debug=0)
         else:
-            #TODO: fix MetaSim outfile name (can't overwrite program default)
-            #TODO: use -454 error model!!
-            raise(IOError("Missing MetaSim output %s" % file_tag))
 
+            raise(IOError("Missing MetaSim output %s" % file_tag))
+#
         file_tag = self.setting.get("wdir") + self.setting.get("genovo_infile")
         if (self.genovo.check_outfiles_with_filetag_exist(file_tag) and
                 self.genovo.is_file_exist(self.setting.get("genovo_outfile"))):

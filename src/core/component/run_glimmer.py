@@ -112,10 +112,11 @@ class RunGlimmer(RunComponent):
         filehandler = open(self.orfs_file, 'w')
         newLine = ""
         count = 0
+#        print self.extract.output
 
         for line in self.extract.output:
             if line.startswith(">"):
-                newLine += (line + "_" + str(count))
+                newLine += (line + str(count) + "_")
                 count += 1
             else:
                 newLine += line
