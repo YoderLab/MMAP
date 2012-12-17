@@ -140,13 +140,23 @@ def runControlFile(filepath):
 
 
 if __name__ == "__main__":
+
 #    mainBeachMark1()
     test_run_dir = path_utils.get_data_dir() + "BenchMark2/"
+    setting = Setting.create_setting_from_file(test_run_dir + "Ecoli_5k_1/control")
+    assembler = SoftwareAssembler(setting)
+    assembler.runMine()
+
+
 #    runControlFile(test_run_dir + "Both_25k_1/control")
 
-    runControlFile(test_run_dir + "Ecoli_5k_1/control")
-    runControlFile(test_run_dir + "Ecoli_5k_2/control")
-    runControlFile(test_run_dir + "Ecoli_5k_3/control")
+#    runControlFile(test_run_dir + "Both_10k_1/control")
+#    runControlFile(test_run_dir + "Both_10k_2/control")
+#    runControlFile(test_run_dir + "Both_10k_3/control")
+
+#    runControlFile(test_run_dir + "Ecoli_5k_1/control")
+#    runControlFile(test_run_dir + "Ecoli_5k_2/control")
+#    runControlFile(test_run_dir + "Ecoli_5k_3/control")
 
 #    runControlFile(test_run_dir + "Lac_5k_1/control")
 #    runControlFile(test_run_dir + "Lac_5k_2/control")

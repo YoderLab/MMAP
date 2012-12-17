@@ -174,7 +174,10 @@ class Setting(object):
         if program_name is "mine":
             if self.all_setting["mine_infile"] is None and self.all_setting["blast_comparison_file"] is not None:
                 self.all_setting["mine_infile"] = self.all_setting["blast_merged_file"]
-
+            if self.all_setting["mine_cv"] is None:
+                self.all_setting["mine_cv"] = 0.0
+            if self.all_setting["mine_clumps"] is None:
+                self.all_setting["mine_clumps"] = 15
 
         if self.all_setting["checkExist"] is None:
             self.all_setting["checkExist"] = True
