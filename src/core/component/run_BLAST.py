@@ -106,7 +106,8 @@ class RunBlast(RunComponent):
             self.results[key] = this_seq
             all_orfs[key] = this_seq.all_terms
             temp_output.write("%s \t %s\n" % (key, this_seq.all_terms))
-
+            temp_output.flush()
+        temp_output.close()
         new_dict = self.init_dict(all_orfs, 0)
         self.counter = self.update_counter_from_dictionaries(new_dict, all_orfs)
 #        new_outfile = self.init_output(self.counter,0)
