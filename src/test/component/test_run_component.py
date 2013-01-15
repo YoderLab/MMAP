@@ -28,7 +28,7 @@ class TestRunComponent(unittest.TestCase):
 
         comp = RunComponent()
         comp.wdir = self.wdir
-        comp.generate_outfile_name(infile_var, None, "_out")
+        comp.check_filenames(infile_var, None, "_out")
         self.assertEqual(self.wdir + infile_var, comp.infile)
         self.assertEqual(self.wdir + "test_infile_out", comp.outfile)
         #        print genovo.checkAssembleOutfilesExist("test_infile.fasta")

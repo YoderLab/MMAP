@@ -35,7 +35,7 @@ genovo_outfile:
 #list_optional_glimmer_only
 glimmer_infile:
 glimmer_outfile:
-extract_outfile:
+
 #list_optional_blast_only
 blast_infile:
 blast_e_value:
@@ -54,16 +54,15 @@ class ControlFile(object):
     def __init__(self, **kwargs):
         """
         """
-        warnings.warn("deprecated", DeprecationWarning)
-
+        warnings.simplefilter('default')
+        warnings.warn("deprecated class: ControlFile", DeprecationWarning)
 
         self.all_arguments = dict()
-#        self.add_all(**kwargs)
         self.debug = False
 
     def add_all(self, controlfile):
-        file = open(controlfile)
-        for line in file:
+        infile = open(controlfile)
+        for line in infile:
             line = line.strip()
             if line.startswith("#") or line == "":
                 pass
@@ -79,6 +78,10 @@ class ControlFile(object):
 
         return self.all_arguments
 
+
+    def get_all_keys(self):
+#        print key, self.all_arguments[key]
+        return self.all_arguments.keys()
 
     def get(self, key):
 #        print key, self.all_arguments[key]

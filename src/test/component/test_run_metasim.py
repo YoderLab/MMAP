@@ -23,13 +23,13 @@ class TestRunMetaSim(unittest.TestCase):
     def tearDown(self):
         pass
 
-    # Parameters to check: model_infile, no_reads, taxon_infile, pdir, wdir=None, outfile=None
+    # Parameters to check: model_infile, no_reads, taxon_infile, pdir, wdir=None, filename=None
         # MODEL_INFILE_POSITION = 1
         #NO_READS_POSITION = 2
         #TAXON_INFILE_POSITION = 3
         #OUTFILE_DIRECTORY_POSITION = 4
 
-    def test_RunMetaSim_init(self):
+    def test_init(self):
         model_infile_var = "ErrorModelSolexa36bp.mconf"
         taxon_infile_var = "MetaSim_bint.mprf"
         outfile_var = "wdir_all_reads_out.fasta"
@@ -37,7 +37,7 @@ class TestRunMetaSim(unittest.TestCase):
 
         metasim = RunMetaSim(model_file=model_infile_var, no_reads=no_reads_var,
             taxon_infile=taxon_infile_var, pdir=self.data_dir, wdir=self.working_dir,
-            outfile=outfile_var, check_exist=True)
+            filename=outfile_var, check_exist=True)
 
         expected_model_infile = "-mg%s%s" % (self.working_dir, model_infile_var)
         expected_taxon_infile = self.working_dir + taxon_infile_var
@@ -45,7 +45,7 @@ class TestRunMetaSim(unittest.TestCase):
         expected_directory = "-d%s" % self.working_dir
         expected = ["cmd", expected_model_infile, expected_no_reads, expected_directory, expected_taxon_infile]
 #
-        self.assertEqual(metasim.get_switch(), expected)
+        self.assertEqual(metasim.get_extract_switch(), expected)
 
     def test_file_not_exist(self):
         model_infile_var = "file_inexistent.mconf"  # test model_infile
@@ -56,7 +56,7 @@ class TestRunMetaSim(unittest.TestCase):
         with self.assertRaises(IOError):
             RunMetaSim(model_file=model_infile_var, no_reads=no_reads_var,
             taxon_infile=taxon_infile_var, pdir=self.data_dir, wdir=self.working_dir,
-            outfile=outfile_var, check_exist=True)
+            filename=outfile_var, check_exist=True)
 
         model_infile_var = "ErrorModelSolexa36bp.mconf"
         taxon_infile_var = "bad_file.mprf"          # test taxon_infile
@@ -64,15 +64,15 @@ class TestRunMetaSim(unittest.TestCase):
         with self.assertRaises(IOError):
             RunMetaSim(model_file=model_infile_var, no_reads=no_reads_var,
                 taxon_infile=taxon_infile_var, pdir=self.data_dir, wdir=self.working_dir,
-                outfile=outfile_var, check_exist=True)
+                filename=outfile_var, check_exist=True)
 
         taxon_infile_var = "incorrect_bint.mprf"
-        outfile_var = "incorrect_outfile.fasta"     # test outfile
+        outfile_var = "incorrect_outfile.fasta"     # test filename
 
         with self.assertRaises(IOError):
             RunMetaSim(model_file=model_infile_var, no_reads=no_reads_var,
                 taxon_infile=taxon_infile_var, pdir=self.data_dir, wdir=self.working_dir,
-                outfile=outfile_var, check_exist=True)
+                filename=outfile_var, check_exist=True)
 
     def test_no_reads_value(self):
         model_infile_var = "ErrorModelSolexa36bp.mconf"
@@ -81,7 +81,7 @@ class TestRunMetaSim(unittest.TestCase):
 
         metasim = RunMetaSim(model_file=model_infile_var, no_reads=100,
             taxon_infile=taxon_infile_var, pdir=self.data_dir, wdir=self.working_dir,
-            outfile=outfile_var, check_exist=True)
+            filename=outfile_var, check_exist=True)
         self.assertRaises(ValueError, metasim.set_number_of_reads, 1.9)
         self.assertRaises(ValueError, metasim.set_number_of_reads, -1)
         self.assertRaises(ValueError, metasim.set_number_of_reads, -2.5)
@@ -89,7 +89,7 @@ class TestRunMetaSim(unittest.TestCase):
         self.assertRaises(ValueError, metasim.set_number_of_reads, "3.6")
 #        self.assertRaises(TypeError, metasim.set_number_of_reads, "3")
         metasim.set_number_of_reads("3")
-        self.assertEqual(metasim.get_switch()[run_MetaSim.NO_READS_POSITION-1],"-r3")
+        self.assertEqual(metasim.get_extract_switch()[run_MetaSim.NO_READS_POSITION - 1], "-r3")
 
     def test_set_outfile_directory(self):
         model_infile_var = "ErrorModelSolexa36bp.mconf"
@@ -98,23 +98,23 @@ class TestRunMetaSim(unittest.TestCase):
 
         metasim = RunMetaSim(model_file=model_infile_var, no_reads=100,
             taxon_infile=taxon_infile_var, pdir=self.data_dir, wdir=self.working_dir,
-            outfile=outfile_var, check_exist=True)
+            filename=outfile_var, check_exist=True)
 
-        self.assertEqual(metasim.get_switch()[3], "-d%s" % self.working_dir)
+        self.assertEqual(metasim.get_extract_switch()[3], "-d%s" % self.working_dir)
 
         dir_var = self.data_dir
         metasim = RunMetaSim(model_file=model_infile_var, no_reads=100,
             taxon_infile=taxon_infile_var, pdir=self.data_dir, wdir=dir_var,
-            outfile=outfile_var, check_exist=False)
+            filename=outfile_var, check_exist=False)
         metasim.set_outfile_directory()
-        self.assertEqual(metasim.get_switch()[3], "-d%s" % self.data_dir)
+        self.assertEqual(metasim.get_extract_switch()[3], "-d%s" % self.data_dir)
 
 #    def test_file_already_exist(self):
 #        """
 #        check if out file already exists,
 #        maybe should not raise error, should
 #        TODO: Should we just delete this, now that it names outfiles with version numbers?
-#            - MetaSim has auto rename function, need to check outfile
+#            - MetaSim has auto rename function, need to check filename
 #        """
 #        model_infile_var = "ErrorModelSolexa36bp.mconf"
 #        taxon_infile_var = "MetaSim_bint.mprf"
@@ -122,13 +122,13 @@ class TestRunMetaSim(unittest.TestCase):
 #        with self.assertRaises(IOError):
 #            RunMetaSim(model_file=model_infile_var, no_reads=100,
 #                taxon_infile=taxon_infile_var, pdir=self.data_dir, wdir=self.working_dir,
-#                outfile=outfile_var, check_exist=True)
+#                filename=outfile_var, check_exist=True)
 
     def test_check_outfile_exist(self):
         """
         check if ./MetaSim finished running, should produce 2 output files
         only pass if both exist
-        TODO: need to check -d outfile_dir. MetaSim automatically change the outfile name
+        TODO: need to check -d outfile_dir. MetaSim automatically change the filename name
         """
         model_infile_var = "ErrorModelSolexa36bp.mconf"
         taxon_infile_var = "MetaSim_bint.mprf"
@@ -136,7 +136,7 @@ class TestRunMetaSim(unittest.TestCase):
 
         metasim = RunMetaSim(model_file=model_infile_var, no_reads=100,
             taxon_infile=taxon_infile_var, pdir=self.data_dir, wdir=self.working_dir,
-            outfile=outfile_var, check_exist=True)
+            filename=outfile_var, check_exist=True)
         metasim.run()
         self.assertTrue(metasim.is_file_exist(self.working_dir + "MetaSim_bint-Empirical.fna"))
 
@@ -163,7 +163,7 @@ class TestRunMetaSim(unittest.TestCase):
         outfile_var = "MetaSim_bint-Empirical.fna"
         metasim = RunMetaSim(model_file=model_infile_var, no_reads=100,
             taxon_infile=taxon_infile_var, pdir=self.data_dir, wdir=self.working_dir,
-            outfile=outfile_var, check_exist=True)
+            filename=outfile_var, check_exist=True)
         metasim.run()
         result = metasim.read_outfile()
         self.assertEqual(len(result), 2)
@@ -181,10 +181,10 @@ class TestRunMetaSim(unittest.TestCase):
         outfile_var = "MetaSim_bint-Empirical"
         metasim = RunMetaSim(model_file=model_infile_var, no_reads=100,
                              taxon_infile=taxon_infile_var, pdir=self.data_dir,
-                             wdir=self.working_dir, outfile=outfile_var, check_exist=True)
+                             wdir=self.working_dir, filename=outfile_var, check_exist=True)
         self.assertFalse(metasim.is_file_exist(self.working_dir + "test_outfile", ".fasta", False))
         metasim.run(debug=True)
 #        print "7777777", self.working_dir,outfile_var
         self.assertTrue(metasim.check_outfiles_with_filetag_exist(self.working_dir + outfile_var))
         self.assertTrue(metasim.is_file_exist(self.working_dir + outfile_var, ".fna", True))
-        os.remove(self.working_dir + outfile_var+".fna")
+        os.remove(self.working_dir + outfile_var + ".fna")

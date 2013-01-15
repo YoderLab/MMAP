@@ -19,6 +19,8 @@ FINALIZE_INFILE_POSITION = 3
 ALL_EXTS = [".status", ".dump1", ".dump.best"]
 
 
+
+
 class RunGenovo(RunComponent):
     """
     classdocs
@@ -34,7 +36,7 @@ class RunGenovo(RunComponent):
         #        super(RunGenovo, self).__init__()
         """
         self.all_exts = ALL_EXTS
-        self.parameter_check(pdir, wdir, infile, outfile, check_exist, "_out.fasta")
+        self.parameter_check(pdir, wdir, infile, outfile, check_exist, ".genovo")
 
         self.assemble = runExtProg(ASSEMBLE, pdir=self.pdir, length=2, check_OS=True)
         self.finalize = runExtProg(FINALIZE, pdir=self.pdir, length=3, check_OS=True)
@@ -54,7 +56,7 @@ class RunGenovo(RunComponent):
 
     @classmethod
     def create_genovo_from_setting(cls, setting_class):
-        setting = setting_class.get_all_par("genovo")
+        setting = setting_class.get_pars("genovo")
         genovo = RunGenovo.create_genovo(setting)
         return genovo
 
@@ -128,4 +130,10 @@ class RunGenovo(RunComponent):
         self.assemble.run(debug)
         print "Running Genovo finalize..."
         self.finalize.run(debug)
+        self._isCompleted()
+
+    def _isCompleted(self):
+        isComelete = self.check_outfiles_with_filetag_exist(self.infile) and self.is_file_exist(self.outfile)
+        if not isComelete:
+            raise(StandardError("Genovo did not complete, not all output files exist"))
 

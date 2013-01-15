@@ -1,28 +1,26 @@
 import os
+from core.utils import path_utils
 
 __author__ = 'erinmckenney'
 
 
 def check_dir_ending(tdir):
-#    print "444444444",tdir
     if not tdir.endswith("/"):
         tdir += "/"
-#        print "+++++++",tdir
-    else:
-        tdir = tdir
+#    else:
+#        tdir = tdir
     return tdir
-#    print "????????", tdir
 
 
 class RunComponent(object):
-    #FIXME: check outfile name for wdir path before adding wdir to self.outfile
+    #FIXME: check filename name for wdir path before adding wdir to self.filename
     def __init__(self):
         pass
 #        self.all_exts=[]
 
     def parameter_check(self, pdir, wdir, infile, outfile, check_exist, outfile_tag):
         self.check_dirs(pdir, wdir, check_exist)
-        self.generate_outfile_name(infile, outfile, outfile_tag)
+        self.check_filenames(infile, outfile, outfile_tag)
         self.check_file_exist(self.infile, check_exist)
 
 
@@ -35,11 +33,9 @@ class RunComponent(object):
         self.pdir = check_dir_ending(pdir)
         if wdir is None:
             self.wdir = self.pdir
-#            print "33333333", self.wdir
         else:
             self.wdir = wdir
         self.wdir = check_dir_ending(self.wdir)
-#        print "5555555", self.wdir
         self._check_dir_exist(check_exist)
 
     def _check_dir_exist(self, check_exist):
@@ -68,7 +64,7 @@ class RunComponent(object):
 #                raise(ValueError("ValueError: %s%s " % (e, s)))
         return v
 
-    def generate_outfile_name(self, infile, outfile, outfile_tag):
+    def check_filenames(self, infile, outfile, outfile_tag):
         """
         infile name
             check if it exist
@@ -78,29 +74,28 @@ class RunComponent(object):
         """
 
 
-        if infile.find(self.wdir) > -1:
-            self.infile = infile
-        else:
-            self.infile = self.wdir + infile
+#        if infile.find(self.wdir) > -1:
+#            self.infile = infile
+#        else:
+#            self.infile = self.wdir + infile
 
 
         if outfile is None:
-            location = self.infile.rfind(".")
-            if location is -1:
-                self.outfile = self.infile
-            else:
-                self.outfile = self.infile[0:location]
-#            print "qq", self.infile, self.wdir  , outfile_tag
-
-
+            prefix = path_utils.remove_ext(infile)
             if outfile_tag is not None:
-                self.outfile = self.outfile + outfile_tag
-#            print "mm", self.outfile
-        else:
-            if outfile.find(self.wdir) > -1:
-                self.outfile = outfile
-            else:
-                self.outfile = self.wdir + outfile
+                outfile = prefix + outfile_tag
+#            print "mm", self.filename
+
+
+#        if filename.find(self.wdir) > -1:
+#            self.filename = filename
+#        else:
+#            self.filename = self.wdir + filename
+
+        self.infile = path_utils.check_wdir_prefix(self.wdir, infile)
+        self.outfile = path_utils.check_wdir_prefix(self.wdir, outfile)
+
+
 
     def check_outfiles_with_filetag_exist(self, outfile_tag):
         """
@@ -124,13 +119,13 @@ class RunComponent(object):
         check if one file exist
         return boolean
         """
-        test_file = "%s%s" % (file_tag, ext)
+        test_file = file_tag + ext
 #        print "%%is_file_exist%%%%%%%%%%%", test_file
         if os.path.exists(test_file):
             is_exist = is_exist and True
         else:
             is_exist = False
-            print is_exist, test_file, os.path.exists(test_file)
+            print("FileNotFound %s" % test_file) # , os.path.exists(test_file)
 
         return is_exist
 

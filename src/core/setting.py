@@ -1,28 +1,32 @@
 from core.controlfile import ControlFile
+from core.utils import path_utils
+from core.utils.path_utils import check_wdir_prefix, check_program_dir
+
 
 __author__ = 'erinmckenney'
 #infile, pdir, wdir, comparison, cv=0, c=15, outfile, check_exist=True
 list_essential_shared = ["parent_directory", "wdir"]
 list_essential_metasim_only = ["metasim_pdir", "metasim_model_infile", "metasim_taxon_infile", "metasim_no_reads"]
-list_essential_genovo_only = ["genovo_infile", "genovo_pdir", "genovo_noI", "genovo_thresh"]
+list_essential_genovo_only = ["genovo_infile", "genovo_pdir"]
 list_essential_glimmer_only = ["glimmer_pdir"]  # dont need outfile
 list_essential_blast_only = []
-list_essential_mine_only = [ "mine_pdir", "mine_comparison_style"]
+list_essential_mine_only = ["mine_pdir", "mine_infile", "csv_files"]
 
 list_all_essentials = []
 list_all_essentials.extend(list_essential_shared)
-list_all_essentials.extend(list_essential_metasim_only)
+#list_all_essentials.extend(list_essential_metasim_only)
 list_all_essentials.extend(list_essential_genovo_only)
 list_all_essentials.extend(list_essential_glimmer_only)
 list_all_essentials.extend(list_essential_blast_only)
-list_all_essentials.extend(list_essential_mine_only)
+#list_all_essentials.extend(list_essential_mine_only)
 
 list_optional_shared = ["checkExist"]
 list_optional_metasim_only = ["metasim_outfile"]
-list_optional_genovo_only = ["genovo_outfile"]
-list_optional_glimmer_only = ["glimmer_infile", "glimmer_outfile", "extract_outfile"]
+list_optional_genovo_only = ["genovo_outfile", "genovo_noI", "genovo_thresh"]
+list_optional_glimmer_only = ["glimmer_infile", "glimmer_outfile"]
 list_optional_blast_only = ["blast_infile", "blast_e_value", "blast_outfile", "blast_comparison_file"]
-list_optional_mine_only = ["mine_infile", "mine_cv", "mine_clumps", "mine_jobID"]
+list_optional_mine_only = [ "mine_comparison_style", "mine_cv", "mine_exp", "mine_clumps", "mine_jobID"]
+list_optional_internal_only = ["master_tag"]
 
 list_all_optionals = []
 list_all_optionals.extend(list_optional_shared)
@@ -32,6 +36,16 @@ list_all_optionals.extend(list_optional_glimmer_only)
 list_all_optionals.extend(list_optional_blast_only)
 list_all_optionals.extend(list_optional_mine_only)
 
+list_all_ggm = []
+list_all_ggm.extend(list_essential_shared)
+list_all_ggm.extend(list_essential_genovo_only)
+list_all_ggm.extend(list_essential_glimmer_only)
+list_all_ggm.extend(list_essential_blast_only)
+list_all_ggm.extend(list_optional_shared)
+list_all_ggm.extend(list_optional_genovo_only)
+list_all_ggm.extend(list_optional_glimmer_only)
+list_all_ggm.extend(list_optional_blast_only)
+list_all_ggm.extend(list_optional_internal_only)
 
 list_ess_par = {
     "shared": list_essential_shared,
@@ -50,51 +64,87 @@ list_optional_par = {
     "glimmer": list_optional_glimmer_only,
     "blast": list_optional_blast_only,
     "mine": list_optional_mine_only,
-    "all" : list_all_optionals
+    "all": list_all_optionals
 }
+all_programs = ["genovo", "glimmer", "blast"]
+
+
+
+
+def parse_control_file(filepath):
+    print("Parsing control file: %s" % filepath)
+    all_arguments = dict()
+    infile = open(filepath)
+    for line in infile:
+        line = line.strip()
+        if line.startswith("#") or line == "":
+            pass
+        else:
+            location = line.find("=")
+            key = line[0:location].strip()
+            value = line[location + 1:len(line)].strip()
+#            print line, "z", key, "z", value
+            all_arguments[key] = value
+    return all_arguments
+
+
 
 
 class Setting(object):
 
     def __init__(self, **kwargs):
-        """
-        """
-#        self.a = list_all_essentials2
-#        self.b = list_all_essentials
+
         self.all_setting = dict()
         self.add_all(**kwargs)
         self.debug = False
+        self.run_mine = False
+
 
     @classmethod
     def create_setting_from_file(cls, filepath):
+        """
+        TODO: switch between
+        genovo+glimmer+blast
+        and
+        MINE
+        
+        ignore metasim for now
+        
+        do we need genovo+glimmer+blast+MINE?
+        
+        """
+        all_pars = parse_control_file(filepath)
 
 
-        controlfile = ControlFile()
-        controlfile.add_all(filepath)
+        try:
+            pdir = check_program_dir(all_pars["parent_directory"])
+            wdir = check_program_dir(pdir, all_pars["wdir"])
+            setting = cls(parent_directory=pdir, wdir=wdir)
 
-        pdir = controlfile.get("parent_directory")
+            if all_pars.has_key("mine_pdir"):
+                setting.run_mine = True
+                setting.add_all(
+                                mine_pdir=check_program_dir(pdir, all_pars["mine_pdir"]),
+                                mine_infile=all_pars["mine_infile"],
+                                csv_files=all_pars["csv_files"]
+                                )
+            else:
+                setting.add_all(
+                                genovo_infile=all_pars["genovo_infile"],
+                                genovo_pdir=check_program_dir(pdir, all_pars["genovo_pdir"]),
+                                glimmer_pdir=check_program_dir(pdir, all_pars["glimmer_pdir"]),
+                                )
+                setting._set_master_file_tag()
 
-        setting = cls(parent_directory=pdir,
-            wdir=pdir + controlfile.get("wdir"),
-            metasim_pdir=pdir + controlfile.get("metasim_pdir"),
-            metasim_model_infile=controlfile.get("metasim_model_infile"),
-            metasim_taxon_infile=controlfile.get("metasim_taxon_infile"),
-            metasim_no_reads=controlfile.get("metasim_no_reads"),
-            genovo_infile=controlfile.get("genovo_infile"),
-            genovo_pdir=pdir + controlfile.get("genovo_pdir"),
-            genovo_noI=controlfile.get("genovo_noI"),
-            genovo_thresh=controlfile.get("genovo_thresh"),
-            glimmer_pdir=pdir + controlfile.get("glimmer_pdir"),
-            mine_pdir=pdir + controlfile.get("mine_pdir"),
-            mine_comparison_style=controlfile.get("mine_comparison_style"))
+        except KeyError as err:
+            raise KeyError("Missing essential setting", err)
 
-        keys = controlfile.all_arguments.keys()
+
+#        keys = controlfile.all_arguments.keys()
 #        print keys
         for parameter in list_all_optionals:
-            if parameter in keys:
-                setting.add(parameter, controlfile.get(parameter))
-
-#                print parameter
+            if parameter in all_pars.keys():
+                setting.add(parameter, all_pars[parameter])
 
 
             #            wdir=controlfile.get("wdir"),
@@ -103,7 +153,7 @@ class Setting(object):
 #            genovo_outfile=controlfile.get("genovo_outfile"),
 #            glimmer_infile=controlfile.get("glimmer_infile"),
 #            glimmer_outfile=controlfile.get("glimmer_outfile"),
-#            extract_outfile=controlfile.get("extract_outfile"),
+
 #            blast_infile=controlfile.get("blast_infile"),
 #            blast_e_value=controlfile.get("blast_e_value"),
 #            blast_outfile=controlfile.get("blast_outfile"),
@@ -123,31 +173,40 @@ class Setting(object):
     def add(self, key, value):
         self.all_setting[key] = value
 
-    def print_all(self):
+    def _set(self, key, value):
+        self.all_setting[key] = value
+
+    def print_all(self, level=0):
         print "all_keys", self.all_setting.keys()
-        for k in self.all_setting.iterkeys():
-            print "key = %s, value = %s" % (k, self.all_setting[k])
+        if level > 0:
+            for k in sorted(self.all_setting.iterkeys()):
+                print "key = %s, value = %s" % (k, self.all_setting[k])
 
     def get(self, key):
-#        print "Q", key, type(key), self.all_setting[key]
         return self.all_setting[key]
 
-    def get_all_par(self, program):
-
-        self._get_par_program(program)
-
+    def get_pars(self, program):
+        self._check_essential_keys(program)
+        self._check_all_optional_keys(program)
         return self.all_setting
 
 
 
+    def check_all_essential_keys(self):
+        for program in all_programs:
+            self._check_essential_keys(program)
+        self._set_master_file_tag()
+
     def _check_essential_keys(self, program_name):
         par = list_ess_par[program_name] + list_ess_par["shared"]
+        print self.all_setting.keys()
         for v in par:
             isExist = self._check_variables_exist(v)
             if isExist == False:
-#                print("==Error== %s doesn't exist" % v)
-                raise KeyError("not all key exist: %s" % v)
-
+                raise KeyError("key does not exist: %s" % v)
+        if program_name is "mine":
+            list_csv = self.get("csv_files").split(",")
+            self._set("csv_files", list_csv)
 
     def _check_all_optional_keys(self, program_name):
         """
@@ -161,38 +220,48 @@ class Setting(object):
             if not self._check_variables_exist(c):
                 self.add(c, None)
 
+        if program_name in "genovo":
+            self._replace_none_with_defalut("genovo_noI", 10)
+            self._replace_none_with_defalut("genovo_thresh", 250)
+
         if program_name is "glimmer":
-            if self.all_setting["glimmer_infile"] is None:
-                self.all_setting["glimmer_infile"] = self.all_setting["genovo_outfile"]
+            self._replace_none_with_defalut_par("glimmer_infile", "genovo_outfile")
+#            if self.all_setting("glimmer_outfile") is None:
+#                self.all_setting("glimmer_outfile") = self.get("master_tag") + ".output.glimmer"
 
         if program_name is "blast":
-            if self.all_setting["blast_infile"] is None:
-                self.all_setting["blast_infile"] = self.all_setting["extract_outfile"]
-            if self.all_setting["blast_e_value"] is None:
-                self.all_setting["blast_e_value"] = "1e-15"
+            self._replace_none_with_defalut_par("blast_infile", "glimmer_outfile")
+            self._replace_none_with_defalut("blast_e_value", 1e-15)
 
         if program_name is "mine":
-            if self.all_setting["mine_infile"] is None and self.all_setting["blast_comparison_file"] is not None:
-                self.all_setting["mine_infile"] = self.all_setting["blast_merged_file"]
-            if self.all_setting["mine_cv"] is None:
-                self.all_setting["mine_cv"] = 0.0
-            if self.all_setting["mine_clumps"] is None:
-                self.all_setting["mine_clumps"] = 15
-
-        if self.all_setting["checkExist"] is None:
-            self.all_setting["checkExist"] = True
+#            if self.get("mine_infile") is None and self.all_setting("blast_comparison_file") is not None:
+#                self.add("mine_infile") = self.gen("blast_merged_file")
+            self._replace_none_with_defalut("mine_comparison_style", "-allPairs")
+            self._replace_none_with_defalut("mine_cv", 0.0)
+            self._replace_none_with_defalut("mine_exp", 0.6)
+            self._replace_none_with_defalut("mine_clumps", 15)
 
 
+        self._replace_none_with_defalut("checkExist", True)
 
-    def _check(self, variable):
-        for v in variable:
-            isExist = self._check_variables_exist(v)
-            if isExist == False:
-                if self.debug:
-                    print("==Error== %s doesn't exist" % v)
-                return isExist
+    def _replace_none_with_defalut(self, check_key, default_value):
+        if self.get(check_key) is None:
+            self._set(check_key, default_value)
 
-        return True
+    def _replace_none_with_defalut_par(self, check_key, default_par_key):
+        if self.get(check_key) is None:
+            self._set(check_key, self.get(default_par_key))
+
+
+#    def _check(self, variable):
+#        for v in variable:
+#            isExist = self._check_variables_exist(v)
+#            if isExist == False:
+#                if self.debug:
+#                    print("==Error== %s doesn't exist" % v)
+#                return isExist
+#
+#        return True
 
     def _check_variables_exist(self, v):
         for key in self.all_setting.iterkeys():
@@ -202,29 +271,11 @@ class Setting(object):
         return False
 
 
-    def _get_par_program(self, program):
-        self._check_essential_keys(program)
-        self._check_all_optional_keys(program)
+    def _set_master_file_tag(self):
+        name = self.get("genovo_infile")
+        name = path_utils.remove_ext(name)
+        self._set("master_tag", name)
 
-    def _get_metasim(self):
-        self._get_par_program("metasim")
 
-        return self.all_setting
 
-    def _get_genovo(self):
-        self._get_par_program("genovo")
-        return self.all_setting
 
-    def _get_glimmer(self):
-
-        self._get_par_program("glimmer")
-        return self.all_setting
-
-    def _get_blast(self):
-        self._get_par_program("blast")
-        return self.all_setting
-
-    def _get_mine(self):
-        self._get_par_program("mine")
-
-        return self.all_setting

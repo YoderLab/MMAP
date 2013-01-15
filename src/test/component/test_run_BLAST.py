@@ -3,19 +3,16 @@ Created on Aug 27, 2012
 
 @author: Steven Wu
 """
-import unittest
-import os
-
-
+from Bio import SeqIO
+from core.component import run_BLAST
+from core.component.run_BLAST import RunBlast
 from core.connector import go_connector
+from core.sequence import Sequence
 from core.setting import Setting
 from core.utils import path_utils
-from core.component.run_BLAST import RunBlast
-from Bio import SeqIO
-from core.sequence import Sequence
-from core.utils.file_utility import append_before_ext
-from core.component import run_BLAST
 import glob
+import os
+import unittest
 
 
 
@@ -84,7 +81,7 @@ class TestRunBlast(unittest.TestCase):
     @unittest.skip("Take a while to run")
     def test_RunBlast(self):
 
-        blast = RunBlast(self.record_index, self.e_value_cut_off)
+        blast = RunBlast(records=self.record_index, e_value=self.e_value_cut_off, wdir=self.Blast_dir)
         blast.run()
 
         expected = dict({'lcl|AE014075.1_gene_1':set([]),
@@ -120,12 +117,13 @@ class TestRunBlast(unittest.TestCase):
         sub_record = dict({'lcl|AE014075.1_gene_4':self.record_index['lcl|AE014075.1_gene_4'],
                            'lcl|AE014075.1_gene_5':self.record_index['lcl|AE014075.1_gene_5']
                            })
-        blast = RunBlast(sub_record, 1e-200)
+        blast = RunBlast(records=sub_record, e_value=1e-200, wdir=self.Blast_dir)
         blast.run()
 
         expected = dict({'lcl|AE014075.1_gene_4':set([]),
-                         'lcl|AE014075.1_gene_5':set(['GO:0004795', 'GO:0030170', 'GO:0009088'])
-                         })
+#                         'lcl|AE014075.1_gene_5':set(['GO:0004795', 'GO:0030170', 'GO:0009088'])
+                        'lcl|AE014075.1_gene_5':set(['GO:0004795', 'GO:0009088'])
+                        })
 
         for k, v in expected.items():
             seq = blast.results[k]
@@ -311,14 +309,12 @@ class TestRunBlast(unittest.TestCase):
 #        start with empty dictionary
         new_Blast = RunBlast(records=self.record_index, e_value=self.e_value_cut_off,
             wdir=self.Blast_dir, outfile="BlastOut")
-        new_dict = new_Blast.init_dict(self.template_set_small, 0)
-#        now update with new values
+
         expected = dict({"GO:01":1,
                          "GO:03":2,
                          "GO:04":2,
                          "GO:05":1, })
-        #        union = self.S3 | self.S4
-#        print type(new_Blast), new_Blast
+        new_dict = new_Blast.init_dict(self.template_set_small, 0)
         new_Blast.update_counter_from_dictionaries(new_dict, self.template_set_small)
 #        print(new_dict)
         self.assertEqual(expected, new_dict)
@@ -367,14 +363,15 @@ class TestRunBlast(unittest.TestCase):
 
     def test_output_csv(self):
 #        TODO add test code
-        blast = RunBlast(records=self.record_index, e_value=self.e_value_cut_off, wdir=self.Blast_dir,
-                            infile=None, outfile="test.csv")
+        outfile = self.Blast_dir + "test.csv"
+#        blast = RunBlast(records=self.record_index, e_value=self.e_value_cut_off, wdir=self.Blast_dir,
+#                            infile=None, outfile=outfile)
         data = dict({"GO:01":1,
-                         "GO:03":2,
-                         "GO:04":2,
-                         "GO:05":1, })
-        blast.output_csv("Sample", data)
-        f = open(self.Blast_dir + "test.csv", "r")
+                     "GO:03":2,
+                     "GO:04":2,
+                     "GO:05":1, })
+        run_BLAST.output_csv(outfile, "Sample", data)
+        f = open(outfile, "r")
         expected_header = "GOterm,Sample\r\n"
         expected_content = ["GO:01,1\r\n",
                             "GO:03,2\r\n",
@@ -389,28 +386,29 @@ class TestRunBlast(unittest.TestCase):
 
 
         self.assertEqual(i, 4)
-        os.remove(self.Blast_dir + "test.csv")
-#        new_dict.output_csv(['Spam'] * 6 + ['Baked Beans'])
 
 
     def test_update_output_csv(self):
-        blast = RunBlast(records=self.record_index, e_value=self.e_value_cut_off,
-            wdir=self.Blast_dir, outfile="test.csv")
+        outfile1 = self.Blast_dir + "test1.csv"
+        outfile2 = self.Blast_dir + "test2.csv"
+        outfile3 = self.Blast_dir + "test3.csv"
+#        blast = RunBlast(records=self.record_index, e_value=self.e_value_cut_off,
+#            wdir=self.Blast_dir, outfile=outfile1)
         data = dict({"GO:01":1,
                      "GO:03":2,
                      "GO:04":2,
                      "GO:05":1, })
-        blast.output_csv("Sample", data)
+        run_BLAST.output_csv(outfile1, "Sample", data)
         blast = RunBlast(records=self.record_index, e_value=self.e_value_cut_off,
-            wdir=self.Blast_dir, outfile="test2.csv")#, comparison_file="test.csv")
+            wdir=self.Blast_dir, outfile=outfile2)#, comparison_file="test.csv")
         data = dict({"GO:01":7,
                      "GO:02":9,
                      "GO:04":2,
                      "GO:05":8, })
 #        blast.output_csv("Species", data)
-        blast._update_output_csv("Species", data, self.Blast_dir + "test.csv")
+        run_BLAST._update_output_csv(outfile2, "Species", data, existing_csv=outfile1)
 
-        f = open(self.Blast_dir + "test2.csv", "r")
+        f = open(outfile2, "r")
         expected_header = "GOterm,Sample,Species\r\n"
         expected_content = ["GO:01,1,7\r\n",
                             "GO:03,2,0\r\n",
@@ -432,8 +430,7 @@ class TestRunBlast(unittest.TestCase):
 
         self.assertEqual(i, 5)
 
-        blast = RunBlast(records=self.record_index, e_value=self.e_value_cut_off,
-            wdir=self.Blast_dir, outfile="test3.csv", comparison_file="test2.csv")
+
         new_data = dict({"GO:01":3,
                          "GO:02":1,
                          "GO:03":2,
@@ -442,9 +439,9 @@ class TestRunBlast(unittest.TestCase):
                          "GO:06":1,
                          "GO:07":1 })
 #        blast.output_csv("Something", new_data)
-        blast._update_output_csv("Something", new_data, self.Blast_dir + "test2.csv")
+        run_BLAST._update_output_csv(outfile3, "Something", new_data, existing_csv=outfile2)
 
-        f = open(self.Blast_dir + "test3.csv", "r")
+        f = open(outfile3, "r")
         expected_header = "GOterm,Sample,Species,Something\r\n"
         expected_content = ["GO:01,1,7,3\r\n",
                             "GO:03,2,0,2\r\n",
@@ -460,89 +457,5 @@ class TestRunBlast(unittest.TestCase):
             else:
                 self.assertIn(line, expected_content)
 
-        self.assertEqual(i, 7)
-
-    def test_merge_output_csv_to_MINE(self):
-        blast = RunBlast(records=self.record_index, e_value=self.e_value_cut_off,
-            wdir=self.Blast_dir, outfile="test1.csv")
-        data = dict({"GO:01":1,
-                     "GO:03":2,
-                     "GO:04":2,
-                     "GO:05":1, })
-        blast.output_csv("Sample", data)
-        blast = RunBlast(records=self.record_index, e_value=self.e_value_cut_off,
-            wdir=self.Blast_dir, outfile="test2.csv", comparison_file="test1.csv")
-        data = dict({"GO:01":7,
-                     "GO:02":9,
-                     "GO:04":2,
-                     "GO:05":8, })
-        blast.output_csv("Species", data)
-
-        blast = RunBlast(records=self.record_index, e_value=self.e_value_cut_off,
-            wdir=self.Blast_dir, outfile="test3.csv", comparison_file="test2.csv")
-        new_data = dict({"GO:01":3,
-                         "GO:02":1,
-                         "GO:03":2,
-                         "GO:04":2,
-                         "GO:05":2,
-                         "GO:06":1,
-                         "GO:07":1 })
-        blast.output_csv("Something", new_data)
-
-        outfile = self.Blast_dir + "test12.csv"
-        csv_files = [self.Blast_dir + "test1.csv", self.Blast_dir + "test2.csv"]
-        blast.merge_output_csv_to_MINE(outfile, csv_files)
-        f = open(outfile, "r")
-        expected_header = "Sample_0,Species_1\r\n"
-        expected_content = ["1,7\r\n",
-                            "2,0\r\n",
-                            "2,2\r\n",
-                            "1,8\r\n",
-                            "0,9\r\n"]
-
-        for i, line in enumerate(f):
-            if i == 0:
-                self.assertEqual(line, expected_header)
-            else:
-                self.assertIn(line, expected_content)
-        self.assertEqual(i, 5)
-
-
-        outfile = self.Blast_dir + "test123.csv"
-        csv_files = [self.Blast_dir + "test1.csv", self.Blast_dir + "test2.csv", self.Blast_dir + "test3.csv"]
-        blast.merge_output_csv_to_MINE(outfile, csv_files, isMINE=False)
-        f = open(outfile, "r")
-        expected_header = "GOterm,Sample_0,Species_1,Something_2\r\n"
-        expected_content = ["GO:01,1,7,3\r\n",
-                            "GO:03,2,0,2\r\n",
-                            "GO:04,2,2,2\r\n",
-                            "GO:05,1,8,2\r\n",
-                            "GO:02,0,9,1\r\n",
-                            "GO:06,0,0,1\r\n",
-                            "GO:07,0,0,1\r\n"]
-
-        for i, line in enumerate(f):
-            if i == 0:
-                self.assertEqual(line, expected_header)
-            else:
-                self.assertIn(line, expected_content)
-        self.assertEqual(i, 7)
-
-        blast.merge_output_csv_to_MINE(outfile, csv_files, isMINE=True)
-        f = open(outfile, "r")
-        expected_header = "Sample_0,Species_1,Something_2\r\n"
-        expected_content = ["1,7,3\r\n",
-                            "2,0,2\r\n",
-                            "2,2,2\r\n",
-                            "1,8,2\r\n",
-                            "0,9,1\r\n",
-                            "0,0,1\r\n",
-                            "0,0,1\r\n"]
-
-        for i, line in enumerate(f):
-            if i == 0:
-                self.assertEqual(line, expected_header)
-            else:
-                self.assertIn(line, expected_content)
         self.assertEqual(i, 7)
 

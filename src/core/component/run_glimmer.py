@@ -10,13 +10,13 @@ from core.run_ext_prog import runExtProg
 GLIMMER = "./g3-iterated.csh"
 EXTRACT = "./extract"
 INFILE_POSITION = 1
-OUTFILE_POSITION = 2
+TEMP_OUTFILE_TAG_POSITION = 2
 COORDS_POSITION = 2
 SYMBOL_POSITION = 3
-ORFS_POSITION = 4
+OUTFILE_POSITION = 4
 
 ALL_EXTS = [".coords", ".detail", ".icm", ".longorfs", ".motif",
-            ".predict", ".run1.detail", ".run1.predict", ".train", ".upstream", ".orfs"]
+            ".predict", ".run1.detail", ".run1.predict", ".train", ".upstream"]#, ".orfs"]
 
 
 class RunGlimmer(RunComponent):
@@ -31,8 +31,7 @@ class RunGlimmer(RunComponent):
         """
         #FIXME: check outfile name for wdir path before adding wdir to self.outfile
         self.all_exts = ALL_EXTS
-        self.parameter_check(pdir, wdir, infile, outfile, check_exist, "_out")
-        self.generate_orfs_name()
+        self.parameter_check(pdir, wdir, infile, outfile, check_exist, ".glimmer")
         self.glimmer = runExtProg(GLIMMER, pdir=self.pdir, length=2, check_OS=True)
         self.extract = runExtProg(EXTRACT, pdir=self.pdir, length=4, check_OS=True)
         self.init_prog()
@@ -56,47 +55,31 @@ class RunGlimmer(RunComponent):
         Class method
         Create RunGlimmer from Setting class
         """
-        setting = setting_class.get_all_par("glimmer")
+        setting = setting_class.get_pars("glimmer")
         glimmer = RunGlimmer.create_glimmer(setting)
         return glimmer
 
     def init_prog(self):
+
         self.set_infile_name(self.infile)
-        self.set_outfile_tag(self.outfile)
-        self.set_coords(self.coords_file)
-        self.set_orfs(self.orfs_file)
+#        self.set_temp_outfile_tag(self.outfile)
+        self.set_outfile(self.outfile)
+
+#        coords_file = self.outfile + ".coords"
+#        self.set_coords(coords_file)
+
 
     def set_infile_name(self, infile):
         self.glimmer.set_param_at(infile, INFILE_POSITION)
         self.extract.set_param_at(infile, INFILE_POSITION)
 
-    def set_outfile_tag(self, outfile):
-        self.glimmer.set_param_at(outfile, OUTFILE_POSITION)
 
-    def set_coords(self, file):
-        self.extract.set_param_at(file, COORDS_POSITION)
-
-    def set_orfs(self, file):
+    def set_outfile(self, outfile):
+        self.glimmer.set_param_at(outfile, TEMP_OUTFILE_TAG_POSITION)
+        self.extract.set_param_at(outfile + ".coords", COORDS_POSITION)
         self.extract.set_param_at(" > ", SYMBOL_POSITION)
-        self.extract.set_param_at(file, ORFS_POSITION)
+        self.extract.set_param_at(outfile, OUTFILE_POSITION)
 
-    def generate_orfs_name(self):
-        """
-        infile name
-            check if it exist
-            overwrite or not
-        if os.path.exists(  self.cwd+self.name_only  ):
-        if os.path.exists(  full_file_path  ):
-        """
-
-        location = self.outfile.rfind(".")
-        if location is -1:
-            namebase = self.outfile
-        else:
-            namebase = self.outfile[0:location]
-        self.orfs_file = namebase + ".orfs"
-        self.coords_file = namebase + ".coords"
-#            print "!!!!!!", self.orfs_file
 
 
     def run(self, debug=False):
@@ -107,9 +90,9 @@ class RunGlimmer(RunComponent):
         print "Running Glimmer..."
         self.glimmer.run(debug)
         print "Running Glimmer extract..."
-
         self.extract.run(debug)
-        filehandler = open(self.orfs_file, 'w')
+
+        filehandler = open(self.outfile, 'w')
         newLine = ""
         count = 0
 #        print self.extract.output
@@ -120,10 +103,18 @@ class RunGlimmer(RunComponent):
                 count += 1
             else:
                 newLine += line
-        filehandler.write (newLine)
+        filehandler.write(newLine)
         filehandler.close()
 
-    def get_switch(self):
+        self._isCompleted()
+
+    def _isCompleted(self):
+        isComelete = self.check_outfiles_with_filetag_exist(self.outfile) and self.is_file_exist(self.outfile)
+        if not isComelete:
+            raise(StandardError("Glimmer did not complete, not all output files exist"))
+
+
+    def get_extract_switch(self):
 #        print "*****", self.extract._switch
         return self.extract._switch
 

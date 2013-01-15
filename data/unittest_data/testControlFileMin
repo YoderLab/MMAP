@@ -1,11 +1,9 @@
 # comment line
 # don't read this line start with #
 parent_directory=/someDir/subDir/
-wdir=workingDir
+wdir = workingDir
 genovo_infile= genovoInfile
-genovo_noI = 20
 genovo_pdir= genevo/
 glimmer_pdir=   /glimmer/
-blast_e_value=1e-10
 
 
