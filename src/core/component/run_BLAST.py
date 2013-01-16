@@ -65,8 +65,7 @@ class RunBlast(RunComponent):
 #                infile=setting_class.get("blast_infile"),
                 records=record_index,
                 outfile=setting_class.get("blast_outfile"),
-#                comparison_file=setting_class.get("blast_comparison_file")
-                    )
+                )
             return blast
         else:
             raise IOError("Blast infile %s does not exist!!! " % filename)

@@ -1,40 +1,48 @@
 #list_essential_shared
-parent_directory=\someDir\subDir\
+parent_directory=/someDir/subDir/
+wdir=/wdir/
+
 #list_essential_metasim_only
-metasim_pdir=\metaSim\
-metasim_model_infile= metaSimInfile
-metasim_taxon_infile = metasim_taxon_infile
-metasim_no_reads= 20
+#metasim_pdir=/metaSim/
+#metasim_model_infile= metaSimInfile
+#metasim_taxon_infile = metasim_taxon_infile
+#metasim_no_reads= 20
 #list_essential_genovo_only
 genovo_infile= genovoInfile
-genovo_pdir= \genevo\
+genovo_pdir= /genevo/
 genovo_noI= 10
 genovo_thresh= 300
 #list_essential_glimmer_only
-glimmer_pdir=\Glimmer\
+glimmer_pdir=/Glimmer/
 #list_essential_blast_only
-blast_wdir=\Blast\
+blast_wdir=/Blast/
 #list_essential_mine_only
-mine_pdir=\mine\
-mine_comparison_style=-allPairs
-mine_jobID=MinIn.csv,mv=0,cv=0.0,B=n^0.6
+
 #list_optional_shared
-wdir=\wdir\
+
 checkExist=True
+
 #list_optional_metasim_only
-metasim_outfile=metaSim_Out
+#metasim_outfile=metaSim_Out
+
 #list_optional_genovo_only
 genovo_outfile=genOut
+
 #list_optional_glimmer_only
 glimmer_infile=Glim_in
 glimmer_outfile=glimmerOut
-extract_outfile=extrOut
+
 #list_optional_blast_only
 blast_infile=BlastIn
 blast_e_value=1e-57
 blast_outfile=BlOut
+########################
+#mine_pdir=/mine/
+#mine_comparison_style=-allPairs
+#mine_jobID=MinIn.csv,mv=0,cv=0.0,B=n^0.6
+
 #list_optional_mine_only
-mine_infile=MinIn
-mine_cv=0.0
-mine_clumps=23
-mine_jobID=MinIn.csv,mv=0,cv=0.0,B=n^0.6
+#mine_infile=MinIn
+#mine_cv=0.0
+#mine_clumps=23
+#mine_jobID=MinIn.csv,mv=0,cv=0.0,B=n^0.6

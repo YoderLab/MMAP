@@ -16,7 +16,6 @@ class TestSetting(unittest.TestCase):
     def tearDown(self):
         pass
 
-#    @unittest.skip("demonstrating skipping")
     def test_Setting_set_param(self):
         setting = Setting()
         setting.add_all(infle="asdf", filename="zxcv", noI=2)
@@ -129,7 +128,8 @@ class TestSetting(unittest.TestCase):
         expected = {"blast_infile": "bInfile", "blast_outfile": "bOutfile",
                     "blast_e_value": 1e-15,
                     "parent_directory": "main_pdir",
-                    "wdir": "working_dir", "checkExist": True, "blast_comparison_file":None}
+                    "wdir": "working_dir", "checkExist": True
+                    }
         setting.debug = True
         self.assertEqual(expected, setting.get_pars("blast"))
 
@@ -255,6 +255,8 @@ class TestSetting(unittest.TestCase):
                     "wdir" :"/someDir/subDir/workingDir",
                     "mine_pdir":"/someDir/subDir/MINE",
                     "mine_cv":"20",
+                    "mine_infile":"mineInfile",
+                    "csv_files":"out1.csv,out2.csv"
                     }
 #        self.assertEqual(setting.all_setting, expected)
         self.assertEqual(expected, setting.all_setting)

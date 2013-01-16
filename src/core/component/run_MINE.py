@@ -174,7 +174,7 @@ def merge_output_csv_to_MINE(outfile, csv_files, isMINE=True):
     """
     csv_files = list of csv files
     """
-    print "merge to %s from %s" % (outfile, csv_files)
+    print "MINE: merging csv files to %s. From csv_list: %s" % (outfile, csv_files)
     header = []
     if not isMINE:
         header.append("GOterm")

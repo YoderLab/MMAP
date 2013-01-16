@@ -3,9 +3,11 @@
 parent_directory=/someDir/subDir/
 wdir=workingDir
 genovo_infile= genovoInfile
-genovo_noI = 20
 genovo_pdir= genevo/
-glimmer_pdir=   /glimmer/
+glimmer_pdir= glimmer/
+
+## optional
+genovo_noI=20
 blast_e_value=1e-10
 
 

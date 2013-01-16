@@ -172,7 +172,7 @@ class TestRunGlimmer(unittest.TestCase):
         glimmer = RunGlimmer(infile=infile_var, outfile=outfile_var, pdir=self.data_dir, check_exist=False)
         self.assertFalse(glimmer.check_outfiles_with_filetag_exist(self.data_dir + outfile_var))
 
-#    @unittest.skip("take a while to run")
+
     def test_RunGlimmer_run(self):
         """
         with debug=True

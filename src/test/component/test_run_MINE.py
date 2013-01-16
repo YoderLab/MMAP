@@ -65,13 +65,13 @@ class TestRunMINE(unittest.TestCase):
         self.assertEqual([self.working_dir + "f1", self.working_dir + "f2", self.working_dir + "f3"], mine.csv_files)
 
 
-    def test_file_not_exist(self):
-        infile_var = "file_inexistent.mconf"  # test infile
-        jobID_var = "tOut"
-
-        with self.assertRaises(IOError):
-            RunMINE(infile=infile_var, pdir=self.data_dir, wdir=self.working_dir,
-                jobID=jobID_var, comparison='-allPairs', cv=0.0, c=15, check_exist=True)
+#    def test_file_not_exist(self):
+#        infile_var = "file_inexistent.mconf"  # test infile
+#        jobID_var = "tOut"
+#
+#        with self.assertRaises(IOError):
+#            RunMINE(infile=infile_var, pdir=self.data_dir, wdir=self.working_dir,
+#                jobID=jobID_var, comparison='-allPairs', cv=0.0, c=15, check_exist=True)
 
     def test_parameter_values(self):
         infile_var = "Spellman.csv"

@@ -13,14 +13,14 @@ python -m unittest discover -v
 cd ./src
 python -m unittest -v test.main
 '''
-
 from test import *
 from test.assembler import *
 from test.component import *
-#from test.connector import *
+from test.connector import *
 from test.parser import *
 from test.utils import *
 import unittest
+
 #
 
 ## TODO: remove some files from repositories. tracking too many files

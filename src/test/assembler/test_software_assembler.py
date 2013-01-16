@@ -63,9 +63,9 @@ class TestSoftwareAssembler(unittest.TestCase):
         assembler = SoftwareAssembler(setting)
 
         expected = set(core.setting.list_all_ggm)
+        self.assertEqual(expected, set(assembler.get_all_par().viewkeys()))
 
-        self.assertEqual(assembler.get_all_par().viewkeys(), expected)
-
+        print assembler.get_all_par().values()
 
     def test_missed_essential(self):
 
@@ -75,22 +75,21 @@ class TestSoftwareAssembler(unittest.TestCase):
             setting = Setting.create_setting_from_file(infile)
             assembler = SoftwareAssembler(setting)
 
-    @unittest.skip("fixed after fixing metasim and MINE")
     def test_all_parameters(self):
 
         infile = self.unittest_dir + "allPass"
-        test = ControlFile()
-        test.add_all(infile)
-        expected = test.all_arguments
 
         setting = Setting.create_setting_from_file(infile)
         assembler = SoftwareAssembler(setting)
 
-        self.assertEqual(assembler.get_all_par(), expected)
+        expected = set(core.setting.list_all_ggm)
+        self.assertEqual(expected, set(assembler.get_all_par().viewkeys()))
+        print assembler.get_all_par()
+        print assembler.get_all_par().keys()
+        print assembler.get_all_par().values
 
-
-    @unittest.skip("fixed after fixing metasim and MINE")
     def test_from_setting(self):
+
 #
 ##    When not all essential parameters exist, should fail.
 #        infile="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/unittest_data/missedEssentials"
@@ -100,38 +99,27 @@ class TestSoftwareAssembler(unittest.TestCase):
 #        with self.assertRaises(KeyError):
 #            SoftwareAssembler.create_SoftwareAssembler_from_setting(setting)
 
-#    When all essential parameters exist and all optional parameters exist, should pass.
-        infile = self.unittest_dir + "allPass"
-        test = ControlFile()
-        test.add_all(infile)
-        expected = test.all_arguments
-
-        setting = Setting.create_setting_from_file(infile)
-        assembler = SoftwareAssembler(setting)
-
-        self.assertEqual(assembler.get_all_par(), expected)
-
 #    When not all essential parameters exist but no optional parameters exist, should pass.
         infile = self.unittest_dir + "testControlFile"
-        test = ControlFile()
-        test.add_all(infile)
-        expected = test.all_arguments
 
-        setting = Setting.create_setting_from_file(infile)
-        assembler = SoftwareAssembler(setting)
+#        setting = Setting.create_setting_from_file(infile)
+#        assembler = SoftwareAssembler(setting)
+#
+#        expected = set(core.setting.list_all_ggm)
+#        self.assertEqual(expected, set(assembler.get_all_par().viewkeys()))
 
-        self.assertEqual(assembler.get_all_par(), expected)
-
-#    When not all essential parameters exist, should fail.
+    def test_some_optional(self):
         infile = self.unittest_dir + "testControlFileOp1"
-        test = ControlFile()
-        test.add_all(infile)
-        expected = test.all_arguments
 
         setting = Setting.create_setting_from_file(infile)
         assembler = SoftwareAssembler(setting)
 
-        self.assertEqual(assembler.get_all_par(), expected)
+        expected = set(core.setting.list_all_ggm)
+        self.assertEqual(expected, set(assembler.get_all_par().viewkeys()))
+        self.assertEqual("20", assembler.get("genovo_noI"))
+        self.assertEqual("1e-10", assembler.get("blast_e_value"))
+
+
 
 
 if __name__ == '__main__':

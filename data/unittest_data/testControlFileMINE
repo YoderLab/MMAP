@@ -2,5 +2,7 @@
 # don't read this line start with #
 parent_directory=/someDir/subDir/
 wdir=workingDir
-mine_pdir=/MINE/
-mine_cv = 20
+mine_pdir=MINE/
+mine_infile=mineInfile
+csv_files=out1.csv,out2.csv
+mine_cv=20

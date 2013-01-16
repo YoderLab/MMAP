@@ -24,7 +24,7 @@ list_optional_shared = ["checkExist"]
 list_optional_metasim_only = ["metasim_outfile"]
 list_optional_genovo_only = ["genovo_outfile", "genovo_noI", "genovo_thresh"]
 list_optional_glimmer_only = ["glimmer_infile", "glimmer_outfile"]
-list_optional_blast_only = ["blast_infile", "blast_e_value", "blast_outfile", "blast_comparison_file"]
+list_optional_blast_only = ["blast_infile", "blast_e_value", "blast_outfile"]
 list_optional_mine_only = [ "mine_comparison_style", "mine_cv", "mine_exp", "mine_clumps", "mine_jobID"]
 list_optional_internal_only = ["master_tag"]
 
@@ -199,7 +199,6 @@ class Setting(object):
 
     def _check_essential_keys(self, program_name):
         par = list_ess_par[program_name] + list_ess_par["shared"]
-        print self.all_setting.keys()
         for v in par:
             isExist = self._check_variables_exist(v)
             if isExist == False:
@@ -234,8 +233,7 @@ class Setting(object):
             self._replace_none_with_defalut("blast_e_value", 1e-15)
 
         if program_name is "mine":
-#            if self.get("mine_infile") is None and self.all_setting("blast_comparison_file") is not None:
-#                self.add("mine_infile") = self.gen("blast_merged_file")
+
             self._replace_none_with_defalut("mine_comparison_style", "-allPairs")
             self._replace_none_with_defalut("mine_cv", 0.0)
             self._replace_none_with_defalut("mine_exp", 0.6)

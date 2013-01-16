@@ -34,8 +34,8 @@ class TestRunComponent(unittest.TestCase):
         #        print genovo.checkAssembleOutfilesExist("test_infile.fasta")
 
     def test_check_outfiles_exist(self):
-        infile_tag = "pIn"
-        exts = [".dump1", ".status"]
+        infile_tag = "tIn"
+        exts = [".test1", ".test2"]
         comp = RunComponent()
         self.assertTrue(comp.is_multi_files_exist(file_tag=self.data_dir + infile_tag, all_exts=exts))
         exts = ["not1", "not2"]

@@ -60,7 +60,7 @@ class TestRunBlast(unittest.TestCase):
 
         setting.add_all(blast_e_value=e_var, blast_wdir=self.Blast_dir,
                         blast_infile=file_var, blast_outfile=outfile_var,
-                        blast_comparison_file=None)
+                        )
 
         with self.assertRaises(IOError):
             RunBlast.create_blast_from_file(setting_class=setting)
