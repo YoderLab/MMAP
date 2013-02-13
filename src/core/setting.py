@@ -1,10 +1,13 @@
 from core.controlfile import ControlFile
 from core.utils import path_utils
 from core.utils.path_utils import check_wdir_prefix, check_program_dir
+from core.connector.go_connector import GOConnector
+from core.connector import go_connector
+from core.component import run_genovo, run_MINE
 
 
 __author__ = 'erinmckenney'
-#infile, pdir, wdir, comparison, cv=0, c=15, outfile, check_exist=True
+# infile, pdir, wdir, comparison, cv=0, c=15, outfile, check_exist=True
 list_essential_shared = ["parent_directory", "wdir"]
 list_essential_metasim_only = ["metasim_pdir", "metasim_model_infile", "metasim_taxon_infile", "metasim_no_reads"]
 list_essential_genovo_only = ["genovo_infile", "genovo_pdir"]
@@ -14,17 +17,17 @@ list_essential_mine_only = ["mine_pdir", "mine_infile", "csv_files"]
 
 list_all_essentials = []
 list_all_essentials.extend(list_essential_shared)
-#list_all_essentials.extend(list_essential_metasim_only)
+# list_all_essentials.extend(list_essential_metasim_only)
 list_all_essentials.extend(list_essential_genovo_only)
 list_all_essentials.extend(list_essential_glimmer_only)
 list_all_essentials.extend(list_essential_blast_only)
-#list_all_essentials.extend(list_essential_mine_only)
+# list_all_essentials.extend(list_essential_mine_only)
 
 list_optional_shared = ["checkExist"]
 list_optional_metasim_only = ["metasim_outfile"]
 list_optional_genovo_only = ["genovo_outfile", "genovo_noI", "genovo_thresh"]
 list_optional_glimmer_only = ["glimmer_infile", "glimmer_outfile"]
-list_optional_blast_only = ["blast_infile", "blast_e_value", "blast_outfile"]
+list_optional_blast_only = ["blast_infile", "blast_batch_size", "blast_e_value", "blast_outfile"]
 list_optional_mine_only = [ "mine_comparison_style", "mine_cv", "mine_exp", "mine_clumps", "mine_jobID"]
 list_optional_internal_only = ["master_tag"]
 
@@ -220,8 +223,9 @@ class Setting(object):
                 self.add(c, None)
 
         if program_name in "genovo":
-            self._replace_none_with_defalut("genovo_noI", 10)
-            self._replace_none_with_defalut("genovo_thresh", 250)
+            self._replace_none_with_defalut("genovo_noI", run_genovo.DEFAULT_GENOVO_NO_ITER)
+            self._replace_none_with_defalut("genovo_thresh", run_genovo.DEFAULT_GENOVO_THRESH)
+
 
         if program_name is "glimmer":
             self._replace_none_with_defalut_par("glimmer_infile", "genovo_outfile")
@@ -230,15 +234,15 @@ class Setting(object):
 
         if program_name is "blast":
             self._replace_none_with_defalut_par("blast_infile", "glimmer_outfile")
-            self._replace_none_with_defalut("blast_e_value", 1e-15)
+            self._replace_none_with_defalut("blast_e_value", go_connector.DEFAULT_E_VALUE_CUT_OFF)
+            self._replace_none_with_defalut("blast_batch_size", go_connector.DEFAULT_BATCH_SIZE)
 
         if program_name is "mine":
 
             self._replace_none_with_defalut("mine_comparison_style", "-allPairs")
-            self._replace_none_with_defalut("mine_cv", 0.0)
-            self._replace_none_with_defalut("mine_exp", 0.6)
-            self._replace_none_with_defalut("mine_clumps", 15)
-
+            self._replace_none_with_defalut("mine_cv", run_MINE.DEFAULT_CV)
+            self._replace_none_with_defalut("mine_exp", run_MINE.DEFAULT_EXP)
+            self._replace_none_with_defalut("mine_clumps", run_MINE.DEFAULT_CLUMPS)
 
         self._replace_none_with_defalut("checkExist", True)
 

@@ -26,7 +26,7 @@ class TestSetting(unittest.TestCase):
                     "noI": 6, "outfile2": "12345"}
         self.assertEqual(setting.all_setting, expected)
 
-    def test_Setting_get_metasim(self): #"metasim_pdir", "metasim_model_infile", "metasim_taxon_infile", "metasim_no_reads"
+    def test_Setting_get_metasim(self):  # "metasim_pdir", "metasim_model_infile", "metasim_taxon_infile", "metasim_no_reads"
         setting = Setting()
         setting.add_all(metasim_model_infile="mmInfile",
             filename="mOutfile", metasim_no_reads=200)
@@ -126,7 +126,7 @@ class TestSetting(unittest.TestCase):
         setting.add_all(blast_e_value=1e-15, parent_directory="main_pdir",
                         wdir="working_dir", checkExist=True)
         expected = {"blast_infile": "bInfile", "blast_outfile": "bOutfile",
-                    "blast_e_value": 1e-15,
+                    "blast_e_value": 1e-15, "blast_batch_size":50,
                     "parent_directory": "main_pdir",
                     "wdir": "working_dir", "checkExist": True
                     }

@@ -14,9 +14,11 @@ import datetime
 import os
 from core.utils import path_utils
 import warnings
+from core.connector.go_connector import GOConnector
 
 ALL_EXTS = [".csv"]
 MINE_TAG = "_MINE"
+
 
 class RunBlast(RunComponent):
     """
@@ -24,9 +26,8 @@ class RunBlast(RunComponent):
     take record parameter, assumed files read from Bio.SeqIO.index
     Bio.SeqIO.index returns a dictionary like object.
 
-    TODO(Steven Wu): copy/pasted from old main.py. Add test class
     """
-    def __init__(self, e_value, wdir, infile=None, records=None, outfile=None):
+    def __init__(self, e_value, wdir, batch_size=50, infile=None, records=None, outfile=None):
         """
         Constructor
         records: collection of Bio.SeqRecord.SeqRecord
@@ -41,6 +42,7 @@ class RunBlast(RunComponent):
         self.e_value_cut_off = e_value
         self.record_index = records
         self.check_filenames(infile, records, outfile)
+        self.batch_size = self.check_valid_value(batch_size, int)
 #        if comparison_file is not None:
 #            self.comparison_file = self.wdir + comparison_file
 #            self.check_file_exist(self.comparison_file, True)
@@ -62,7 +64,7 @@ class RunBlast(RunComponent):
             blast = cls(
                 e_value=setting_class.get("blast_e_value"),
                 wdir=setting_class.get("blast_wdir"),
-#                infile=setting_class.get("blast_infile"),
+                batch_size=setting_class.get("blast_batch_size"),
                 records=record_index,
                 outfile=setting_class.get("blast_outfile"),
                 )
@@ -79,13 +81,53 @@ class RunBlast(RunComponent):
         blast = cls(
             wdir=setting.get("wdir"),
             e_value=setting.get("blast_e_value"),
+            batch_size=setting.get("blast_batch_size"),
             infile=setting.get("blast_infile"),
             outfile=setting.get("blast_outfile"),
                     )
         return blast
 
 
+
     def run(self, debug=0):
+
+        print("Running AmiGO:BLAST_Batch")
+
+#        temp_output = open(self.outfile + "_temp", "w")
+        if self.record_index == None:
+            self.record_index = SeqIO.index(self.infile, "fasta")
+
+        # # TODO: add temp_output? to GOConnector?
+        go = GOConnector(self.record_index, self.batch_size)
+        go.amigo_batch_mode()
+
+
+        all_seqs = go.all_seqs
+        all_orfs = dict()
+        for seq in all_seqs:
+            key = seq.seq_id
+            self.results[key] = seq
+            all_orfs[key] = seq.all_terms
+#            print this_seq
+#            print this_seq.all_terms
+#            temp_output.write("%s \t %s\n" % (key, seq.all_terms))
+#            temp_output.flush()
+#        temp_output.close()
+
+        self.counter = self.create_counter(all_orfs)
+#        new_outfile = self.init_output(self.counter,0)
+#        self.sample = self.update_sample_from_counters(new_outfile, self.counter)
+#       hasattr
+
+        output_csv(self.outfile, self.header, self.counter)
+#        if hasattr(self, "comparison_file"):
+#            print "PRINT self.comparison_file", self.comparison_file
+#            self.update_output_csv(self.infile, self.counter)
+
+
+    def run_single(self, debug=0):
+        warnings.simplefilter('default')
+        warnings.warn("deprecated method: run_BLAST.run_single\nBLAST single sequence, slow!! ", DeprecationWarning)
 
         print("Running AmiGO:BLAST")
 
@@ -97,7 +139,7 @@ class RunBlast(RunComponent):
 
         for key in self.record_index:
             print key
-            this_seq = Sequence(self.record_index[key].seq) #Bio.SeqRecord.SeqRecord
+            this_seq = Sequence(self.record_index[key].seq)  # Bio.SeqRecord.SeqRecord
             this_seq = go_connector.blast_AmiGO(this_seq)
             this_seq = go_connector.extract_ID(this_seq)
             this_seq = go_connector.parse_go_term(this_seq, self.e_value_cut_off)
@@ -150,7 +192,7 @@ class RunBlast(RunComponent):
 #        for i in self.results.values():
 #            print(i.all_terms)
 
-#TODO: Save / export results as a .csv file (= MINE input)
+# TODO: Save / export results as a .csv file (= MINE input)
 
     def init_output(self, counter, default_value=0):
         new_sample = dict()

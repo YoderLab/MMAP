@@ -8,7 +8,7 @@ dependency: SciPy - 0.10.0
 
 
 Example:
-at ./src/ folder
+change to ./src/ folder
 
 cd src/
 python core/main.py ../data/BenchMark3/Lac_5k_0/control
@@ -33,7 +33,7 @@ print Bio.__path__
 
 CWD = os.getcwd()
 data_dir = path_utils.get_data_dir(CWD)
-#print "data dir:\t", data_dir
+# print "data dir:\t", data_dir
 
 
 def main():
@@ -52,9 +52,9 @@ if __name__ == "__main__":
     cFile = test_run_dir + "Lac_5k_2/control"
 
 
-    #    args = parser.parse_args(["-h"])
-#    args = parser.parse_args([cFile, "-d"])
-    args = parser.parse_args()
+#    args = parser.parse_args(["-h"])
+    args = parser.parse_args([cFile, "-d"])
+#    args = parser.parse_args()
 
 
     if args.debug >= 2:

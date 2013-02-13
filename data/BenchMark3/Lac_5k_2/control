@@ -46,9 +46,10 @@ checkExist=True
 ##### list_optional_blast_only
 ## blast_infile=1k_out_out.orfs
 ## blast_e_value=1e-1
+blast_batch_size=50
 ## blast_outfile=BlOut
 ## blast_comparison_file=1stRun_out_out.orfs.csv
-
+##
 ##### list_optional_mine_only
 ## mine_infile=MinIn
 ## mine_cv=0.0
