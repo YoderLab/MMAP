@@ -9,7 +9,7 @@ from core.component.run_glimmer import RunGlimmer
 from core.component.run_BLAST import RunBlast
 from core.component.run_MINE import RunMINE
 from core.setting import Setting
-from core.component import run_MINE
+
 
 
 __author__ = 'erinmckenney'
@@ -69,7 +69,7 @@ class SoftwareAssembler(object):
 #            self.setting.add("blast_merged_file", self.blast.merged_file)
 #        except:
 #            pass
-##    def update_mine_setting(self):
+# #    def update_mine_setting(self):
 #        self.setting.add("mine_infile", self.blast.outfile)
 
     def init_program(self):
@@ -99,7 +99,7 @@ class SoftwareAssembler(object):
     def run(self, debug=0):
 
 #        self.metasim.run(debug=0)
-        #TODO: add metasim.run back later.
+        # TODO: add metasim.run back later.
         #    fix MetaSim outfile name (can't overwrite program default)
         #    use -454 error model!!
 

@@ -15,7 +15,7 @@ class TestRunExtProg(unittest.TestCase):
     platform = run_ext_prog.get_platform()
 
     def setUp(self):
-        self.data_dir = path_utils.get_data_dir()
+        self.data_dir = path_utils.get_data_dir() + "/unittest_data/"
 
     def test_RunExtProg_append_reset_switch(self):
         prog1 = runExtProg("ls")
@@ -76,12 +76,12 @@ class TestRunExtProg(unittest.TestCase):
 
         prog2.add_switch(self._switch)
         prog2.run()
-        self.out = prog2.errors  #not sure why output capture by stderr, but it works
+        self.out = prog2.errors  # not sure why output capture by stderr, but it works
         self.assertTrue(os.listdir(self.data_dir).count(self.filename))
         self.assertTrue(self.out.find("MUSCLE v3.8.31"))
         self.assertTrue(self.out.find("testAlignmentInput 2 seqs"))
 
-        #clean up
+        # clean up
         os.remove(self.data_dir + self.filename)
 
     def test_RunExtProg_update_switch(self):
@@ -123,8 +123,8 @@ class TestRunExtProg(unittest.TestCase):
 
     def test_RunExtProg_check(self):
 
-        prog1 = runExtProg("./metaidba", pdir=self.data_dir, check_OS=True)
-        self.assertEqual(prog1.program_name, "./metaidba_" + TestRunExtProg.platform)
+        prog1 = runExtProg("./program1", pdir=self.data_dir, check_OS=True)
+        self.assertEqual(prog1.program_name, "./program1_" + TestRunExtProg.platform)
 
         prog1 = runExtProg("./muscle3.8.31_i86linux64", pdir=self.data_dir, check_OS=True)
         self.assertEqual(prog1.program_name, "./muscle3.8.31_i86linux64")
@@ -134,8 +134,8 @@ class TestRunExtProg(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    #import sys;sys.argv = ['', 'Test.testName']
+    # import sys;sys.argv = ['', 'Test.testName']
     unittest.main()
 
-#suite = unittest.TestLoader().loadTestsFromTestCase(TestRunExtProg)
-#unittest.TextTestRunner(verbosity=2).run(suite)
+# suite = unittest.TestLoader().loadTestsFromTestCase(TestRunExtProg)
+# unittest.TextTestRunner(verbosity=2).run(suite)

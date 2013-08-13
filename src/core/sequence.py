@@ -5,6 +5,7 @@
 
 
 from Bio import Seq
+import warnings
 
 
 class Sequence(object):
@@ -12,6 +13,8 @@ class Sequence(object):
     class __doc__
     """
     def __init__(self, data=None):
+        warnings.filterwarnings("always")
+        warnings.warn("Deprecated class, please ues Sequence2", DeprecationWarning)
         if not (isinstance(data, Seq.Seq) or isinstance(data, str)):
             raise TypeError("Incorrect type, must be Bio.Seq.Seq or str: type(data) = %s" % type(data))
         self.each_term = dict()  # {str: set()}
@@ -21,6 +24,13 @@ class Sequence(object):
         self.__web_page = None
         self.len = 0
         self.acc_ID, self.match_ID, self.e_value = [], [], []
+
+
+    @classmethod
+    def create_from_webpage(cls, webpage):
+        seq = Sequence("")
+        seq.web_page = webpage
+        return seq
 
     def add(self, key, term):
         '''append term, term must be a list (str doesnt work)'''
@@ -58,12 +68,12 @@ class Sequence(object):
 
         return combList
 
-    ## TODO:
+    # # TODO:
     def cal_distance(self, method="s"):
         if method == "s":
             return 0
 
-## test property
+# # test property
     def _get_web_page(self):
         return self.__web_page
 
@@ -75,6 +85,70 @@ class Sequence(object):
 
     web_page = property(_get_web_page, set_web_page, del_web_page, "Testing property")
 
+
+
+
+##############################################################
+
+class Sequence2(object):
+    """store all blast results from 1 seq
+    class __doc__
+    """
+    def __init__(self, id, webpage):
+        self.seq_id = id
+        self.web_page = webpage
+
+        self.each_term = dict()  # {str: set()}
+        self.all_terms = set()
+        self.is_match = False
+
+        self.len = 0
+        self.acc_ID, self.match_ID, self.e_value = [], [], []
+
+
+    def add(self, key, term):
+        '''append term, term must be a list (str doesnt work)'''
+        self.each_term[key] = set(term)
+        self.all_terms.update(term)
+        self.len += 1
+
+    def __len__(self):
+        ''' "Emulating" method, should override len()'''
+        return self.len
+
+    def get_one_term(self, key):
+        return self.each_term[key]
+
+    def get_combinations(self):
+        '''
+        return tuple (index_in_dist_matrix, set1, set2)
+        index_in_dist_matrix in "tuple", with (row_index, col_index) for lower triangle
+        '''
+
+        keyList = self.each_term.keys()
+        len_set = len(keyList)
+#        dist = numpy.zeros(shape=(len_set, len_set), dtype=numpy.float32)
+        combList = []
+        for i, u in enumerate(self.each_term.values()):
+            for j in range(i + 1, len_set):
+                v = self.each_term.get(keyList[j])
+#                print "i:%d \t j:%d \t %d and %s and %s" % (i ,j,len(u&v), str(u), str(v))
+                combList.append(((j, i), u, v))
+
+        return combList
+
+
+    def parse_go_term(self, seq):
+        pass
+#        go_connector.extract_ID(seq)
+#        go_connector.extract_ID(self)
+#        go_connector.extract_ID(self)
+#        go_connector.parse_go_term(self)
+
+
+
+
+############################################################33
 
 class Hits(object):
 

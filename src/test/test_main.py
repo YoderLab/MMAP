@@ -21,17 +21,21 @@ from test.parser import *
 from test.utils import *
 import unittest
 
+
+# BLAST.test_create**from file
+# test_runextprog_check
+# Metasim
 #
 
-## TODO: remove some files from repositories. tracking too many files
-## git ls-files
-## git rm --cached filename
-## add file to .gitignores
+# # TODO: remove some files from repositories. tracking too many files
+# # git ls-files
+# # git rm --cached filename
+# # add file to .gitignores
 #
 
 
 
-#class TestMain(unittest.TestCase):
+# class TestMain(unittest.TestCase):
 #
 #    def setUp(self):
 #        self.seq = range(10)
@@ -47,15 +51,15 @@ class TestAll(unittest.TestCase):
 #    alltests = unittest.TestSuite()
 #
 #    alltests.addTests(unittest.TestLoader().loadTestsFromModule(test_sequence))
-##    from test.test_sequence import TestSequence
-##    alltests.addTests( unittest.TestLoader().loadTestsFromTestCase(TestSequence ))
+# #    from test.test_sequence import TestSequence
+# #    alltests.addTests( unittest.TestLoader().loadTestsFromTestCase(TestSequence ))
 #    print alltests
 #    print alltests.countTestCases()
 #    unittest.TextTestRunner(verbosity=2).run(alltests)
 #    print "==end test_main()==\n"
 #
-#if (__name__ == '__main__') | (__name__ == 'test.main') :
-##     test.main is used for "-m unittest test.main"
+# if (__name__ == '__main__') | (__name__ == 'test.main') :
+# #     test.main is used for "-m unittest test.main"
 #    test_main()
 
 if __name__ == '__main__':

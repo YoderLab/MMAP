@@ -18,7 +18,8 @@ FINALIZE_INFILE_POSITION = 3
 
 ALL_EXTS = [".status", ".dump1", ".dump.best"]
 
-
+DEFAULT_GENOVO_NO_ITER = 10
+DEFAULT_GENOVO_THRESH = 250
 
 
 class RunGenovo(RunComponent):
@@ -27,7 +28,7 @@ class RunGenovo(RunComponent):
 
     """
 
-    def __init__(self, infile, no_iter, thresh, pdir, wdir=None,
+    def __init__(self, infile, pdir, no_iter=DEFAULT_GENOVO_NO_ITER, thresh=DEFAULT_GENOVO_THRESH, wdir=None,
                  outfile=None, check_exist=True):
         """
         Constructor

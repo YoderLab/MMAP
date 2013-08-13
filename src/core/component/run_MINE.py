@@ -20,7 +20,7 @@ from core.utils import path_utils
     # c = factor by which # of clumps may outnumber # of x-axis columns <default = 15>
     # notify = # of variable pairs to analyze before printing a status message as Status.csv output file <default = 100>
     # jobID = string to identify job
-MINE = "java"# -jar MINE.jar" # MINE command call
+MINE = "java"  # -jar MINE.jar" # MINE command call
 offset = 2
 INFILE_POSITION = 1 + offset
 COMPARISON_STYLE_POSITION = 2 + offset
@@ -31,13 +31,19 @@ JOB_ID_POSITION = 6 + offset
 
 ALL_EXTS = [",Results.csv", ",Status.txt"]
 
+
+DEFAULT_CV = 0.0
+DEFAULT_EXP = 0.6
+DEFAULT_CLUMPS = 15
+
 class RunMINE(RunComponent):
     """
     classdocs
     """
 
     def __init__(self, infile, pdir, wdir, comparison='-allPairs',
-                 cv=0.0, exp=0.6, c=15, jobID="out", check_exist=True,
+                 cv=DEFAULT_CV, exp=DEFAULT_EXP, clumps=DEFAULT_CLUMPS,
+                 jobID="out", check_exist=True,
                  csv_files=None):
         """
         Constructor
@@ -60,7 +66,7 @@ class RunMINE(RunComponent):
         self.mine = runExtProg(MINE, pdir=self.pdir, length=6 + offset, check_OS=True)
         self.mine.set_param_at("-jar", 1)
         self.mine.set_param_at("MINE.jar", 2)
-        self.init_prog(comparison, cv, exp, c)
+        self.init_prog(comparison, cv, exp, clumps)
 
         self.csv_files = csv_files
         if self.csv_files is not None:
@@ -147,7 +153,7 @@ class RunMINE(RunComponent):
         arg = "id=%s" % self.jobID
         self.mine.set_param_at(arg, JOB_ID_POSITION)
 
-#def read_outfile(self):
+# def read_outfile(self):
 #        """
 #        ** Not sure how to check this file-type.
 #        """
@@ -156,7 +162,7 @@ class RunMINE(RunComponent):
 
 
     def run(self, debug=False):
-        #TODO: Figure out how to run MINE using the Python wrapper... command in the README file is below--but how to incorporate?
+        # TODO: Figure out how to run MINE using the Python wrapper... command in the README file is below--but how to incorporate?
 #        import xstats.MINE
 #        for a, b, scores in xstats.MINE.analyze_file("Spellman.csv", xstats.MINE.MASTER_VARIABLE, 0, cv = 0.7):
 #            print a, b, scores
@@ -184,6 +190,7 @@ def merge_output_csv_to_MINE(outfile, csv_files, isMINE=True):
         with open(infile, 'rb') as f:
             reader = csv.reader(f)
             for i, row in enumerate(reader):
+                print row
                 if i == 0:
 #                        zeroes = len(row) - 1
                     index = row[1].rfind(os.sep) + 1

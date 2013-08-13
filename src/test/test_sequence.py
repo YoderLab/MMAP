@@ -4,7 +4,7 @@ Created on Nov 22, 2011
 @author: Steven Wu
 '''
 
-from core.sequence import Sequence
+from core.sequence import Sequence, Sequence2
 import random
 import unittest
 
@@ -14,14 +14,33 @@ class TestSequence(unittest.TestCase):
     def setUp(self):
         self.seq = range(10)
         self.s = Sequence("TEST")
+        self.s2 = Sequence2("ID", "PAGE")
         pass
 
     def tearDown(self):
         pass
 
-    @unittest.skip("demonstrating skipping")
-    def test_Sequence_nothing(self):
-        self.fail("shouldn't happen")
+
+    def test_Sequence2_add(self):
+
+        self.s2.add(0, ["term0", "term1"])
+        self.s2.add(1, ["term2", "term3"])
+
+        expect0 = set(["term0", "term1"])
+        expect1 = set(["term2", "term3"])
+        expect01 = set(["term0", "term1", "term2", "term3"])
+
+        self.assertEqual(self.s2.each_term.get(0), expect0)
+        self.assertEqual(self.s2.each_term.get(1), expect1)
+        self.assertEqual(self.s2.all_terms, expect01)
+
+        self.s2.add(2, set(["term0", "term1"]))
+        self.s2.add(3, ["term1", "term2"])
+        self.s2.add(4, ["term4", "term5"])
+
+        expectAll = set(["term0", "term1", "term2", "term3", "term4", "term5"])
+        self.assertEqual(self.s2.all_terms, expectAll)
+
 
     def test_Sequence_add(self):
 
@@ -103,6 +122,6 @@ class TestSequence(unittest.TestCase):
 
 
 
-#suite = unittest.TestLoader().loadTestsFromTestCase(TestSequence)
-#unittest.TextTestRunner(verbosity=2).run(suite)
+# suite = unittest.TestLoader().loadTestsFromTestCase(TestSequence)
+# unittest.TextTestRunner(verbosity=2).run(suite)
 

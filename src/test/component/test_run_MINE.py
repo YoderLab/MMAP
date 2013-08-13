@@ -11,7 +11,8 @@ from core import run_ext_prog
 from core.utils import path_utils
 from core.component import run_MINE, run_BLAST
 import glob
-from core.component.run_BLAST import RunBlast
+
+
 
 class TestRunMINE(unittest.TestCase):
 
@@ -51,7 +52,7 @@ class TestRunMINE(unittest.TestCase):
         jobID_var = "tOut"
 
         mine = RunMINE(infile=infile_var, pdir=self.data_dir, wdir=self.working_dir,
-            jobID=jobID_var, comparison='-allPairs', cv=0.0, exp=0.6, c=15, check_exist=False)
+            jobID=jobID_var, comparison='-allPairs', cv=0.0, exp=0.6, clumps=15, check_exist=False)
 
         expected_infile = "%s%s" % (self.working_dir, infile_var)
         expected_outfile = "id=%s" % jobID_var
@@ -60,7 +61,7 @@ class TestRunMINE(unittest.TestCase):
         self.assertEqual(mine.get_switch(), expected)
 
         mine = RunMINE(infile=infile_var, pdir=self.data_dir, wdir=self.working_dir,
-                       jobID=jobID_var, comparison='-allPairs', cv=0.0, exp=0.6, c=15, check_exist=False,
+                       jobID=jobID_var, comparison='-allPairs', cv=0.0, exp=0.6, clumps=15, check_exist=False,
                        csv_files=["f1", "f2", "f3"])
         self.assertEqual([self.working_dir + "f1", self.working_dir + "f2", self.working_dir + "f3"], mine.csv_files)
 
@@ -77,7 +78,7 @@ class TestRunMINE(unittest.TestCase):
         infile_var = "Spellman.csv"
         jobID_var = "tOut"
         mine = RunMINE(infile=infile_var, pdir=self.data_dir, wdir=self.working_dir,
-            jobID=jobID_var, comparison='-allPairs', cv=0.0, c=15, check_exist=False)
+            jobID=jobID_var, comparison='-allPairs', cv=0.0, clumps=15, check_exist=False)
 
         self.assertRaises(ValueError, mine.set_cv_threshold, 1.1)
         self.assertRaises(ValueError, mine.set_cv_threshold, 0)
@@ -159,25 +160,25 @@ class TestRunMINE(unittest.TestCase):
         outfile1 = self.working_dir + "test1.csv"
         outfile2 = self.working_dir + "test2.csv"
         outfile3 = self.working_dir + "test3.csv"
-        data = dict({"GO:01":1,
-                     "GO:03":2,
-                     "GO:04":2,
-                     "GO:05":1, })
+        data = dict({"GO:01": 1,
+                     "GO:03": 2,
+                     "GO:04": 2,
+                     "GO:05": 1, })
         run_BLAST.output_csv(outfile1, "Sample", data)
 
-        data = dict({"GO:01":7,
-                     "GO:02":9,
-                     "GO:04":2,
-                     "GO:05":8, })
+        data = dict({"GO:01": 7,
+                     "GO:02": 9,
+                     "GO:04": 2,
+                     "GO:05": 8, })
         run_BLAST.output_csv(outfile2, "Species", data)
 
-        data = dict({"GO:01":3,
-                     "GO:02":1,
-                     "GO:03":2,
-                     "GO:04":2,
-                     "GO:05":2,
-                     "GO:06":1,
-                     "GO:07":1 })
+        data = dict({"GO:01": 3,
+                     "GO:02": 1,
+                     "GO:03": 2,
+                     "GO:04": 2,
+                     "GO:05": 2,
+                     "GO:06": 1,
+                     "GO:07": 1})
         run_BLAST.output_csv(outfile3, "Something", data)
 
         outfile = self.working_dir + "test12.csv"
