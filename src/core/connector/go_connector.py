@@ -108,7 +108,7 @@ class GOConnector(object):
         total_BLAST = len(self.web_session_list)
         print "Total number of BLAST:", total_BLAST
         for i, wb in enumerate( self.web_session_list):
-            print "BLAST: ",i,"/",total_BLAST
+            print "BLAST: ",(i+1),"/",total_BLAST
             query_blast = [
                 ('action', 'blast'),
                 ('seq', wb.query_data),
@@ -116,7 +116,7 @@ class GOConnector(object):
 
             wb.query_page = _get_web_page(query_blast, AMIGO_BLAST_URL)
 
-
+        print "Done BLAST queries"
         for wb in self.web_session_list:
             seq_result = wb.parse_querypage()
             self.all_seqs.extend(seq_result)
