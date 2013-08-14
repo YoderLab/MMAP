@@ -110,7 +110,7 @@ class SoftwareAssembler(object):
 
             self.mine.run(self.debug)
         else:
-            self.genovo.run(self.debug)
-            self.glimmer.run(self.debug)
+#             self.genovo.run(self.debug)
+#             self.glimmer.run(self.debug)
             self.blast.run(self.debug)
         print "=== Done ==="

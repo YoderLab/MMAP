@@ -66,7 +66,7 @@ class GOConnector(object):
         self.record_index = SeqIO.index(infile, "fasta")
 
     """
-    socket.setdefaulttimeout(30)
+    socket.setdefaulttimeout(300)
     warnings.simplefilter("always")
 
     def __init__(self, seq_record, max_query_size=DEFAULT_BATCH_SIZE, e_value_cut_off=DEFAULT_E_VALUE_CUT_OFF):
@@ -86,7 +86,7 @@ class GOConnector(object):
         keys = []
         data = ""
         for i, key in enumerate(self.seq_record):
-#            print i, key, type(self.seq_record[key]), type(self.seq_record[key].seq), type(self.seq_record[key].format("fasta"))
+#             print i, key, type(self.seq_record[key]), type(self.seq_record[key].seq), type(self.seq_record[key].format("fasta"))
             data = data + ">" + key + "\n" + str(self.seq_record[key].seq) + "\n"
             keys.append(key)
             if i % self.max_query_size is max_query_size_1:
@@ -105,8 +105,10 @@ class GOConnector(object):
 
     def amigo_batch_mode(self):
         self.parse_seq_record()
-
-        for wb in self.web_session_list:
+        total_BLAST = len(self.web_session_list)
+        print "Total number of BLAST:", total_BLAST
+        for i, wb in enumerate( self.web_session_list):
+            print "BLAST: ",i,"/",total_BLAST
             query_blast = [
                 ('action', 'blast'),
                 ('seq', wb.query_data),
