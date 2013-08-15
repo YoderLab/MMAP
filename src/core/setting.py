@@ -243,7 +243,6 @@ class Setting(object):
             self._replace_none_with_defalut("mine_cv", run_MINE.DEFAULT_CV)
             self._replace_none_with_defalut("mine_exp", run_MINE.DEFAULT_EXP)
             self._replace_none_with_defalut("mine_clumps", run_MINE.DEFAULT_CLUMPS)
-
         self._replace_none_with_defalut("checkExist", True)
 
     def _replace_none_with_defalut(self, check_key, default_value):

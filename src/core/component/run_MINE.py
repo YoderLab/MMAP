@@ -96,16 +96,18 @@ class RunMINE(RunComponent):
         Create RunMINE from Setting class
         """
         setting = setting_class.get_pars("mine")
+#         print "C: ", setting.get("mine_clumps")
         mine = cls(infile=setting.get("mine_infile"),
             pdir=setting.get("mine_pdir"),
             wdir=setting.get("wdir"),
             comparison=setting.get("mine_comparison_style"),
             cv=setting.get("mine_cv"),
             exp=setting.get("mine_exp"),
-            c=setting.get("mine_clumps"),
+            clumps=setting.get("mine_clumps"),
             jobID=setting.get("mine_outfile"),
             csv_files=setting.get("csv_files"),
             check_exist=setting.get("check_exist"))
+        
         return mine
 
     def init_prog(self, style, cv, exp, c):
@@ -114,6 +116,7 @@ class RunMINE(RunComponent):
         self.set_cv_threshold(cv)
         self.set_exp(exp)
         self.set_clumping_factor(c)
+        
         self.set_jobID()
 #
     def set_infile_name(self):
@@ -147,7 +150,7 @@ class RunMINE(RunComponent):
             self.mine.set_param_at("c=%s" % (v), CLUMPS_POSITION)
         else:
             raise ValueError("Error: clumping factor set to : %s" % v)
-
+        
 
     def set_jobID(self):
         arg = "id=%s" % self.jobID

@@ -69,8 +69,8 @@ class SoftwareAssembler(object):
 #            self.setting.add("blast_merged_file", self.blast.merged_file)
 #        except:
 #            pass
-# #    def update_mine_setting(self):
-#        self.setting.add("mine_infile", self.blast.outfile)
+    def update_mine_setting(self):
+        self.setting.add("mine_infile", self.blast.outfile)
 
     def init_program(self):
 #        self.metasim = RunMetaSim.create_metasim_from_setting(self.setting)
