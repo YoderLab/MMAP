@@ -27,7 +27,7 @@ class RunBlast(RunComponent):
     Bio.SeqIO.index returns a dictionary like object.
 
     """
-    def __init__(self, e_value, wdir, batch_size=50, infile=None, records=None, outfile=None):
+    def __init__(self, e_value, wdir, batch_size=20, infile=None, records=None, outfile=None):
         """
         Constructor
         records: collection of Bio.SeqRecord.SeqRecord
@@ -96,7 +96,7 @@ class RunBlast(RunComponent):
 #        temp_output = open(self.outfile + "_temp", "w")
         if self.record_index == None:
             self.record_index = SeqIO.index(self.infile, "fasta")
-
+        print self.infile
         # # TODO: add temp_output? to GOConnector?
         go = GOConnector(self.record_index, self.batch_size)
         go.amigo_batch_mode()
