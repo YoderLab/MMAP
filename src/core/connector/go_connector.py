@@ -59,6 +59,8 @@ DEFAULT_BATCH_SIZE = 50
 DEFAULT_E_VALUE_CUT_OFF = 1e-15
 
 
+# #TODO: read http://bcbio.wordpress.com/2009/10/18/gene-ontology-analysis-with-python-and-bioconductor/
+
 class GOConnector(object):
     """
         seq_record in SeqRecord format,
