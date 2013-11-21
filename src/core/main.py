@@ -22,6 +22,8 @@ import argparse
 import numpy
 import os
 import scipy
+from core.connector import go_connector
+from core.connector.go_connector import WebSession
 
 
 
@@ -41,6 +43,21 @@ def main():
 
 
 if __name__ == "__main__":
+    webpage = "aoeuaoeuoe\!-- session_id = 1231amigo122 --aoeu"
+    wb = WebSession(webpage, "10")
+    wb.query_page = webpage
+    a = wb.get_session_id()
+    print a
+
+
+
+
+
+
+
+
+
+
 
     parser = argparse.ArgumentParser()
     parser.add_argument("controlFile", help="Control File contains all settings")
@@ -51,8 +68,10 @@ if __name__ == "__main__":
 #     test_run_dir = path_utils.get_data_dir() + "BenchMark3/"
 #     cFile = test_run_dir + "Lac_5k_2/control"
 
-    test_run_dir = path_utils.get_data_dir() + "BenchMark5/"
-    cFile = test_run_dir + "20k/control"
+    test_run_dir = path_utils.get_data_dir() + "BenchMark6/"
+    cFile = test_run_dir + "control"
+
+
 
 #    args = parser.parse_args(["-h"])
     args = parser.parse_args([cFile, "-d"])
@@ -81,3 +100,8 @@ if __name__ == "__main__":
 #    assembler = SoftwareAssembler.create_from_args(args)
 #    assembler.run()
 #    print "=== END MAIN ==="
+
+
+
+
+

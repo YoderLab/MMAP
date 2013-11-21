@@ -10,7 +10,7 @@ Setup on at Dec 2011, if URL/webpage changes then need update it accordingly
 from core import re_patterns
 from core.sequence import Sequence2
 from core.utils import string_utils
-from urllib2 import URLError
+from urllib2 import URLError, HTTPError
 import re
 import socket
 import sys
@@ -19,6 +19,8 @@ import time
 import urllib
 import urllib2
 import warnings
+import httplib
+from httplib import IncompleteRead
 
 
 # # check these later
@@ -55,7 +57,7 @@ RE_NO_SEQ_COUNTER = re.compile("Your job contains (\d+) sequence")
 RE_GET_SESSION_ID = re.compile("\!--\s+session_id\s+=\s+(\d+amigo\d+)\s+--")
 # RE_GET_SESSION_ID = re.compile  ("\s+session_id\s+=\s+(\d+amigo\d+)")
 # <!-- session_id         = 634amigo1360013506 -->
-DEFAULT_BATCH_SIZE = 50
+DEFAULT_BATCH_SIZE = 20
 DEFAULT_E_VALUE_CUT_OFF = 1e-15
 
 
@@ -68,12 +70,12 @@ class GOConnector(object):
         self.record_index = SeqIO.index(infile, "fasta")
 
     """
-    socket.setdefaulttimeout(300)
+    socket.setdefaulttimeout(180)
     warnings.simplefilter("always")
 
     def __init__(self, seq_record, max_query_size=DEFAULT_BATCH_SIZE, e_value_cut_off=DEFAULT_E_VALUE_CUT_OFF):
 
-
+        self.conn = httplib.HTTPConnection("amigo.geneontology.org:80")
         self.max_query_size = max_query_size
         self.seq_record = seq_record
         self.e_value_cut_off = e_value_cut_off
@@ -106,23 +108,146 @@ class GOConnector(object):
 #        return datas
 
     def amigo_batch_mode(self):
+
         self.parse_seq_record()
+        self.web_session_list = self.web_session_list[0:100]
         total_BLAST = len(self.web_session_list)
-        print "Total number of BLAST:", total_BLAST
-        for i, wb in enumerate( self.web_session_list):
-            print "BLAST: ",(i+1),"/",total_BLAST
-            query_blast = [
-                ('action', 'blast'),
-                ('seq', wb.query_data),
-                ('CMD', 'Put')]
 
-            wb.query_page = _get_web_page(query_blast, AMIGO_BLAST_URL)
+        print "\nTotal number of BLAST:", total_BLAST
+        session_id_list = [None] * total_BLAST
+        for i, wb in enumerate(self.web_session_list):
+            print "BLAST: ", (i + 1), "/", total_BLAST
 
-        print "Done BLAST queries"
-        for wb in self.web_session_list:
-            seq_result = wb.parse_querypage()
-            self.all_seqs.extend(seq_result)
+#            wb.query_page = _get_web_page(query_blast, AMIGO_BLAST_URL)
+#            session_id_list[i] = wb.session_id
+#            print session_id_list[i] , wb.session_id, wb.query_page
+            wb.handle = _get_web_page_handle(wb.query_blast, AMIGO_BLAST_URL)
+#            if i == 2:
+#                break
+        print "Done submitting BLAST queries"
 
+#        print session_id_list
+#
+#        for ii, wb in enumerate(self.web_session_list):
+#            print "in the first loop", ii, wb, wb.session_id
+# #            wb = self.web_session_list[ii]
+#            try:
+#                for _ in range(10):
+#                    wb.query_page = str(wb.handle.read())
+#                    if ii is 1:
+#                        wb.session_id = None
+#                        break
+#                    session_id_list[ii] = wb.session_id
+#
+#                    print session_id_list[ii]
+#                    outfile = "/home/sw167/Postdoc/Project_Lemur/MMAP/data/BenchMark6/backupWebpage/tempWebpage_%d" % ii
+#                    outfile_handler = open(outfile, "w+")
+#                    outfile_handler.write(wb.query_page)
+#
+#                    seq_result = wb.parse_querypage()
+#        #                    print seq_result
+#                    self.all_seqs.extend(seq_result)
+#                    break
+#            except HTTPError, e:
+#                print 'The server couldn\'t fulfill the request.'
+#                print 'Error code: ', e.code
+#            except URLError, e:
+#                print 'We failed to reach a server.'
+#                print 'Reason: ', e.reason
+#    #            continue
+#            except socket.timeout as e:
+#                warnings.warn("timouout! retry\n%s" % e)
+#
+#
+#        print "\nEnd initial amigo_batch_mode\n"
+
+# TODO: save session_id and reuse it later
+#        outfile = "/home/sw167/Postdoc/Project_Lemur/MMAP/data/BenchMark6/backupWebpage/tempWebpage2_%d" % ii
+#        outfile_handler = open(outfile, "w+")
+#        outfile_handler.write(wb.query_page)
+#        outfile_handler.close()
+        while not all(session_id_list):
+            for ii, wb in enumerate(self.web_session_list):
+                print "=in loop ", ii, wb.session_id
+                if not wb.session_id:
+                    print "==in second/checking loop", ii, wb.session_id, wb.handle
+            #            wb = self.web_session_list[ii]
+                    try:
+                        if not wb.handle:
+                            wb.handle = _get_web_page_handle(wb.query_blast, AMIGO_BLAST_URL)
+                            print "===Recreated handle ", wb.handle.code
+#                        for _ in range(10):
+#                            print type(wb.handle), dir(wb.handle)
+#                            print wb.handle.__class__.__name__
+#                            print wb.handle.__class__
+#                            print wb.handle.code
+#                            print wb.handle.getcode()
+#                            print wb.handle.fp
+#                            print wb.handle.info()
+#                            print wb.handle.msg
+#                            print wb.handle.url
+#                            print wb.handle.next()
+#                            print wb.handle.readline()
+#                            print wb.handle.readlines()
+# ['__doc__', '__init__', '__iter__', '__module__', '__repr__', 'close', 'code',
+#   'fileno', 'fp', 'getcode', 'geturl', 'headers', 'info', 'msg', 'next', 'read',
+#   'readline', 'readlines', 'url']
+
+#                            wb.handle = _get_web_page_handle(query_blast, AMIGO_BLAST_URL)
+                        wb.query_page = str(wb.handle.read())
+                        wb.handle = None
+
+#                            print wb.handle.read()
+#                            print wb.handle.code
+#                            print wb.handle.getcode()
+#                            print wb.handle.fp
+#                            print wb.handle.info()
+#                            print wb.handle.msg
+#                            print wb.handle.url
+                        print "====Done reading:", len(wb.query_page)  # , wb.query_page
+                        session_id_list[ii] = wb.get_session_id()
+
+
+#                        seq_result =
+                        wb.parse_querypage()
+                        self.all_seqs.extend(wb.go_results)
+#                        print "======RESULT: ", wb.go_results
+
+#                            break
+                    except HTTPError, e:
+                        print 'The server couldn\'t fulfill the request.'
+                        print 'Error code: ', e.code
+                        print wb.handle.code
+                        wb.handle = None
+#                        wb.handle = _get_web_page_handle(wb.query_blast, AMIGO_BLAST_URL)
+#                        print "done recreated handle ", wb.handle.code
+                    except URLError, e:
+                        print 'We failed to reach a server.'
+                        print 'Reason: ', e.reason
+                        print wb.handle.code
+                        wb.handle = None
+#                        wb.handle = _get_web_page_handle(wb.query_blast, AMIGO_BLAST_URL)
+#                        print "done recreated handle ", wb.handle.code
+            #            continue
+                    except IncompleteRead as e:
+                        print "IncompleteRead:", e  # , e.partial
+                        wb.handle = None
+
+                    except socket.timeout as e:
+                        print "timeout ", wb.handle.code, ii
+                        wb.handle = None
+
+#                        wb.handle = _get_web_page_handle(wb.query_blast, AMIGO_BLAST_URL)
+#                        print "done recreated handle ", wb.handle.code
+                        warnings.warn("timouout! retry\n%s%s" % (e, ii))
+                    except socket.error as e:
+                        print wb.handle.code
+                        wb.handle = None
+#                        wb.handle = _get_web_page_handle(wb.query_blast, AMIGO_BLAST_URL)
+#                        print "done recreated handle ", wb.handle.code
+                        warnings.warn("socket error\n%s%s" % (e, type(e)))
+
+        print "End amigo_batch_mode"
 
 
     def get_GO_terms(self, seq):
@@ -136,12 +261,6 @@ class GOConnector(object):
         self.seq = parse_go_term(self.seq, self.e_value_cut_off)
 
 
-
-
-def get_session_id(webpage):
-    match = RE_GET_SESSION_ID.search(webpage)
-    session_id = match.group(1)
-    return session_id
 
 
 def blast_AmiGO(seq):
@@ -251,6 +370,19 @@ def parse_go_term(seq, e_value_cut_off):
     return seq
 
 
+def _get_web_page_httplib(connector, query):
+
+    message = urllib.urlencode(query)
+    header = {"User-Agent": "BiopythonClient"}
+#            request = urllib2.Request(URL, message, {"User-Agent": "BiopythonClient"})
+#
+    connector.request("POST", "/cgi-bin/amigo/blast.cgi", message, header)
+#    r1 = connector.getresponse()
+#    print r1.status, r1.reason
+#            print r1.
+#    data = r1.read()
+#    return connector
+#    print data
 
 # @retry(urllib2.URLError, tries=4, delay=3, backoff=2)
 def _get_web_page(query, URL):
@@ -260,20 +392,57 @@ def _get_web_page(query, URL):
         try:
 
             message = urllib.urlencode(query)
+
             request = urllib2.Request(URL, message, {"User-Agent": "BiopythonClient"})
+#            print "URL:", URL, "\n", message, "\n", request, "\n"
+#            print request.get_data()
+#            print request.get_full_url()
             handle = urllib2.urlopen(request)
+
+#            print handle
+#            print type(handle)
+#            print dir(handle)
+#            print handle.getcode
+#            print handle.geturl
+#            print handle.headers
+#            print handle.code
+#            print handle.msg
+#            print handle.url
 #    s = _as_string(handle.read())
             s = str(handle.read())
             break
-        except URLError as e:
-            warnings.warn("retry %s\n%s" % (query, e))
-#            continue
-        except socket.timeout:
-            warnings.warn("timouout! retry")
+        except HTTPError, e:
+            print 'The server couldn\'t fulfill the request.'
+            print 'Error code: ', e.code
+        except URLError, e:
+            print 'We failed to reach a server.'
+            print 'Reason: ', e.reason
+        except socket.timeout as e:
+            warnings.warn("timouout! retry\n%s" % e)
+        except socket.error as e:
+            warnings.warn("[Errno 104] Connection reset by peer!!\n%s\n%s\t%s" % (e, query, URL))
 #            continue
 #    print s
 #    sys.exit()
     return s
+
+
+# @retry(urllib2.URLError, tries=4, delay=3, backoff=2)
+def _get_web_page_handle(query, URL):
+    # TODO faster? with httplib?
+#    update: don't think so?!?! not sure
+    handle = None
+    message = urllib.urlencode(query)
+    request = urllib2.Request(URL, message, {"User-Agent": "BiopythonClient"})
+    print message
+
+    while True:
+        handle = urllib2.urlopen(request)
+        if handle.code > 0:
+#            print handle.code
+            break
+
+    return handle
 
 
 def wait_for_query_result(query_wait):
@@ -296,14 +465,9 @@ def wait_for_query_result(query_wait):
     return query_page
 
 
-def find_seq_id(web_pages):
-    index = web_pages.find("<p class=\"sequence\">>")
-    index_end = web_pages.find("<br>", index)
-    gid = web_pages[index + len("<p class=\"sequence\">>"):index_end].strip()
-    return gid
 
 
-def parse_get_get_blast_results_query(session_id, page):
+def parse_get_blast_results_query(session_id, page):
     query = [('action', 'get_blast_results'),
             ('session_id', session_id),
             ("page", page),
@@ -319,65 +483,130 @@ class WebSession(object):
         self.key_list = key_list
 
         self.session_id = None
-        self._query_page = None
+        self.query_page = None
         self.seq_counter = 0
         self.go_results = []
 
+        self.query_blast = [
 
+                ('action', 'blast'),
+                ('seq', self.query_data),
+                ('CMD', 'Put')]
 
 #        print query_data
 #        print key_list
 
-
-
-
-    def parse_seq(self, web_page):
-
-        seq_id = find_seq_id(web_page)
-        if seq_id not in self.key_list:
-            warnings.warn("ID doesn't match %s" % seq_id)
-
-        seq = Sequence2(seq_id, web_page)
-        seq = extract_ID(seq)
-        seq = parse_go_term(seq, self.e_value_cut_off)
-        return seq
-
-
-
     def parse_querypage(self):
 
-        query_wait = parse_get_get_blast_results_query(self.session_id, 1)
+        query_wait = parse_get_blast_results_query(self.session_id, 1)
+#        print "wait_for_query_result"
         self.query_page = wait_for_query_result(query_wait)
         self._get_seq_counter()
 #        web_pages = [None] * self.seq_counter
+#        print "seq_counter", self.seq_counter
+        print "======parsing %d sequences" % self.seq_counter
         for page in range(self.seq_counter):
-
-            query = parse_get_get_blast_results_query(self.session_id, page + 1)
-            web_page = _get_web_page(query, AMIGO_BLAST_URL)
-
-            seq = self.parse_seq(web_page)
+#            print "parse sequences %d/%d" % (page, self.seq_counter)
+            seq = None
+            while seq == None:
+                query = parse_get_blast_results_query(self.session_id, page + 1)
+                web_page = _get_web_page(query, AMIGO_BLAST_URL)
+                if web_page != None:
+                    seq = self.parse_seq(web_page)
+#                    print "---in ", page, "with ", seq
             self.go_results.append(seq)
-        return self.go_results
+#        return self.go_results
 #        return web_pages
-
-
 
     def _get_seq_counter(self):
 
         match = RE_NO_SEQ_COUNTER.search(self.query_page)
-#        if match:
-        self.seq_counter = int(match.group(1))
+        if match:
+            self.seq_counter = int(match.group(1))
 #        print "seq_counter:%d\tlist_length:%d" % (seq_counter, len(self.key_list))
 #        print seq_counter == len(self.key_list), seq_counter is len(self.key_list)
-        if self.seq_counter != len(self.key_list):
-            warnings.warn("Mismatch numebr of sequencs=%d, and number of key=%d keys" % (self.seq_counter, len(self.key_list)))
+            if self.seq_counter != len(self.key_list):
+                warnings.warn("Mismatch numebr of sequencs=%d, and number of key=%d keys" % (self.seq_counter, len(self.key_list)))
+        else:
+            print "no matches!!!", self.seq_counter
 
 
-    def _get_query_page(self):
-        return self._query_page
+    def parse_seq(self, web_page):
 
-    def _set_query_page(self, query_page):
-        self._query_page = query_page
-        self.session_id = get_session_id(self._query_page)
+        seq = None
+        seq_id = self._find_seq_id(web_page)
+        if seq_id in self.key_list:
+            seq = Sequence2(seq_id, web_page)
+            seq = extract_ID(seq)
+            seq = parse_go_term(seq, self.e_value_cut_off)
+        else:
+            index = web_page.find("<p class=\"sequence\">>")
+            index_end = web_page.find("<br>", index)
+#            gid = web_page[index + len("<p class=\"sequence\">>"):index_end].strip()
+#            print index, index_end, gid
+#            return gid
+            warnings.warn("ID doesn't match %s %s seq_id=%s" % (index, index_end, seq_id))
+        return seq
 
-    query_page = property(_get_query_page, _set_query_page)
+
+
+    def _find_seq_id(self, web_pages):
+        index = web_pages.find("<p class=\"sequence\">>")
+        index_end = web_pages.find("<br>", index)
+        if index == -1 and index_end == -1:
+            return None
+        else:
+            gid = web_pages[index + len("<p class=\"sequence\">>"):index_end].strip()
+            return gid
+
+#    def _get_query_page(self):
+#        return self._query_page
+#
+#    def _set_query_page(self, query_page):
+#        self._query_page = query_page
+#
+#    query_page = property(_get_query_page, _set_query_page)
+
+
+    def get_session_id(self):
+        self.session_id = None
+        match = RE_GET_SESSION_ID.search(self.query_page)
+        if match:
+            self.session_id = match.group(1)
+            print "assign session_id", self.session_id
+    #    try:
+    #
+    #    except AttributeError as e:
+    #        raise AttributeError("AttributeError: %s \n webpage: %s" % (e, webpage))
+        return self.session_id
+#    wb.session_id = wb.get_session_id(wb.query_page)
+
+
+###########
+
+class MyHandler(urllib2.HTTPHandler):
+    def http_response(self, req, response):
+        print "url: %s" % (response.geturl(),)
+        print "info: %s" % (response.info(),)
+        for l in response:
+            print l
+        return response
+
+# o = urllib2.build_opener(MyHandler())
+# t = threading.Thread(target=o.open, args=('http://www.google.com/',))
+# t.start()
+# print "I'm asynchronous!"
+#
+# t.join()
+#
+# print "I've ended!"
+
+
+
+
+
+
+
+
+
+

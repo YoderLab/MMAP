@@ -102,7 +102,7 @@ class RunMINE(RunComponent):
             comparison=setting.get("mine_comparison_style"),
             cv=setting.get("mine_cv"),
             exp=setting.get("mine_exp"),
-            c=setting.get("mine_clumps"),
+            clumps=setting.get("mine_clumps"),
             jobID=setting.get("mine_outfile"),
             csv_files=setting.get("csv_files"),
             check_exist=setting.get("check_exist"))
