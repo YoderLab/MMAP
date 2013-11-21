@@ -110,7 +110,7 @@ class GOConnector(object):
     def amigo_batch_mode(self):
 
         self.parse_seq_record()
-        self.web_session_list = self.web_session_list[0:100]
+        self.web_session_list = self.web_session_list[0:3]
         total_BLAST = len(self.web_session_list)
 
         print "\nTotal number of BLAST:", total_BLAST
@@ -168,14 +168,14 @@ class GOConnector(object):
 #        outfile_handler.close()
         while not all(session_id_list):
             for ii, wb in enumerate(self.web_session_list):
-                print "=in loop ", ii, wb.session_id
+                print "=In loop %d with session_id: %s" % (ii, wb.session_id)
                 if not wb.session_id:
-                    print "==in second/checking loop", ii, wb.session_id, wb.handle
+                    print "==No session_id", ii, wb.session_id
             #            wb = self.web_session_list[ii]
                     try:
                         if not wb.handle:
                             wb.handle = _get_web_page_handle(wb.query_blast, AMIGO_BLAST_URL)
-                            print "===Recreated handle ", wb.handle.code
+                            print "===Recreated wb.handle ", wb.handle.code
 #                        for _ in range(10):
 #                            print type(wb.handle), dir(wb.handle)
 #                            print wb.handle.__class__.__name__
@@ -434,8 +434,6 @@ def _get_web_page_handle(query, URL):
     handle = None
     message = urllib.urlencode(query)
     request = urllib2.Request(URL, message, {"User-Agent": "BiopythonClient"})
-    print message
-
     while True:
         handle = urllib2.urlopen(request)
         if handle.code > 0:
@@ -573,7 +571,7 @@ class WebSession(object):
         match = RE_GET_SESSION_ID.search(self.query_page)
         if match:
             self.session_id = match.group(1)
-            print "assign session_id", self.session_id
+            print "Assign session_id=", self.session_id
     #    try:
     #
     #    except AttributeError as e:
