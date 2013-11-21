@@ -73,7 +73,7 @@ class GOConnector(object):
     socket.setdefaulttimeout(180)
     warnings.simplefilter("always")
 
-    def __init__(self, seq_record, max_query_size=DEFAULT_BATCH_SIZE, e_value_cut_off=DEFAULT_E_VALUE_CUT_OFF):
+    def __init__(self, seq_record, max_query_size=DEFAULT_BATCH_SIZE, e_value_cut_off=DEFAULT_E_VALUE_CUT_OFF, debug=False):
 
         self.conn = httplib.HTTPConnection("amigo.geneontology.org:80")
         self.max_query_size = max_query_size
@@ -81,6 +81,7 @@ class GOConnector(object):
         self.e_value_cut_off = e_value_cut_off
         self.web_session_list = []
         self.all_seqs = []
+        self.debug = debug
 
 
     def parse_seq_record(self):
@@ -97,11 +98,11 @@ class GOConnector(object):
                 if len(data) > MAX_QUERY_SEQ_LENGTH:
                     warnings.warn("TODO: Implement auto scale down blast batch size. Total query length %d > %d"\
                                   % (len(data), MAX_QUERY_SEQ_LENGTH))
-                self.web_session_list.append(WebSession(data, keys))
+                self.web_session_list.append(WebSession(data, keys, self.debug))
                 data = ""
                 keys = []
         if data != "":
-            self.web_session_list.append(WebSession(data, keys))
+            self.web_session_list.append(WebSession(data, keys, self.debug))
 #        datas.append(data)
 #        print "DATA:\n", data
 #        print datas
@@ -126,85 +127,24 @@ class GOConnector(object):
 #                break
         print "Done submitting BLAST queries"
 
-#        print session_id_list
-#
-#        for ii, wb in enumerate(self.web_session_list):
-#            print "in the first loop", ii, wb, wb.session_id
-# #            wb = self.web_session_list[ii]
-#            try:
-#                for _ in range(10):
-#                    wb.query_page = str(wb.handle.read())
-#                    if ii is 1:
-#                        wb.session_id = None
-#                        break
-#                    session_id_list[ii] = wb.session_id
-#
-#                    print session_id_list[ii]
-#                    outfile = "/home/sw167/Postdoc/Project_Lemur/MMAP/data/BenchMark6/backupWebpage/tempWebpage_%d" % ii
-#                    outfile_handler = open(outfile, "w+")
-#                    outfile_handler.write(wb.query_page)
-#
-#                    seq_result = wb.parse_querypage()
-#        #                    print seq_result
-#                    self.all_seqs.extend(seq_result)
-#                    break
-#            except HTTPError, e:
-#                print 'The server couldn\'t fulfill the request.'
-#                print 'Error code: ', e.code
-#            except URLError, e:
-#                print 'We failed to reach a server.'
-#                print 'Reason: ', e.reason
-#    #            continue
-#            except socket.timeout as e:
-#                warnings.warn("timouout! retry\n%s" % e)
-#
-#
-#        print "\nEnd initial amigo_batch_mode\n"
 
-# TODO: save session_id and reuse it later
-#        outfile = "/home/sw167/Postdoc/Project_Lemur/MMAP/data/BenchMark6/backupWebpage/tempWebpage2_%d" % ii
-#        outfile_handler = open(outfile, "w+")
-#        outfile_handler.write(wb.query_page)
-#        outfile_handler.close()
         while not all(session_id_list):
             for ii, wb in enumerate(self.web_session_list):
-                print "=In loop %d with session_id: %s" % (ii, wb.session_id)
+                if self.debug:
+                    print "=In loop %d with session_id: %s" % (ii, wb.session_id)
                 if not wb.session_id:
-                    print "==No session_id", ii, wb.session_id
+                    if self.debug:
+                        print "==No session_id", ii, wb.session_id
             #            wb = self.web_session_list[ii]
                     try:
                         if not wb.handle:
                             wb.handle = _get_web_page_handle(wb.query_blast, AMIGO_BLAST_URL)
-                            print "===Recreated wb.handle ", wb.handle.code
-#                        for _ in range(10):
-#                            print type(wb.handle), dir(wb.handle)
-#                            print wb.handle.__class__.__name__
-#                            print wb.handle.__class__
-#                            print wb.handle.code
-#                            print wb.handle.getcode()
-#                            print wb.handle.fp
-#                            print wb.handle.info()
-#                            print wb.handle.msg
-#                            print wb.handle.url
-#                            print wb.handle.next()
-#                            print wb.handle.readline()
-#                            print wb.handle.readlines()
-# ['__doc__', '__init__', '__iter__', '__module__', '__repr__', 'close', 'code',
-#   'fileno', 'fp', 'getcode', 'geturl', 'headers', 'info', 'msg', 'next', 'read',
-#   'readline', 'readlines', 'url']
-
-#                            wb.handle = _get_web_page_handle(query_blast, AMIGO_BLAST_URL)
+                            if self.debug:
+                                print "===Recreated wb.handle ", wb.handle.code
                         wb.query_page = str(wb.handle.read())
                         wb.handle = None
-
-#                            print wb.handle.read()
-#                            print wb.handle.code
-#                            print wb.handle.getcode()
-#                            print wb.handle.fp
-#                            print wb.handle.info()
-#                            print wb.handle.msg
-#                            print wb.handle.url
-                        print "====Done reading:", len(wb.query_page)  # , wb.query_page
+                        if self.debug:
+                            print "====Done reading:", len(wb.query_page)  # , wb.query_page
                         session_id_list[ii] = wb.get_session_id()
 
 
@@ -476,7 +416,7 @@ def parse_get_blast_results_query(session_id, page):
 class WebSession(object):
     e_value_cut_off = DEFAULT_E_VALUE_CUT_OFF
 
-    def __init__(self, query_data, key_list):
+    def __init__(self, query_data, key_list, debug=False):
         self.query_data = query_data
         self.key_list = key_list
 
@@ -484,6 +424,8 @@ class WebSession(object):
         self.query_page = None
         self.seq_counter = 0
         self.go_results = []
+
+        self.debug = debug
 
         self.query_blast = [
 
@@ -502,7 +444,8 @@ class WebSession(object):
         self._get_seq_counter()
 #        web_pages = [None] * self.seq_counter
 #        print "seq_counter", self.seq_counter
-        print "======parsing %d sequences" % self.seq_counter
+        if self.debug:
+            print "======parsing %d sequences" % self.seq_counter
         for page in range(self.seq_counter):
 #            print "parse sequences %d/%d" % (page, self.seq_counter)
             seq = None
@@ -571,7 +514,8 @@ class WebSession(object):
         match = RE_GET_SESSION_ID.search(self.query_page)
         if match:
             self.session_id = match.group(1)
-            print "Assign session_id=", self.session_id
+            if self.debug:
+                print "Assign session_id=", self.session_id
     #    try:
     #
     #    except AttributeError as e:

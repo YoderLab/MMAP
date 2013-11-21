@@ -96,9 +96,9 @@ class RunBlast(RunComponent):
 #        temp_output = open(self.outfile + "_temp", "w")
         if self.record_index == None:
             self.record_index = SeqIO.index(self.infile, "fasta")
-        print self.infile
+        print "Infile:%s" % self.infile
         # # TODO: add temp_output? to GOConnector?
-        go = GOConnector(self.record_index, self.batch_size)
+        go = GOConnector(self.record_index, self.batch_size, debug)
         go.amigo_batch_mode()
 
 

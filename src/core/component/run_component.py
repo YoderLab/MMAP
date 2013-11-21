@@ -13,9 +13,11 @@ def check_dir_ending(tdir):
 
 
 class RunComponent(object):
-    #FIXME: check filename name for wdir path before adding wdir to self.filename
+    # FIXME: check filename name for wdir path before adding wdir to self.filename
     def __init__(self):
+        self.debug = False
         pass
+
 #        self.all_exts=[]
 
     def parameter_check(self, pdir, wdir, infile, outfile, check_exist, outfile_tag):
@@ -26,7 +28,7 @@ class RunComponent(object):
 
     def check_file_exist(self, file, check_exist):
         if check_exist:
-            if not self.is_file_exist("", file, True):
+            if not self.is_file_exist("", file):
                 raise IOError("Error: file does not exist. %s" % (file))
 
     def check_dirs(self, pdir, wdir, check_exist):
@@ -97,24 +99,26 @@ class RunComponent(object):
 
 
 
-    def check_outfiles_with_filetag_exist(self, outfile_tag):
+    def check_outfiles_with_filetag_exist(self, outfile_tag, debug=True):
         """
         check with default exts for each program
         """
-        is_exist = self.is_multi_files_exist(outfile_tag, self.all_exts)
+        is_exist = self.is_multi_files_exist(outfile_tag, self.all_exts, debug=debug)
         return is_exist
 
-    def is_multi_files_exist(self, file_tag, all_exts, is_exist=True):
+    def is_multi_files_exist(self, file_tag, all_exts, is_exist=True, debug=True):
         """
         check multiple files exists
         must provide all_exts as []
         return boolean
         """
+        all_files_exist = True
         for ext in all_exts:
-            is_exist = self.is_file_exist(file_tag, ext, is_exist)
-        return is_exist
+            is_exist = self.is_file_exist(file_tag, ext, debug)
+            all_files_exist = all_files_exist and is_exist
+        return all_files_exist
 
-    def is_file_exist(self, file_tag, ext="", is_exist=True):
+    def is_file_exist(self, file_tag, ext="", debug=True):
         """
         check if one file exist
         return boolean
@@ -122,10 +126,11 @@ class RunComponent(object):
         test_file = file_tag + ext
 #        print "%%is_file_exist%%%%%%%%%%%", test_file
         if os.path.exists(test_file):
-            is_exist = is_exist and True
+            is_exist = True
         else:
             is_exist = False
-            print("FileNotFound %s" % test_file) # , os.path.exists(test_file)
+            if debug:
+                print("FileNotFound %s" % test_file)  # , os.path.exists(test_file)
 
         return is_exist
 
