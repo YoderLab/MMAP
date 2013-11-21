@@ -69,7 +69,7 @@ if __name__ == "__main__":
 #     cFile = test_run_dir + "Lac_5k_2/control"
 
     test_run_dir = path_utils.get_data_dir() + "BenchMark6/"
-    cFile = test_run_dir + "control"
+    cFile = test_run_dir + "20k_both_MINE/control"
 
 
 
