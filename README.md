@@ -1,5 +1,5 @@
+# MMAP: Microbial Metagenomic AnalysisPipeline
 
-# metaLem: metagenomics project
 Developing a software package to analysis metagenomics data
 
 Language: Python 2.7
