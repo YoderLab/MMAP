@@ -6,7 +6,7 @@ Created on Mar 21, 2012
 from Bio import SeqIO
 from core.connector import go_connector
 from core.connector.go_connector import GOConnector
-from core.sequence import Sequence, Sequence2
+from core.sequence import Sequence2, Sequence
 from core.utils import path_utils
 from unittest.suite import TestSuite
 import os
@@ -32,18 +32,20 @@ class TestGoConnector(unittest.TestCase):
         pass
 
     def test_parse_seq(self):
-        infile = self.data_dir + "BLAST/AmiGOBLASTResults_Gene5.html"
+        infile = self.data_dir + "BLAST/AmiGOBLASTResults_Gene_Local.html"
         webpage = open(infile, "r")
         data = ""
         for line in webpage:
             data += line
- #        print data
+#         print data
         seq = Sequence2("gene5", data)
         seq = go_connector.extract_ID(seq)
-        seq = go_connector.parse_go_term(seq, self.e_value_cut_off)
+        seq = go_connector.parse_go_term(seq, self.e_value_cut_off, False)
 
         expected = set(['GO:0005125', 'GO:0016311', 'GO:0046360', 'GO:0003674', 'GO:0030170', 'GO:0004795', 'GO:0005737', 'GO:0006566', 'GO:0005615', 'GO:0005634', 'GO:0006520', 'GO:0005524', 'GO:0008150', 'GO:0070905', 'GO:0008152', 'GO:0009071', 'GO:0008652', 'GO:0006897', 'GO:0005829', 'GO:0005575', 'GO:0009088', 'GO:0004765', 'GO:0016829'])
-        self.assertEqual(expected, seq.all_terms)
+
+        self.assertEqual(expected, seq.all_terms, "Error!! \nExpected: %s\nActual: %s\n" %
+                              (sorted(expected), sorted(seq.all_terms)))
 
 
 

@@ -48,7 +48,9 @@ MATCH_BLAST_END = "\" title=\"Retrieve your BLAST job\">"
 
 MATCH_BLAST_NOT_COMPLETE = ("Please be patient as your job may take several minutes to complete. This page will automatically refresh with the BLAST results when the job is done.")
 
-AMIGO_BLAST_URL = "http://amigo.geneontology.org/cgi-bin/amigo/blast.cgi"
+AMIGO_BLAST_URL = "http://amigo1.geneontology.org/cgi-bin/amigo/blast.cgi"
+# http://amigo1.geneontology.org/cgi-bin/amigo/blast.cgi
+
 DELAY = 5.0
 
 MAX_QUERY_SEQ_LENGTH = 3e6
@@ -87,7 +89,7 @@ class GOConnector(object):
     def parse_seq_record(self):
 #        datas = []
         max_query_size_1 = self.max_query_size - 1
-        WebSession.e_value_cut_off = self.e_value_cut_off
+#         WebSession.e_value_cut_off = self.e_value_cut_off
         keys = []
         data = ""
         for i, key in enumerate(self.seq_record):
@@ -98,18 +100,18 @@ class GOConnector(object):
                 if len(data) > MAX_QUERY_SEQ_LENGTH:
                     warnings.warn("TODO: Implement auto scale down blast batch size. Total query length %d > %d"\
                                   % (len(data), MAX_QUERY_SEQ_LENGTH))
-                self.web_session_list.append(WebSession(data, keys, self.debug))
+                self.web_session_list.append(WebSession(data, keys, self.e_value_cut_off, self.debug))
                 data = ""
                 keys = []
         if data != "":
-            self.web_session_list.append(WebSession(data, keys, self.debug))
+            self.web_session_list.append(WebSession(data, keys, self.e_value_cut_off, self.debug))
 #        datas.append(data)
 #        print "DATA:\n", data
 #        print datas
 #        return datas
 
     def amigo_batch_mode(self):
-
+#         self.debug = True
         self.parse_seq_record()
         self.web_session_list = self.web_session_list[0:3]
         total_BLAST = len(self.web_session_list)
@@ -257,6 +259,7 @@ def extract_ID(seq):
         # TODO: change data structure later
         # for i,l in enumerate(lines):
         for l in lines:
+            print l
             if l.find(MATCH_HREF_HASH) != -1:
                 token = re_patterns.multi_space_split(l)
                 if len(token) != 4:
@@ -268,6 +271,7 @@ def extract_ID(seq):
                 end = token[0].find("</a>")
                 acc_ID.append(token[0][start:mid])  # search webpage
                 match_ID.append(token[0][mid + MATCH_END_HREF_LEN:end])
+                print acc_ID, match_ID
                 try:
                     v = float(token.pop(len(token) - 2))
                     e_value.append(v)  # or call pop() twice
@@ -283,30 +287,42 @@ def extract_ID(seq):
 
     else:
         seq.is_match = False
-
     return seq
 
 
-def parse_go_term(seq, e_value_cut_off):
+def parse_go_term(seq, e_value_cut_off, debug=False):
     """1 seq -> blast -> n hits -> m GO terms
     """
+
+    if(debug):
+        print(seq.seq_id)
     if seq.is_match:
         result_Full, result_Summary, list_GO_term = dict(), dict(), set()
     #    e_value_cut_off = 1e-25
+
         for i, m in enumerate(seq.acc_ID):
             if seq.e_value[i] < e_value_cut_off:
+                if debug:
+                    print("======PASS e-cutoff:%e\t%e\t%s\n" % (seq.e_value[i], e_value_cut_off, e_value_cut_off))
                 search_Key = "<span id=\"" + m + "\">"
                 match_index = seq.web_page.find(search_Key)
                 end_match_index = seq.web_page.find("Length", match_index)
                 raw_list = seq.web_page[match_index:end_match_index]
                 raw_list = re_patterns.multi_space_sub(" ", raw_list)
                 term_full_list = re_patterns.go_term_full_findall(raw_list)
+
                 term_summary_list = re_patterns.go_term_exact_findall("".join(term_full_list))
+                if debug:
+#                     print(i, m)
+#                     print(term_full_list)
+                    print(term_summary_list, "\n============\n")
                 result_Full[m] = term_full_list
                 result_Summary[m] = term_summary_list
                 list_GO_term.update(term_summary_list)
                 seq.add(m, term_summary_list)
-
+            else:
+                if debug:
+                    print("======Fail e-cutoff:%e\t%e\n" % (seq.e_value[i] , e_value_cut_off))
     return seq
 
 
@@ -414,12 +430,12 @@ def parse_get_blast_results_query(session_id, page):
 
 
 class WebSession(object):
-    e_value_cut_off = DEFAULT_E_VALUE_CUT_OFF
+#     e_value_cut_off = DEFAULT_E_VALUE_CUT_OFF
 
-    def __init__(self, query_data, key_list, debug=False):
+    def __init__(self, query_data, key_list, e_value_cut_off=DEFAULT_E_VALUE_CUT_OFF, debug=False):
         self.query_data = query_data
         self.key_list = key_list
-
+        self.e_value_cut_off = e_value_cut_off
         self.session_id = None
         self.query_page = None
         self.seq_counter = 0
@@ -479,7 +495,7 @@ class WebSession(object):
         if seq_id in self.key_list:
             seq = Sequence2(seq_id, web_page)
             seq = extract_ID(seq)
-            seq = parse_go_term(seq, self.e_value_cut_off)
+            seq = parse_go_term(seq, self.e_value_cut_off, self.debug)
         else:
             index = web_page.find("<p class=\"sequence\">>")
             index_end = web_page.find("<br>", index)

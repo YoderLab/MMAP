@@ -163,8 +163,9 @@ class TestRunGlimmer(unittest.TestCase):
         infile_var = "tIn.fasta"
         outfile_var = "tOut"
         glimmer = RunGlimmer(infile=infile_var, outfile=outfile_var, pdir=self.data_dir, check_exist=False)
+        print(glimmer.pdir)
         self.assertFalse(glimmer.check_outfiles_with_filetag_exist(self.data_dir + outfile_var))
-        glimmer.run(False)
+        glimmer.run(True)
         self.assertTrue(glimmer.check_outfiles_with_filetag_exist(self.data_dir + outfile_var))
 
         # negative test, outfiles are not suppose to exist
