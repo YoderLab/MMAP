@@ -14,6 +14,7 @@ import pickle
 import sys
 import time
 import unittest
+import math
 
 class TestGoConnector(unittest.TestCase):
     '''
@@ -23,7 +24,7 @@ class TestGoConnector(unittest.TestCase):
         CWD = os.getcwd()
         self.data_dir = path_utils.get_data_dir(CWD)
         infile = self.data_dir + "AE014075_subTiny10.fasta"  # "AE014075_subSmall100.fasta"
-        self.e_value_cut_off = 1e-15
+        self.e_threshold = 1e-15
         self.record_index = SeqIO.index(infile, "fasta")
 
 
@@ -40,12 +41,12 @@ class TestGoConnector(unittest.TestCase):
 #         print data
         seq = Sequence2("gene5", data)
         seq = go_connector.extract_ID(seq)
-        seq = go_connector.parse_go_term(seq, self.e_value_cut_off, False)
+        seq = go_connector.parse_go_term(seq, self.e_threshold, False)
 
         expected = set(['GO:0005125', 'GO:0016311', 'GO:0046360', 'GO:0003674', 'GO:0030170', 'GO:0004795', 'GO:0005737', 'GO:0006566', 'GO:0005615', 'GO:0005634', 'GO:0006520', 'GO:0005524', 'GO:0008150', 'GO:0070905', 'GO:0008152', 'GO:0009071', 'GO:0008652', 'GO:0006897', 'GO:0005829', 'GO:0005575', 'GO:0009088', 'GO:0004765', 'GO:0016829'])
 
-        self.assertEqual(expected, seq.all_terms, "Error!! \nExpected: %s\nActual: %s\n" %
-                              (sorted(expected), sorted(seq.all_terms)))
+        self.assertEqual(expected, seq.combined_terms, "Error!! \nExpected: %s\nActual: %s\n" %
+                              (sorted(expected), sorted(seq.combined_terms)))
 
 
 
@@ -59,8 +60,8 @@ class TestGoConnector(unittest.TestCase):
 #        seq = go_connector.blast_AmiGO(seq)
 #        webpage.write(seq.web_page)
 #        seq = go_connector.extract_ID(seq)
-#        seq = go_connector.parse_go_term(seq, self.e_value_cut_off)
-#        print seq.all_terms
+#        seq = go_connector.parse_go_term(seq, self.e_threshold)
+#        print seq.combined_terms
 
     def test_GoConnector_empty(self):
 
@@ -68,10 +69,10 @@ class TestGoConnector(unittest.TestCase):
         seq = Sequence(data)
         seq = go_connector.blast_AmiGO(seq)
         seq = go_connector.extract_ID(seq)
-        seq = go_connector.parse_go_term(seq, self.e_value_cut_off)
+        seq = go_connector.parse_go_term(seq, self.e_threshold)
 
         expected = set([])
-        self.assertEqual(expected, seq.all_terms)
+        self.assertEqual(expected, seq.combined_terms)
 
 #    @unittest.skip("")
     def test_GoConnector_short(self):
@@ -80,10 +81,10 @@ class TestGoConnector(unittest.TestCase):
         seq = Sequence(data)
         seq = go_connector.blast_AmiGO(seq)
         seq = go_connector.extract_ID(seq)
-        seq = go_connector.parse_go_term(seq, self.e_value_cut_off)
+        seq = go_connector.parse_go_term(seq, self.e_threshold)
 
         expected = set(['GO:0004803', 'GO:0006313'])
-        self.assertEqual(expected, seq.all_terms)
+        self.assertEqual(expected, seq.combined_terms)
 
 #    @unittest.skip("")
     def test_GoConnector_long(self):
@@ -92,51 +93,78 @@ class TestGoConnector(unittest.TestCase):
         seq = Sequence(data)
         seq = go_connector.blast_AmiGO(seq)
         seq = go_connector.extract_ID(seq)
-        seq = go_connector.parse_go_term(seq, self.e_value_cut_off)
+        seq = go_connector.parse_go_term(seq, self.e_threshold)
 
         expected = set(['GO:0071470', 'GO:0016310', 'GO:0005886', 'GO:0009067', 'GO:0000023', 'GO:0016597', 'GO:0043085', 'GO:0016491', 'GO:0005737', 'GO:0050661', 'GO:0040007', 'GO:0005618', 'GO:0009570', 'GO:0005634', 'GO:0006520', 'GO:0019877', 'GO:0000166', 'GO:0016740', 'GO:0009097', 'GO:0009090', 'GO:0019252', 'GO:0019761', 'GO:0016301', 'GO:0008152', 'GO:0009088', 'GO:0055114', 'GO:0009507', 'GO:0008652', 'GO:0005829', 'GO:0006555', 'GO:0004412', 'GO:0005575', 'GO:0009089', 'GO:0005524', 'GO:0006164', 'GO:0006531', 'GO:0009086', 'GO:0004072', 'GO:0009082'])
-        self.assertEqual(expected, seq.all_terms)
+        self.assertEqual(expected, seq.combined_terms)
 
 
     def test_batch_mode(self):
         """
         syntax:
-        http://amigo.geneontology.org/cgi-bin/amigo/blast.cgi?action=blast&seq=%3ES1%0ATTGAAAAACCTCCGGCTATGCCGGAGGATATTTATTTCGACCAAAGGTAACGAGGTAACAACCATGCGAGTGTTGAAGTTCGGCGGTACATCAGTGGCAAATGCAGAACGTTTTCTGCGGGTTGCCGATATTCTGGAA%3ES2%0AAGCAATGCCAGGCAGGGGCAGGTGGCCACCGTCCTCTCTGCCCCCGCCAAAATCACCAACCATCTGGTAGCGATGATTGAAAAAACCATTAGCGGCCAGGATGCTTTACCCAATATCAGCGATGCCGAACGTATTTTTGCCGAACTTCTGACGGGACTCGCCGCCGCCCAGCCGGGATTTCCGCTGGCACAATTGAAAACTTTCGTCGACCAGGAATTTGCCCAAATAAAACATGTCCTGCATGGCATCAGTTTGTTGGGGCAGTGCCCGGATAGCATCAACGCTGCGCTGATTTGCCGTGGCGAGAAAATGTCGATCGCCATTATGGCCGGCGTGTTAGAAGCGCGTGGTCACAACGTTACCGTTATCGATCCGGTCGAAAAA&CMD=Put
-        
+        http://amigo1.geneontology.org/cgi-bin/amigo/blast.cgi?action=blast&seq=%3ES1%0ATTGAAAAACCTCCGGCTATGCCGGAGGATATTTATTTCGACCAAAGGTAACGAGGTAACAACCATGCGAGTGTTGAAGTTCGGCGGTACATCAGTGGCAAATGCAGAACGTTTTCTGCGGGTTGCCGATATTCTGGAA%3ES2%0AAGCAATGCCAGGCAGGGGCAGGTGGCCACCGTCCTCTCTGCCCCCGCCAAAATCACCAACCATCTGGTAGCGATGATTGAAAAAACCATTAGCGGCCAGGATGCTTTACCCAATATCAGCGATGCCGAACGTATTTTTGCCGAACTTCTGACGGGACTCGCCGCCGCCCAGCCGGGATTTCCGCTGGCACAATTGAAAACTTTCGTCGACCAGGAATTTGCCCAAATAAAACATGTCCTGCATGGCATCAGTTTGTTGGGGCAGTGCCCGGATAGCATCAACGCTGCGCTGATTTGCCGTGGCGAGAAAATGTCGATCGCCATTATGGCCGGCGTGTTAGAAGCGCGTGGTCACAACGTTACCGTTATCGATCCGGTCGAAAAA&CMD=Put
+        http://amigo1.geneontology.org/cgi-bin/amigo/blast.cgi?action=blast&CMD=PUT&expect=0.001&seq=%3ES1%0ATTGTTATCGATCCGGTCGAAAAA
         
         http://amigo.geneontology.org/cgi-bin/amigo/blast.cgi?
         action=blast&seq=%3ES1%0ATTGAAAAACCTCCGGCTATGCCGGAGGATATTTATTTC....
                          %3ES2%0AAGCAATGCCAGGCAGGGGCAGGTGGCCACCGTCCTCTC...
                          &CMD=Put
 
+
+filter
+http://amigo1.geneontology.org/cgi-bin/amigo/blast.cgi?action=blast&CMD=Put&maxhits=200&threshold=0.0001&seq=%3ES1%0ATTGTTATCGATCCGGTCGAAAAA
         """
         infile = self.data_dir + "AE014075_subTiny10.fasta"  # "AE014075_subSmall100.fasta"
         record_index = SeqIO.index(infile, "fasta")
 
         go = GOConnector(record_index, 6)
-        go.parse_seq_record()
+        go.create_WebSessions_batches()
         self.assertEqual(2, len(go.web_session_list))
 
         go = GOConnector(record_index, 3)
-        go.parse_seq_record()
+        go.create_WebSessions_batches()
         self.assertEqual(4, len(go.web_session_list))
 
         go = GOConnector(record_index, 2)
-        go.parse_seq_record()
+        go.create_WebSessions_batches()
         self.assertEqual(5, len(go.web_session_list))
 
-        go = GOConnector(record_index, 20)
-        go.amigo_batch_mode()
+        self.tempfile = self.data_dir + "Amigo_Tempfile"
+        try:
+            os.remove(self.tempfile)
+        except OSError:
+            pass
+        batch_size = 4
+        go = GOConnector(record_index, batch_size, tempfile=self.tempfile)
+        count = go.amigo_batch_mode()
 
         expected = set(['lcl|AE014075.1_gene_1', 'lcl|AE014075.1_gene_2', 'lcl|AE014075.1_gene_3',
                         'lcl|AE014075.1_gene_4', 'lcl|AE014075.1_gene_5', 'lcl|AE014075.1_gene_6',
                         'lcl|AE014075.1_gene_7', 'lcl|AE014075.1_gene_8', 'lcl|AE014075.1_gene_9',
                         'lcl|AE014075.1_gene_10'])
-        self.assertEqual(1, len(go.web_session_list))
+        expected_count = math.ceil(10.0 / 4)
+        self.assertEqual(expected_count, count)  # 10/4 round up to 3
         for seq in go.all_seqs:
             self.assertTrue(seq.seq_id in expected, seq.seq_id)
 
+        go = GOConnector(record_index, batch_size, tempfile=self.tempfile)
+        count = go.amigo_batch_mode()  # do nothing
+        self.assertEqual(0, count)
 
+
+        tempout = open(self.tempfile, "r")
+        all_lines = tempout.readlines()
+        tempout.close()
+        tempout = open(self.tempfile, "w")
+        for line in all_lines:
+            tempout.write(line)
+            if line.startswith("ENDResult"):
+                break
+        tempout.close()
+
+        go = GOConnector(record_index, batch_size, tempfile=self.tempfile)
+        resume_count = go.amigo_batch_mode()
+        self.assertEqual(expected_count - 1, resume_count)
 
 if __name__ == '__main__':
 #    unittest.main(verbosity=2)

@@ -43,20 +43,11 @@ def main():
 
 
 if __name__ == "__main__":
-    webpage = "aoeuaoeuoe\!-- session_id = 1231amigo122 --aoeu"
-    wb = WebSession(webpage, "10")
-    wb.query_page = webpage
-    a = wb.get_session_id()
-    print a
-
-
-
-
-
-
-
-
-
+#     webpage = "aoeuaoeuoe\!-- session_id = 1231amigo122 --aoeu"
+#     wb = WebSession(webpage, "10")
+#     wb.query_page = webpage
+#     a = wb.get_session_id()
+#     print a
 
 
     parser = argparse.ArgumentParser()
@@ -69,6 +60,7 @@ if __name__ == "__main__":
 #     cFile = test_run_dir + "Lac_5k_2/control"
 
     test_run_dir = path_utils.get_data_dir() + "BenchMark6/"
+#     test_run_dir = path_utils.get_data_dir() + "BenchMark2/Lac_20k_0/"
     cFile = test_run_dir + "control5k"
 
 

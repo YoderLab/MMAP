@@ -128,7 +128,8 @@ class RunGenovo(RunComponent):
         return self.record_index
 
     def run(self, debug=False):
-        isComplete = self.check_outfiles_with_filetag_exist(self.infile, debug=False) and self.is_file_exist(self.outfile, debug=False)
+        isComplete = self.check_outfiles_with_filetag_exist(self.infile, debug=False) and \
+            self.is_file_exist(self.outfile, debug=False)
         if isComplete:
             print "===Warning!!! Genovo outfiles already exist, skip Genovo!!!==="
         else:

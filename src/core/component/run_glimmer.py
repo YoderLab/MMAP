@@ -87,7 +87,8 @@ class RunGlimmer(RunComponent):
 #    TODO: once outfiles are created, use terminal command to extract ORFs and pipe to fasta for BLAST
 #        ./multi-extract tpall.fna iterated2.run1.predict > ~/Desktop/Pipeline/metaLem/data/Glimmer/mac/tpall_output.fasta
         """
-        isComplete = self.check_outfiles_with_filetag_exist(self.outfile, debug=False) and self.is_file_exist(self.outfile, debug=False)
+        isComplete = self.check_outfiles_with_filetag_exist(self.outfile, debug=False) and \
+            self.is_file_exist(self.outfile, debug=False)
         if isComplete:
             print "===Warning!!! Glimmer outfiles already exist, skip Glimmer!!!==="
         else:

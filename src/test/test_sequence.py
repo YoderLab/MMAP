@@ -32,14 +32,14 @@ class TestSequence(unittest.TestCase):
 
         self.assertEqual(self.s2.each_term.get(0), expect0)
         self.assertEqual(self.s2.each_term.get(1), expect1)
-        self.assertEqual(self.s2.all_terms, expect01)
+        self.assertEqual(self.s2.combined_terms, expect01)
 
         self.s2.add(2, set(["term0", "term1"]))
         self.s2.add(3, ["term1", "term2"])
         self.s2.add(4, ["term4", "term5"])
 
         expectAll = set(["term0", "term1", "term2", "term3", "term4", "term5"])
-        self.assertEqual(self.s2.all_terms, expectAll)
+        self.assertEqual(self.s2.combined_terms, expectAll)
 
 
     def test_Sequence_add(self):
@@ -53,7 +53,7 @@ class TestSequence(unittest.TestCase):
 
         self.assertEqual(self.s.each_term.get(0), expect0)
         self.assertEqual(self.s.each_term.get(1), expect1)
-        self.assertEqual(self.s.all_terms, expect01)
+        self.assertEqual(self.s.combined_terms, expect01)
 
         self.s.add(2, set(["term0", "term1"]))
         self.s.add(3, ["term1", "term2"])
@@ -69,7 +69,7 @@ class TestSequence(unittest.TestCase):
         self.assertEqual(self.s.each_term.get(2), expect2)
         self.assertEqual(self.s.each_term.get(3), expect3)
         self.assertEqual(self.s.each_term.get(4), expect4)
-        self.assertEqual(self.s.all_terms, expectAll)
+        self.assertEqual(self.s.combined_terms, expectAll)
 
     def test_Sequence_combinations(self):
 
