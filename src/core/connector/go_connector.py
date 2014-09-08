@@ -138,7 +138,10 @@ class GOConnector(object):
 
 def get_session_id(webpage):
     match = RE_GET_SESSION_ID.search(webpage)
-    session_id = match.group(1)
+    try:
+        session_id = match.group(1)
+    except AttributeError as e:
+        raise AttributeError("AttributeError: %s \n webpage: %s" % (e, webpage))
     return session_id
 
 

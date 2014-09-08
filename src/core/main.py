@@ -51,8 +51,8 @@ if __name__ == "__main__":
 #     test_run_dir = path_utils.get_data_dir() + "BenchMark3/"
 #     cFile = test_run_dir + "Lac_5k_2/control"
 
-    test_run_dir = path_utils.get_data_dir() + "BenchMark5/"
-    cFile = test_run_dir + "20k_both_MINE/control"
+    test_run_dir = path_utils.get_data_dir() + "BenchMark6/"
+    cFile = test_run_dir + "40k_d/control"
 
 #    args = parser.parse_args(["-h"])
     args = parser.parse_args([cFile, "-d"])
