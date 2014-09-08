@@ -59,15 +59,15 @@ if __name__ == "__main__":
 #     test_run_dir = path_utils.get_data_dir() + "BenchMark3/"
 #     cFile = test_run_dir + "Lac_5k_2/control"
 
-    test_run_dir = path_utils.get_data_dir() + "BenchMark6/"
+#     test_run_dir = path_utils.get_data_dir() + "BenchMark3/Lac_5k_0/"
 #     test_run_dir = path_utils.get_data_dir() + "BenchMark2/Lac_20k_0/"
-    cFile = test_run_dir + "control5k"
+#     cFile = test_run_dir + "control"
 
 
 
 #    args = parser.parse_args(["-h"])
-    args = parser.parse_args([cFile, "-d"])
-#    args = parser.parse_args()
+#     args = parser.parse_args([cFile, "-d"])
+    args = parser.parse_args()
 
 
 

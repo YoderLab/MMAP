@@ -248,7 +248,7 @@ class GOConnector(object):
     def amigo_batch_resume(self):
 
         print "RESUME!!! Tempfile exist: %s!" % self.tempfile
-        tempout = open(self.tempfile, "a+")
+        tempout = open(self.tempfile, "r+")
 
         self.stored_session_id = []
         line = ""
@@ -260,7 +260,7 @@ class GOConnector(object):
         is_saving_completed = False
         for line in tempout.readlines():
             line = line.strip()
-
+#             print line
             if line.startswith(StoreSessionID):
                 index = line.split(self.DELIM)
                 sid = index[1]
