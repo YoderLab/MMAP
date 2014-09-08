@@ -97,7 +97,7 @@ class TestRunGenovo(unittest.TestCase):
         self.assertEqual(genovo.finalize.get_extract_switch(), expected)
 
         genovo2 = RunGenovo(infile=infile_var, pdir=self.data_dir, no_iter=3,
-                            thresh=250, check_exist=False)   # outfile == None
+                            thresh=250, check_exist=False)  # outfile == None
         expected = ["250", self.data_dir + "test_infile.genovo",
                     self.data_dir + infile_var + ".dump.best"]
         self.assertEqual(genovo2.finalize.get_extract_switch(), expected)
@@ -105,7 +105,7 @@ class TestRunGenovo(unittest.TestCase):
         infile_var = "test_infile.xyz.fasta.abc"
         genovo2 = RunGenovo(infile=infile_var, pdir=self.data_dir,
                             wdir=self.working_dir, no_iter=3, thresh=250,
-                            check_exist=False)   # outfile == None
+                            check_exist=False)  # outfile == None
         expected = ["250", self.working_dir + "test_infile.xyz.fasta.genovo",
                     self.working_dir + infile_var + ".dump.best"]
         self.assertEqual(genovo2.finalize.get_extract_switch(), expected)
@@ -113,7 +113,7 @@ class TestRunGenovo(unittest.TestCase):
         infile_var = "test_infile"
         genovo2 = RunGenovo(infile=infile_var, pdir=self.data_dir,
                             wdir=self.data_dir, no_iter=3, thresh=250,
-                            check_exist=False)   # outfile == None
+                            check_exist=False)  # outfile == None
         expected = ["250", self.data_dir + "test_infile.genovo",
                     self.data_dir + infile_var + ".dump.best"]
         self.assertEqual(genovo2.finalize.get_extract_switch(), expected)
@@ -247,7 +247,7 @@ class TestRunGenovo(unittest.TestCase):
                            check_exist=False)
         result = genovo.read_outfile()
         self.assertEqual(len(result), 2)
-        self.assertEqual(result.keys(), ["1", "2"])
+        self.assertEqual(list(result.keys()), ["1", "2"])
 
         expected = [170, 60]
         for i, key in enumerate(result):
@@ -268,5 +268,5 @@ class TestRunGenovo(unittest.TestCase):
 
 #        print self.data_dir + outfile_var
 #        raise Exception("pass the test with/without remove outfile!")
-        #TODO: fix "pass" without removing the existing file, something wrong with the outfile check
+        # TODO: fix "pass" without removing the existing file, something wrong with the outfile check
 

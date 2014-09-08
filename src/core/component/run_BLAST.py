@@ -27,7 +27,7 @@ class RunBlast(RunComponent):
     Bio.SeqIO.index returns a dictionary like object.
 
     """
-    def __init__(self, e_value, wdir, batch_size=20, infile=None, records=None, outfile=None):
+    def __init__(self, e_value, wdir, batch_size=20, infile=None, records=None, outfile=None, debug=False):
         """
         Constructor
         records: collection of Bio.SeqRecord.SeqRecord
@@ -39,10 +39,12 @@ class RunBlast(RunComponent):
 #        print "weNFASMDN",outfile, wdir
         self.results = dict()
         self.wdir = wdir
-        self.e_value_cut_off = e_value
+        self.e_threshold = e_value
+
         self.record_index = records
         self.check_filenames(infile, records, outfile)
         self.batch_size = self.check_valid_value(batch_size, int)
+        self.debug = debug
 #        if comparison_file is not None:
 #            self.comparison_file = self.wdir + comparison_file
 #            self.check_file_exist(self.comparison_file, True)
@@ -89,16 +91,20 @@ class RunBlast(RunComponent):
 
 
 
-    def run(self, debug=0):
+    def run(self, debug=False):
 
         print("Running AmiGO:BLAST_Batch")
 
 #        temp_output = open(self.outfile + "_temp", "w")
         if self.record_index == None:
             self.record_index = SeqIO.index(self.infile, "fasta")
-        print self.infile
-        # # TODO: add temp_output? to GOConnector?
-        go = GOConnector(self.record_index, self.batch_size)
+            print "BLAST infile:%s" % self.infile
+#         print self.wdir
+        self.tempfile = self.wdir + "/AmiGO_Record.temp"
+        go = GOConnector(seq_record=self.record_index, max_query_size=self.batch_size,
+                         e_value_cut_off=self.e_threshold, tempfile=self.tempfile,
+                         debug=self.debug)
+
         go.amigo_batch_mode()
 
 
@@ -107,10 +113,10 @@ class RunBlast(RunComponent):
         for seq in all_seqs:
             key = seq.seq_id
             self.results[key] = seq
-            all_orfs[key] = seq.all_terms
+            all_orfs[key] = seq.combined_terms
 #            print this_seq
-#            print this_seq.all_terms
-#            temp_output.write("%s \t %s\n" % (key, seq.all_terms))
+#            print this_seq.combined_terms
+#            temp_output.write("%s \t %s\n" % (key, seq.combined_terms))
 #            temp_output.flush()
 #        temp_output.close()
 
@@ -142,13 +148,13 @@ class RunBlast(RunComponent):
             this_seq = Sequence(self.record_index[key].seq)  # Bio.SeqRecord.SeqRecord
             this_seq = go_connector.blast_AmiGO(this_seq)
             this_seq = go_connector.extract_ID(this_seq)
-            this_seq = go_connector.parse_go_term(this_seq, self.e_value_cut_off)
-#            seq.all_terms
+            this_seq = go_connector.parse_go_term(this_seq, self.e_threshold)
+#            seq.combined_terms
             self.results[key] = this_seq
-            all_orfs[key] = this_seq.all_terms
+            all_orfs[key] = this_seq.combined_terms
 #            print this_seq
-#            print this_seq.all_terms
-            temp_output.write("%s \t %s\n" % (key, this_seq.all_terms))
+#            print this_seq.combined_terms
+            temp_output.write("%s \t %s\n" % (key, this_seq.combined_terms))
 #            temp_output.flush()
 #        temp_output.close()
 
@@ -190,7 +196,7 @@ class RunBlast(RunComponent):
             counter[k] += 1
         return counter
 #        for i in self.results.values():
-#            print(i.all_terms)
+#            print(i.combined_terms)
 
 # TODO: Save / export results as a .csv file (= MINE input)
 
@@ -214,7 +220,7 @@ class RunBlast(RunComponent):
             sample[k] = sample[k] + 1
         return sample
     #        for i in self.results.values():
-#            print(i.all_terms)
+#            print(i.combined_terms)
 
 
 

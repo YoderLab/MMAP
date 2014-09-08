@@ -8,6 +8,7 @@ from Bio import Seq
 import warnings
 
 
+
 class Sequence(object):
     """store all blast results from 1 seq
     class __doc__
@@ -18,7 +19,7 @@ class Sequence(object):
         if not (isinstance(data, Seq.Seq) or isinstance(data, str)):
             raise TypeError("Incorrect type, must be Bio.Seq.Seq or str: type(data) = %s" % type(data))
         self.each_term = dict()  # {str: set()}
-        self.all_terms = set()
+        self.combined_terms = set()
         self.data = data
         self.is_match = False
         self.__web_page = None
@@ -35,7 +36,7 @@ class Sequence(object):
     def add(self, key, term):
         '''append term, term must be a list (str doesnt work)'''
         self.each_term[key] = set(term)
-        self.all_terms.update(term)
+        self.combined_terms.update(term)
         self.len += 1
 
     def add_multi(self, key, *terms):
@@ -94,12 +95,14 @@ class Sequence2(object):
     """store all blast results from 1 seq
     class __doc__
     """
+    DEFAULT_DELIM = "$"
+
     def __init__(self, id, webpage):
         self.seq_id = id
         self.web_page = webpage
 
         self.each_term = dict()  # {str: set()}
-        self.all_terms = set()
+        self.combined_terms = set()
         self.is_match = False
 
         self.len = 0
@@ -109,7 +112,7 @@ class Sequence2(object):
     def add(self, key, term):
         '''append term, term must be a list (str doesnt work)'''
         self.each_term[key] = set(term)
-        self.all_terms.update(term)
+        self.combined_terms.update(term)
         self.len += 1
 
     def __len__(self):
@@ -145,8 +148,38 @@ class Sequence2(object):
 #        go_connector.extract_ID(self)
 #        go_connector.parse_go_term(self)
 
+    def __str__(self, *args, **kwargs):
+
+        out = "Sequence2_Seq_ID: %s\n\tall_terms:%s\n" % (self.seq_id,
+                                                          self.combined_terms)
+        return out
 
 
+#     def outputResult(self, *args, **kwargs):
+    def outputResult(self, delim=DEFAULT_DELIM):
+#         delim = kwargs["delim"]
+#         print kwargs, delim
+        out = "SeqID%s%s%s%s\n" % (delim, self.seq_id, delim, self.combined_terms)
+        return out
+# Sequence2 object:
+#         \tSeq_ID: %s
+# #         \tacc_ID: %s\t\tmatch_ID: %s
+# #         \teach_term: %s
+#         \tall_terms:%s
+#         """ % (self.seq_id,
+# #                self.acc_ID, self.match_ID, self.each_term,
+#                self.combined_terms)
+
+#
+#  self.seq_id = id
+#         self.web_page = webpage
+#
+#         self.each_term = dict()  # {str: set()}
+#         self.combined_terms = set()
+#         self.is_match = False
+#
+#         self.len = 0
+#         self.acc_ID, self.match_ID, self.e_value = [], [], []
 
 ############################################################33
 

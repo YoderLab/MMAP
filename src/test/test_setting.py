@@ -126,7 +126,7 @@ class TestSetting(unittest.TestCase):
         setting.add_all(blast_e_value=1e-15, parent_directory="main_pdir",
                         wdir="working_dir", checkExist=True)
         expected = {"blast_infile": "bInfile", "blast_outfile": "bOutfile",
-                    "blast_e_value": 1e-15, "blast_batch_size":50,
+                    "blast_e_value": 1e-15, "blast_batch_size":20,
                     "parent_directory": "main_pdir",
                     "wdir": "working_dir", "checkExist": True
                     }

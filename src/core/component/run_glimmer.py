@@ -16,7 +16,7 @@ SYMBOL_POSITION = 3
 OUTFILE_POSITION = 4
 
 ALL_EXTS = [".coords", ".detail", ".icm", ".longorfs", ".motif",
-            ".predict", ".run1.detail", ".run1.predict", ".train", ".upstream"]#, ".orfs"]
+            ".predict", ".run1.detail", ".run1.predict", ".train", ".upstream"]  # , ".orfs"]
 
 
 class RunGlimmer(RunComponent):
@@ -29,7 +29,7 @@ class RunGlimmer(RunComponent):
         """
         Constructor
         """
-        #FIXME: check outfile name for wdir path before adding wdir to self.outfile
+        # FIXME: check outfile name for wdir path before adding wdir to self.outfile
         self.all_exts = ALL_EXTS
         self.parameter_check(pdir, wdir, infile, outfile, check_exist, ".glimmer")
         self.glimmer = runExtProg(GLIMMER, pdir=self.pdir, length=2, check_OS=True)
@@ -87,30 +87,36 @@ class RunGlimmer(RunComponent):
 #    TODO: once outfiles are created, use terminal command to extract ORFs and pipe to fasta for BLAST
 #        ./multi-extract tpall.fna iterated2.run1.predict > ~/Desktop/Pipeline/metaLem/data/Glimmer/mac/tpall_output.fasta
         """
-        print "Running Glimmer..."
-        self.glimmer.run(debug)
-        print "Running Glimmer extract..."
-        self.extract.run(debug)
+        isComplete = self.check_outfiles_with_filetag_exist(self.outfile, debug=False) and \
+            self.is_file_exist(self.outfile, debug=False)
+        if isComplete:
+            print "===Warning!!! Glimmer outfiles already exist, skip Glimmer!!!==="
+        else:
 
-        filehandler = open(self.outfile, 'w')
-        newLine = ""
-        count = 0
-#        print self.extract.output
+            print "Running Glimmer..."
+            self.glimmer.run(debug)
+            print "Running Glimmer extract..."
+            self.extract.run(debug)
 
-        for line in self.extract.output:
-            if line.startswith(">"):
-                newLine += (line + str(count) + "_")
-                count += 1
-            else:
-                newLine += line
-        filehandler.write(newLine)
-        filehandler.close()
+            filehandler = open(self.outfile, 'w')
+            newLine = ""
+            count = 0
+    #        print self.extract.output
+
+            for line in self.extract.output:
+                if line.startswith(">"):
+                    newLine += (line + str(count) + "_")
+                    count += 1
+                else:
+                    newLine += line
+            filehandler.write(newLine)
+            filehandler.close()
 
         self._isCompleted()
 
     def _isCompleted(self):
-        isComelete = self.check_outfiles_with_filetag_exist(self.outfile) and self.is_file_exist(self.outfile)
-        if not isComelete:
+        isComplete = self.check_outfiles_with_filetag_exist(self.outfile) and self.is_file_exist(self.outfile)
+        if not isComplete:
             raise(StandardError("Glimmer did not complete, not all output files exist"))
 
 

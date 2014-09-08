@@ -6,6 +6,7 @@ Created on Feb 29, 2012
 from Bio import SeqIO
 from core.component.run_component import RunComponent
 from core.run_ext_prog import runExtProg
+from distutils.dist import warnings
 
 ASSEMBLE = "./assemble"
 ASSEMBLE_NO_ITER_POSITION = 2
@@ -127,14 +128,20 @@ class RunGenovo(RunComponent):
         return self.record_index
 
     def run(self, debug=False):
-        print "Running Genovo assemble..."
-        self.assemble.run(debug)
-        print "Running Genovo finalize..."
-        self.finalize.run(debug)
+        isComplete = self.check_outfiles_with_filetag_exist(self.infile, debug=False) and \
+            self.is_file_exist(self.outfile, debug=False)
+        if isComplete:
+            print "===Warning!!! Genovo outfiles already exist, skip Genovo!!!==="
+        else:
+            print "Running Genovo assemble..."
+            self.assemble.run(debug)
+            print "Running Genovo finalize..."
+            self.finalize.run(debug)
         self._isCompleted()
+#            self._isCompleted()
 
     def _isCompleted(self):
-        isComelete = self.check_outfiles_with_filetag_exist(self.infile) and self.is_file_exist(self.outfile)
-        if not isComelete:
+        isComplete = self.check_outfiles_with_filetag_exist(self.infile) and self.is_file_exist(self.outfile)
+        if not isComplete:
             raise(StandardError("Genovo did not complete, not all output files exist"))
 

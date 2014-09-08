@@ -1,6 +1,6 @@
 ##### list_essential_shared
- parent_directory=/Users/erinmckenney/Desktop/Pipeline/metaLem/data/
-#parent_directory=../../
+#parent_directory=/Users/erinmckenney/Desktop/Pipeline/metaLem/data/
+parent_directory=/home/sw167/Postdoc/Project_Lemur/MMAP/data/
 wdir=BenchMark3/Lac_5k_MINE/
 
 ##### list_essential_mine_only

@@ -25,7 +25,7 @@ class TestRunBlast(unittest.TestCase):
 
         self.Blast_dir = data_dir + "BLAST/"
         self.infile = data_dir + "AE014075_subTiny5.fasta"  # "AE014075_subSmall100.fasta"
-        self.e_value_cut_off = 1e-15
+        self.e_threshold = 1e-15
         self.record_index = SeqIO.index(self.infile, "fasta")
 
         self.template_set = dict({
@@ -76,46 +76,67 @@ class TestRunBlast(unittest.TestCase):
             self.assertEqual(str(self.record_index[key].seq), str(blast.record_index[key].seq))
             self.assertEqual(str(self.record_index[key].id), str(blast.record_index[key].id))
 
-        self.assertEqual(blast.e_value_cut_off, e_var)
+        self.assertEqual(blast.e_threshold, e_var)
         self.assertEqual(blast.batch_size, batch_size)
 
 
     @unittest.skip("Take a while to run, old method")
     def test_RunBlast(self):
 
-        blast = RunBlast(records=self.record_index, e_value=self.e_value_cut_off, wdir=self.Blast_dir)
+
+        blast = RunBlast(records=self.record_index, e_value=self.e_threshold, wdir=self.Blast_dir)
+
         blast.run_single()
 
         expected = dict({'lcl|AE014075.1_gene_1': set([]),
-                        'lcl|AE014075.1_gene_2': set(['GO:0004803', 'GO:0006313']),
-                        'lcl|AE014075.1_gene_3': set(['GO:0071470', 'GO:0016310', 'GO:0005886', 'GO:0009067', 'GO:0000023', 'GO:0016597', 'GO:0043085', 'GO:0016491', 'GO:0005737', 'GO:0050661', 'GO:0040007', 'GO:0005618', 'GO:0009570', 'GO:0005634', 'GO:0006520', 'GO:0019877', 'GO:0000166', 'GO:0016740', 'GO:0009097', 'GO:0009090', 'GO:0019252', 'GO:0019761', 'GO:0016301', 'GO:0008152', 'GO:0009088', 'GO:0055114', 'GO:0009507', 'GO:0008652', 'GO:0005829', 'GO:0006555', 'GO:0004412', 'GO:0005575', 'GO:0009089', 'GO:0005524', 'GO:0006164', 'GO:0006531', 'GO:0009086', 'GO:0004072', 'GO:0009082']),
-                        'lcl|AE014075.1_gene_4': set(['GO:0005737', 'GO:0006566', 'GO:0000394', 'GO:0016310', 'GO:0009617', 'GO:0004413', 'GO:0000166', 'GO:0019344', 'GO:0009620', 'GO:0009088', 'GO:0009570', 'GO:0009086', 'GO:0005524', 'GO:0009507']),
-                        'lcl|AE014075.1_gene_5': set(['GO:0005125', 'GO:0016311', 'GO:0046360', 'GO:0003674', 'GO:0030170', 'GO:0004795', 'GO:0005737', 'GO:0006566', 'GO:0005615', 'GO:0005634', 'GO:0006520', 'GO:0005524', 'GO:0008150', 'GO:0070905', 'GO:0008152', 'GO:0009071', 'GO:0008652', 'GO:0006897', 'GO:0005829', 'GO:0005575', 'GO:0009088', 'GO:0004765', 'GO:0016829'])
+                         'lcl|AE014075.1_gene_2': set(['GO:0004803', 'GO:0006313']),
+                         'lcl|AE014075.1_gene_3': set(['GO:0071470', 'GO:0016310', 'GO:0005886', 'GO:0009067', 'GO:0000023', 'GO:0016597', 'GO:0043085', 'GO:0016491', 'GO:0005737', 'GO:0050661', 'GO:0040007', 'GO:0005618', 'GO:0009570', 'GO:0005634', 'GO:0006520', 'GO:0019877', 'GO:0000166', 'GO:0016740', 'GO:0009097', 'GO:0009090', 'GO:0019252', 'GO:0019761', 'GO:0016301', 'GO:0008152', 'GO:0009088', 'GO:0055114', 'GO:0009507', 'GO:0008652', 'GO:0005829', 'GO:0006555', 'GO:0004412', 'GO:0005575', 'GO:0009089', 'GO:0005524', 'GO:0006164', 'GO:0006531', 'GO:0009086', 'GO:0004072', 'GO:0009082']),
+                         'lcl|AE014075.1_gene_4': set(['GO:0005737', 'GO:0006566', 'GO:0000394', 'GO:0016310', 'GO:0009617', 'GO:0004413', 'GO:0000166', 'GO:0019344', 'GO:0009620', 'GO:0009088', 'GO:0009570', 'GO:0009086', 'GO:0005524', 'GO:0009507']),
+                         'lcl|AE014075.1_gene_5': set(['GO:0005125', 'GO:0016311', 'GO:0046360', 'GO:0003674', 'GO:0030170', 'GO:0004795', 'GO:0005737', 'GO:0006566', 'GO:0005615', 'GO:0005634', 'GO:0006520', 'GO:0005524', 'GO:0008150', 'GO:0070905', 'GO:0008152', 'GO:0009071', 'GO:0008652', 'GO:0006897', 'GO:0005829', 'GO:0005575', 'GO:0009088', 'GO:0004765', 'GO:0016829'])
 
-                        })
+                         })
         for k, v in expected.items():
             seq = blast.results[k]
-            self.assertEqual(v, seq.all_terms, "Error in %s" % k)
+            self.assertEqual(v, seq.combined_terms, "Error in %s" % k)
 
-
+    # Update expected on 08192014
+    # Gene 3/4/5 updated. Manually BLAST-GO it and filter it out with grep/R
+    # filter out GO:GO:***
+    # grep -Po "[GO:\d+" t > t2
     def test_RunBlast_Batch(self):
-
-        blast = RunBlast(records=self.record_index, e_value=self.e_value_cut_off, wdir=self.Blast_dir)
+        self.e_threshold = 1e-50  # one of the default values on the website
+        try:
+            os.remove(self.Blast_dir + "AmiGO_Record.temp")
+        except IOError:
+            pass
+        blast = RunBlast(records=self.record_index, e_value=self.e_threshold,
+                         wdir=self.Blast_dir, debug=False)
         blast.run()
 
         expected = dict({'lcl|AE014075.1_gene_1': set([]),
-                        'lcl|AE014075.1_gene_2': set(['GO:0004803', 'GO:0006313']),
-                        'lcl|AE014075.1_gene_3': set(['GO:0071470', 'GO:0016310', 'GO:0005886', 'GO:0009067', 'GO:0000023', 'GO:0016597', 'GO:0043085', 'GO:0016491', 'GO:0005737', 'GO:0050661', 'GO:0040007', 'GO:0005618', 'GO:0009570', 'GO:0005634', 'GO:0006520', 'GO:0019877', 'GO:0000166', 'GO:0016740', 'GO:0009097', 'GO:0009090', 'GO:0019252', 'GO:0019761', 'GO:0016301', 'GO:0008152', 'GO:0009088', 'GO:0055114', 'GO:0009507', 'GO:0008652', 'GO:0005829', 'GO:0006555', 'GO:0004412', 'GO:0005575', 'GO:0009089', 'GO:0005524', 'GO:0006164', 'GO:0006531', 'GO:0009086', 'GO:0004072', 'GO:0009082']),
-                        'lcl|AE014075.1_gene_4': set(['GO:0005737', 'GO:0006566', 'GO:0000394', 'GO:0016310', 'GO:0009617', 'GO:0004413', 'GO:0000166', 'GO:0019344', 'GO:0009620', 'GO:0009088', 'GO:0009570', 'GO:0009086', 'GO:0005524', 'GO:0009507']),
-                        'lcl|AE014075.1_gene_5': set(['GO:0005125', 'GO:0016311', 'GO:0046360', 'GO:0003674', 'GO:0030170', 'GO:0004795', 'GO:0005737', 'GO:0006566', 'GO:0005615', 'GO:0005634', 'GO:0006520', 'GO:0005524', 'GO:0008150', 'GO:0070905', 'GO:0008152', 'GO:0009071', 'GO:0008652', 'GO:0006897', 'GO:0005829', 'GO:0005575', 'GO:0009088', 'GO:0004765', 'GO:0016829'])
+                         'lcl|AE014075.1_gene_2': set([]),  # no result with filter 1e-50 #'GO:0004803', 'GO:0006313']),
+                         'lcl|AE014075.1_gene_3': set([
+                                                      'GO:0050661', 'GO:0016597', 'GO:0016310', 'GO:0005524', 'GO:0000166', 'GO:0055114', 'GO:0009088', 'GO:0004412', 'GO:0004072', 'GO:0009089', 'GO:0009090', 'GO:0009086', 'GO:0009067', 'GO:0006520', 'GO:0008152', 'GO:0008652', 'GO:0009507', 'GO:0016491', 'GO:0009570', 'GO:0006164', 'GO:0000023', 'GO:0019252', 'GO:0019761', 'GO:0043085', 'GO:0071470', 'GO:0005634', 'GO:0005737', 'GO:0009097', 'GO:0005575'
+                                                      ]),
+                         'lcl|AE014075.1_gene_4': set([
+                                                      'GO:0016310', 'GO:0005524', 'GO:0000166', 'GO:0004413', 'GO:0009088', 'GO:0005737'
+                                                      ]),
+                         'lcl|AE014075.1_gene_5': set([
+                                                       'GO:0030170', 'GO:0004795', 'GO:0009088', 'GO:0008652', 'GO:0005737', 'GO:0016829', 'GO:0006520', 'GO:0005634'
+                                                       ])
+# Old list
+#                         'lcl|AE014075.1_gene_3': set(['GO:0071470', 'GO:0016310', 'GO:0005886', 'GO:0009067', 'GO:0000023', 'GO:0016597', 'GO:0043085', 'GO:0016491', 'GO:0005737', 'GO:0050661', 'GO:0040007', 'GO:0005618', 'GO:0009570', 'GO:0005634', 'GO:0006520', 'GO:0019877', 'GO:0000166', 'GO:0016740', 'GO:0009097', 'GO:0009090', 'GO:0019252', 'GO:0019761', 'GO:0016301', 'GO:0008152', 'GO:0009088', 'GO:0055114', 'GO:0009507', 'GO:0008652', 'GO:0005829', 'GO:0006555', 'GO:0004412', 'GO:0005575', 'GO:0009089', 'GO:0005524', 'GO:0006164', 'GO:0006531', 'GO:0009086', 'GO:0004072', 'GO:0009082']),
+#                         'lcl|AE014075.1_gene_4': set(['GO:0005737', 'GO:0006566', 'GO:0000394', 'GO:0016310', 'GO:0009617', 'GO:0004413', 'GO:0000166', 'GO:0019344', 'GO:0009620', 'GO:0009088', 'GO:0009570', 'GO:0009086', 'GO:0005524', 'GO:0009507']),
+#                         'lcl|AE014075.1_gene_5': set(['GO:0005125', 'GO:0016311', 'GO:0046360', 'GO:0003674', 'GO:0030170', 'GO:0004795', 'GO:0005737', 'GO:0006566', 'GO:0005615', 'GO:0005634', 'GO:0006520', 'GO:0005524', 'GO:0008150', 'GO:0070905', 'GO:0008152', 'GO:0009071', 'GO:0008652', 'GO:0006897', 'GO:0005829', 'GO:0005575', 'GO:0009088', 'GO:0004765', 'GO:0016829'])
 
-                        })
+                            })
         for k, v in expected.items():
             seq = blast.results[k]
-            self.assertEqual(v, seq.all_terms, "Error in %s" % k)
+            self.assertEqual(v, seq.combined_terms, "Error in %s. \nExpected: %s\nActual: %s\n" %
+                              (k, sorted(expected[k]), sorted(seq.combined_terms)))
 #
 # print(1, k, seq)
-# print(2, seq.all_terms)
+# print(2, seq.combined_terms)
 # print(3, seq.each_term)
 # (1, 'lcl|AE014075.1_gene_1', <core.sequence.Sequence object at 0x2ec9ad0>)
 # (2, set([]))
@@ -147,10 +168,10 @@ class TestRunBlast(unittest.TestCase):
 
         for k, v in expected.items():
             seq = blast.results[k]
-            self.assertEqual(v, seq.all_terms)
+            self.assertEqual(v, seq.combined_terms)
 #
         for k, v in blast.results.items():
-            print k, v.all_terms
+            print k, v.combined_terms
 
 
 
@@ -288,7 +309,7 @@ class TestRunBlast(unittest.TestCase):
                          "GO:04": 2,
                          "GO:05": 1, })
 
-        new_Blast = RunBlast(records=self.record_index, e_value=self.e_value_cut_off,
+        new_Blast = RunBlast(records=self.record_index, e_value=self.e_threshold,
             wdir=self.Blast_dir, outfile="BlastOut")
         new_dict = new_Blast.init_dict(self.template_set_small, 0)
 
@@ -318,16 +339,16 @@ class TestRunBlast(unittest.TestCase):
                          "GO:05": 0,
                          })
 
-        new_dict = RunBlast(records=self.record_index, e_value=self.e_value_cut_off,
+        new_dict = RunBlast(records=self.record_index, e_value=self.e_threshold,
             wdir=self.Blast_dir, outfile="BlastOut")
         default_dict = new_dict.init_dict(self.template_set_small, 0)
         self.assertEqual(expected, default_dict)
-#        print new_dict.e_value_cut_off
+#        print new_dict.e_threshold
 #        print(new_dict.default_dict)
 
     def test_update_counter_from_dictionaries(self):
 #        start with empty dictionary
-        new_Blast = RunBlast(records=self.record_index, e_value=self.e_value_cut_off,
+        new_Blast = RunBlast(records=self.record_index, e_value=self.e_threshold,
             wdir=self.Blast_dir, outfile="BlastOut")
 
         expected = dict({"GO:01": 1,
@@ -355,7 +376,7 @@ class TestRunBlast(unittest.TestCase):
 
 #    def test_RunBlast_generateOutputMatrix(self):
 #
-#        blast = RunBlast(self.record_index, self.e_value_cut_off)
+#        blast = RunBlast(self.record_index, self.e_threshold)
 #        expected_all_terms = dict({'lcl|AE014075.1_gene_1':set([]),
 #                        'lcl|AE014075.1_gene_2':set(['GO:0004803', 'GO:0006313']),
 #                        'lcl|AE014075.1_gene_3':set(['GO:0071470', 'GO:0016310', 'GO:0005886', 'GO:0009067', 'GO:0000023', 'GO:0016597', 'GO:0043085', 'GO:0016491', 'GO:0005737', 'GO:0050661', 'GO:0040007', 'GO:0005618', 'GO:0009570', 'GO:0005634', 'GO:0006520', 'GO:0019877', 'GO:0000166', 'GO:0016740', 'GO:0009097', 'GO:0009090', 'GO:0019252', 'GO:0019761', 'GO:0016301', 'GO:0008152', 'GO:0009088', 'GO:0055114', 'GO:0009507', 'GO:0008652', 'GO:0005829', 'GO:0006555', 'GO:0004412', 'GO:0005575', 'GO:0009089', 'GO:0005524', 'GO:0006164', 'GO:0006531', 'GO:0009086', 'GO:0004072', 'GO:0009082']),
@@ -377,14 +398,14 @@ class TestRunBlast(unittest.TestCase):
 #
 #        for k, v in expected_all_terms.items():
 #            blast.results[k] = Sequence(k)
-#            blast.results[k].all_terms = v
+#            blast.results[k].combined_terms = v
 #        print "aoeu", blast.results
 
 
     def test_output_csv(self):
 #        TODO add test code
         outfile = self.Blast_dir + "test.csv"
-#        blast = RunBlast(records=self.record_index, e_value=self.e_value_cut_off, wdir=self.Blast_dir,
+#        blast = RunBlast(records=self.record_index, e_value=self.e_threshold, wdir=self.Blast_dir,
 #                            infile=None, outfile=outfile)
         data = dict({"GO:01": 1,
                      "GO:03": 2,
@@ -412,14 +433,14 @@ class TestRunBlast(unittest.TestCase):
         outfile1 = self.Blast_dir + "test1.csv"
         outfile2 = self.Blast_dir + "test2.csv"
         outfile3 = self.Blast_dir + "test3.csv"
-#        blast = RunBlast(records=self.record_index, e_value=self.e_value_cut_off,
+#        blast = RunBlast(records=self.record_index, e_value=self.e_threshold,
 #            wdir=self.Blast_dir, outfile=outfile1)
         data = dict({"GO:01": 1,
                      "GO:03": 2,
                      "GO:04": 2,
                      "GO:05": 1, })
         run_BLAST.output_csv(outfile1, "Sample", data)
-        blast = RunBlast(records=self.record_index, e_value=self.e_value_cut_off,
+        blast = RunBlast(records=self.record_index, e_value=self.e_threshold,
             wdir=self.Blast_dir, outfile=outfile2)  # , comparison_file="test.csv")
         data = dict({"GO:01": 7,
                      "GO:02": 9,
