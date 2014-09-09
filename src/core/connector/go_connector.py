@@ -114,10 +114,6 @@ class GOConnector(object):
         if data != "":
             wb = WebSession(data, keys, self.e_threshold, debug=self.debug)
             self.web_session_list.append(wb)
-#        datas.append(data)
-#        print "DATA:\n", data
-#        print datas
-#        return datas
 
 
     def amigo_batch_mode(self):
@@ -125,6 +121,8 @@ class GOConnector(object):
 
         print "AmiGo BatchMode, dose tempfile exist? %s\t%s" % (os.path.exists(self.tempfile), self.tempfile)
 #         if self.tempfile and not os.path.exists(self.tempfile):
+
+
         if not os.path.exists(self.tempfile):
             return self.amigo_batch_mode_new()
         else:
@@ -145,6 +143,13 @@ class GOConnector(object):
         self.create_WebSessions_batches()
 #         self.web_session_list = self.web_session_list[0:3]
         total_BLAST = len(self.web_session_list)
+
+        import pickle
+        t2File = self.tempfile + "object"
+        file = open(t2File, 'w')
+        pickle.dump(self.web_session_list, file)
+        file.close()
+#
 
         print "Total number of BLAST Sessions:", total_BLAST
         session_id_list = [None] * total_BLAST
