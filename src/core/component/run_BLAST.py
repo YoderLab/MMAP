@@ -44,7 +44,7 @@ class RunBlast(RunComponent):
         self.record_index = records
         self.check_filenames(infile, records, outfile)
         self.batch_size = self.check_valid_value(batch_size, int)
-        self.debug = debug
+        self.debug = 1  # debug
 #        if comparison_file is not None:
 #            self.comparison_file = self.wdir + comparison_file
 #            self.check_file_exist(self.comparison_file, True)

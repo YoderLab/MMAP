@@ -60,8 +60,8 @@ if __name__ == "__main__":
 #     cFile = test_run_dir + "Lac_5k_2/control"
 
 #     test_run_dir = path_utils.get_data_dir() + "BenchMark3/Lac_5k_0/"
-#     test_run_dir = path_utils.get_data_dir() + "BenchMark2/Lac_20k_0/"
-#     cFile = test_run_dir + "control"
+# #     test_run_dir = path_utils.get_data_dir() + "BenchMark2/Lac_20k_0/"
+#     cFile = "/home/steven/Postdoc/Project_Lemur/MMAP/data/BenchMark10/10k_0/control"
 
 
 
