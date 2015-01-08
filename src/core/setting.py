@@ -1,8 +1,8 @@
 from core.controlfile import ControlFile
 from core.utils import path_utils
 from core.utils.path_utils import check_wdir_prefix, check_program_dir
-from core.connector.go_connector import GOConnector
-from core.connector import go_connector
+from core.amigo.go_connector import GOConnector
+from core.amigo import go_connector
 from core.component import run_genovo, run_MINE
 
 

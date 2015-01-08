@@ -3,19 +3,23 @@ Created on Mar 21, 2012
 
 @author: Steven Wu
 """
-from Bio import SeqIO
-from core.connector import go_connector
-from core.connector.go_connector import GOConnector
-from core.sequence import Sequence2, Sequence
-from core.utils import path_utils
-from unittest.suite import TestSuite
+import math
 import os
 import pickle
 import sys
 import time
 import unittest
-import math
+from unittest.suite import TestSuite
 
+from Bio import SeqIO
+
+from core.amigo import go_connector
+from core.amigo.go_connector import GOConnector
+from core.amigo.go_sequence import GoSequence
+from core.utils import path_utils
+
+
+# from core.sequence import Sequence2, Sequence
 class TestGoConnector(unittest.TestCase):
     '''
     
@@ -39,14 +43,15 @@ class TestGoConnector(unittest.TestCase):
         for line in webpage:
             data += line
 #         print data
-        seq = Sequence2("gene5", data)
-        seq = go_connector.extract_ID(seq)
-        seq = go_connector.parse_go_term(seq, self.e_threshold, False)
+        seq = GoSequence("gene5", data)
+        seq.extract_ID()
+        seq.parse_go_term(self.e_threshold, self.debug)
+
 
         expected = set(['GO:0005125', 'GO:0016311', 'GO:0046360', 'GO:0003674', 'GO:0030170', 'GO:0004795', 'GO:0005737', 'GO:0006566', 'GO:0005615', 'GO:0005634', 'GO:0006520', 'GO:0005524', 'GO:0008150', 'GO:0070905', 'GO:0008152', 'GO:0009071', 'GO:0008652', 'GO:0006897', 'GO:0005829', 'GO:0005575', 'GO:0009088', 'GO:0004765', 'GO:0016829'])
 
-        self.assertEqual(expected, seq.combined_terms, "Error!! \nExpected: %s\nActual: %s\n" %
-                              (sorted(expected), sorted(seq.combined_terms)))
+        self.assertEqual(expected, seq.combined_terms,
+                         "Error!! \nExpected: %s\nActual: %s\n" % (sorted(expected), sorted(seq.combined_terms)))
 
 
 
@@ -66,10 +71,10 @@ class TestGoConnector(unittest.TestCase):
     def test_GoConnector_empty(self):
 
         data = self.record_index["lcl|AE014075.1_gene_1"].seq  # # good
-        seq = Sequence(data)
-        seq = go_connector.blast_AmiGO(seq)
-        seq = go_connector.extract_ID(seq)
-        seq = go_connector.parse_go_term(seq, self.e_threshold)
+        seq = GoSequence("G1", None)
+        seq.blast_AmiGO(data)
+        seq.extract_ID()
+        seq.parse_go_term(self.e_threshold)
 
         expected = set([])
         self.assertEqual(expected, seq.combined_terms)
@@ -78,10 +83,10 @@ class TestGoConnector(unittest.TestCase):
     def test_GoConnector_short(self):
 
         data = self.record_index["lcl|AE014075.1_gene_2"].seq  # # good
-        seq = Sequence(data)
-        seq = go_connector.blast_AmiGO(seq)
-        seq = go_connector.extract_ID(seq)
-        seq = go_connector.parse_go_term(seq, self.e_threshold)
+        seq = GoSequence("G2", None)
+        seq.blast_AmiGO(data)
+        seq.extract_ID()
+        seq.parse_go_term(self.e_threshold)
 
         expected = set(['GO:0004803', 'GO:0006313'])
         self.assertEqual(expected, seq.combined_terms)
@@ -90,10 +95,10 @@ class TestGoConnector(unittest.TestCase):
     def test_GoConnector_long(self):
 
         data = self.record_index["lcl|AE014075.1_gene_3"].seq  # # good
-        seq = Sequence(data)
-        seq = go_connector.blast_AmiGO(seq)
-        seq = go_connector.extract_ID(seq)
-        seq = go_connector.parse_go_term(seq, self.e_threshold)
+        seq = GoSequence("G3", None)
+        seq.blast_AmiGO(data)
+        seq.extract_ID()
+        seq.parse_go_term(self.e_threshold)
 
         expected = set(['GO:0071470', 'GO:0016310', 'GO:0005886', 'GO:0009067', 'GO:0000023', 'GO:0016597', 'GO:0043085', 'GO:0016491', 'GO:0005737', 'GO:0050661', 'GO:0040007', 'GO:0005618', 'GO:0009570', 'GO:0005634', 'GO:0006520', 'GO:0019877', 'GO:0000166', 'GO:0016740', 'GO:0009097', 'GO:0009090', 'GO:0019252', 'GO:0019761', 'GO:0016301', 'GO:0008152', 'GO:0009088', 'GO:0055114', 'GO:0009507', 'GO:0008652', 'GO:0005829', 'GO:0006555', 'GO:0004412', 'GO:0005575', 'GO:0009089', 'GO:0005524', 'GO:0006164', 'GO:0006531', 'GO:0009086', 'GO:0004072', 'GO:0009082'])
         self.assertEqual(expected, seq.combined_terms)

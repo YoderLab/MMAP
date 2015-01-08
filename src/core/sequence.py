@@ -15,7 +15,7 @@ class Sequence(object):
     """
     def __init__(self, data=None):
         warnings.filterwarnings("always")
-        warnings.warn("Deprecated class, please ues Sequence2", DeprecationWarning)
+        warnings.warn("Deprecated class, please ues GoSequence", DeprecationWarning)
         if not (isinstance(data, Seq.Seq) or isinstance(data, str)):
             raise TypeError("Incorrect type, must be Bio.Seq.Seq or str: type(data) = %s" % type(data))
         self.each_term = dict()  # {str: set()}
@@ -90,98 +90,6 @@ class Sequence(object):
 
 
 ##############################################################
-
-class Sequence2(object):
-    """store all blast results from 1 seq
-    class __doc__
-    """
-    DEFAULT_DELIM = "$"
-
-    def __init__(self, id, webpage):
-        self.seq_id = id
-        self.web_page = webpage
-
-        self.each_term = dict()  # {str: set()}
-        self.combined_terms = set()
-        self.is_match = False
-
-        self.len = 0
-        self.acc_ID, self.match_ID, self.e_value = [], [], []
-
-
-    def add(self, key, term):
-        '''append term, term must be a list (str doesnt work)'''
-        self.each_term[key] = set(term)
-        self.combined_terms.update(term)
-        self.len += 1
-
-    def __len__(self):
-        ''' "Emulating" method, should override len()'''
-        return self.len
-
-    def get_one_term(self, key):
-        return self.each_term[key]
-
-    def get_combinations(self):
-        '''
-        return tuple (index_in_dist_matrix, set1, set2)
-        index_in_dist_matrix in "tuple", with (row_index, col_index) for lower triangle
-        '''
-
-        keyList = self.each_term.keys()
-        len_set = len(keyList)
-#        dist = numpy.zeros(shape=(len_set, len_set), dtype=numpy.float32)
-        combList = []
-        for i, u in enumerate(self.each_term.values()):
-            for j in range(i + 1, len_set):
-                v = self.each_term.get(keyList[j])
-#                print "i:%d \t j:%d \t %d and %s and %s" % (i ,j,len(u&v), str(u), str(v))
-                combList.append(((j, i), u, v))
-
-        return combList
-
-
-    def parse_go_term(self, seq):
-        pass
-#        go_connector.extract_ID(seq)
-#        go_connector.extract_ID(self)
-#        go_connector.extract_ID(self)
-#        go_connector.parse_go_term(self)
-
-    def __str__(self, *args, **kwargs):
-
-        out = "Sequence2_Seq_ID: %s\n\tall_terms:%s\n" % (self.seq_id,
-                                                          self.combined_terms)
-        return out
-
-
-#     def outputResult(self, *args, **kwargs):
-    def outputResult(self, delim=DEFAULT_DELIM):
-#         delim = kwargs["delim"]
-#         print kwargs, delim
-        out = "SeqID%s%s%s%s\n" % (delim, self.seq_id, delim, self.combined_terms)
-        return out
-# Sequence2 object:
-#         \tSeq_ID: %s
-# #         \tacc_ID: %s\t\tmatch_ID: %s
-# #         \teach_term: %s
-#         \tall_terms:%s
-#         """ % (self.seq_id,
-# #                self.acc_ID, self.match_ID, self.each_term,
-#                self.combined_terms)
-
-#
-#  self.seq_id = id
-#         self.web_page = webpage
-#
-#         self.each_term = dict()  # {str: set()}
-#         self.combined_terms = set()
-#         self.is_match = False
-#
-#         self.len = 0
-#         self.acc_ID, self.match_ID, self.e_value = [], [], []
-
-############################################################33
 
 class Hits(object):
 

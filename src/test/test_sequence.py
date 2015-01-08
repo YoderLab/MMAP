@@ -4,9 +4,10 @@ Created on Nov 22, 2011
 @author: Steven Wu
 '''
 
-from core.sequence import Sequence, Sequence2
+from core.sequence import Sequence
 import random
 import unittest
+from core.amigo.go_sequence import GoSequence
 
 
 class TestSequence(unittest.TestCase):
@@ -14,7 +15,7 @@ class TestSequence(unittest.TestCase):
     def setUp(self):
         self.seq = range(10)
         self.s = Sequence("TEST")
-        self.s2 = Sequence2("ID", "PAGE")
+        self.s2 = GoSequence("ID", "PAGE")
         pass
 
     def tearDown(self):

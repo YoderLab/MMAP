@@ -7,64 +7,22 @@ Setup on at Dec 2011, if URL/webpage changes then need update it accordingly
 '''
 
 from httplib import IncompleteRead
-import httplib
 import os
-import re
 import socket
-import sys
-import time
-import urllib
 from urllib2 import URLError, HTTPError
-import urllib2
 import warnings
 
-from core import re_patterns
-from core.sequence import Sequence2
-from core.utils import string_utils
-from numpy.f2py.auxfuncs import throw_error
-from urlparse import ParseResult
-from core.connector.web_session import WebSession, _get_web_page, \
-    _get_web_page_handle, DEFAULT_E_VALUE_CUT_OFF, \
-    AMIGO_BLAST_URL, DELAY, MATCH_BLAST_WAIT, \
-    MATCH_BLAST_END, MATCH_BLAST_NOT_COMPLETE, MATCH_BLAST_WAIT_LEN
+from core.amigo import web_page_utils, go_sequence
+from core.amigo.go_sequence import GoSequence
+from core.amigo.web_session import WebSession
 
 
-# # check these later
-# ## waiting time
-# <h1>BLAST Query Submission</h1>
-# <div class="block">
-# <h2>Success!</h2>
-# <p>Your job has been successfully submitted to the BLAST queue.</p>
-# seq.web_page.find("Your job has been successfully submitted to the BLAST queue")
-# <a href="blast.cgi?action=get_blast_results&amp;session_id=3873amigo1320966804" title="Retrieve your BLAST job">
-# "blast.cgi?action=get_blast_results&amp;session_id=3873amigo1320966804"
-# MATCH_HREF = "<a href=\""
-# MATCH_HREF_HASH = "<a href=\"#"
-# MATCH_HREF_HASH_LEN = len(MATCH_HREF_HASH)
-# MATCH_END_HREF = "\">"
-# MATCH_END_HREF_LEN = len(MATCH_END_HREF)
-#
-# MATCH_BLAST_WAIT = "<a href=\"blast.cgi?action=get_blast_results&amp;session_id="
-# MATCH_BLAST_WAIT_LEN = len(MATCH_BLAST_WAIT)
-# MATCH_BLAST_END = "\" title=\"Retrieve your BLAST job\">"
-#
-# MATCH_BLAST_NOT_COMPLETE = ("Please be patient as your job may take several minutes to complete. This page will automatically refresh with the BLAST results when the job is done.")
-#
-# AMIGO_BLAST_URL = "http://amigo1.geneontology.org/cgi-bin/amigo/blast.cgi"
-# http://amigo1.geneontology.org/cgi-bin/amigo/blast.cgi
-#
-# DELAY = 5.0
-#
 MAX_QUERY_SEQ_LENGTH = 3e6
-#
-# # RE_NO_SEQ_COUNTER = re.compile("Your job contains (\d+) sequence")
-# # RE_GET_SESSION_ID = re.compile("\!--\s+session_id\s+=\s+(\d+amigo\d+)\s+--")
-# # RE_GET_SESSION_ID = re.compile  ("\s+session_id\s+=\s+(\d+amigo\d+)")
-# # <!-- session_id         = 634amigo1360013506 -->
+
 DEFAULT_BATCH_SIZE = 20
-# DEFAULT_E_VALUE_CUT_OFF = 1e-15
+DEFAULT_E_VALUE_CUT_OFF = 1e-15
 
-
+AMIGO_BLAST_URL = go_sequence.AMIGO_BLAST_URL
 # #TODO: read http://bcbio.wordpress.com/2009/10/18/gene-ontology-analysis-with-python-and-bioconductor/
 # # maybe backup URL?? http://tools.bioso.org/cgi-bin/amigo/blast.cg
 
@@ -77,7 +35,7 @@ class GOConnector(object):
     """
     socket.setdefaulttimeout(120)
     warnings.simplefilter("always")
-    DELIM = Sequence2.DEFAULT_DELIM
+    DELIM = GoSequence.DEFAULT_DELIM
 
     def __init__(self, seq_record, max_query_size=DEFAULT_BATCH_SIZE,
                  e_value_cut_off=DEFAULT_E_VALUE_CUT_OFF, tempfile=None, debug=False):
@@ -151,7 +109,7 @@ class GOConnector(object):
                         print "=In loop %d/%d with no session_id: %s" % (ii, total_BLAST, wb.session_id)
                     try:
                         if not wb.handle:
-                            wb.handle = _get_web_page_handle(wb.query_blast, AMIGO_BLAST_URL)
+                            wb.handle = web_page_utils.get_web_page_handle(wb.query_blast, AMIGO_BLAST_URL)
                         wb.query_page = str(wb.handle.read())
                         wb.handle = None
 
@@ -347,7 +305,7 @@ class GOConnector(object):
                 seqSet = index[2]
 #                 print seqid, seqSet
 #                 sset = Ste
-                seq = Sequence2(seqid, seqSet)
+                seq = GoSequence(seqid, seqSet)
                 seq.combined_terms = eval(seqSet)
 #                 print seq
                 self.all_seqs.append(seq)
@@ -409,44 +367,8 @@ class GOConnector(object):
 #         """
 #         self.seq = seq
 #         self.seq = blast_AmiGO(self.seq)
-#         self.seq = extract_ID(self.seq)
-#         self.seq = parse_go_term(self.seq, self.e_threshold)
+#         self.seq.extract_ID()
+#         self.seq.parse_go_term(self.e_threshold)
 
 
-def blast_AmiGO(seq):
-    """ blast Amigo with data \
-    no customise blast parameters yet"""
-
-    query_blast = [
-        ('action', 'blast'),
-        ('seq', seq.data),
-        # ('seq_id','FB:FBgn0015946'),
-        ('CMD', 'Put')]
-
-    seq.web_page = _get_web_page(query_blast, AMIGO_BLAST_URL)
-
-    is_complete = seq.web_page.find(MATCH_BLAST_NOT_COMPLETE)
-    previous = time.time()
-
-    while is_complete != -1:
-        current = time.time()
-        wait = previous + DELAY - current
-        if wait > 0:
-            time.sleep(wait)
-            print("wait %d s" % DELAY)
-            previous = current + wait
-        else:
-            previous = current
-        session_id_index = seq.web_page.find(MATCH_BLAST_WAIT, is_complete) + MATCH_BLAST_WAIT_LEN
-        session_id_index_end = seq.web_page.find(MATCH_BLAST_END, is_complete)
-        session_id = seq.web_page[session_id_index:session_id_index_end]
-        query_wait = [
-            ('action', 'get_blast_results'),
-            ('session_id', session_id),
-            ('CMD', 'Put')]
-#        http://amigo.geneontology.org/cgi-bin/amigo/blast.cgi?action=get_blast_results&session_id=1284amigo1359406324&CMD=Put
-        seq.web_page = _get_web_page(query_wait, AMIGO_BLAST_URL)
-        is_complete = seq.web_page.find(MATCH_BLAST_NOT_COMPLETE)
-
-    return seq
 

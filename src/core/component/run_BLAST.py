@@ -3,18 +3,19 @@ Created on Feb 13, 2012
 
 @author: Steven Wu
 """
-from Bio import SeqIO
-from core.component.run_component import RunComponent
-from core.connector import go_connector
-
-from core.sequence import Sequence
-from core.setting import Setting
 import csv
 import datetime
 import os
-from core.utils import path_utils
 import warnings
-from core.connector.go_connector import GOConnector
+
+from Bio import SeqIO
+
+from core.amigo.go_sequence import GoSequence
+from core.amigo.go_connector import GOConnector
+from core.component.run_component import RunComponent
+from core.setting import Setting
+from core.utils import path_utils
+
 
 ALL_EXTS = [".csv"]
 MINE_TAG = "_MINE"
@@ -145,10 +146,10 @@ class RunBlast(RunComponent):
 
         for key in self.record_index:
             print key
-            this_seq = Sequence(self.record_index[key].seq)  # Bio.SeqRecord.SeqRecord
-            this_seq = go_connector.blast_AmiGO(this_seq)
-            this_seq = go_connector.extract_ID(this_seq)
-            this_seq = go_connector.parse_go_term(this_seq, self.e_threshold)
+            this_seq = GoSequence(key, self.record_index[key].seq)  # Bio.SeqRecord.SeqRecord
+            this_seq.blast_AmiGO()
+            this_seq.extract_ID()
+            this_seq.parse_go_term(self.e_threshold)
 #            seq.combined_terms
             self.results[key] = this_seq
             all_orfs[key] = this_seq.combined_terms

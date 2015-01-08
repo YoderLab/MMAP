@@ -22,8 +22,8 @@ import argparse
 import numpy
 import os
 import scipy
-from core.connector import go_connector
-from core.connector.go_connector import WebSession
+from core.amigo import go_connector
+from core.amigo.go_connector import WebSession
 
 
 
