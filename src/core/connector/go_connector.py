@@ -66,6 +66,7 @@ DEFAULT_BATCH_SIZE = 20
 
 
 # #TODO: read http://bcbio.wordpress.com/2009/10/18/gene-ontology-analysis-with-python-and-bioconductor/
+# # maybe backup URL?? http://tools.bioso.org/cgi-bin/amigo/blast.cg
 
 class GOConnector(object):
     """
@@ -166,9 +167,9 @@ class GOConnector(object):
 
 #                            break
                     except HTTPError, e:
-                        print 'The server couldn\'t fulfill the request.'
+                        print 'The server could not fulfill the request.'
                         print 'Error code: ', e.code
-                        print wb.handle.code
+#                         print wb.handle.code
                         wb.handle = None
 #                        wb.handle = _get_web_page_handle(wb.query_blast, AMIGO_BLAST_URL)
 #                        print "done recreated handle ", wb.handle.code
@@ -185,7 +186,7 @@ class GOConnector(object):
                         wb.handle = None
 
                     except socket.timeout as e:
-                        print "timeout ", wb.handle.code, ii
+                        print "timeout ", ii
                         wb.handle = None
 
 #                        wb.handle = _get_web_page_handle(wb.query_blast, AMIGO_BLAST_URL)
@@ -198,6 +199,13 @@ class GOConnector(object):
 #                        print "done recreated handle ", wb.handle.code
                         warnings.warn("socket error\n%s%s%s" % (e, type(e), ii))
                         # TODO: this happen quite a few times
+                    except StandardError:
+                        wb.handle = None
+#                        wb.handle = _get_web_page_handle(wb.query_blast, AMIGO_BLAST_URL)
+#                        print "done recreated handle ", wb.handle.code
+                        warnings.warn("StandardError\n%s%s%s" % (e, type(e), ii))
+
+
                 else:
                     if self.debug:
                         print "=In loop %d/%d, got session_id: %s" % (ii, total_BLAST, wb.session_id)
@@ -274,16 +282,12 @@ class GOConnector(object):
             session_id_list[index] = sid
             self.web_session_list[index].session_id = sid
 
-        #
-#         missiing_session = set(self.stored_web_session_list) - set(self.stored_session_result)
-
-#         print "Missing _%d_ session(s): %s" % (len(missiing_session), missiing_session)
-
-
-        print session_id_list
-
+        for wb in self.web_session_list:
+            try:
+                print wb.handle
+            except AttributeError:
+                wb.handle = None
         self.get_id_for_all_web_sessions(session_id_list, tempout)
-
 
         if self.tempfile:
             tempout.write("ENDSession\n")

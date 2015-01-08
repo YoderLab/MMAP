@@ -20,8 +20,6 @@ import warnings
 from core import re_patterns
 from core.sequence import Sequence2
 from core.utils import string_utils
-from numpy.f2py.auxfuncs import throw_error
-from urlparse import ParseResult
 # from core.connector import go_connector
 
 
