@@ -86,8 +86,7 @@ class RunBlast(RunComponent):
             e_value=setting.get("blast_e_value"),
             batch_size=setting.get("blast_batch_size"),
             infile=setting.get("blast_infile"),
-            outfile=setting.get("blast_outfile"),
-                    )
+            outfile=setting.get("blast_outfile"))
         return blast
 
 

@@ -134,7 +134,7 @@ http://amigo1.geneontology.org/cgi-bin/amigo/blast.cgi?action=blast&CMD=Put&maxh
         go.create_WebSessions_batches()
         self.assertEqual(5, len(go.web_session_list))
 
-        self.tempfile = self.data_dir + "Amigo_Tempfile"
+        self.tempfile = self.data_dir + "AmiGO_Record.temp"
         try:
             os.remove(self.tempfile)
         except OSError:

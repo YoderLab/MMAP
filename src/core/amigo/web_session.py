@@ -18,13 +18,11 @@ from core.amigo.go_sequence import GoSequence
 MATCH_BLAST_NOT_COMPLETE = go_sequence.MATCH_BLAST_NOT_COMPLETE
 AMIGO_BLAST_URL = go_sequence.AMIGO_BLAST_URL
 
-
 RE_NO_SEQ_COUNTER = re.compile("Your job contains (\d+) sequence")
 RE_GET_SESSION_ID = re.compile("\!--\s+session_id\s+=\s+(\d+amigo\d+)\s+--")
 # RE_GET_SESSION_ID = re.compile  ("\s+session_id\s+=\s+(\d+amigo\d+)")
 # <!-- session_id         = 634amigo1360013506 -->
 
-DEFAULT_BATCH_SIZE = 20
 
 
 
@@ -86,8 +84,13 @@ class WebSession(object):
     def parse_querypage(self):
 
         query_wait = parse_get_blast_results_query(self.session_id, 1)
-        self.query_page = wait_for_query_result(query_wait)
-        self._get_seq_counter()
+        isReRun = True
+        while isReRun:
+            self.query_page = wait_for_query_result(query_wait)
+            isReRun = self._get_seq_counter()
+#             TODO(Steven Wu): What happen if never get out? Need to recreate the handler
+#         if isReRun:
+#             return True
 
         if self.debug:
             print "======parsing %d sequences" % self.seq_counter
@@ -112,9 +115,10 @@ class WebSession(object):
             self.seq_counter = int(match.group(1))
             if self.key_list and self.seq_counter != len(self.key_list):
                 warnings.warn("Mismatch numebr of sequencs=%d, and number of key=%d keys" % (self.seq_counter, len(self.key_list)))
+            return False
         else:
-            print "no matches!!!", self.seq_counter
-
+            warnings.warn("no matches!!! seq_counter= %d Rerun!" % (self.seq_counter))
+            return True
 
     def parse_seq(self, web_page):
 
@@ -150,18 +154,14 @@ class WebSession(object):
 
 
     def get_session_id(self):
-#         self.session_id = None
         if self.session_id:
             return self.session_id
         match = RE_GET_SESSION_ID.search(self.query_page)
         if match:
             self.session_id = match.group(1)
             if self.debug:
-                print "Assign session_id=", self.session_id
-    #    try:
-    #
-    #    except AttributeError as e:
-    #        raise AttributeError("AttributeError: %s \n webpage: %s" % (e, webpage))
+                print "==Assign session_id=", self.session_id
+
         return self.session_id
 
     @classmethod

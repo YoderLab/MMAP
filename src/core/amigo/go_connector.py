@@ -3,7 +3,7 @@
 @author: Steven Wu
 
 connect it AmiGoS
-Setup on at Dec 2011, if URL/webpage changes then need update it accordingly
+Setup at Dec 2011, if URL/webpage changes then need update it accordingly
 '''
 
 from httplib import IncompleteRead
@@ -25,6 +25,13 @@ DEFAULT_E_VALUE_CUT_OFF = 1e-15
 AMIGO_BLAST_URL = go_sequence.AMIGO_BLAST_URL
 # #TODO: read http://bcbio.wordpress.com/2009/10/18/gene-ontology-analysis-with-python-and-bioconductor/
 # # maybe backup URL?? http://tools.bioso.org/cgi-bin/amigo/blast.cg
+STORE_SESSION_ID_STRING = "StoreSessionID"
+END_SESSION_ID_STRING = "ENDSession"
+
+STORE_RESULT_STRING = "StoreResult"
+END_STORE_RESULT_STRING = "ENDResult"
+SEQ_ID_STRING = "SeqID"
+
 
 class GOConnector(object):
     """
@@ -40,7 +47,6 @@ class GOConnector(object):
     def __init__(self, seq_record, max_query_size=DEFAULT_BATCH_SIZE,
                  e_value_cut_off=DEFAULT_E_VALUE_CUT_OFF, tempfile=None, debug=False):
 
-#         self.conn = httplib.HTTPConnection("amigo.geneontology.org:80")
         self.max_query_size = max_query_size
         self.seq_record = seq_record
         self.e_threshold = e_value_cut_off
@@ -63,7 +69,6 @@ class GOConnector(object):
         data = ""
 
         for i, key in enumerate(self.seq_record):
-            # print i, key, type(self.seq_record[key]), type(self.seq_record[key].seq), type(self.seq_record[key].format("fasta"))
             data = data + ">" + key + "\n" + str(self.seq_record[key].seq) + "\n"
             keys.append(key)
             if i % self.max_query_size is max_query_size_1:
@@ -80,22 +85,15 @@ class GOConnector(object):
 
 
     def amigo_batch_mode(self):
-#         self.debug = True
-
         print "AmiGo BatchMode, dose tempfile exist? %s\t%s" % (os.path.exists(self.tempfile), self.tempfile)
 #         if self.tempfile and not os.path.exists(self.tempfile):
-
 
         if not os.path.exists(self.tempfile):
             return self.amigo_batch_mode_new()
         else:
             return self.amigo_batch_resume()
 
-#         else:
-#             version = 1
-#             while os.path.exists(self.filename + ".%s.fna" % version):
-#                 version = version + 1
-#             self.filename = self.filename + ".%s.fna" % version
+
 
 
     def get_id_for_all_web_sessions(self, session_id_list, tempout):
@@ -118,7 +116,7 @@ class GOConnector(object):
                             if self.debug:
                                 print "===Got the id:\t%s" % session_id_list[ii]
                             if self.tempfile:
-                                tempout.write("StoreSessionID%s%s%s%s\n" % (self.DELIM, ii, self.DELIM, session_id_list[ii]))
+                                tempout.write("%s%s%s%s%s\n" % (STORE_SESSION_ID_STRING, self.DELIM, ii, self.DELIM, session_id_list[ii]))
                                 tempout.flush()
                         if self.debug:
                             print "====Done reading:", len(wb.query_page), session_id_list[ii]  # , wb.query_page
@@ -171,6 +169,17 @@ class GOConnector(object):
 
 
 
+    def retrieving_session_result(self, wb, tempout):
+        wb.parse_querypage()
+        self.all_seqs.extend(wb.go_results)
+        out = self.generate_output_result(wb)
+        if self.tempfile:
+            if self.debug:
+                print "Store in tempfile:%s" % wb.session_id
+            tempout.write(out)
+            tempout.flush()
+
+
     def amigo_batch_mode_new(self):
 
         if self.tempfile:
@@ -197,19 +206,12 @@ class GOConnector(object):
         self.get_id_for_all_web_sessions(session_id_list, tempout)
 
         if self.tempfile:
-            tempout.write("ENDSession\n")
+            tempout.write("%s\n" % END_SESSION_ID_STRING)
             tempout.flush()
 
         # TODO: Maybe use Pickles??
         for ii, wb in enumerate(self.web_session_list):
-            wb.parse_querypage()
-            self.all_seqs.extend(wb.go_results)
-            out = self.generate_output_result(wb)
-            if self.tempfile:
-                if self.debug:
-                    print "Store in tempfile: %s" % wb.session_id
-                tempout.write(out)
-
+            self.retrieving_session_result(wb, tempout)
 
         if self.tempfile:
             tempout.close()
@@ -222,7 +224,7 @@ class GOConnector(object):
             tempout = open(self.tempfile, "a")
             print "append to tempFile:\t%s" % self.tempfile
 
-        print "Resume 2"
+        print "Resume partial, get rest of the session_id"
 
         import pickle
         t2File = self.tempfile + "object"
@@ -248,20 +250,13 @@ class GOConnector(object):
         self.get_id_for_all_web_sessions(session_id_list, tempout)
 
         if self.tempfile:
-            tempout.write("ENDSession\n")
+            tempout.write("%s\n" % END_SESSION_ID_STRING)
+            tempout.flush()
 
         # TODO: Maybe use Pickles??
 
         for ii, wb in enumerate(self.web_session_list):
-
-            wb.parse_querypage()
-            self.all_seqs.extend(wb.go_results)
-            out = self.generate_output_result(wb)
-            if self.tempfile:
-                if self.debug:
-                    print "Store in tempfile: %s" % wb.session_id
-                tempout.write(out)
-
+            self.retrieving_session_result(wb, tempout)
 
         if self.tempfile:
             tempout.close()
@@ -279,27 +274,25 @@ class GOConnector(object):
         self.stored_session_result = []
         self.stored_web_session_list = []
         line = ""
-        end_session_string = "ENDSession"
-        StoreSessionID = "StoreSessionID"
-        StoreResult = "StoreResult"
-        end_storeResult = "ENDResult"
+
+
         is_parse_result = False
         is_saving_completed = False
         for line in tempout.readlines():
             line = line.strip()
 #             print line
-            if line.startswith(StoreSessionID):
+            if line.startswith(STORE_SESSION_ID_STRING):
                 index = line.split(self.DELIM)
 
                 sid = index[2]
                 self.stored_web_session_list.append((index[1], sid))
 #                 self.stored_web_session_list.append(sid)
-            if line.startswith(end_session_string):
+            if line.startswith(END_SESSION_ID_STRING):
                 is_saving_completed = True
-            if line.startswith(end_storeResult):
+            if line.startswith(END_STORE_RESULT_STRING):
                 is_parse_result = False
 
-            if is_parse_result and line.startswith("SeqID"):
+            if is_parse_result and line.startswith(SEQ_ID_STRING):
                 index = line.split(self.DELIM)  # Use $ becasue GO:000251 terms got : already
                 seqid = index[1]
                 seqSet = index[2]
@@ -310,65 +303,39 @@ class GOConnector(object):
 #                 print seq
                 self.all_seqs.append(seq)
 
-            if line.startswith(StoreResult):
+            if line.startswith(STORE_RESULT_STRING):
                 index = line.split(self.DELIM)
                 sid = index[1]
                 self.stored_session_result.append(sid)
                 is_parse_result = True
 
         if not is_saving_completed:
-            print "===Warning!! Not all session_ids are stored, recreate partial batch mode"
-#             self.amigo_batch_mode_new()
+            print "===Warning!! Not all session_ids are stored, recreate using partial batch mode"
             print self.stored_web_session_list
-#             self.amigo_batch_mode_new()
             return self.amigo_batch_mode_resume_partial()
 
         if self.debug:
             print "Full saved session_list:", self.stored_web_session_list
             print "Stored  sessios_results:", self.stored_session_result
+
         self.stored_web_session_list = [ x[1] for x in self.stored_web_session_list]
-
         missiing_session = set(self.stored_web_session_list) - set(self.stored_session_result)
-
-        print "Missing _%d_ session(s): %s" % (len(missiing_session), missiing_session)
+        print "Missing %d session(s): %s" % (len(missiing_session), missiing_session)
 
         for session_id in missiing_session:
             print "Retrieving session: %s" % session_id
             wb = WebSession.create_with_session_id_only(session_id)
-            wb.parse_querypage()
-            self.all_seqs.extend(wb.go_results)
-            out = self.generate_output_result(wb)
-
-            if self.debug:
-                print "Store in tempfile:%s" % wb.session_id
-            tempout.write(out)
-
-
-
-        if self.debug:
-            for seq in self.all_seqs:
-                print seq.outputResult(),
+            self.retrieving_session_result(wb, tempout)
 
         tempout.close()
-        print "End amigo_batch_resume", len(missiing_session)
+        print "End amigo_batch_resume, number of missed session:", len(missiing_session)
         return len(missiing_session)
 
+
     def generate_output_result(self, wb):
-        out = "StoreResult%s%s\n" % (self.DELIM, wb.session_id)
+        out = "%s%s%s\n" % (STORE_RESULT_STRING, self.DELIM, wb.session_id)
         for seq in wb.go_results:
             out += seq.outputResult()
-        out += "ENDResult\n"
+        out += END_STORE_RESULT_STRING + "\n"
         return out
-
-#     def get_GO_terms(self, seq):
-#         """
-#             seq: sequence format
-#             core.sequence.py
-#         """
-#         self.seq = seq
-#         self.seq = blast_AmiGO(self.seq)
-#         self.seq.extract_ID()
-#         self.seq.parse_go_term(self.e_threshold)
-
-
 

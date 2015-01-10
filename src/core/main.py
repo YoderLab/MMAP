@@ -15,23 +15,20 @@ python core/main.py ../data/BenchMark3/Lac_5k_0/control
 python core/main.py ../data/BenchMark3/Lac_5k_MINE/control
 
 '''
+import argparse
+import os
+
+import Bio
+import numpy
+import scipy
+
 from core.assembler.software_assembler import SoftwareAssembler
 from core.utils import path_utils
-import Bio
-import argparse
-import numpy
-import os
-import scipy
-from core.amigo import go_connector
-from core.amigo.go_connector import WebSession
-
 
 
 print "NumPy version %s" % numpy.__version__
 print "SciPy version %s" % scipy.__version__
-print "Bio version %s" % Bio.__version__
-
-print Bio.__path__
+print "Bio version %s at %s" % (Bio.__version__, Bio.__path__)
 
 CWD = os.getcwd()
 data_dir = path_utils.get_data_dir(CWD)
