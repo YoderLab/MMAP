@@ -107,7 +107,7 @@ class RunMINE(RunComponent):
             jobID=setting.get("mine_outfile"),
             csv_files=setting.get("csv_files"),
             check_exist=setting.get("check_exist"))
-        
+
         return mine
 
     def init_prog(self, style, cv, exp, c):
@@ -116,7 +116,7 @@ class RunMINE(RunComponent):
         self.set_cv_threshold(cv)
         self.set_exp(exp)
         self.set_clumping_factor(c)
-        
+
         self.set_jobID()
 #
     def set_infile_name(self):
@@ -150,7 +150,7 @@ class RunMINE(RunComponent):
             self.mine.set_param_at("c=%s" % (v), CLUMPS_POSITION)
         else:
             raise ValueError("Error: clumping factor set to : %s" % v)
-        
+
 
     def set_jobID(self):
         arg = "id=%s" % self.jobID
@@ -190,6 +190,7 @@ def merge_output_csv_to_MINE(outfile, csv_files, isMINE=True):
     template = dict()
     for zeroes, infile in enumerate(csv_files):
         all_new_key = []
+
         with open(infile, 'rb') as f:
             reader = csv.reader(f)
             for i, row in enumerate(reader):

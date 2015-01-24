@@ -9,6 +9,10 @@ import re
 import time
 import urllib2
 import warnings
+import socket
+from urllib2 import URLError, HTTPError
+from httplib import IncompleteRead
+
 
 from core.amigo import web_page_utils, go_sequence
 from core.amigo.go_sequence import GoSequence
@@ -22,7 +26,7 @@ RE_NO_SEQ_COUNTER = re.compile("Your job contains (\d+) sequence")
 RE_GET_SESSION_ID = re.compile("\!--\s+session_id\s+=\s+(\d+amigo\d+)\s+--")
 # RE_GET_SESSION_ID = re.compile  ("\s+session_id\s+=\s+(\d+amigo\d+)")
 # <!-- session_id         = 634amigo1360013506 -->
-
+# http://amigo1.geneontology.org/cgi-bin/amigo/blast.cgi?action=get_blast_results&amp;session_id=
 
 
 
@@ -81,44 +85,136 @@ class WebSession(object):
 #        print query_data
 #        print key_list
 
+    @classmethod
+    def create_with_session_id_only(cls, session_id):  # @NoSelf
+        wb = cls(None, None, None)
+        wb.session_id = session_id
+        return wb
+
+
+
+    def create_session_id(self):
+
+        try:
+            if not self.handle:
+                self.handle = web_page_utils.get_web_page_handle(self.query_blast, AMIGO_BLAST_URL)
+            self.query_page = str(self.handle.read())
+            self.handle = None
+
+            self.get_session_id()
+            if self.session_id:
+                if self.debug:
+                    print "===Got the id:\t%s" % self.session_id
+#                 if self.tempfile:
+#                     tempout.write("%s%s%s%s%s\n" % (STORE_SESSION_ID_STRING, self.DELIM, ii, self.DELIM, session_id_list[ii]))
+#                     tempout.flush()
+#             if self.debug:
+#                 print "====Done reading:", len(wb.query_page), session_id_list[ii]  # , wb.query_page
+
+#                            break
+        except HTTPError, e:
+            print 'The server could not fulfill the request.'
+            print 'Error code: ', e.code
+#                         print wb.handle.code
+            self.handle = None
+#                        wb.handle = _get_web_page_handle(wb.query_blast, AMIGO_BLAST_URL)
+#                        print "done recreated handle ", wb.handle.code
+        except URLError, e:
+            print 'We failed to reach a server.'
+            print 'Reason: ', e.reason
+            print self.handle.code
+            self.handle = None
+#                        wb.handle = _get_web_page_handle(wb.query_blast, AMIGO_BLAST_URL)
+#                        print "done recreated handle ", wb.handle.code
+#            continue
+        except IncompleteRead as e:
+            print "IncompleteRead:", e  # , e.partial
+            self.handle = None
+
+        except socket.timeout as e:
+            print "timeout ", e
+            self.handle = None
+
+#                        wb.handle = _get_web_page_handle(wb.query_blast, AMIGO_BLAST_URL)
+#                        print "done recreated handle ", wb.handle.code
+            warnings.warn("timouout! retry\n%s" % (e))
+        except socket.error as e:
+            # print wb.handle.code
+            self.handle = None
+#                        wb.handle = _get_web_page_handle(wb.query_blast, AMIGO_BLAST_URL)
+#                        print "done recreated handle ", wb.handle.code
+            warnings.warn("socket error\n%s" % (e))
+            # TODO: this happen quite a few times
+        except StandardError:
+            self.handle = None
+#                        wb.handle = _get_web_page_handle(wb.query_blast, AMIGO_BLAST_URL)
+#                        print "done recreated handle ", wb.handle.code
+            warnings.warn("StandardError\n%s" % (e))
+
+        return self.session_id
+
+
+    def get_session_id(self):
+        if self.session_id:
+            return self.session_id
+        match = RE_GET_SESSION_ID.search(self.query_page)
+        if match:
+            self.session_id = match.group(1)
+#             if self.debug:
+#                 print "==Assign session_id=", self.session_id
+
+        return self.session_id
+
+
     def parse_querypage(self):
 
         query_wait = parse_get_blast_results_query(self.session_id, 1)
-        isReRun = True
-        while isReRun:
-            self.query_page = wait_for_query_result(query_wait)
-            isReRun = self._get_seq_counter()
-#             TODO(Steven Wu): What happen if never get out? Need to recreate the handler
-#         if isReRun:
-#             return True
+        self.query_page = wait_for_query_result(query_wait)
+        complete = False
 
-        if self.debug:
-            print "======parsing %d sequences" % self.seq_counter
-
-        for page in range(self.seq_counter):
-#            print "parse sequences %d/%d" % (page, self.seq_counter)
-            seq = None
-            while seq is None:
-                query = parse_get_blast_results_query(self.session_id, page + 1)
-                web_page = web_page_utils.get_web_page(query, AMIGO_BLAST_URL)
-                if web_page is not None:
-                    seq = self.parse_seq(web_page)
-#                    print "---in ", page, "with ", seq
-            self.go_results.append(seq)
-#        return self.go_results
-#        return web_pages
-
-    def _get_seq_counter(self):
+#             isReRun = self._get_seq_counter()
+#                 def _get_seq_counter(self):
 
         match = RE_NO_SEQ_COUNTER.search(self.query_page)
         if match:
             self.seq_counter = int(match.group(1))
             if self.key_list and self.seq_counter != len(self.key_list):
                 warnings.warn("Mismatch numebr of sequencs=%d, and number of key=%d keys" % (self.seq_counter, len(self.key_list)))
-            return False
+            if self.debug:
+                print "======parsing %d sequences" % self.seq_counter
+            for page in range(self.seq_counter):
+    #            print "parse sequences %d/%d" % (page, self.seq_counter)
+                seq = None
+                while seq is None:
+                    query = parse_get_blast_results_query(self.session_id, page + 1)
+                    web_page = web_page_utils.get_web_page(query, AMIGO_BLAST_URL)
+                    if web_page is not None:
+                        seq = self.parse_seq(web_page)
+    #                    print "---in ", page, "with ", seq
+                self.go_results.append(seq)
+            complete = True
         else:
-            warnings.warn("no matches!!! seq_counter= %d Rerun!" % (self.seq_counter))
-            return True
+            """
+            FIXME: Retrieving session: 5227amigo1421957383
+            /home/steven/Postdoc/Project_Lemur/MMAP/src/core/amigo/web_session.py:120: UserWarning: no matches!!! seq_counter= 0 Rerun!
+              warnings.warn("no matches!!! seq_counter= %d Rerun!" % (self.seq_counter))
+              
+            http://amigo1.geneontology.org/cgi-bin/amigo/blast.cgi?action=get_blast_results&amp;session_id=5227amigo1421957383
+            
+            Need to get id again
+            error message from amigo
+            fatal message   There is an error in the configuration of AmiGO.
+            Your cached BLAST results were lost. Please try again.
+            """
+            warnings.warn("no seq matches from id:%s!!! seq_counter= %d Rerun!" % (self.session_id, self.seq_counter))
+            complete = False
+            print self.session_id
+            self.session_id = None
+            while self.session_id is None:
+                self.create_session_id()
+                print self.session_id
+        return complete
+
 
     def parse_seq(self, web_page):
 
@@ -131,6 +227,8 @@ class WebSession(object):
             warnings.warn("Seq_ID %s doesn't exist in the list %s" % (seq_id, self.key_list))
 
         return seq
+
+
 
 
 
@@ -152,26 +250,6 @@ class WebSession(object):
 #
 #    query_page = property(_get_query_page, _set_query_page)
 
-
-    def get_session_id(self):
-        if self.session_id:
-            return self.session_id
-        match = RE_GET_SESSION_ID.search(self.query_page)
-        if match:
-            self.session_id = match.group(1)
-            if self.debug:
-                print "==Assign session_id=", self.session_id
-
-        return self.session_id
-
-    @classmethod
-    def create_with_session_id_only(cls, session_id):  # @NoSelf
-        wb = cls(None, None, None)
-        wb.session_id = session_id
-        return wb
-
-
-#    wb.session_id = wb.get_session_id(wb.query_page)
 
 
 ###########

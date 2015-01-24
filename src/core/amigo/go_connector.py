@@ -8,6 +8,7 @@ Setup at Dec 2011, if URL/webpage changes then need update it accordingly
 
 from httplib import IncompleteRead
 import os
+import pickle
 import socket
 from urllib2 import URLError, HTTPError
 import warnings
@@ -102,164 +103,112 @@ class GOConnector(object):
             for ii, wb in enumerate(self.web_session_list):
 
                 if not wb.session_id:
-
                     if self.debug:
-                        print "=In loop %d/%d with no session_id: %s" % (ii, total_BLAST, wb.session_id)
-                    try:
-                        if not wb.handle:
-                            wb.handle = web_page_utils.get_web_page_handle(wb.query_blast, AMIGO_BLAST_URL)
-                        wb.query_page = str(wb.handle.read())
-                        wb.handle = None
+                        print "DEBUG:==In loop %d/%d, NO session_id: %s" % (ii, total_BLAST, wb.session_id)
 
-                        session_id_list[ii] = wb.get_session_id()
-                        if session_id_list[ii]:
-                            if self.debug:
-                                print "===Got the id:\t%s" % session_id_list[ii]
-                            if self.tempfile:
-                                tempout.write("%s%s%s%s%s\n" % (STORE_SESSION_ID_STRING, self.DELIM, ii, self.DELIM, session_id_list[ii]))
-                                tempout.flush()
-                        if self.debug:
-                            print "====Done reading:", len(wb.query_page), session_id_list[ii]  # , wb.query_page
-
-#                            break
-                    except HTTPError, e:
-                        print 'The server could not fulfill the request.'
-                        print 'Error code: ', e.code
-#                         print wb.handle.code
-                        wb.handle = None
-#                        wb.handle = _get_web_page_handle(wb.query_blast, AMIGO_BLAST_URL)
-#                        print "done recreated handle ", wb.handle.code
-                    except URLError, e:
-                        print 'We failed to reach a server.'
-                        print 'Reason: ', e.reason
-                        print wb.handle.code
-                        wb.handle = None
-#                        wb.handle = _get_web_page_handle(wb.query_blast, AMIGO_BLAST_URL)
-#                        print "done recreated handle ", wb.handle.code
-            #            continue
-                    except IncompleteRead as e:
-                        print "IncompleteRead:", e  # , e.partial
-                        wb.handle = None
-
-                    except socket.timeout as e:
-                        print "timeout ", ii
-                        wb.handle = None
-
-#                        wb.handle = _get_web_page_handle(wb.query_blast, AMIGO_BLAST_URL)
-#                        print "done recreated handle ", wb.handle.code
-                        warnings.warn("timouout! retry\n%s%s" % (e, ii))
-                    except socket.error as e:
-                        # print wb.handle.code
-                        wb.handle = None
-#                        wb.handle = _get_web_page_handle(wb.query_blast, AMIGO_BLAST_URL)
-#                        print "done recreated handle ", wb.handle.code
-                        warnings.warn("socket error\n%s%s%s" % (e, type(e), ii))
-                        # TODO: this happen quite a few times
-                    except StandardError:
-                        wb.handle = None
-#                        wb.handle = _get_web_page_handle(wb.query_blast, AMIGO_BLAST_URL)
-#                        print "done recreated handle ", wb.handle.code
-                        warnings.warn("StandardError\n%s%s%s" % (e, type(e), ii))
-
+                    session_id_list[ii] = wb.create_session_id()
+                    if session_id_list[ii]:
+                        tempout.write("%s%s%s%s%s\n" % (STORE_SESSION_ID_STRING, self.DELIM, ii, self.DELIM, session_id_list[ii]))
+                        tempout.flush()
 
                 else:
                     if self.debug:
-                        print "=In loop %d/%d, got session_id: %s" % (ii, total_BLAST, wb.session_id)
+                        print "DEBUG:==SKIP loop %d/%d, got session_id: %s" % (ii, total_BLAST, wb.session_id)
 #                     print "BLAST: ", (i + 1), "/", total_BLAST
+
+
+    def retrieving_all_session_results(self, complete_index_boolean, tempout):
+        while not all(complete_index_boolean):
+            for ii, is_complete in enumerate(complete_index_boolean):
+                if not is_complete:
+                    print "Retrieving session index=(%d) ID:%s" % (ii, self.web_session_list[ii].session_id)
+                    complete_index_boolean[ii] = self.retrieving_session_result(self.web_session_list[ii], tempout)
+                    if not complete_index_boolean[ii]:
+                        print "Recreate session_id: %s" % self.web_session_list[ii].session_id
+                        tempout.write("%s%s%s%s%s\n" % (STORE_SESSION_ID_STRING, self.DELIM, ii, self.DELIM, self.web_session_list[ii].session_id))
+                        tempout.flush()
 
 
 
     def retrieving_session_result(self, wb, tempout):
-        wb.parse_querypage()
-        self.all_seqs.extend(wb.go_results)
-        out = self.generate_output_result(wb)
-        if self.tempfile:
+        complete = wb.parse_querypage()
+        if complete:
+            self.all_seqs.extend(wb.go_results)
+            out = self.generate_output_result(wb)
             if self.debug:
-                print "Store in tempfile:%s" % wb.session_id
+                print "DEBUG: Store in tempfile:%s" % wb.session_id
             tempout.write(out)
             tempout.flush()
+
+        return complete
 
 
     def amigo_batch_mode_new(self):
 
-        if self.tempfile:
-            tempout = open(self.tempfile, "w+")
-            print "creat tempFile:\t%s" % self.tempfile
+
+        tempout = open(self.tempfile, "w+")
+        print "Creat tempFile:\t%s" % self.tempfile
 
         self.create_WebSessions_batches()
-#         self.web_session_list = self.web_session_list[0:3]
-        total_BLAST = len(self.web_session_list)
 
-        import pickle
         t2File = self.tempfile + "object"
         file = open(t2File, 'w')
         pickle.dump(self.web_session_list, file)
         file.close()
-#
 
+        total_BLAST = len(self.web_session_list)
         print "Total number of BLAST Sessions:", total_BLAST
         session_id_list = [None] * total_BLAST
 
-        if self.tempfile:
-            tempout.write("BeginSavingSessionID\n")
-
+        tempout.write("BeginSavingSessionID\n")
         self.get_id_for_all_web_sessions(session_id_list, tempout)
+        tempout.write("%s\n" % END_SESSION_ID_STRING)
+        tempout.flush()
 
-        if self.tempfile:
-            tempout.write("%s\n" % END_SESSION_ID_STRING)
-            tempout.flush()
 
-        # TODO: Maybe use Pickles??
-        for ii, wb in enumerate(self.web_session_list):
-            self.retrieving_session_result(wb, tempout)
-
-        if self.tempfile:
-            tempout.close()
+        complete_index_boolean = [False] * total_BLAST
+        self.retrieving_all_session_results(complete_index_boolean, tempout)
+        tempout.close()
         print "End amigo_batch_mode_new\n"
         return len(self.web_session_list)
 
-    def amigo_batch_mode_resume_partial(self):
 
-        if self.tempfile:
-            tempout = open(self.tempfile, "a")
-            print "append to tempFile:\t%s" % self.tempfile
-
-        print "Resume partial, get rest of the session_id"
-
-        import pickle
-        t2File = self.tempfile + "object"
-        file = open(t2File, 'r')
-        self.web_session_list = pickle.load(file)
-        file.close()
+    def rebuild_web_session_list_from_tempobject(self):
+#         t2File = self.tempfile + "object"
+#         file = open(t2File, 'r')
+#         self.web_session_list = pickle.load(file)
+#         file.close()
 
         total_BLAST = len(self.web_session_list)
-
-        print "Total number of BLAST Sessions:", total_BLAST
         session_id_list = [None] * total_BLAST
-        for i in self.stored_web_session_list:
-            index = int(i[0])
-            sid = i[1]
-            session_id_list[index] = sid
-            self.web_session_list[index].session_id = sid
+        for i in self.stored_web_session_info:
+            if i != 0:
+                index = int(i[0])
+                sid = i[1]
+                session_id_list[index] = sid
+                self.web_session_list[index].session_id = sid
 
-        for wb in self.web_session_list:
-            try:
-                print wb.handle
-            except AttributeError:
-                wb.handle = None
+        return session_id_list
+
+    def amigo_batch_mode_resume_partial(self):
+
+
+        tempout = open(self.tempfile, "a")
+        print "Append to tempFile:\t%s" % self.tempfile
+
+        session_id_list = self.rebuild_web_session_list_from_tempobject()
+        total_BLAST = len(self.web_session_list)
+        print "RESUME_PARTIAL, get rest of the session_id\nTotal number of BLAST Sessions:%d" % total_BLAST
+
         self.get_id_for_all_web_sessions(session_id_list, tempout)
+        tempout.write("%s\n" % END_SESSION_ID_STRING)
+        tempout.flush()
 
-        if self.tempfile:
-            tempout.write("%s\n" % END_SESSION_ID_STRING)
-            tempout.flush()
 
-        # TODO: Maybe use Pickles??
+        complete_index_boolean = [False] * total_BLAST
+        self.retrieving_all_session_results(complete_index_boolean, tempout)
 
-        for ii, wb in enumerate(self.web_session_list):
-            self.retrieving_session_result(wb, tempout)
-
-        if self.tempfile:
-            tempout.close()
+        tempout.close()
         print "End amigo_batch_mode_new\n"
         return len(self.web_session_list)
 
@@ -271,8 +220,15 @@ class GOConnector(object):
         print "RESUME!!! Tempfile exist: %s!" % self.tempfile
         tempout = open(self.tempfile, "r+")
 
-        self.stored_session_result = []
-        self.stored_web_session_list = []
+        t2File = self.tempfile + "object"
+        file = open(t2File, 'r')
+        self.web_session_list = pickle.load(file)
+        file.close()
+
+        total_BLAST = len(self.web_session_list)
+
+        self.stored_session_id_result = []
+        self.stored_web_session_info = [0] * total_BLAST
         line = ""
 
 
@@ -283,10 +239,10 @@ class GOConnector(object):
 #             print line
             if line.startswith(STORE_SESSION_ID_STRING):
                 index = line.split(self.DELIM)
-
                 sid = index[2]
-                self.stored_web_session_list.append((index[1], sid))
-#                 self.stored_web_session_list.append(sid)
+#                 self.stored_web_session_info.append((index[1], sid))
+                self.stored_web_session_info[int(index[1])] = (index[1], sid)
+
             if line.startswith(END_SESSION_ID_STRING):
                 is_saving_completed = True
             if line.startswith(END_STORE_RESULT_STRING):
@@ -306,30 +262,40 @@ class GOConnector(object):
             if line.startswith(STORE_RESULT_STRING):
                 index = line.split(self.DELIM)
                 sid = index[1]
-                self.stored_session_result.append(sid)
+                self.stored_session_id_result.append(sid)
                 is_parse_result = True
+
+
+        if self.debug:
+            print "DEBUG: Full saved session_list:", self.stored_web_session_info
+            print "DEBUG: Stored  sessios_results:", self.stored_session_id_result
 
         if not is_saving_completed:
             print "===Warning!! Not all session_ids are stored, recreate using partial batch mode"
-            print self.stored_web_session_list
+            print self.stored_web_session_info
             return self.amigo_batch_mode_resume_partial()
 
+
+
+        stored_session_id_only = self.rebuild_web_session_list_from_tempobject()
+        complete_index_boolean = [x in self.stored_session_id_result for x in stored_session_id_only]
+
+#         stored_session_id_only = [ x[1] for x in self.stored_web_session_info]
+#         missiing_session_id = set(stored_session_id_only) - set(self.stored_session_id_result)
+#         missiing_session_id = list(missiing_session_id)
+#         print "Missing %d session(s): %s" % (len(missiing_session_id), missiing_session_id)
+        missing_length = total_BLAST - sum(complete_index_boolean)
+        print "Missing %d session(s)." % missing_length
         if self.debug:
-            print "Full saved session_list:", self.stored_web_session_list
-            print "Stored  sessios_results:", self.stored_session_result
+            missing_session_index = [i for i, is_comp in enumerate(complete_index_boolean) if not is_comp]
+            print "DEBUG: Missing %d session(s): Index: %s" % (len(missing_session_index), missing_session_index)
 
-        self.stored_web_session_list = [ x[1] for x in self.stored_web_session_list]
-        missiing_session = set(self.stored_web_session_list) - set(self.stored_session_result)
-        print "Missing %d session(s): %s" % (len(missiing_session), missiing_session)
-
-        for session_id in missiing_session:
-            print "Retrieving session: %s" % session_id
-            wb = WebSession.create_with_session_id_only(session_id)
-            self.retrieving_session_result(wb, tempout)
+        self.retrieving_all_session_results(complete_index_boolean, tempout)
 
         tempout.close()
-        print "End amigo_batch_resume, number of missed session:", len(missiing_session)
-        return len(missiing_session)
+        print "End amigo_batch_resume, number of missed session: %d" % missing_length
+        return missing_length
+
 
 
     def generate_output_result(self, wb):

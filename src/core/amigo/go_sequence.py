@@ -30,7 +30,7 @@ MATCH_BLAST_END = "\" title=\"Retrieve your BLAST job\">"
 # seq.web_page.find("Your job has been successfully submitted to the BLAST queue")
 # <a href="blast.cgi?action=get_blast_results&amp;session_id=3873amigo1320966804" title="Retrieve your BLAST job">
 # "blast.cgi?action=get_blast_results&amp;session_id=3873amigo1320966804"
-
+# http://amigo1.geneontology.org/cgi-bin/amigo/blast.cgi?action=get_blast_results&amp;session_id=
 
 
 MATCH_BLAST_NOT_COMPLETE = ("Please be patient as your job may take several minutes to complete. This page will automatically refresh with the BLAST results when the job is done.")

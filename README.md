@@ -8,9 +8,32 @@ Required package
 * NumPy - 1.8.2
 * SciPy - 0.12.1
 
-## Usage
-cd src
+Required software
+* **Genovo** v0.4: http://cs.stanford.edu/group/genovo/
+* **Glimmer** v3.02: https://ccb.jhu.edu/software/glimmer/
+* **MINE.jar** v1.0.1: http://www.exploredata.net/
+
+Note: These software distributed here might not work with your OS!  
+
+
+## INSTALL
+### Directory list
+Default/Recommended folder structure. This structure is used in default control file. If Genovo/Glimmer/MINE are locate at other destination, please update the control file.
+* data
+ * Genovo
+ * Glimmer
+ * MINE
+* src
+ * core 
+ * test
+
+
+
+## USAGE
+```
+cd src;
 python core/main.py /full_path_to_control_file/control_file
+```
 
 
 ### Directory list
