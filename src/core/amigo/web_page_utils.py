@@ -76,14 +76,24 @@ def get_web_page(query, URL):
 
 # @retry(urllib2.URLError, tries=4, delay=3, backoff=2)
 def get_web_page_handle(query, URL):
+
+#     request = urllib2.Request('http://stackoverflow.com')
+#     request.add_header('User-Agent', 'FIREFOX LOL')
+#     opener = urllib2.build_opener()
+#     data = opener.open(request).read()
+#     print data
+#     exit()
     # TODO faster? with httplib?
     handle = None
     message = urllib.urlencode(query)
-    request = urllib2.Request(URL, message, {"User-Agent": "BiopythonClient"})
+    request = urllib2.Request(URL, message, {"User-Agent": "BiopythonClient Python-urllib2"})
 #     print message
 #     print request
+#     print request.get_data()
+#     print request.get_method()
     while True:
         handle = urllib2.urlopen(request)
+
         if handle.code > 0:
             break
     return handle

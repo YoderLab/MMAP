@@ -10,7 +10,7 @@ from httplib import IncompleteRead
 import os
 import pickle
 import socket
-from urllib2 import URLError, HTTPError
+# from urllib2 import URLError, HTTPError
 import warnings
 
 from core.amigo import web_page_utils, go_sequence
@@ -20,7 +20,7 @@ from core.amigo.web_session import WebSession
 
 MAX_QUERY_SEQ_LENGTH = 3e6
 
-DEFAULT_BATCH_SIZE = 20
+DEFAULT_BATCH_SIZE = 5
 DEFAULT_E_VALUE_CUT_OFF = 1e-15
 
 AMIGO_BLAST_URL = go_sequence.AMIGO_BLAST_URL
@@ -76,6 +76,7 @@ class GOConnector(object):
                 if len(data) > MAX_QUERY_SEQ_LENGTH:
                     warnings.warn("TODO: Implement auto scale down blast batch size. Total query length %d > %d"\
                                   % (len(data), MAX_QUERY_SEQ_LENGTH))
+
                 wb = WebSession(data, keys, self.e_threshold, debug=self.debug)
                 self.web_session_list.append(wb)
                 data = ""
@@ -118,10 +119,11 @@ class GOConnector(object):
 
 
     def retrieving_all_session_results(self, complete_index_boolean, tempout):
+        total = len(complete_index_boolean)
         while not all(complete_index_boolean):
             for ii, is_complete in enumerate(complete_index_boolean):
                 if not is_complete:
-                    print "Retrieving session index=(%d) ID:%s" % (ii, self.web_session_list[ii].session_id)
+                    print "Retrieving session index=(%d/%d) ID:%s" % (ii, total, self.web_session_list[ii].session_id)
                     complete_index_boolean[ii] = self.retrieving_session_result(self.web_session_list[ii], tempout)
                     if not complete_index_boolean[ii]:
                         print "Recreate session_id: %s" % self.web_session_list[ii].session_id

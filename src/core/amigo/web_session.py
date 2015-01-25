@@ -28,7 +28,8 @@ RE_GET_SESSION_ID = re.compile("\!--\s+session_id\s+=\s+(\d+amigo\d+)\s+--")
 # <!-- session_id         = 634amigo1360013506 -->
 # http://amigo1.geneontology.org/cgi-bin/amigo/blast.cgi?action=get_blast_results&amp;session_id=
 
-
+# timeout = 360
+# socket.setdefaulttimeout(timeout)
 
 
 
@@ -132,7 +133,7 @@ class WebSession(object):
             self.handle = None
 
         except socket.timeout as e:
-            print "timeout ", e
+            print "timeout ", e, type(e)
             self.handle = None
 
 #                        wb.handle = _get_web_page_handle(wb.query_blast, AMIGO_BLAST_URL)
@@ -145,7 +146,7 @@ class WebSession(object):
 #                        print "done recreated handle ", wb.handle.code
             warnings.warn("socket error\n%s" % (e))
             # TODO: this happen quite a few times
-        except StandardError:
+        except StandardError as e:
             self.handle = None
 #                        wb.handle = _get_web_page_handle(wb.query_blast, AMIGO_BLAST_URL)
 #                        print "done recreated handle ", wb.handle.code
