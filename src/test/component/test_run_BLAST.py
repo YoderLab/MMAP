@@ -202,11 +202,11 @@ class TestRunBlast(unittest.TestCase):
         new_set = self.S2 | self.S5
         self.assertEqual(expected, new_set)
 
-        expected = set(["GO:01", "GO:03", "GO:04", "GO:05", "GO:06", "GO:07"])  # TODO
+        expected = set(["GO:01", "GO:03", "GO:04", "GO:05", "GO:06", "GO:07"])
         new_set = self.S4 | self.S5
         self.assertEqual(expected, new_set)
 
-        expected = set(["GO:01", "GO:02", "GO:03", "GO:04", "GO:05", "GO:06", "GO:07"])  # TODO
+        expected = set(["GO:01", "GO:02", "GO:03", "GO:04", "GO:05", "GO:06", "GO:07"])
         new_set = self.S2 | self.S4 | self.S5
         self.assertEqual(expected, new_set)
 
@@ -230,12 +230,12 @@ class TestRunBlast(unittest.TestCase):
         set & other & ...
         Return a new set with elements common to the set and all others.
         """
-        expected = set(["GO:05"])  # TODO GO:05
+        expected = set(["GO:05"])
         new_set = self.S4 & self.S5
         self.assertEqual(expected, new_set)
 
 
-        expected = set([])  # TODO
+        expected = set([])
         new_set = self.S2 & self.S4 & self.S5
         self.assertEqual(expected, new_set)
 
@@ -403,7 +403,7 @@ class TestRunBlast(unittest.TestCase):
 
 
     def test_output_csv(self):
-#        TODO add test code
+
         outfile = self.Blast_dir + "test.csv"
 #        blast = RunBlast(records=self.record_index, e_value=self.e_threshold, wdir=self.Blast_dir,
 #                            infile=None, outfile=outfile)

@@ -16,6 +16,7 @@ from httplib import IncompleteRead
 
 from core.amigo import web_page_utils, go_sequence
 from core.amigo.go_sequence import GoSequence
+from dnf.comps import DEFAULT
 
 
 # DELAY = web_page_utils.DELAY
@@ -30,7 +31,7 @@ RE_GET_SESSION_ID = re.compile("\!--\s+session_id\s+=\s+(\d+amigo\d+)\s+--")
 
 # timeout = 360
 # socket.setdefaulttimeout(timeout)
-
+DEFAULT_TIMEOUT = 120
 
 
 
@@ -64,13 +65,13 @@ def parse_get_blast_results_query(session_id, page):
 
 class WebSession(object):
 
-    def __init__(self, query_data, key_list, e_threshold, max_hits=1000, debug=False):
+    def __init__(self, query_data, key_list, e_threshold, max_hits=1000, timeout=DEFAULT_TIMEOUT, debug=False):
 
         self.query_data = query_data
         self.key_list = key_list
         self.e_threshold = e_threshold
         self.max_hits = max_hits
-
+        self.timeout = timeout
         self.session_id = None
         self.query_page = None
         self.handle = None
@@ -98,7 +99,7 @@ class WebSession(object):
 
         try:
             if not self.handle:
-                self.handle = web_page_utils.get_web_page_handle(self.query_blast, AMIGO_BLAST_URL)
+                self.handle = web_page_utils.get_web_page_handle(self.query_blast, AMIGO_BLAST_URL, self.timeout)
             self.query_page = str(self.handle.read())
             self.handle = None
 
@@ -133,8 +134,9 @@ class WebSession(object):
             self.handle = None
 
         except socket.timeout as e:
-            print "timeout ", e, type(e)
             self.handle = None
+            self.timeout *= 2
+            print "timeout ", e, "Double timeout time:", self.timeout
 
 #                        wb.handle = _get_web_page_handle(wb.query_blast, AMIGO_BLAST_URL)
 #                        print "done recreated handle ", wb.handle.code
@@ -252,6 +254,78 @@ class WebSession(object):
 #    query_page = property(_get_query_page, _set_query_page)
 
 
+###########################################################################
+
+class WebSessionFile(WebSession) :
+
+    def __init__(self, query_data, key_list, e_threshold, query_file, max_hits=1000, debug=False):
+
+        self.query_data = query_data
+        self.key_list = key_list
+        self.e_threshold = e_threshold
+        self.max_hits = max_hits
+
+        self.session_id = None
+        self.query_page = None
+        self.handle = None
+        self.seq_counter = 0
+        self.go_results = []
+
+        self.debug = debug
+        self.query_file = query_file
+        self.query_blast = [('action', 'blast'),
+#                             ('seq_file_upload', open(query_file, "r")),
+                            ('maxhits', self.max_hits),
+                            ('threshold', self.e_threshold),
+                            ('CMD', 'Put')]
+
+
+
+    def create_session_id(self):
+
+        try:
+            if not self.handle:
+                self.handle = web_page_utils.get_web_page_handle_file(self.query_blast, self.query_file, AMIGO_BLAST_URL)
+            self.query_page = str(self.handle.read())
+            self.handle = None
+
+            self.get_session_id()
+            if self.session_id:
+                if self.debug:
+                    print "===Got the id:\t%s" % self.session_id
+#                 if self.tempfile:
+#                     tempout.write("%s%s%s%s%s\n" % (STORE_SESSION_ID_STRING, self.DELIM, ii, self.DELIM, session_id_list[ii]))
+#                     tempout.flush()
+#             if self.debug:
+#                 print "====Done reading:", len(wb.query_page), session_id_list[ii]  # , wb.query_page
+
+#                            break
+        except HTTPError, e:
+            print 'The server could not fulfill the request.'
+            print 'Error code: ', e.code
+            self.handle = None
+        except URLError, e:
+            print 'We failed to reach a server.'
+            print 'Reason: ', e.reason
+            print self.handle.code
+            self.handle = None
+        except IncompleteRead as e:
+            print "IncompleteRead:", e  # , e.partial
+            self.handle = None
+
+        except socket.timeout as e:
+            print "timeout ", e, type(e)
+            self.handle = None
+            warnings.warn("timouout! retry\n%s" % (e))
+        except socket.error as e:
+            self.handle = None
+            warnings.warn("socket error\n%s" % (e))
+            # TODO: this happen quite a few times
+        except StandardError as e:
+            self.handle = None
+            warnings.warn("StandardError\n%s" % (e))
+
+        return self.session_id
 
 ###########
 

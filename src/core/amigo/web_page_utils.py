@@ -10,6 +10,7 @@ import urllib2
 import warnings
 
 from cups import HTTPError
+import os
 
 
 DELAY = 5.0
@@ -75,17 +76,75 @@ def get_web_page(query, URL):
 
 
 # @retry(urllib2.URLError, tries=4, delay=3, backoff=2)
-def get_web_page_handle(query, URL):
+def get_web_page_handle(query, URL, timeout=120):
 
-#     request = urllib2.Request('http://stackoverflow.com')
-#     request.add_header('User-Agent', 'FIREFOX LOL')
-#     opener = urllib2.build_opener()
-#     data = opener.open(request).read()
-#     print data
-#     exit()
     # TODO faster? with httplib?
     handle = None
+#     print socket.getdefaulttimeout()
+    socket.setdefaulttimeout(timeout)
     message = urllib.urlencode(query)
+#     print message
+#     message = message.encode('utf-8')
+    request = urllib2.Request(URL, message, {"User-Agent": "BiopythonClient Python-urllib2"})
+#     print request
+#     print request.get_data()
+#     print request.get_method()
+
+    while True:
+        handle = urllib2.urlopen(request)
+        if handle.code > 0:
+            break
+    return handle
+
+
+
+def get_web_page_handle_file(query, file_name, URL):
+
+    # # This, again, only works on small files < 6**** bp
+    handle = None
+    a = open(file_name, "r")
+
+    query.append(('seq_file_upload', open(file_name, "r")))
+    print query, file_name
+    q1 = {'action':'blast', 'CMD':"Put", "seq":">aoeuaoeu\nATGCGTGCATGC"}
+    q2 = {'action':'blast', 'CMD':"Put", 'seq_file_upload': 'open(file_name, "r")'}
+#     q3 = {'action':'blast', 'CMD':"Put", 'uniprot_id': 'P32246'} # working!
+    print q2
+
+
+    import poster.encode
+    import poster.streaminghttp
+
+    opener = poster.streaminghttp.register_openers()
+
+    params = {'seq_file_upload': open(file_name + "A", 'rb'), 'description': 'upload test', 'action':'blast', 'CMD':"Put"}
+    datagen, headers = poster.encode.multipart_encode(params)
+    print "D", datagen, dir(datagen)
+#     print datagen.boundary
+#     print datagen.cb
+#     print datagen.current
+#     print datagen.i
+#     print datagen.next
+#     print datagen.p
+#     print datagen.param_iter
+#     print datagen.params
+#     print datagen.total
+#     print "H", headers
+    response = opener.open(urllib2.Request(URL, datagen, headers))
+
+    print response.read()
+    message = urllib.urlencode(q2)
+    print message
+#     print query
+#     message = message.encode('utf-8')
+# data = urllib.urlencode({'filename': open(uploadfile, "rb"),
+#                         'description': 'upload test'})
+# post_req = urllib2.Request(upload_file_url, data)
+#
+# files = {'file': open('image.png', 'rb')}
+# r = requests.post(url, files=files)
+
+
     request = urllib2.Request(URL, message, {"User-Agent": "BiopythonClient Python-urllib2"})
 #     print message
 #     print request
@@ -93,7 +152,6 @@ def get_web_page_handle(query, URL):
 #     print request.get_method()
     while True:
         handle = urllib2.urlopen(request)
-
         if handle.code > 0:
             break
     return handle

@@ -15,12 +15,12 @@ import warnings
 
 from core.amigo import web_page_utils, go_sequence
 from core.amigo.go_sequence import GoSequence
-from core.amigo.web_session import WebSession
+from core.amigo.web_session import WebSession, WebSessionFile
 
 
-MAX_QUERY_SEQ_LENGTH = 3e6
+MAX_QUERY_SEQ_LENGTH = 50000  # 3e6
 
-DEFAULT_BATCH_SIZE = 5
+DEFAULT_BATCH_SIZE = 20
 DEFAULT_E_VALUE_CUT_OFF = 1e-15
 
 AMIGO_BLAST_URL = go_sequence.AMIGO_BLAST_URL
@@ -41,7 +41,7 @@ class GOConnector(object):
         self.record_index = SeqIO.index(infile, "fasta")
 
     """
-    socket.setdefaulttimeout(120)
+
     warnings.simplefilter("always")
     DELIM = GoSequence.DEFAULT_DELIM
 
@@ -59,41 +59,75 @@ class GOConnector(object):
         else:
             self.tempfile = None
 
+    def amigo_batch_mode(self):
+        print "AmiGo BatchMode, dose tempfile exist? %s\t%s" % (os.path.exists(self.tempfile), self.tempfile)
+#         if self.tempfile and not os.path.exists(self.tempfile):
+
+        self.amigo_batch_mode_new()
+        exit()
+        if not os.path.exists(self.tempfile):
+            return self.amigo_batch_mode_new()
+        else:
+            return self.amigo_batch_resume()
+
+
 
     def create_WebSessions_batches(self):
+        """
+        timeout error: query length too long
+        
+        **2 172849 ['693_orf00016', '1484_orf00017', '1096_orf00001', '679_orf00001', '245_orf00001']
+        **34 66456 ['343_orf00012', '678_orf00076', '1678_orf00003', '1454_orf00023', '1663_orf00010']
+        **62 72963 ['1719_orf00023', '1739_orf00014', '1341_orf00033', '1069_orf00021', '468_orf00075']
+        **268 65234 ['176_orf00036', '1037_orf00048', '1061_orf00012', '877_orf00069', '943_orf00010']
+        **347 72225 ['1777_orf00002', '1672_orf00019', '332_orf00001', '388_orf00061', '1948_orf00002']
 
+        what is the "cap"??
+        """
         max_query_size_1 = self.max_query_size - 1
 #         datas = []
 #         WebSession.e_threshold = self.e_threshold
         self.web_session_list = []
         keys = []
         data = ""
-
+        data_length = 0
         for i, key in enumerate(self.seq_record):
-            data = data + ">" + key + "\n" + str(self.seq_record[key].seq) + "\n"
-            keys.append(key)
-            if i % self.max_query_size is max_query_size_1:
-                if len(data) > MAX_QUERY_SEQ_LENGTH:
-                    warnings.warn("TODO: Implement auto scale down blast batch size. Total query length %d > %d"\
-                                  % (len(data), MAX_QUERY_SEQ_LENGTH))
 
+            new_data = ">" + key + "\n" + str(self.seq_record[key].seq) + "\n"
+            temp_length = data_length + len(new_data)
+
+            if len(new_data) > MAX_QUERY_SEQ_LENGTH:
+                temp_file_name = self.tempfile + "_LongORF_" + key
+                print "WARNING: Very long ORF (%d > limit:%d)! Sometimes it causes errors for AmiGO BLAST!! Store ORF at %s." % (len(new_data), MAX_QUERY_SEQ_LENGTH, temp_file_name)
+                tempout = open(temp_file_name, "w+")
+                tempout.write(new_data)
+                tempout.close()
+                wb = WebSession(new_data, [key], self.e_threshold, timeout=60, debug=self.debug)
+                self.web_session_list.append(wb)
+
+                continue
+
+            ## Fail when len(new_data > 6****
+            if temp_length > MAX_QUERY_SEQ_LENGTH or len(keys) == self.max_query_size:
+                # save with max_count
+#                 print i, len(keys), len(data), temp_length, (len(keys) % self.max_query_size)
                 wb = WebSession(data, keys, self.e_threshold, debug=self.debug)
                 self.web_session_list.append(wb)
                 data = ""
                 keys = []
+
+            if len(self.web_session_list) is 4:
+                break
+            data = data + new_data
+            data_length = len(data)
+
+            keys.append(key)
+
+
         if data != "":
             wb = WebSession(data, keys, self.e_threshold, debug=self.debug)
             self.web_session_list.append(wb)
 
-
-    def amigo_batch_mode(self):
-        print "AmiGo BatchMode, dose tempfile exist? %s\t%s" % (os.path.exists(self.tempfile), self.tempfile)
-#         if self.tempfile and not os.path.exists(self.tempfile):
-
-        if not os.path.exists(self.tempfile):
-            return self.amigo_batch_mode_new()
-        else:
-            return self.amigo_batch_resume()
 
 
 
@@ -105,7 +139,7 @@ class GOConnector(object):
 
                 if not wb.session_id:
                     if self.debug:
-                        print "DEBUG:==In loop %d/%d, NO session_id: %s" % (ii, total_BLAST, wb.session_id)
+                        print "DEBUG:==In loop %d/%d, NO session_id: %s" % (ii + 1, total_BLAST, wb.session_id)
 
                     session_id_list[ii] = wb.create_session_id()
                     if session_id_list[ii]:
@@ -114,7 +148,7 @@ class GOConnector(object):
 
                 else:
                     if self.debug:
-                        print "DEBUG:==SKIP loop %d/%d, got session_id: %s" % (ii, total_BLAST, wb.session_id)
+                        print "DEBUG:==SKIP loop %d/%d, got session_id: %s" % (ii + 1, total_BLAST, wb.session_id)
 #                     print "BLAST: ", (i + 1), "/", total_BLAST
 
 

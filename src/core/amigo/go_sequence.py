@@ -117,7 +117,7 @@ class GoSequence(object):
             lines = blast_matches.splitlines()
 
             acc_ID, match_ID, e_value = [], [], []
-            # TODO: change data structure later
+
             # for i,l in enumerate(lines):
             for l in lines:
 #                 print l
