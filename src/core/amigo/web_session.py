@@ -14,14 +14,15 @@ from urllib2 import URLError, HTTPError
 from httplib import IncompleteRead
 
 
-from core.amigo import web_page_utils, go_sequence
+from core.amigo import web_page_utils
 from core.amigo.go_sequence import GoSequence
-from dnf.comps import DEFAULT
 
 
-# DELAY = web_page_utils.DELAY
-MATCH_BLAST_NOT_COMPLETE = go_sequence.MATCH_BLAST_NOT_COMPLETE
-AMIGO_BLAST_URL = go_sequence.AMIGO_BLAST_URL
+MATCH_BLAST_NOT_COMPLETE = web_page_utils.MATCH_BLAST_NOT_COMPLETE
+AMIGO_BLAST_URL = web_page_utils.AMIGO_BLAST_URL
+
+
+
 
 RE_NO_SEQ_COUNTER = re.compile("Your job contains (\d+) sequence")
 RE_GET_SESSION_ID = re.compile("\!--\s+session_id\s+=\s+(\d+amigo\d+)\s+--")
@@ -29,10 +30,12 @@ RE_GET_SESSION_ID = re.compile("\!--\s+session_id\s+=\s+(\d+amigo\d+)\s+--")
 # <!-- session_id         = 634amigo1360013506 -->
 # http://amigo1.geneontology.org/cgi-bin/amigo/blast.cgi?action=get_blast_results&amp;session_id=
 
-# timeout = 360
-# socket.setdefaulttimeout(timeout)
-DEFAULT_TIMEOUT = 120
+DEFAULT_TIMEOUT = 120  # Should be long enough for most cases, most of them finish < 90s with 50k query_limits
 
+
+def warning_on_one_line(message, category, filename, lineno, _):
+    return '%s:%s: %s:%s\n' % (filename, lineno, category.__name__, message)
+# warnings.formatwarning = warning_on_one_line
 
 
 def wait_for_query_result(query_wait):
@@ -94,7 +97,6 @@ class WebSession(object):
         return wb
 
 
-
     def create_session_id(self):
 
         try:
@@ -106,53 +108,42 @@ class WebSession(object):
             self.get_session_id()
             if self.session_id:
                 if self.debug:
-                    print "===Got the id:\t%s" % self.session_id
+                    print "===DEBUG: Got the id:\t%s" % self.session_id
 #                 if self.tempfile:
 #                     tempout.write("%s%s%s%s%s\n" % (STORE_SESSION_ID_STRING, self.DELIM, ii, self.DELIM, session_id_list[ii]))
 #                     tempout.flush()
 #             if self.debug:
 #                 print "====Done reading:", len(wb.query_page), session_id_list[ii]  # , wb.query_page
 
-#                            break
+        except AttributeError, e:  # # for legacy code without self.timeout
+            self.timeout = DEFAULT_TIMEOUT
+            warnings.warn("AttributeError::%s. Legacy WebSession format without self.timeou, set to DEFAULT_TIMEOUT" % (e))
         except HTTPError, e:
-            print 'The server could not fulfill the request.'
-            print 'Error code: ', e.code
-#                         print wb.handle.code
+            print 'The server could not fulfill the request.Error code: ', e
             self.handle = None
-#                        wb.handle = _get_web_page_handle(wb.query_blast, AMIGO_BLAST_URL)
-#                        print "done recreated handle ", wb.handle.code
+            warnings.warn("HTTPError::%s" % (e))
+
         except URLError, e:
-            print 'We failed to reach a server.'
-            print 'Reason: ', e.reason
-            print self.handle.code
+            print 'We failed to reach a server. Reason: ', e
             self.handle = None
-#                        wb.handle = _get_web_page_handle(wb.query_blast, AMIGO_BLAST_URL)
-#                        print "done recreated handle ", wb.handle.code
-#            continue
+            warnings.warn("URLError::%s" % (e))
+
         except IncompleteRead as e:
-            print "IncompleteRead:", e  # , e.partial
             self.handle = None
+            warnings.warn("IncompleteRead::%s" % (e))
 
         except socket.timeout as e:
             self.handle = None
             self.timeout *= 2
-            print "timeout ", e, "Double timeout time:", self.timeout
+            warnings.warn("socket.timouout::%s. Retry with doubled default timeout:%ds" % (e, self.timeout))
 
-#                        wb.handle = _get_web_page_handle(wb.query_blast, AMIGO_BLAST_URL)
-#                        print "done recreated handle ", wb.handle.code
-            warnings.warn("timouout! retry\n%s" % (e))
         except socket.error as e:
-            # print wb.handle.code
             self.handle = None
-#                        wb.handle = _get_web_page_handle(wb.query_blast, AMIGO_BLAST_URL)
-#                        print "done recreated handle ", wb.handle.code
-            warnings.warn("socket error\n%s" % (e))
-            # TODO: this happen quite a few times
+            warnings.warn("socket.error::%s" % (e))
+
         except StandardError as e:
             self.handle = None
-#                        wb.handle = _get_web_page_handle(wb.query_blast, AMIGO_BLAST_URL)
-#                        print "done recreated handle ", wb.handle.code
-            warnings.warn("StandardError\n%s" % (e))
+            warnings.warn("StandardError::%s" % (e))
 
         return self.session_id
 
@@ -184,13 +175,15 @@ class WebSession(object):
             if self.key_list and self.seq_counter != len(self.key_list):
                 warnings.warn("Mismatch numebr of sequencs=%d, and number of key=%d keys" % (self.seq_counter, len(self.key_list)))
             if self.debug:
-                print "======parsing %d sequences" % self.seq_counter
+                print "===DEBUG: Parsing %d sequences" % self.seq_counter
             for page in range(self.seq_counter):
     #            print "parse sequences %d/%d" % (page, self.seq_counter)
+
+                query = parse_get_blast_results_query(self.session_id, page + 1)
                 seq = None
                 while seq is None:
-                    query = parse_get_blast_results_query(self.session_id, page + 1)
                     web_page = web_page_utils.get_web_page(query, AMIGO_BLAST_URL)
+                    # FIXME: if throw exception: [Errno 104] Connection reset by peer. Need to get the result again!!
                     if web_page is not None:
                         seq = self.parse_seq(web_page)
     #                    print "---in ", page, "with ", seq
@@ -209,25 +202,27 @@ class WebSession(object):
             fatal message   There is an error in the configuration of AmiGO.
             Your cached BLAST results were lost. Please try again.
             """
-            warnings.warn("no seq matches from id:%s!!! seq_counter= %d Rerun!" % (self.session_id, self.seq_counter))
+            warnings.warn("No seq matched from id:%s!!! seq_counter=%d Recreate session_id!" % (self.session_id, self.seq_counter))
             complete = False
-            print self.session_id
+#             print self.session_id
             self.session_id = None
             while self.session_id is None:
                 self.create_session_id()
-                print self.session_id
+#                 print self.session_id
         return complete
 
 
     def parse_seq(self, web_page):
-
         seq_id = self._find_seq_id(web_page)
+        if seq_id is None:
+            return None
+
         seq = GoSequence(seq_id, web_page)
         seq.extract_ID()
         seq.parse_go_term(self.e_threshold, self.debug)
-
         if seq_id and self.key_list and seq_id not in self.key_list:
             warnings.warn("Seq_ID %s doesn't exist in the list %s" % (seq_id, self.key_list))
+
 
         return seq
 
@@ -256,10 +251,10 @@ class WebSession(object):
 
 ###########################################################################
 
-class WebSessionFile(WebSession) :
+class WebSessionFile(WebSession):
 
     def __init__(self, query_data, key_list, e_threshold, query_file, max_hits=1000, debug=False):
-
+        warnings.warn("Deprecated class: WebSessionFile. Don't think we need this in the future.", PendingDeprecationWarning)
         self.query_data = query_data
         self.key_list = key_list
         self.e_threshold = e_threshold
@@ -274,58 +269,15 @@ class WebSessionFile(WebSession) :
         self.debug = debug
         self.query_file = query_file
         self.query_blast = [('action', 'blast'),
-#                             ('seq_file_upload', open(query_file, "r")),
                             ('maxhits', self.max_hits),
                             ('threshold', self.e_threshold),
                             ('CMD', 'Put')]
 
+#     def create_session_id(self):
+#         try:
+#             if not self.handle:
+#                 self.handle = web_page_utils.get_web_page_handle_file(self.query_blast, self.query_file, AMIGO_BLAST_URL)
 
-
-    def create_session_id(self):
-
-        try:
-            if not self.handle:
-                self.handle = web_page_utils.get_web_page_handle_file(self.query_blast, self.query_file, AMIGO_BLAST_URL)
-            self.query_page = str(self.handle.read())
-            self.handle = None
-
-            self.get_session_id()
-            if self.session_id:
-                if self.debug:
-                    print "===Got the id:\t%s" % self.session_id
-#                 if self.tempfile:
-#                     tempout.write("%s%s%s%s%s\n" % (STORE_SESSION_ID_STRING, self.DELIM, ii, self.DELIM, session_id_list[ii]))
-#                     tempout.flush()
-#             if self.debug:
-#                 print "====Done reading:", len(wb.query_page), session_id_list[ii]  # , wb.query_page
-
-#                            break
-        except HTTPError, e:
-            print 'The server could not fulfill the request.'
-            print 'Error code: ', e.code
-            self.handle = None
-        except URLError, e:
-            print 'We failed to reach a server.'
-            print 'Reason: ', e.reason
-            print self.handle.code
-            self.handle = None
-        except IncompleteRead as e:
-            print "IncompleteRead:", e  # , e.partial
-            self.handle = None
-
-        except socket.timeout as e:
-            print "timeout ", e, type(e)
-            self.handle = None
-            warnings.warn("timouout! retry\n%s" % (e))
-        except socket.error as e:
-            self.handle = None
-            warnings.warn("socket error\n%s" % (e))
-            # TODO: this happen quite a few times
-        except StandardError as e:
-            self.handle = None
-            warnings.warn("StandardError\n%s" % (e))
-
-        return self.session_id
 
 ###########
 

@@ -3,7 +3,7 @@ Created on Nov 7, 2012
 
 @author: Erin McKenney
 """
-#TODO: format correctly
+# TODO: format correctly
 import warnings
 """
 #list_essential_shared
@@ -49,13 +49,13 @@ mine_jobID:
 
 
 class ControlFile(object):
-    #TODO: check what happens if the same key shows up multiple times in the control file
-    #FIXME: individual program directories should append to parent_directory [with some sort of check]
+    # TODO: check what happens if the same key shows up multiple times in the control file
+    # FIXME: individual program directories should append to parent_directory [with some sort of check]
     def __init__(self, **kwargs):
         """
         """
-        warnings.simplefilter('default')
-        warnings.warn("deprecated class: ControlFile", DeprecationWarning)
+        warnings.simplefilter('always')
+        warnings.warn("Deprecated class: ControlFile", DeprecationWarning)
 
         self.all_arguments = dict()
         self.debug = False

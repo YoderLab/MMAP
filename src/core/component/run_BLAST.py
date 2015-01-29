@@ -132,8 +132,8 @@ class RunBlast(RunComponent):
 
 
     def run_single(self, debug=0):
-        warnings.simplefilter('default')
-        warnings.warn("deprecated method: run_BLAST.run_single\nBLAST single sequence, slow!! ", DeprecationWarning)
+        warnings.simplefilter('always')
+        warnings.warn("Deprecated method: run_BLAST.run_single\nBLAST single sequence, slow!! ", DeprecationWarning)
 
         print("Running AmiGO:BLAST")
 
@@ -292,8 +292,8 @@ def _update_output_csv(outfile, header, template, existing_csv):
     header = header
     existing_csv = "filename" full path
     """
-    warnings.simplefilter('default')
-    warnings.warn("deprecated method: run_BLAST._update_output_csv", DeprecationWarning)
+    warnings.simplefilter('always')
+    warnings.warn("Deprecated method: run_BLAST._update_output_csv", DeprecationWarning)
 
     with open(outfile, 'wb') as csvfile:
         writer = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_NONE)

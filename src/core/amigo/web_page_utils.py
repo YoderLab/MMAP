@@ -11,68 +11,53 @@ import warnings
 
 from cups import HTTPError
 import os
+import random
+import time
 
 
 DELAY = 5.0
+MATCH_BLAST_NOT_COMPLETE = ("Please be patient as your job may take several minutes to complete. This page will automatically refresh with the BLAST results when the job is done.")
+AMIGO_BLAST_URL = "http://amigo1.geneontology.org/cgi-bin/amigo/blast.cgi"
+# http://amigo1.geneontology.org/cgi-bin/amigo/blast.cgi
 
 
-def get_web_page_httplib(connector, query):
-
-    message = urllib.urlencode(query)
-    header = {"User-Agent": "BiopythonClient"}
-#            request = urllib2.Request(URL, message, {"User-Agent": "BiopythonClient"})
-#
-    connector.request("POST", "/cgi-bin/amigo/blast.cgi", message, header)
-#    r1 = connector.getresponse()
-#    print r1.status, r1.reason
-#            print r1.
-#    data = r1.read()
-#    return connector
-#    print data
-
-# @retry(urllib2.URLError, tries=4, delay=3, backoff=2)
 
 
 def get_web_page(query, URL):
-
-    s = None
+# #FIXME: Double check the result here
     for _ in range(10):
+#     while s is None:
         try:
 
             message = urllib.urlencode(query)
-
+            rand = random.random()
             request = urllib2.Request(URL, message, {"User-Agent": "BiopythonClient"})
 #            print "URL:", URL, "\n", message, "\n", request, "\n"
 #            print request.get_data()
 #            print request.get_full_url()
-            handle = urllib2.urlopen(request)
 
-#            print handle
-#            print type(handle)
-#            print dir(handle)
-#            print handle.getcode
-#            print handle.geturl
-#            print handle.headers
-#            print handle.code
-#            print handle.msg
-#            print handle.url
-#    s = _as_string(handle.read())
+            handle = urllib2.urlopen(request)
             s = str(handle.read())
-            break
-        except HTTPError, e:
-            print 'The server couldn\'t fulfill the request.'
-            print 'Error code: ', e.code
+            return s
+
         except URLError, e:
-            print 'We failed to reach a server.'
-            print 'Reason: ', e.reason
+            warnings.warn("URLError::%s" % (e))
+            time.sleep(1)
+
         except socket.timeout as e:
-            warnings.warn("timouout! retry\n%s" % e)
+            warnings.warn("socket.timouout::%s" % (e))
+
         except socket.error as e:
-            warnings.warn("[Errno 104] Connection reset by peer!!\n%s\n%s\t%s" % (e, query, URL))
-#            continue
-#    print s
-#    sys.exit()
-    return s
+            warnings.warn("socket.error::%s" % (e))
+            time.sleep(1)
+
+        except StandardError as e:
+            warnings.warn("StandardError::%s" % (e))
+
+        except Exception as e:
+            warnings.warn("Exception::%s" % (e))
+
+    return None
 
 
 # @retry(urllib2.URLError, tries=4, delay=3, backoff=2)
@@ -95,6 +80,22 @@ def get_web_page_handle(query, URL, timeout=120):
         if handle.code > 0:
             break
     return handle
+
+
+####################################################################
+def get_web_page_httplib(connector, query):
+
+    message = urllib.urlencode(query)
+    header = {"User-Agent": "BiopythonClient"}
+#            request = urllib2.Request(URL, message, {"User-Agent": "BiopythonClient"})
+#
+    connector.request("POST", "/cgi-bin/amigo/blast.cgi", message, header)
+#    r1 = connector.getresponse()
+#    print r1.status, r1.reason
+#            print r1.
+#    data = r1.read()
+#    return connector
+#    print data
 
 
 

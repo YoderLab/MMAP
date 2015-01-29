@@ -33,10 +33,9 @@ MATCH_BLAST_END = "\" title=\"Retrieve your BLAST job\">"
 # http://amigo1.geneontology.org/cgi-bin/amigo/blast.cgi?action=get_blast_results&amp;session_id=
 
 
-MATCH_BLAST_NOT_COMPLETE = ("Please be patient as your job may take several minutes to complete. This page will automatically refresh with the BLAST results when the job is done.")
-AMIGO_BLAST_URL = "http://amigo1.geneontology.org/cgi-bin/amigo/blast.cgi"
-# http://amigo1.geneontology.org/cgi-bin/amigo/blast.cgi
 
+MATCH_BLAST_NOT_COMPLETE = web_page_utils.MATCH_BLAST_NOT_COMPLETE
+AMIGO_BLAST_URL = web_page_utils.AMIGO_BLAST_URL
 
 
 
@@ -154,8 +153,8 @@ class GoSequence(object):
         """1 seq -> blast -> n hits -> m GO terms
         """
 
-        if(debug):
-            print "parse_go_term" , self.seq_id
+        if debug:
+            print "=====DEBUG: parse_go_term, seq_id:", self.seq_id
         if self.is_match:
             result_Full, result_Summary, list_GO_term = dict(), dict(), set()
 

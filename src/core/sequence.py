@@ -14,7 +14,7 @@ class Sequence(object):
     class __doc__
     """
     def __init__(self, data=None):
-        warnings.filterwarnings("always")
+        warnings.simplefilter('always')
         warnings.warn("Deprecated class, please ues GoSequence", DeprecationWarning)
         if not (isinstance(data, Seq.Seq) or isinstance(data, str)):
             raise TypeError("Incorrect type, must be Bio.Seq.Seq or str: type(data) = %s" % type(data))

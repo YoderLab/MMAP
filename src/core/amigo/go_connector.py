@@ -10,20 +10,21 @@ from httplib import IncompleteRead
 import os
 import pickle
 import socket
-# from urllib2 import URLError, HTTPError
+import time
 import warnings
 
-from core.amigo import web_page_utils, go_sequence
+# from core.amigo import web_page_utils, go_sequence
 from core.amigo.go_sequence import GoSequence
-from core.amigo.web_session import WebSession, WebSessionFile
+from core.amigo.web_session import WebSession
 
 
+# from urllib2 import URLError, HTTPError
 MAX_QUERY_SEQ_LENGTH = 50000  # 3e6
 
 DEFAULT_BATCH_SIZE = 20
 DEFAULT_E_VALUE_CUT_OFF = 1e-15
 
-AMIGO_BLAST_URL = go_sequence.AMIGO_BLAST_URL
+# AMIGO_BLAST_URL = web_page_utils.AMIGO_BLAST_URL
 # #TODO: read http://bcbio.wordpress.com/2009/10/18/gene-ontology-analysis-with-python-and-bioconductor/
 # # maybe backup URL?? http://tools.bioso.org/cgi-bin/amigo/blast.cg
 STORE_SESSION_ID_STRING = "StoreSessionID"
@@ -60,11 +61,11 @@ class GOConnector(object):
             self.tempfile = None
 
     def amigo_batch_mode(self):
-        print "AmiGo BatchMode, dose tempfile exist? %s\t%s" % (os.path.exists(self.tempfile), self.tempfile)
+        print "AmiGo BatchMode, dose tempfile %s exist?\t%s" % (self.tempfile, os.path.exists(self.tempfile),)
 #         if self.tempfile and not os.path.exists(self.tempfile):
 
-        self.amigo_batch_mode_new()
-        exit()
+#         self.amigo_batch_mode_new()
+#         exit()
         if not os.path.exists(self.tempfile):
             return self.amigo_batch_mode_new()
         else:
@@ -116,8 +117,6 @@ class GOConnector(object):
                 data = ""
                 keys = []
 
-            if len(self.web_session_list) is 4:
-                break
             data = data + new_data
             data_length = len(data)
 
@@ -133,22 +132,35 @@ class GOConnector(object):
 
 
     def get_id_for_all_web_sessions(self, session_id_list, tempout):
+
         total_BLAST = len(session_id_list)
         while not all(session_id_list):
+
+            if self.debug:
+                count = sum([x is None for x in session_id_list])
+                print "==DEBUG: START loop, getting %d/%d sessions" % (count, total_BLAST)
+
             for ii, wb in enumerate(self.web_session_list):
 
                 if not wb.session_id:
                     if self.debug:
-                        print "DEBUG:==In loop %d/%d, NO session_id: %s" % (ii + 1, total_BLAST, wb.session_id)
+                        print "==DEBUG: IN loop %d/%d, NO session_id: %s\tSeq_count:%s\tQueryLength:%s" % (ii + 1, total_BLAST, wb.session_id, len(wb.key_list), len(wb.query_data))
+                        time_start = time.time()  # TODO: remove later
 
                     session_id_list[ii] = wb.create_session_id()
+
+                    if self.debug:  # TODO: remove later
+                        time_end = time.time()  # TODO: remove later
+                        print "==DEBUG: END loop %d/%d session_id: %s\tSeq_count:%s\tQueryLength:%s\tTime:%d" % (ii + 1, total_BLAST, wb.session_id, len(wb.key_list), len(wb.query_data), (time_end - time_start))
+
+
                     if session_id_list[ii]:
                         tempout.write("%s%s%s%s%s\n" % (STORE_SESSION_ID_STRING, self.DELIM, ii, self.DELIM, session_id_list[ii]))
                         tempout.flush()
 
                 else:
                     if self.debug:
-                        print "DEBUG:==SKIP loop %d/%d, got session_id: %s" % (ii + 1, total_BLAST, wb.session_id)
+                        print "==DEBUG: SKIP loop %d/%d, got session_id: %s" % (ii + 1, total_BLAST, wb.session_id)
 #                     print "BLAST: ", (i + 1), "/", total_BLAST
 
 
@@ -157,7 +169,7 @@ class GOConnector(object):
         while not all(complete_index_boolean):
             for ii, is_complete in enumerate(complete_index_boolean):
                 if not is_complete:
-                    print "Retrieving session index=(%d/%d) ID:%s" % (ii, total, self.web_session_list[ii].session_id)
+                    print "Retrieving session index=(%d/%d) ID:%s" % (ii + 1, total, self.web_session_list[ii].session_id)
                     complete_index_boolean[ii] = self.retrieving_session_result(self.web_session_list[ii], tempout)
                     if not complete_index_boolean[ii]:
                         print "Recreate session_id: %s" % self.web_session_list[ii].session_id
@@ -172,7 +184,7 @@ class GOConnector(object):
             self.all_seqs.extend(wb.go_results)
             out = self.generate_output_result(wb)
             if self.debug:
-                print "DEBUG: Store in tempfile:%s" % wb.session_id
+                print "==DEBUG: Store in tempfile:%s" % wb.session_id
             tempout.write(out)
             tempout.flush()
 
@@ -210,13 +222,9 @@ class GOConnector(object):
 
 
     def rebuild_web_session_list_from_tempobject(self):
-#         t2File = self.tempfile + "object"
-#         file = open(t2File, 'r')
-#         self.web_session_list = pickle.load(file)
-#         file.close()
 
-        total_BLAST = len(self.web_session_list)
-        session_id_list = [None] * total_BLAST
+        total_count = len(self.web_session_list)
+        session_id_list = [None] * total_count
         for i in self.stored_web_session_info:
             if i != 0:
                 index = int(i[0])
@@ -233,8 +241,11 @@ class GOConnector(object):
         print "Append to tempFile:\t%s" % self.tempfile
 
         session_id_list = self.rebuild_web_session_list_from_tempobject()
+        have_id_count = sum([x is None for x in session_id_list])
+
         total_BLAST = len(self.web_session_list)
-        print "RESUME_PARTIAL, get rest of the session_id\nTotal number of BLAST Sessions:%d" % total_BLAST
+        print "RESUME_PARTIAL!! Obtain rest of the session_id %d/%d out of total number of sessions." % (have_id_count, total_BLAST)
+
 
         self.get_id_for_all_web_sessions(session_id_list, tempout)
         tempout.write("%s\n" % END_SESSION_ID_STRING)
@@ -302,29 +313,30 @@ class GOConnector(object):
                 is_parse_result = True
 
 
-        if self.debug:
-            print "DEBUG: Full saved session_list:", self.stored_web_session_info
-            print "DEBUG: Stored  sessios_results:", self.stored_session_id_result
+        if self.debug:  # # These might have to go
+            print "==DEBUG: Full saved session_list:", self.stored_web_session_info
+            print "==DEBUG: Stored sessios_results:", self.stored_session_id_result
 
         if not is_saving_completed:
             print "===Warning!! Not all session_ids are stored, recreate using partial batch mode"
-            print self.stored_web_session_info
             return self.amigo_batch_mode_resume_partial()
 
 
 
         stored_session_id_only = self.rebuild_web_session_list_from_tempobject()
         complete_index_boolean = [x in self.stored_session_id_result for x in stored_session_id_only]
-
 #         stored_session_id_only = [ x[1] for x in self.stored_web_session_info]
 #         missiing_session_id = set(stored_session_id_only) - set(self.stored_session_id_result)
 #         missiing_session_id = list(missiing_session_id)
-#         print "Missing %d session(s): %s" % (len(missiing_session_id), missiing_session_id)
         missing_length = total_BLAST - sum(complete_index_boolean)
-        print "Missing %d session(s)." % missing_length
+        print "Missing %d/%d session(s)!" % (missing_length, total_BLAST)
         if self.debug:
             missing_session_index = [i for i, is_comp in enumerate(complete_index_boolean) if not is_comp]
-            print "DEBUG: Missing %d session(s): Index: %s" % (len(missing_session_index), missing_session_index)
+            print "==DEBUG: Missing %d/%d session(s): Index: %s" % (len(missing_session_index), total_BLAST, missing_session_index)
+            print stored_session_id_only
+            print self.stored_session_id_result
+            print complete_index_boolean
+#         exit()
 
         self.retrieving_all_session_results(complete_index_boolean, tempout)
 

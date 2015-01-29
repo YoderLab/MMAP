@@ -208,6 +208,7 @@ class Setting(object):
                 raise KeyError("key does not exist: %s" % v)
         if program_name is "mine":
             list_csv = self.get("csv_files").split(",")
+            list_csv = [f.strip() for f in list_csv]
             self._set("csv_files", list_csv)
 
     def _check_all_optional_keys(self, program_name):

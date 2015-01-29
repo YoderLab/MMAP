@@ -190,7 +190,7 @@ def merge_output_csv_to_MINE(outfile, csv_files, isMINE=True):
     template = dict()
     for zeroes, infile in enumerate(csv_files):
         all_new_key = []
-
+        infile = infile.strip()
         with open(infile, 'rb') as f:
             reader = csv.reader(f)
             for i, row in enumerate(reader):
