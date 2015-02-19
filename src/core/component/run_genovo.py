@@ -33,9 +33,6 @@ class RunGenovo(RunComponent):
                  outfile=None, check_exist=True):
         """
         Constructor
-        TODO: implement finalize
-        TODO: read/parse/check output
-        #        super(RunGenovo, self).__init__()
         """
         self.all_exts = ALL_EXTS
         self.parameter_check(pdir, wdir, infile, outfile, check_exist, ".genovo")
@@ -86,10 +83,7 @@ class RunGenovo(RunComponent):
 
 
     def set_infile_name(self, infile):
-        """
-        type anything here
-        TODO: check valid infile, infile exist or not
-        """
+
         self.assemble.set_param_at(infile, ASSEMBLE_INFILE_POSITION)
         self.finalize.set_param_at(infile + ".dump.best",
                                    FINALIZE_INFILE_POSITION)

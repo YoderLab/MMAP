@@ -13,7 +13,6 @@ def check_dir_ending(tdir):
 
 
 class RunComponent(object):
-    # FIXME: check filename name for wdir path before adding wdir to self.filename
     def __init__(self):
         self.debug = False
         pass
@@ -49,7 +48,6 @@ class RunComponent(object):
 
 
     def check_valid_value(self, s, convert):
-#        FIXME: handle int/float rounding and "int"/"float" properly
 
         try:
             v = convert(s)

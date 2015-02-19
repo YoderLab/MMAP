@@ -198,8 +198,6 @@ class RunBlast(RunComponent):
 #        for i in self.results.values():
 #            print(i.combined_terms)
 
-# TODO: Save / export results as a .csv file (= MINE input)
-
     def init_output(self, counter, default_value=0):
         new_sample = dict()
         master_file = set([])

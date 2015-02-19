@@ -30,7 +30,7 @@ RE_GET_SESSION_ID = re.compile("\!--\s+session_id\s+=\s+(\d+amigo\d+)\s+--")
 # <!-- session_id         = 634amigo1360013506 -->
 # http://amigo1.geneontology.org/cgi-bin/amigo/blast.cgi?action=get_blast_results&amp;session_id=
 
-DEFAULT_TIMEOUT = 120  # Should be long enough for most cases, most of them finish < 90s with 50k query_limits
+DEFAULT_TIMEOUT = 180  # Should be long enough for most cases, most of them finish < 90s with 50k query_limits
 
 
 def warning_on_one_line(message, category, filename, lineno, _):
@@ -183,7 +183,6 @@ class WebSession(object):
                 seq = None
                 while seq is None:
                     web_page = web_page_utils.get_web_page(query, AMIGO_BLAST_URL)
-                    # FIXME: if throw exception: [Errno 104] Connection reset by peer. Need to get the result again!!
                     if web_page is not None:
                         seq = self.parse_seq(web_page)
     #                    print "---in ", page, "with ", seq
@@ -191,14 +190,7 @@ class WebSession(object):
             complete = True
         else:
             """
-            FIXME: Retrieving session: 5227amigo1421957383
-            /home/steven/Postdoc/Project_Lemur/MMAP/src/core/amigo/web_session.py:120: UserWarning: no matches!!! seq_counter= 0 Rerun!
-              warnings.warn("no matches!!! seq_counter= %d Rerun!" % (self.seq_counter))
-              
-            http://amigo1.geneontology.org/cgi-bin/amigo/blast.cgi?action=get_blast_results&amp;session_id=5227amigo1421957383
-            
-            Need to get id again
-            error message from amigo
+            Error message from AmiGOs
             fatal message   There is an error in the configuration of AmiGO.
             Your cached BLAST results were lost. Please try again.
             """

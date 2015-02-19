@@ -9,6 +9,7 @@ import time
 from core import re_patterns
 from core.amigo import web_page_utils
 from core.utils import string_utils
+import warnings
 
 
 MATCH_HREF = "<a href=\""
@@ -121,10 +122,20 @@ class GoSequence(object):
             for l in lines:
 #                 print l
                 if l.find(MATCH_HREF_HASH) != -1:
+#                     print l
                     token = re_patterns.multi_space_split(l)
-                    if len(token) != 4:
-                        raise UserWarning("Error: incorrecting parsing", token, len(token))
+#                     print token
+                    if len(token) < 4:
+                        warnings.warn("Error: incorrecting parsing", token, len(token), l, "(lazy regular expression was used)")
                         print "====NEVER REACH HERE??=====", token, len(token)
+                        """
+                          File "/home/steven/Postdoc/Project_Lemur/MMAP/src/core/amigo/web_session.py", line 213, in parse_seq
+    seq.extract_ID()
+  File "/home/steven/Postdoc/Project_Lemur/MMAP/src/core/amigo/go_sequence.py", line 126, in extract_ID
+    raise UserWarning("Error: incorrecting parsing", token, len(token))
+UserWarning: ('Error: incorrecting parsing', ['<a href="#UniProtKB:P37643">UNIPROTKB|P37643</a> - symbol:yhjE "YhjE', 'MFS transporter" sp...', '624', '9.4e-57', '2'], 5)
+
+                        """
                         break
                     start = token[0].find(MATCH_HREF_HASH) + MATCH_HREF_HASH_LEN
                     mid = token[0].find(MATCH_END_HREF)
@@ -136,8 +147,8 @@ class GoSequence(object):
                         e_value.append(v)  # or call pop() twice
                     except ValueError as e:
     #                    print 'ValueError: %s' % e;
-                        raise ValueError("ValueError: %s \t %s \t %s" %
-                                         {e, sys.exc_info()[0], sys.exc_info()[1]})
+                        raise ValueError("ValueError: %s \t %s \t %s \t %s (lazy regular expression was used)" %
+                                         {e, sys.exc_info()[0], sys.exc_info()[1]}, l)
 
             self.acc_ID = acc_ID
             self.match_ID = match_ID

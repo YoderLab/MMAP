@@ -9,9 +9,16 @@ import csv
 import os
 from core.component import run_component
 from core.utils import path_utils
-    # TODO: in Python we would have to type
+    # TODO: Use python wrapper??
+    # in Python we would have to type
     # >>>import xstats.MINE
     # How do we import the wrapper here? (Or do we need to at all?)
+
+    # Figure out how to run MINE using the Python wrapper... command in the README file is below--but how to incorporate?
+#        import xstats.MINE
+#        for a, b, scores in xstats.MINE.analyze_file("Spellman.csv", xstats.MINE.MASTER_VARIABLE, 0, cv = 0.7):
+#            print a, b, scores
+#        analyze_file (fn, method = None, master_variable = None, cv = 0.0, exp = 0.6, c = 15)
 
 # Full command-line sequence will read as
 # java -jar MINE.jar "infile" 'style' cv=## c=## <jobID>
@@ -165,11 +172,7 @@ class RunMINE(RunComponent):
 
 
     def run(self, debug=False):
-        # TODO: Figure out how to run MINE using the Python wrapper... command in the README file is below--but how to incorporate?
-#        import xstats.MINE
-#        for a, b, scores in xstats.MINE.analyze_file("Spellman.csv", xstats.MINE.MASTER_VARIABLE, 0, cv = 0.7):
-#            print a, b, scores
-#        analyze_file (fn, method = None, master_variable = None, cv = 0.0, exp = 0.6, c = 15)
+
         if self.csv_files is not None:
             merge_output_csv_to_MINE(self.infile, self.csv_files, True)
         self.mine.run(debug)

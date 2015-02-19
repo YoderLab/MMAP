@@ -9,6 +9,9 @@ from core.component import run_genovo, run_MINE
 __author__ = 'erinmckenney'
 # infile, pdir, wdir, comparison, cv=0, c=15, outfile, check_exist=True
 list_essential_shared = ["parent_directory", "wdir"]
+# parent directory points to the program
+# wdir points to the data,
+# TODO: FIXME: these path should be able to take relative path with respect to the control file
 list_essential_metasim_only = ["metasim_pdir", "metasim_model_infile", "metasim_taxon_infile", "metasim_no_reads"]
 list_essential_genovo_only = ["genovo_infile", "genovo_pdir"]
 list_essential_glimmer_only = ["glimmer_pdir"]  # dont need outfile
@@ -106,7 +109,7 @@ class Setting(object):
     @classmethod
     def create_setting_from_file(cls, filepath):
         """
-        TODO: switch between
+        # TODO: switch between
         genovo+glimmer+blast
         and
         MINE
@@ -114,7 +117,8 @@ class Setting(object):
         ignore metasim for now
         
         do we need genovo+glimmer+blast+MINE?
-        
+
+# FIXME: check filename name for wdir path before adding wdir to self.filename        
         """
         all_pars = parse_control_file(filepath)
 

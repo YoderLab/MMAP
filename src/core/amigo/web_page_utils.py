@@ -24,7 +24,6 @@ AMIGO_BLAST_URL = "http://amigo1.geneontology.org/cgi-bin/amigo/blast.cgi"
 
 
 def get_web_page(query, URL):
-# #FIXME: Double check the result here
     for _ in range(10):
 #     while s is None:
         try:
