@@ -18,7 +18,8 @@ Note: These software distributed here might not work with your OS!
 
 ## INSTALL
 ### Directory list
-Default/Recommended folder structure. This structure is used in default control file. If Genovo/Glimmer/MINE are locate at other destination, please update the control file.
+Default/Recommended folder structure. 
+This structure is used in default control file. If Genovo/Glimmer/MINE are locate at other destination, please update the control file.
 * data
  * example ## contain a basic example
  * Genovo
@@ -32,6 +33,7 @@ Default/Recommended folder structure. This structure is used in default control 
 
 ## USAGE
 ```
+#edit the control file "data/example/control"; Update "parent_directory=" and point that to the data/ directory 
 cd MMAP;
 python src/core/main.py data/example/control
 ```
