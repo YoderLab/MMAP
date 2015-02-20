@@ -9,7 +9,6 @@ from urllib2 import URLError
 import urllib2
 import warnings
 
-from cups import HTTPError
 import os
 import random
 import time
