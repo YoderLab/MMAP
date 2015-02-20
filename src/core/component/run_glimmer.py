@@ -29,7 +29,7 @@ class RunGlimmer(RunComponent):
         """
         Constructor
         """
-        # FIXME: check outfile name for wdir path before adding wdir to self.outfile
+
         self.all_exts = ALL_EXTS
         self.parameter_check(pdir, wdir, infile, outfile, check_exist, ".glimmer")
         self.glimmer = runExtProg(GLIMMER, pdir=self.pdir, length=2, check_OS=True)
@@ -84,7 +84,7 @@ class RunGlimmer(RunComponent):
 
     def run(self, debug=False):
         """
-#    TODO: once outfiles are created, use terminal command to extract ORFs and pipe to fasta for BLAST
+#       once outfiles are created, use terminal command to extract ORFs and pipe to fasta for BLAST
 #        ./multi-extract tpall.fna iterated2.run1.predict > ~/Desktop/Pipeline/metaLem/data/Glimmer/mac/tpall_output.fasta
         """
         isComplete = self.check_outfiles_with_filetag_exist(self.outfile, debug=False) and \
