@@ -44,4 +44,8 @@ def extract(blast_csv_file_name, go_terms_csv_file_name):
   write_terms(terms_dict, go_terms_csv_file_name)
 
 if __name__ == '__main__':
-  extract(blast_csv_file_name, go_terms_csv_file_name)
+  try:
+    extract(blast_csv_file_name, go_terms_csv_file_name)
+  except e:
+    print e.message
+    exit(1)
