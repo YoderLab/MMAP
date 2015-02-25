@@ -19,7 +19,7 @@ from core.amigo.go_sequence import GoSequence
 from core.utils import path_utils
 
 
-# from core.sequence import Sequence2, Sequence
+# from core.zdeprecated.sequence import Sequence2, Sequence
 class TestGoConnector(unittest.TestCase):
     '''
     

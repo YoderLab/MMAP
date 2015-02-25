@@ -1,4 +1,4 @@
-from core.controlfile import ControlFile
+from core.zdeprecated.controlfile import ControlFile
 from core.utils import path_utils
 from core.utils.path_utils import check_wdir_prefix, check_program_dir
 from core.amigo.go_connector import GOConnector

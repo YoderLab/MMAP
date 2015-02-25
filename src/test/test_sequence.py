@@ -4,7 +4,7 @@ Created on Nov 22, 2011
 @author: Steven Wu
 '''
 
-from core.sequence import Sequence
+from core.zdeprecated.sequence import Sequence
 import random
 import unittest
 from core.amigo.go_sequence import GoSequence

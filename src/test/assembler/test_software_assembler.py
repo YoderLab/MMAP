@@ -1,5 +1,5 @@
 from core.assembler.software_assembler import SoftwareAssembler
-from core.controlfile import ControlFile
+from core.zdeprecated.controlfile import ControlFile
 from core.setting import Setting, list_all_optionals
 from core.utils import path_utils
 import core

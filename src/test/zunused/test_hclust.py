@@ -4,11 +4,11 @@ Created on Nov 23, 2011
 @author: Steven Wu
 '''
 import unittest
-from core.hclust import HClust
+from core.zunused.hclust import HClust
 import numpy
 #from Pycluster import *
 from Bio.Cluster import *
-from core.sequence import Sequence
+from core.zdeprecated.sequence import Sequence
 
 class TestHClust(unittest.TestCase):
 

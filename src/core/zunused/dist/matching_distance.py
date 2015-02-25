@@ -5,7 +5,7 @@ Created on Nov 25, 2011
 '''
 from core.dist.distance import Distance, check_param
 import numpy
-from core.sequence import Sequence
+from core.zdeprecated.sequence import Sequence
 
 
 class MatchingDistance(Distance):

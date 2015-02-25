@@ -5,7 +5,7 @@ Created on Nov 25, 2011
 '''
 import unittest
 from core.dist.matching_distance import MatchingDistance
-from core.sequence import Sequence
+from core.zdeprecated.sequence import Sequence
 
 
 class TestDistance(unittest.TestCase):

@@ -2,7 +2,7 @@ from core.utils import path_utils
 __author__ = 'erinmckenney'
 
 import unittest
-from core.controlfile import ControlFile
+from core.zdeprecated.controlfile import ControlFile
 
 class TestControlFile(unittest.TestCase):
     def setUp(self):

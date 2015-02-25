@@ -13,7 +13,7 @@ python -m unittest discover -v
 cd ./src
 python -m unittest -v test.main
 '''
-from test import *
+# from test import *
 from test.assembler import *
 from test.component import *
 from test.connector import *
