@@ -33,7 +33,7 @@ class RunGlimmer(RunComponent):
         self.all_exts = ALL_EXTS
         self.parameter_check(pdir, wdir, infile, outfile, check_exist, ".glimmer")
         self.glimmer = runExtProg(GLIMMER, pdir=self.pdir, length=2, check_OS=True)
-        self.extract = runExtProg(EXTRACT, pdir=self.pdir, length=4, check_OS=True)
+        self.extract = runExtProg(EXTRACT, pdir=self.pdir, length=2, check_OS=True)
         self.init_prog()
 
     @classmethod
@@ -76,53 +76,65 @@ class RunGlimmer(RunComponent):
 
     def set_outfile(self, outfile):
         self.glimmer.set_param_at(outfile, TEMP_OUTFILE_TAG_POSITION)
-        self.extract.set_param_at(outfile + ".coords", COORDS_POSITION)
-        self.extract.set_param_at(" > ", SYMBOL_POSITION)
-        self.extract.set_param_at(outfile, OUTFILE_POSITION)
-
+        self.extract.set_param_at(outfile + ".predict", COORDS_POSITION)
+        # Capture by self.extract.output so won't be redirected
+#         self.extract.set_param_at(" > ", SYMBOL_POSITION)
+#         self.extract.set_param_at(outfile, OUTFILE_POSITION)
 
 
     def run(self, debug=False):
         """
 #       once outfiles are created, use terminal command to extract ORFs and pipe to fasta for BLAST
-#        ./multi-extract tpall.fna iterated2.run1.predict > ~/Desktop/Pipeline/metaLem/data/Glimmer/mac/tpall_output.fasta
+#        ./multi-extract tpall.fna iterated2.predict > ~/Desktop/Pipeline/metaLem/data/Glimmer/mac/tpall_output.fasta
         """
-        isComplete = self.check_outfiles_with_filetag_exist(self.outfile, debug=False) and \
-            self.is_file_exist(self.outfile, debug=False)
+        isComplete = self._isGlimmerCompleted(False) and self._isExtractCompleted(False)
         if isComplete:
-            print "===Warning!!! Glimmer outfiles already exist, skip Glimmer!!!==="
+            print "Warning!!! Glimmer outfiles already exist, skip Glimmer!!!"
         else:
 
             print "Running Glimmer..."
             self.glimmer.run(debug)
+            self._isGlimmerCompleted(True)
+
             print "Running Glimmer extract..."
             self.extract.run(debug)
 
-            filehandler = open(self.outfile, 'w')
             newLine = ""
             count = 0
-    #        print self.extract.output
-
             for line in self.extract.output:
                 if line.startswith(">"):
                     newLine += (line + str(count) + "_")
                     count += 1
                 else:
                     newLine += line
-            filehandler.write(newLine)
-            filehandler.close()
 
-        self._isCompleted()
+            with open(self.outfile, 'w') as filehandler:
+                filehandler.write(newLine)
+                filehandler.close()
 
-    def _isCompleted(self):
-        isComplete = self.check_outfiles_with_filetag_exist(self.outfile) and self.is_file_exist(self.outfile)
-        if not isComplete:
+            self._isExtractCompleted(True)
+
+
+    def _isGlimmerCompleted(self, is_raise_error=False):
+        isComplete, missing_list = self.check_outfiles_with_filetag_exist(self.outfile, debug=is_raise_error)
+        if is_raise_error and not isComplete:
+            if len(missing_list) is 2 and self.outfile + ".predict" in missing_list and self.outfile + ".detail":
+                raise(StandardError("Glimmer did not complete, *.glimmer.predict and *.glimmer.predict do NOT exit.\n"
+                                    "Possible reason: Please check ELPH is install and set properly.\n"
+                                    "Output Log: %s" % (self.glimmer.output)
+                                    ))
             raise(StandardError("Glimmer did not complete, not all output files exist"))
+        return isComplete
+
+    def _isExtractCompleted(self, is_raise_error=False):
+        isComplete = self.is_file_exist(self.outfile, debug=is_raise_error)
+        if is_raise_error and not isComplete:
+            raise(StandardError("Glimmer extract did not complete, *.glimmer does not exist"))
+        return isComplete
 
 
-    def get_extract_switch(self):
-#        print "*****", self.extract._switch
-        return self.extract._switch
+    def get_switch(self):
+        return (self.glimmer.get_switch(), self.extract.get_switch())
 
 
 

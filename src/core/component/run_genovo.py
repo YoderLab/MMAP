@@ -122,20 +122,20 @@ class RunGenovo(RunComponent):
         return self.record_index
 
     def run(self, debug=False):
-        isComplete = self.check_outfiles_with_filetag_exist(self.infile, debug=False) and \
-            self.is_file_exist(self.outfile, debug=False)
+        isComplete = self._isCompleted(False)
         if isComplete:
-            print "===Warning!!! Genovo outfiles already exist, skip Genovo!!!==="
+            print "Warning!!! Genovo outfiles already exist, skip Genovo!!!"
         else:
             print "Running Genovo assemble..."
             self.assemble.run(debug)
             print "Running Genovo finalize..."
             self.finalize.run(debug)
-        self._isCompleted()
-#            self._isCompleted()
+        self._isCompleted(True)
 
-    def _isCompleted(self):
-        isComplete = self.check_outfiles_with_filetag_exist(self.infile) and self.is_file_exist(self.outfile)
-        if not isComplete:
+
+
+    def _isCompleted(self, is_raise_error):
+        isComplete = self.check_outfiles_with_filetag_exist(self.infile, is_raise_error) and self.is_file_exist(self.outfile, is_raise_error)
+        if is_raise_error and not isComplete:
             raise(StandardError("Genovo did not complete, not all output files exist"))
-
+        return isComplete

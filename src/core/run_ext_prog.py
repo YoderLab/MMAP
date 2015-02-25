@@ -47,14 +47,14 @@ class runExtProg(object):
     def init_switch(self, leng):
         self._switch = [None] * leng
 
-    def get_extract_switch(self):
+    def get_switch(self):
         return self._switch
 
     def set_switch(self, s):
         self.reset_switch()
         self.add_switch(s)
 
-    parameters = property(get_extract_switch, set_switch, doc="switch/parameters")
+    parameters = property(get_switch, set_switch, doc="switch/parameters")
 
     def run(self, debug=False):
         """
@@ -70,9 +70,9 @@ class runExtProg(object):
                              stderr=subprocess.PIPE, cwd=self.cwd)
         self.output, self.errors = p.communicate()
 
-        if debug is 2:
+        if debug:
             print("debug - output message:\n%s\n===end===\n" % (self.output))
-        elif debug:
+        elif debug is 2:
             print("debug - output message:\n%s\nerrors message:\n%s \n===end===\n" %
                   (self.output, self.errors))
 

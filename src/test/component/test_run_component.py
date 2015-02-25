@@ -20,6 +20,7 @@ class TestRunComponent(unittest.TestCase):
         self.data_dir = path_utils.get_data_dir() + "unittest_data/"
         self.wdir = path_utils.get_data_dir() + "Genovo/test_data/"
 #    TODO: rename / consolidate all test_data to unittest_data
+
     def tearDown(self):
         pass
 
@@ -35,11 +36,13 @@ class TestRunComponent(unittest.TestCase):
 
     def test_check_outfiles_exist(self):
         infile_tag = "tIn"
-        exts = [".test1", ".test2"]
+
         comp = RunComponent()
-        self.assertTrue(comp.is_multi_files_exist(file_tag=self.data_dir + infile_tag, all_exts=exts))
-        exts = ["not1", "not2"]
-        self.assertFalse(comp.is_multi_files_exist(file_tag=self.data_dir + infile_tag , all_exts=exts))
+        comp.all_exts = [".test1", ".test2"]
+        self.assertTrue(comp.check_outfiles_with_filetag_exist(self.data_dir + infile_tag))
+        comp.all_exts = ["not1", "not2"]
+        is_exist, _ = comp.check_outfiles_with_filetag_exist(self.data_dir + infile_tag)
+        self.assertFalse(is_exist)
 
 
 

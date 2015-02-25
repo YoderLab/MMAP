@@ -51,6 +51,8 @@ if __name__ == "__main__":
     parser.add_argument("controlFile", help="Control File contains all settings")
     parser.add_argument("-d", "--debug", action="count", default=0,
                         help="increase debugging level")
+    # # debug level 1 - external program output only
+    # # debug level 2 - external program output and errors
 
 
 #     test_run_dir = path_utils.get_data_dir() + "BenchMark3/"
@@ -69,7 +71,7 @@ if __name__ == "__main__":
 
 
     if args.debug >= 2:
-        print "v>=2"
+        print "Debug level 2"
     elif args.debug == 1:
         pass
 #        print "v==1"

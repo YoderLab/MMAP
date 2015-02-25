@@ -15,8 +15,8 @@ from core.run_ext_prog import runExtProg
 # <using specified taxon file or single genome seq in FASTA format>
 # <specify output directory>
 
-#TOREAD(Erin): cmd has to be the very first switch, 
-METASIM = "./MetaSim" # .MetaSim cmd
+# TOREAD(Erin): cmd has to be the very first switch,
+METASIM = "./MetaSim"  # .MetaSim cmd
 MODEL_INFILE_POSITION = 2
 NO_READS_POSITION = 3
 OUTFILE_DIRECTORY_POSITION = 4
@@ -39,7 +39,7 @@ class RunMetaSim(RunComponent):
         """
         Constructor
         """
-    #FIXME: allow 454 or Sanger model; put on -c switch.
+    # FIXME: allow 454 or Sanger model; put on -c switch.
         self.all_exts = ALL_EXTS
         self.parameter_check(pdir, wdir, model_file, taxon_infile, filename, check_exist)
         self.metasim = runExtProg(METASIM, pdir=self.pdir, length=5, check_OS=True)
@@ -74,7 +74,7 @@ class RunMetaSim(RunComponent):
         return metasim
 
     def parameter_check(self, pdir, wdir, model_file, taxon_infile, filename, check_exist):
-        #TODO: check outdir exist
+        # TODO: check outdir exist
         self.check_dirs(pdir, wdir, check_exist)
         self.check_filenames(taxon_infile, filename, error_model="-454" or "-Sanger" or "-Empirical")
         self.model_infile = self.wdir + model_file
@@ -121,7 +121,7 @@ class RunMetaSim(RunComponent):
         type anything here
         TODO: check valid infile, infile exist or not
         """
-    #FIXME: Allow 454 or Sanger model
+    # FIXME: Allow 454 or Sanger model
         arg = "-mg%s" % self.model_infile
         self.metasim.set_param_at(arg, MODEL_INFILE_POSITION)
 
@@ -190,5 +190,3 @@ class RunMetaSim(RunComponent):
     def run(self, debug=False):
         self.metasim.run(debug)
 
-    def get_extract_switch(self):
-        return self.metasim._switch
