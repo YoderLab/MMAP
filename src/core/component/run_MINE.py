@@ -177,7 +177,7 @@ class RunMINE(RunComponent):
             merge_output_csv_to_MINE(self.infile, self.csv_files, True)
         self.mine.run(debug)
 
-    def get_switch(self):
+    def get_all_switches(self):
         return self.mine._switch
 
 

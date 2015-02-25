@@ -17,7 +17,6 @@ python -m unittest -v test.main
 from test.assembler import *
 from test.component import *
 from test.connector import *
-from test.parser import *
 from test.utils import *
 import unittest
 

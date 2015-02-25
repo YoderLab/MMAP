@@ -93,7 +93,9 @@ class RunComponent(object):
 
     def check_outfiles_with_filetag_exist(self, outfile_tag, debug=True):
         """
-        check with default exts for each program
+        check files with default extensions for each program exist
+        Return: is_exist: boolean
+                missing_list: list of missing files
         """
         is_exist, missing_list = self._is_multi_files_exist(outfile_tag, self.all_exts, debug=debug)
         return is_exist, missing_list
@@ -103,7 +105,7 @@ class RunComponent(object):
     def is_file_exist(self, test_file, debug=True):
         """
         check if one file exist
-        return boolean
+        Return: boolean
         """
 
         if os.path.exists(test_file):

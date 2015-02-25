@@ -58,7 +58,7 @@ class TestRunMINE(unittest.TestCase):
         expected_outfile = "id=%s" % jobID_var
         expected = ["-jar", "MINE.jar", expected_infile, '-allPairs', "cv=0.0", "exp=0.6", "c=15", expected_outfile]
 #        print expected
-        self.assertEqual(mine.get_switch(), expected)
+        self.assertEqual(mine.get_all_switches(), expected)
 
         mine = RunMINE(infile=infile_var, pdir=self.data_dir, wdir=self.working_dir,
                        jobID=jobID_var, comparison='-allPairs', cv=0.0, exp=0.6, clumps=15, check_exist=False,

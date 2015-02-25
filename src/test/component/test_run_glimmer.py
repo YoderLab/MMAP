@@ -44,19 +44,24 @@ class TestRunGlimmer(unittest.TestCase):
         infile_var = "all_reads.fa"
 
         test_glimmer = RunGlimmer(infile_var, pdir=self.data_dir, check_exist=False)
-        self.assertEqual(test_glimmer.get_switch()[0], self.data_dir + infile_var)
-        expected = [self.data_dir + infile_var, self.data_dir + "all_reads.glimmer.coords",
-                    " > ", self.data_dir + "all_reads.glimmer"]
-        self.assertEqual(test_glimmer.get_switch(), expected)
+
+        expected = [self.data_dir + infile_var, self.data_dir + "all_reads.glimmer"]
+        self.assertEqual(test_glimmer.get_all_switches()[0], expected)
+        expected = [self.data_dir + infile_var, self.data_dir + "all_reads.glimmer.predict"]
+        self.assertEqual(test_glimmer.get_all_switches()[1], expected)
+
 
 
     def test_RunGlimmer_set_infile(self):
 
         infile_var = "test_infile.fasta"
         outfile_var = "testOutfile"
-        extract = RunGlimmer(infile=infile_var, outfile=outfile_var, pdir=self.data_dir, check_exist=False)
-        expected = [self.data_dir + infile_var, self.data_dir + outfile_var + ".coords", " > ", self.data_dir + outfile_var]
-        self.assertEqual(extract.get_switch(), expected)
+        glimmer = RunGlimmer(infile=infile_var, outfile=outfile_var, pdir=self.data_dir, check_exist=False)
+
+        expected = ([self.data_dir + infile_var, self.data_dir + "testOutfile"],
+                    [self.data_dir + infile_var, self.data_dir + "testOutfile.predict"])
+        self.assertEqual(glimmer.get_all_switches(), expected)
+
 #        orf_var = "testORF"
 #        extract = RunGlimmer(infile=infile_var, filename=outfile_var, orfs=orf_var, pdir=self.data_dir, check_exist=False)
 #        self.assertEqual(3, len(extract.get_switch()))
@@ -64,9 +69,10 @@ class TestRunGlimmer(unittest.TestCase):
 #                                                self.data_dir + orf_var])
 
         infile_var = "VICTORY.fasta"
-        extract.set_infile_name(infile_var)
-        expected = [ infile_var, self.data_dir + outfile_var + ".coords", " > ", self.data_dir + outfile_var]
-        self.assertEqual(extract.get_switch(), expected)
+        glimmer.set_infile_name(infile_var)
+        expected = ([infile_var, self.data_dir + "testOutfile"],
+                    [infile_var, self.data_dir + "testOutfile.predict"])
+        self.assertEqual(glimmer.get_all_switches(), expected)
 
     def test_RunGlimmer_set_outfile(self):
 
@@ -74,28 +80,31 @@ class TestRunGlimmer(unittest.TestCase):
         outfile_var = "testOutfile"
 
         extract = RunGlimmer(infile=infile_var, outfile=outfile_var, pdir=self.data_dir, check_exist=False)
-        self.assertEqual(4, len(extract.get_switch()))
-        expected = [self.data_dir + infile_var, self.data_dir + outfile_var + ".coords", " > ", self.data_dir + outfile_var]
-        self.assertEqual(extract.get_switch(), expected)
+        expected = ([self.data_dir + infile_var, self.data_dir + "testOutfile"],
+                    [self.data_dir + infile_var, self.data_dir + "testOutfile.predict"])
+        self.assertEqual(extract.get_all_switches(), expected)
 
 
         infile_var = "test_infile.xyz.fasta.abc"
         extract = RunGlimmer(infile=infile_var, outfile=outfile_var, pdir=self.data_dir, check_exist=False)
-        expected = [self.data_dir + infile_var, self.data_dir + outfile_var + ".coords", " > ", self.data_dir + outfile_var]
-        self.assertEqual(extract.get_switch(), expected)
+        expected = ([self.data_dir + infile_var, self.data_dir + "testOutfile"],
+                    [self.data_dir + infile_var, self.data_dir + "testOutfile.predict"])
+        self.assertEqual(extract.get_all_switches(), expected)
 
         infile_var = "test_infile"
         extract = RunGlimmer(infile=infile_var, outfile=outfile_var, pdir=self.data_dir, check_exist=False)
-        expected = [self.data_dir + infile_var, self.data_dir + outfile_var + ".coords", " > ", self.data_dir + outfile_var]
-        self.assertEqual(extract.get_switch(), expected)
+        expected = ([self.data_dir + infile_var, self.data_dir + "testOutfile"],
+                    [self.data_dir + infile_var, self.data_dir + "testOutfile.predict"])
+        self.assertEqual(extract.get_all_switches(), expected)
 
     def test_RunGlimmer_set_infile_outfile(self):
         infile_var = "test_infile.fasta"
         outfile_var = "test_outfile.fasta"
         glimmer = RunGlimmer(infile=infile_var, outfile=outfile_var, pdir=self.data_dir, check_exist=False)
 
-        expected = [self.data_dir + infile_var, self.data_dir + outfile_var + ".coords", " > ", self.data_dir + outfile_var]
-        self.assertEqual(glimmer.get_switch(), expected)
+        expected = ([self.data_dir + infile_var, self.data_dir + "test_outfile.fasta"],
+                    [self.data_dir + infile_var, self.data_dir + "test_outfile.fasta.predict"])
+        self.assertEqual(glimmer.get_all_switches(), expected)
 
 #        orf_var = "testORF"
 #        glimmer = RunGlimmer(infile=infile_var, filename=outfile_var, orfs=orf_var, pdir=self.data_dir, check_exist=False)
@@ -104,13 +113,15 @@ class TestRunGlimmer(unittest.TestCase):
 #                                                self.data_dir + orf_var])
         infile_var = "test_infile2.fasta"
         glimmer.set_infile_name(infile_var)
-        expected = [infile_var, self.data_dir + outfile_var + ".coords", " > ", self.data_dir + outfile_var]
-        self.assertEqual(glimmer.get_switch(), expected)
+        expected = ([ infile_var, self.data_dir + "test_outfile.fasta"],
+                    [ infile_var, self.data_dir + "test_outfile.fasta.predict"])
+        self.assertEqual(glimmer.get_all_switches(), expected)
 
         outfile_var = "test_outfile2.fasta"
         glimmer.set_outfile(outfile_var)
-        expected = [infile_var, outfile_var + ".coords", " > ", outfile_var]
-        self.assertEqual(glimmer.get_switch(), expected)
+        expected = ([ infile_var, "test_outfile2.fasta"],
+                    [ infile_var, "test_outfile2.fasta.predict"])
+        self.assertEqual(glimmer.get_all_switches(), expected)
 
 
 
@@ -163,15 +174,17 @@ class TestRunGlimmer(unittest.TestCase):
         infile_var = "tIn.fasta"
         outfile_var = "tOut"
         glimmer = RunGlimmer(infile=infile_var, outfile=outfile_var, pdir=self.data_dir, check_exist=False)
-        print(glimmer.pdir)
-        self.assertFalse(glimmer.check_outfiles_with_filetag_exist(self.data_dir + outfile_var))
+        is_exist, _ = glimmer.check_outfiles_with_filetag_exist(self.data_dir + outfile_var)
+        self.assertFalse(is_exist)
         glimmer.run(True)
-        self.assertTrue(glimmer.check_outfiles_with_filetag_exist(self.data_dir + outfile_var))
+        is_exist, _ = glimmer.check_outfiles_with_filetag_exist(self.data_dir + outfile_var)
+        self.assertTrue(is_exist)
 
         # negative test, outfiles are not suppose to exist
         outfile_var = "fileNotExist"
         glimmer = RunGlimmer(infile=infile_var, outfile=outfile_var, pdir=self.data_dir, check_exist=False)
-        self.assertFalse(glimmer.check_outfiles_with_filetag_exist(self.data_dir + outfile_var))
+        is_exist, _ = glimmer.check_outfiles_with_filetag_exist(self.data_dir + outfile_var)
+        self.assertFalse(is_exist)
 
 
     def test_RunGlimmer_run(self):
@@ -192,7 +205,9 @@ class TestRunGlimmer(unittest.TestCase):
         infile_var = "tIn.fasta"
         outfile_var = "tOut"
         glimmer = RunGlimmer(infile=infile_var, outfile=outfile_var, pdir=self.data_dir, check_exist=False)
-        self.assertFalse(glimmer.check_outfiles_with_filetag_exist(self.data_dir + outfile_var))
+        is_exist, _ = glimmer.check_outfiles_with_filetag_exist(self.data_dir + outfile_var)
+        self.assertFalse(is_exist)
         glimmer.run(debug=1)
-        self.assertTrue(glimmer.check_outfiles_with_filetag_exist(self.data_dir + outfile_var))
+        is_exist, _ = glimmer.check_outfiles_with_filetag_exist(self.data_dir + outfile_var)
+        self.assertTrue(is_exist)
 

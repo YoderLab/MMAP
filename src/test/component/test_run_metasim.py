@@ -45,7 +45,7 @@ class TestRunMetaSim(unittest.TestCase):
         expected_directory = "-d%s" % self.working_dir
         expected = ["cmd", expected_model_infile, expected_no_reads, expected_directory, expected_taxon_infile]
 #
-        self.assertEqual(metasim.get_switch(), expected)
+        self.assertEqual(metasim.get_all_switches(), expected)
 
     def test_file_not_exist(self):
         model_infile_var = "file_inexistent.mconf"  # test model_infile
@@ -89,7 +89,7 @@ class TestRunMetaSim(unittest.TestCase):
         self.assertRaises(ValueError, metasim.set_number_of_reads, "3.6")
 #        self.assertRaises(TypeError, metasim.set_number_of_reads, "3")
         metasim.set_number_of_reads("3")
-        self.assertEqual(metasim.get_switch()[run_MetaSim.NO_READS_POSITION - 1], "-r3")
+        self.assertEqual(metasim.get_all_switches()[run_MetaSim.NO_READS_POSITION - 1], "-r3")
 
     def test_set_outfile_directory(self):
         model_infile_var = "ErrorModelSolexa36bp.mconf"
@@ -100,14 +100,14 @@ class TestRunMetaSim(unittest.TestCase):
             taxon_infile=taxon_infile_var, pdir=self.data_dir, wdir=self.working_dir,
             filename=outfile_var, check_exist=True)
 
-        self.assertEqual(metasim.get_switch()[3], "-d%s" % self.working_dir)
+        self.assertEqual(metasim.get_all_switches()[3], "-d%s" % self.working_dir)
 
         dir_var = self.data_dir
         metasim = RunMetaSim(model_file=model_infile_var, no_reads=100,
             taxon_infile=taxon_infile_var, pdir=self.data_dir, wdir=dir_var,
             filename=outfile_var, check_exist=False)
         metasim.set_outfile_directory()
-        self.assertEqual(metasim.get_switch()[3], "-d%s" % self.data_dir)
+        self.assertEqual(metasim.get_all_switches()[3], "-d%s" % self.data_dir)
 
 #    def test_file_already_exist(self):
 #        """

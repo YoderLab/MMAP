@@ -19,38 +19,38 @@ class TestRunExtProg(unittest.TestCase):
 
     def test_RunExtProg_append_reset_switch(self):
         prog1 = runExtProg("ls")
-        self.assertEqual(prog1.get_switch(), [])
+        self.assertEqual(prog1.get_all_switches(), [])
 
         prog1.add_switch("-l")
-        self.assertEqual(prog1.get_switch(), ["-l"])
+        self.assertEqual(prog1.get_all_switches(), ["-l"])
 
         prog1.add_switch("-s")
-        self.assertEqual(prog1.get_switch(), ["-l", "-s"])
+        self.assertEqual(prog1.get_all_switches(), ["-l", "-s"])
 
         prog1.add_switch(["-1", "-2"])
-        self.assertEqual(prog1.get_switch(), ["-l", "-s", "-1", "-2"])
+        self.assertEqual(prog1.get_all_switches(), ["-l", "-s", "-1", "-2"])
 
         prog1.add_switch(["-x"])
-        self.assertEqual(prog1.get_switch(), ["-l", "-s", "-1", "-2", "-x"])
+        self.assertEqual(prog1.get_all_switches(), ["-l", "-s", "-1", "-2", "-x"])
 
         prog1.reset_switch()
-        self.assertEqual(prog1.get_switch(), [])
+        self.assertEqual(prog1.get_all_switches(), [])
 
         prog1.add_switch(["-a", "-b"])
-        self.assertEqual(prog1.get_switch(), ["-a", "-b"])
+        self.assertEqual(prog1.get_all_switches(), ["-a", "-b"])
 
     def test_RunExtProg_set_switch(self):
         prog1 = runExtProg("ls")
-        self.assertEqual(prog1.get_switch(), [])
+        self.assertEqual(prog1.get_all_switches(), [])
 
         prog1.set_switch("-l")
-        self.assertEqual(prog1.get_switch(), ["-l"])
+        self.assertEqual(prog1.get_all_switches(), ["-l"])
 
         prog1.set_switch("-s")
-        self.assertEqual(prog1.get_switch(), ["-s"])
+        self.assertEqual(prog1.get_all_switches(), ["-s"])
 
         prog1.set_switch(["-111", "-222"])
-        self.assertEqual(prog1.get_switch(), ["-111", "-222"])
+        self.assertEqual(prog1.get_all_switches(), ["-111", "-222"])
 
     def test_RunExtProg_run_command(self):
         prog1 = runExtProg("ls")
@@ -88,38 +88,38 @@ class TestRunExtProg(unittest.TestCase):
         prog1 = runExtProg("ls")
 
         prog1.add_switch(["-a", "1", "--b", "2"])
-        self.assertEqual(prog1.get_switch(), ["-a", "1", "--b", "2"])
+        self.assertEqual(prog1.get_all_switches(), ["-a", "1", "--b", "2"])
         prog1.update_switch("-a", "3")
-        self.assertEqual(prog1.get_switch(), ["-a", "3", "--b", "2"])
+        self.assertEqual(prog1.get_all_switches(), ["-a", "3", "--b", "2"])
         prog1.update_switch("-c", "4")
-        self.assertEqual(prog1.get_switch(), ["-a", "3", "--b", "2", "-c", "4"])
+        self.assertEqual(prog1.get_all_switches(), ["-a", "3", "--b", "2", "-c", "4"])
         prog1.update_switch("-b", "5")
-        self.assertEqual(prog1.get_switch(), ["-a", "3", "--b", "2", "-c", "4", "-b", "5"])
+        self.assertEqual(prog1.get_all_switches(), ["-a", "3", "--b", "2", "-c", "4", "-b", "5"])
         prog1.update_switch("-C", "6")
-        self.assertEqual(prog1.get_switch(), ["-a", "3", "--b", "2", "-c", "4", "-b", "5", "-C", "6"])
+        self.assertEqual(prog1.get_all_switches(), ["-a", "3", "--b", "2", "-c", "4", "-b", "5", "-C", "6"])
         prog1.update_switch("--b", "7")
-        self.assertEqual(prog1.get_switch(), ["-a", "3", "--b", "7", "-c", "4", "-b", "5", "-C", "6"])
+        self.assertEqual(prog1.get_all_switches(), ["-a", "3", "--b", "7", "-c", "4", "-b", "5", "-C", "6"])
 
     def test_RunExtProg_toggle_switch(self):
         prog1 = runExtProg("ls")
         prog1.add_switch(["-a", "1"])
         prog1.toggle_switch("-t")
-        self.assertEqual(prog1.get_switch(), ["-a", "1", "-t"])
+        self.assertEqual(prog1.get_all_switches(), ["-a", "1", "-t"])
 
         prog1.toggle_switch("-t")
-        self.assertEqual(prog1.get_switch(), ["-a", "1"])
+        self.assertEqual(prog1.get_all_switches(), ["-a", "1"])
 
         prog1.toggle_switch("-t", 0)
-        self.assertEqual(prog1.get_switch(), ["-a", "1"])
+        self.assertEqual(prog1.get_all_switches(), ["-a", "1"])
 
         prog1.toggle_switch("-t", 1)
-        self.assertEqual(prog1.get_switch(), ["-a", "1", "-t"])
+        self.assertEqual(prog1.get_all_switches(), ["-a", "1", "-t"])
 
         prog1.toggle_switch("-t", 1)
-        self.assertEqual(prog1.get_switch(), ["-a", "1", "-t"])
+        self.assertEqual(prog1.get_all_switches(), ["-a", "1", "-t"])
 
         prog1.toggle_switch("-t", 0)
-        self.assertEqual(prog1.get_switch(), ["-a", "1"])
+        self.assertEqual(prog1.get_all_switches(), ["-a", "1"])
 
     def test_RunExtProg_check(self):
 

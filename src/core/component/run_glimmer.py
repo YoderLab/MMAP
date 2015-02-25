@@ -133,8 +133,8 @@ class RunGlimmer(RunComponent):
         return isComplete
 
 
-    def get_switch(self):
-        return (self.glimmer.get_switch(), self.extract.get_switch())
+    def get_all_switches(self):
+        return (self.glimmer.get_all_switches(), self.extract.get_all_switches())
 
 
 

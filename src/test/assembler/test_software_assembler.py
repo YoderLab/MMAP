@@ -1,5 +1,4 @@
 from core.assembler.software_assembler import SoftwareAssembler
-from core.zdeprecated.controlfile import ControlFile
 from core.setting import Setting, list_all_optionals
 from core.utils import path_utils
 import core
@@ -91,7 +90,7 @@ class TestSoftwareAssembler(unittest.TestCase):
     def test_from_setting(self):
 
 #
-##    When not all essential parameters exist, should fail.
+# #    When not all essential parameters exist, should fail.
 #        infile="/Users/erinmckenney/Desktop/Pipeline/metaLem/data/unittest_data/missedEssentials"
 #        test = ControlFile()
 #        test.add_all(infile)

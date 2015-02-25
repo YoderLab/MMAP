@@ -47,14 +47,14 @@ class runExtProg(object):
     def init_switch(self, leng):
         self._switch = [None] * leng
 
-    def get_switch(self):
+    def get_all_switches(self):
         return self._switch
 
     def set_switch(self, s):
         self.reset_switch()
         self.add_switch(s)
 
-    parameters = property(get_switch, set_switch, doc="switch/parameters")
+    parameters = property(get_all_switches, set_switch, doc="switch/parameters")
 
     def run(self, debug=False):
         """
