@@ -1,9 +1,9 @@
-from core.zdeprecated.controlfile import ControlFile
+from core.amigo import go_connector
+from core.amigo.go_connector import GOConnector
+from core.component import run_genovo, run_MINE
 from core.utils import path_utils
 from core.utils.path_utils import check_wdir_prefix, check_program_dir
-from core.amigo.go_connector import GOConnector
-from core.amigo import go_connector
-from core.component import run_genovo, run_MINE
+
 
 
 __author__ = 'erinmckenney'
@@ -285,3 +285,44 @@ class Setting(object):
 
 
 
+"""
+#list_essential_shared
+parent_directory:
+#list_essential_metasim_only
+metasim_pdir:
+metasim_model_infile:
+metasim_taxon_infile:
+metasim_no_reads:
+#list_essential_genovo_only
+genovo_infile:
+genovo_pdir:
+genovo_noI:
+genovo_thresh:
+#list_essential_glimmer_only
+glimmer_pdir:
+#list_essential_blast_only
+blast_wdir:
+#list_essential_mine_only
+mine_pdir:
+mine_comparison_style:
+#list_optional_shared
+wdir:
+checkExist:
+#list_optional_metasim_only
+metasim_outfile:
+#list_optional_genovo_only
+genovo_outfile:
+#list_optional_glimmer_only
+glimmer_infile:
+glimmer_outfile:
+
+#list_optional_blast_only
+blast_infile:
+blast_e_value:
+blast_outfile:
+#list_optional_mine_only
+mine_infile:
+mine_cv:
+mine_clumps:
+mine_jobID:
+"""
