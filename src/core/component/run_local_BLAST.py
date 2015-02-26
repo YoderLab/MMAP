@@ -100,7 +100,8 @@ class RunBlast(RunComponent):
         # 2. extract GO terms
 
         if self.is_complete(debug):
-            print "===Warning!!! Blast outfile already exists, skip Blast!!!==="
+            print "===Warning!!! Blast outfiles already exists, skip Blast!!!==="
+            return
 
         print 'Running blastx'
         self.blastx.run(debug)
