@@ -7,13 +7,6 @@ import csv
 import re
 import os
 
-blast_csv_file_name = os.getenv('CONT_INPUT_BLAST_RESULTS_FILE')
-if blast_csv_file_name is None:
-  raise Exception('Error: The CONT_INPUT_BLAST_RESULTS_FILE variable must be set')
-
-go_terms_csv_file_name = os.getenv('CONT_OUTPUT_GOTERMS_FILE')
-if go_terms_csv_file_name is None:
-  raise Exception('Error: The CONT_OUTPUT_GOTERMS_FILE variable must be set')
 
 def read_terms(input_file_name):
   terms_dict = dict()
@@ -45,6 +38,13 @@ def extract(blast_csv_file_name, go_terms_csv_file_name):
 
 if __name__ == '__main__':
   try:
+    blast_csv_file_name = os.getenv('CONT_INPUT_BLAST_RESULTS_FILE')
+    if blast_csv_file_name is None:
+      raise Exception('Error: The CONT_INPUT_BLAST_RESULTS_FILE variable must be set')
+
+    go_terms_csv_file_name = os.getenv('CONT_OUTPUT_GOTERMS_FILE')
+    if go_terms_csv_file_name is None:
+      raise Exception('Error: The CONT_OUTPUT_GOTERMS_FILE variable must be set')
     extract(blast_csv_file_name, go_terms_csv_file_name)
   except e:
     print e.message
