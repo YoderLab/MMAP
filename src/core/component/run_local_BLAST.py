@@ -48,8 +48,8 @@ class RunBlast(RunComponent):
         self.all_exts = ALL_EXTS
         self.e_value = e_value
         self.blast_db = blast_db
-        self.intermediate_file = self.infile + INT_FILE_EXT
         self.parameter_check(pdir, wdir, infile, outfile, check_exist, ".csv")
+        self.intermediate_file = infile + INT_FILE_EXT
         self.blastx = runExtProg(BLASTX, pdir=self.pdir, length=10, check_OS=True)
         # step 2 is a python script.
         self.init_prog()
