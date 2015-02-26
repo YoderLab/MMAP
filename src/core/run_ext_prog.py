@@ -3,8 +3,8 @@ Created on Jan 23, 2012
 
 @author: Steven Wu
 '''
-import subprocess
 import os
+import subprocess
 import sys
 
 

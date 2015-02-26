@@ -5,11 +5,11 @@ Created on Jan 8, 2015
 """
 import sys
 import time
+import warnings
 
 from core import re_patterns
 from core.amigo import web_page_utils
 from core.utils import string_utils
-import warnings
 
 
 MATCH_HREF = "<a href=\""

@@ -7,6 +7,7 @@ Created on March 19, 2012
 from core.component.run_component import RunComponent
 from core.run_ext_prog import runExtProg
 
+
 GLIMMER = "./g3-iterated.csh"
 EXTRACT = "./extract"
 INFILE_POSITION = 1

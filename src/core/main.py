@@ -17,6 +17,7 @@ python core/main.py ../data/BenchMark3/Lac_5k_MINE/control
 '''
 import argparse
 import os
+import sys
 
 import Bio
 import numpy
@@ -24,16 +25,9 @@ import scipy
 
 from core.assembler.software_assembler import SoftwareAssembler
 from core.utils import path_utils
-import ConfigParser
-import sys
-import StringIO
 
 
-CWD = os.getcwd()
-data_dir = path_utils.get_data_dir(CWD)
 # print "data dir:\t", data_dir
-
-
 def main():
     print __name__
 
@@ -70,6 +64,13 @@ if __name__ == "__main__":
     print "SciPy version %s" % scipy.__version__
     print "Bio version %s at %s" % (Bio.__version__, Bio.__path__)
 
+
+    CWD = os.getcwd()
+    data_dir = path_utils.get_data_dir(CWD)
+    print CWD
+    print data_dir
+
+
     if args.debug >= 2:
         print "Debug level 2"
     elif args.debug == 1:
@@ -80,8 +81,7 @@ if __name__ == "__main__":
 #        print "v==0"
 
     assembler = SoftwareAssembler.create_from_args(args)
-
-    sys.exit(2)
+#     sys.exit(12)
     assembler.run()
 
 

@@ -10,8 +10,8 @@ import warnings
 
 from Bio import SeqIO
 
-from core.amigo.go_sequence import GoSequence
 from core.amigo.go_connector import GOConnector
+from core.amigo.go_sequence import GoSequence
 from core.component.run_component import RunComponent
 from core.setting import Setting
 from core.utils import path_utils

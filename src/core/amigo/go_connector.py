@@ -110,11 +110,11 @@ class GOConnector(object):
             # Fail when len(new_data > 6****
             if temp_length > MAX_QUERY_SEQ_LENGTH or len(keys) == self.max_query_size:
                 # save with max_count
-#                 print i, len(keys), len(data), temp_length, (len(keys) % self.max_query_size)
                 wb = WebSession(data, keys, self.e_threshold, debug=self.debug)
                 self.web_session_list.append(wb)
                 data = ""
                 keys = []
+#                 print i, len(keys), len(data), temp_length, (len(keys) % self.max_query_size)
 
             data = data + new_data
             data_length = len(data)

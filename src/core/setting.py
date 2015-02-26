@@ -48,16 +48,6 @@ list_all_optionals.extend(list_optional_glimmer_only)
 list_all_optionals.extend(list_optional_blast_only)
 list_all_optionals.extend(list_optional_mine_only)
 
-# list_all_ggm = []
-# list_all_ggm.extend(list_essential_shared)
-# list_all_ggm.extend(list_essential_genovo_only)
-# list_all_ggm.extend(list_essential_glimmer_only)
-# list_all_ggm.extend(list_essential_blast_only)
-# list_all_ggm.extend(list_optional_shared)
-# list_all_ggm.extend(list_optional_genovo_only)
-# list_all_ggm.extend(list_optional_glimmer_only)
-# list_all_ggm.extend(list_optional_blast_only)
-# list_all_ggm.extend(list_optional_internal_only)
 
 list_ess_par = {
     "shared": list_essential_shared,
@@ -82,9 +72,8 @@ all_programs = ["genovo", "glimmer", "blast"]
 
 
 def parse_control_file2(control_file):
-    #    print args, args.controlFile
+    print("Parsing control file: %s" % control_file)
     config_parser = ConfigParser.SafeConfigParser()
-#     config_parser = ConfigParser.ConfigParser()
     control_file = os.path.expanduser(os.path.expandvars(control_file))
 #     print args.controlFile, os.path.expandvars(args.controlFile), config_file
 #     with open(config_file) as cf:
@@ -109,7 +98,9 @@ def parse_control_file2(control_file):
         #         print s, config_parser.items(s)
         for kv in config_parser.items(s):
             all_arguments[kv[0]] = kv[1]
+            print kv
 
+#     print all_arguments
     return all_arguments
 
 
@@ -136,7 +127,7 @@ class Setting(object):
 
         self.all_setting = dict()
         self.add_all(**kwargs)
-        self.debug = False
+#         self.debug = False
         self.run_mine = False
 
     @classmethod
@@ -246,8 +237,7 @@ class Setting(object):
         """
         optional = list_optional_par[program_name] + list_optional_shared
         for c in optional:
-            if self.debug:
-                print ("checking %s" % c)
+
             if not self._check_variables_exist(c):
                 self.add(c, None)
 

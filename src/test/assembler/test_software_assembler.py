@@ -2,6 +2,7 @@ from core.assembler.software_assembler import SoftwareAssembler
 from core.setting import Setting, list_all_optionals
 from core.utils import path_utils
 import core
+from core.component import run_genovo
 
 __author__ = 'erinmckenney'
 
@@ -9,6 +10,19 @@ import unittest
 
 
 class TestSoftwareAssembler(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        cls.list_all_parameters = []
+        cls.list_all_parameters.extend(core.setting.list_essential_shared)
+        cls.list_all_parameters.extend(core.setting.list_essential_genovo_only)
+        cls.list_all_parameters.extend(core.setting.list_essential_glimmer_only)
+        cls.list_all_parameters.extend(core.setting.list_essential_blast_only)
+        cls.list_all_parameters.extend(core.setting.list_optional_shared)
+        cls.list_all_parameters.extend(core.setting.list_optional_genovo_only)
+        cls.list_all_parameters.extend(core.setting.list_optional_glimmer_only)
+        cls.list_all_parameters.extend(core.setting.list_optional_blast_only)
+        cls.list_all_parameters.extend(core.setting.list_optional_internal_only)
 
     def setUp(self):
         self.maxDiff = None
@@ -20,6 +34,8 @@ class TestSoftwareAssembler(unittest.TestCase):
         self.mine_dir = path_utils.get_data_dir() + "MINE/"
         self.blast_dir = path_utils.get_data_dir() + "BLAST/"
         self.working_dir = path_utils.get_data_dir() + "test_data/"
+
+
 
 #    def test_set_all_param(self):
 #
@@ -61,7 +77,7 @@ class TestSoftwareAssembler(unittest.TestCase):
         setting = Setting.create_setting_from_file(infile)
         assembler = SoftwareAssembler(setting)
 
-        expected = set(core.setting.list_all_ggm)
+        expected = set(TestSoftwareAssembler.list_all_parameters)
         self.assertEqual(expected, set(assembler.get_all_par().viewkeys()))
 
         print assembler.get_all_par().values()
@@ -81,7 +97,8 @@ class TestSoftwareAssembler(unittest.TestCase):
         setting = Setting.create_setting_from_file(infile)
         assembler = SoftwareAssembler(setting)
 
-        expected = set(core.setting.list_all_ggm)
+
+        expected = set(TestSoftwareAssembler.list_all_parameters)
         self.assertEqual(expected, set(assembler.get_all_par().viewkeys()))
         print assembler.get_all_par()
         print assembler.get_all_par().keys()
@@ -104,7 +121,7 @@ class TestSoftwareAssembler(unittest.TestCase):
 #        setting = Setting.create_setting_from_file(infile)
 #        assembler = SoftwareAssembler(setting)
 #
-#        expected = set(core.setting.list_all_ggm)
+#        expected = set(core.setting.list_all_parameters)
 #        self.assertEqual(expected, set(assembler.get_all_par().viewkeys()))
 
     def test_some_optional(self):
@@ -113,9 +130,9 @@ class TestSoftwareAssembler(unittest.TestCase):
         setting = Setting.create_setting_from_file(infile)
         assembler = SoftwareAssembler(setting)
 
-        expected = set(core.setting.list_all_ggm)
+        expected = set(TestSoftwareAssembler.list_all_parameters)
         self.assertEqual(expected, set(assembler.get_all_par().viewkeys()))
-        self.assertEqual("20", assembler.get("genovo_noI"))
+        self.assertEqual(run_genovo.DEFAULT_GENOVO_NO_ITER, assembler.get("genovo_noI"))
         self.assertEqual("1e-10", assembler.get("blast_e_value"))
 
 
