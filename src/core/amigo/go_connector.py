@@ -6,18 +6,17 @@ connect it AmiGoS
 Setup at Dec 2011, if URL/webpage changes then need update it accordingly
 '''
 
-from httplib import IncompleteRead
+
 import os
 import pickle
-import socket
 import time
 import warnings
 
-# from core.amigo import web_page_utils, go_sequence
 from core.amigo.go_sequence import GoSequence
 from core.amigo.web_session import WebSession
 
 
+# from core.amigo import web_page_utils, go_sequence
 # from urllib2 import URLError, HTTPError
 MAX_QUERY_SEQ_LENGTH = 50000  # 3e6
 
@@ -85,6 +84,7 @@ class GOConnector(object):
 
         what is the "cap"??
         """
+
         max_query_size_1 = self.max_query_size - 1
 #         datas = []
 #         WebSession.e_threshold = self.e_threshold
@@ -100,15 +100,14 @@ class GOConnector(object):
             if len(new_data) > MAX_QUERY_SEQ_LENGTH:
                 temp_file_name = self.tempfile + "_LongORF_" + key
                 print "WARNING: Very long ORF (%d > limit:%d)! Sometimes it causes errors for AmiGO BLAST!! Store ORF at %s." % (len(new_data), MAX_QUERY_SEQ_LENGTH, temp_file_name)
-                tempout = open(temp_file_name, "w+")
-                tempout.write(new_data)
-                tempout.close()
+                with open(temp_file_name, "w+") as tempout:
+                    tempout.write(new_data)
                 wb = WebSession(new_data, [key], self.e_threshold, timeout=60, debug=self.debug)
                 self.web_session_list.append(wb)
 
                 continue
 
-            ## Fail when len(new_data > 6****
+            # Fail when len(new_data > 6****
             if temp_length > MAX_QUERY_SEQ_LENGTH or len(keys) == self.max_query_size:
                 # save with max_count
 #                 print i, len(keys), len(data), temp_length, (len(keys) % self.max_query_size)
@@ -200,9 +199,9 @@ class GOConnector(object):
         self.create_WebSessions_batches()
 
         t2File = self.tempfile + "object"
-        file = open(t2File, 'w')
-        pickle.dump(self.web_session_list, file)
-        file.close()
+        with open(t2File, 'w') as f:
+            pickle.dump(self.web_session_list, f)
+
 
         total_BLAST = len(self.web_session_list)
         print "Total number of BLAST Sessions:", total_BLAST
@@ -268,9 +267,9 @@ class GOConnector(object):
         tempout = open(self.tempfile, "r+")
 
         t2File = self.tempfile + "object"
-        file = open(t2File, 'r')
-        self.web_session_list = pickle.load(file)
-        file.close()
+        with open(t2File, 'r') as f:
+            self.web_session_list = pickle.load(f)
+
 
         total_BLAST = len(self.web_session_list)
 

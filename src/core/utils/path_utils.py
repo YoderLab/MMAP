@@ -4,7 +4,7 @@ Created on Nov 30, 2011
 @author: Steven Wu
 '''
 import os
-import re
+
 
 
 def get_parent_path(path, above=1):

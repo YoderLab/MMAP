@@ -177,8 +177,6 @@ class WebSession(object):
             if self.debug:
                 print "===DEBUG: Parsing %d sequences" % self.seq_counter
             for page in range(self.seq_counter):
-    #            print "parse sequences %d/%d" % (page, self.seq_counter)
-
                 query = parse_get_blast_results_query(self.session_id, page + 1)
                 seq = None
                 while seq is None:
@@ -226,7 +224,6 @@ class WebSession(object):
         index = web_pages.find("<p class=\"sequence\">>")
         index_end = web_pages.find("<br>", index)
         if index == -1 and index_end == -1:
-#             print web_pages
             return None
         else:
             gid = web_pages[index + len("<p class=\"sequence\">>"):index_end].strip()

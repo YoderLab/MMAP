@@ -133,7 +133,7 @@ Global
 
 def which(program):
 
-    fpath, fname = os.path.split(program)
+    fpath, _ = os.path.split(program)
     if fpath:
         if is_exe(program):
             return program

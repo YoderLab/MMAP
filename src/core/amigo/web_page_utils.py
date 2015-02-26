@@ -3,15 +3,13 @@ Created on Jan 8, 2015
 
 @author: Steven Wu
 """
+
 import socket
+import time
 import urllib
 from urllib2 import URLError
 import urllib2
 import warnings
-
-import os
-import random
-import time
 
 
 DELAY = 5.0
@@ -23,12 +21,10 @@ AMIGO_BLAST_URL = "http://amigo1.geneontology.org/cgi-bin/amigo/blast.cgi"
 
 
 def get_web_page(query, URL):
-    for _ in range(10):
-#     while s is None:
+    for _ in range(10):  # while s is None:
         try:
 
             message = urllib.urlencode(query)
-            rand = random.random()
             request = urllib2.Request(URL, message, {"User-Agent": "BiopythonClient"})
 #            print "URL:", URL, "\n", message, "\n", request, "\n"
 #            print request.get_data()

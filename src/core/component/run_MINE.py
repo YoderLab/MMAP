@@ -2,31 +2,30 @@
 Created on June 6, 2012
 @author: Erin McKenney
 """
-from Bio import SeqIO
-from core.component.run_component import RunComponent
-from core.run_ext_prog import runExtProg
 import csv
 import os
-from core.component import run_component
-from core.utils import path_utils
-    # TODO: Use python wrapper??
-    # in Python we would have to type
-    # >>>import xstats.MINE
-    # How do we import the wrapper here? (Or do we need to at all?)
 
-    # Figure out how to run MINE using the Python wrapper... command in the README file is below--but how to incorporate?
+from core.component.run_component import RunComponent
+from core.run_ext_prog import runExtProg
+from core.utils import path_utils
+
+
+# TODO: Use python wrapper??
+# in Python we would have to type
+# >>>import xstats.MINE
+# How do we import the wrapper here? (Or do we need to at all?)
+# Figure out how to run MINE using the Python wrapper... command in the README file is below--but how to incorporate?
 #        import xstats.MINE
 #        for a, b, scores in xstats.MINE.analyze_file("Spellman.csv", xstats.MINE.MASTER_VARIABLE, 0, cv = 0.7):
 #            print a, b, scores
 #        analyze_file (fn, method = None, master_variable = None, cv = 0.0, exp = 0.6, c = 15)
-
 # Full command-line sequence will read as
 # java -jar MINE.jar "infile" 'style' cv=## c=## <jobID>
-    # style = '-allPairs', '-adjacentPairs', '-masterVariable i' '-onePair i j' <indexing starts with 0>
-    # cv = % of records that must contain data for two variables to be compared <default = 0>
-    # c = factor by which # of clumps may outnumber # of x-axis columns <default = 15>
-    # notify = # of variable pairs to analyze before printing a status message as Status.csv output file <default = 100>
-    # jobID = string to identify job
+# style = '-allPairs', '-adjacentPairs', '-masterVariable i' '-onePair i j' <indexing starts with 0>
+# cv = % of records that must contain data for two variables to be compared <default = 0>
+# c = factor by which # of clumps may outnumber # of x-axis columns <default = 15>
+# notify = # of variable pairs to analyze before printing a status message as Status.csv output file <default = 100>
+# jobID = string to identify job
 MINE = "java"  # -jar MINE.jar" # MINE command call
 offset = 2
 INFILE_POSITION = 1 + offset
@@ -105,15 +104,15 @@ class RunMINE(RunComponent):
         setting = setting_class.get_pars("mine")
 #         print "C: ", setting.get("mine_clumps")
         mine = cls(infile=setting.get("mine_infile"),
-            pdir=setting.get("mine_pdir"),
-            wdir=setting.get("wdir"),
-            comparison=setting.get("mine_comparison_style"),
-            cv=setting.get("mine_cv"),
-            exp=setting.get("mine_exp"),
-            clumps=setting.get("mine_clumps"),
-            jobID=setting.get("mine_outfile"),
-            csv_files=setting.get("csv_files"),
-            check_exist=setting.get("check_exist"))
+                   pdir=setting.get("mine_pdir"),
+                   wdir=setting.get("wdir"),
+                   comparison=setting.get("mine_comparison_style"),
+                   cv=setting.get("mine_cv"),
+                   exp=setting.get("mine_exp"),
+                   clumps=setting.get("mine_clumps"),
+                   jobID=setting.get("mine_outfile"),
+                   csv_files=setting.get("csv_files"),
+                   check_exist=setting.get("check_exist"))
 
         return mine
 
@@ -125,9 +124,10 @@ class RunMINE(RunComponent):
         self.set_clumping_factor(c)
 
         self.set_jobID()
-#
+
     def set_infile_name(self):
         self.mine.set_param_at(self.infile, INFILE_POSITION)
+
 
     def set_comparison_style(self, style):
 #        if set to acceptable parameter (3 choices),

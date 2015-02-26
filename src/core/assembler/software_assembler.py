@@ -23,11 +23,9 @@ class SoftwareAssembler(object):
         Genovo class object
         Glimmer class object
 
-        in_geno
-        out_ge == in_glim
-        pdir_gen ~ pdit_gli
-
-        out_gli
+        in_genovo
+        in_glimmer == out_genovo
+        out_glimmer
         """
 #        if setting == None:
 #            print "fghj"
@@ -38,8 +36,6 @@ class SoftwareAssembler(object):
         self.debug = debug
 
 
-#    def add_all_param(self, **kwargs):
-#        self.setting.add_all(**kwargs)
 
     @classmethod
     def create_from_args(cls, args):
@@ -54,37 +50,20 @@ class SoftwareAssembler(object):
     def get(self, key):
         return self.setting.get(key)
 
-    def update_genovo_setting(self):
-        self.setting.add("genovo_outfile", self.genovo.outfile)
-
-    def update_glimmer_setting(self):
-        self.setting.add("glimmer_infile", self.glimmer.infile)
-        self.setting.add("glimmer_outfile", self.glimmer.outfile)
-#        self.setting.add("extract_outfile", self.glimmer.orfs_file)
-
-    def update_blast_setting(self):
-        self.setting.add("blast_infile", self.glimmer.outfile)
-        self.setting.add("blast_outfile", self.blast.outfile)
-#        try:
-#            self.setting.add("blast_merged_file", self.blast.merged_file)
-#        except:
-#            pass
-    def update_mine_setting(self):
-        self.setting.add("mine_infile", self.blast.outfile)
 
     def init_program(self):
-#        self.metasim = RunMetaSim.create_metasim_from_setting(self.setting)
+#         self.metasim = RunMetaSim.create_metasim_from_setting(self.setting)
         if self.setting.run_mine:
             self.mine = RunMINE.create_class_from_setting(self.setting)
         else:
             self.genovo = RunGenovo.create_genovo_from_setting(self.setting)
-            self.update_genovo_setting()
+            self._update_genovo_setting()
 
             self.glimmer = RunGlimmer.create_glimmer_from_setting(self.setting)
-            self.update_glimmer_setting()
+            self._update_glimmer_setting()
 
             self.blast = RunBlast.create_blast_from_setting(self.setting)
-            self.update_blast_setting()
+            self._update_blast_setting()
 
 #        if self.setting.get("mine_pdir") is not None:
 
@@ -96,15 +75,12 @@ class SoftwareAssembler(object):
 
 
 
-    def run(self, debug=0):
+    def run(self):
 
-#        self.metasim.run(debug=0)
+        # self.metasim.run(debug=0)
         # TODO: add metasim.run back later.
         #    fix MetaSim outfile name (can't overwrite program default)
         #    use -454 error model!!
-
-#        self.debug = 1
-#        self.setting.print_all()
 
         if self.setting.run_mine:
 
@@ -114,3 +90,21 @@ class SoftwareAssembler(object):
             self.glimmer.run(self.debug)
             self.blast.run(self.debug)
         print "=== Done ==="
+
+
+
+
+    def _update_genovo_setting(self):
+        self.setting.add("genovo_outfile", self.genovo.outfile)
+
+    def _update_glimmer_setting(self):
+        self.setting.add("glimmer_infile", self.glimmer.infile)
+        self.setting.add("glimmer_outfile", self.glimmer.outfile)
+#        self.setting.add("extract_outfile", self.glimmer.orfs_file)
+
+    def _update_blast_setting(self):
+        self.setting.add("blast_infile", self.glimmer.outfile)
+        self.setting.add("blast_outfile", self.blast.outfile)
+
+    def _update_mine_setting(self):
+        self.setting.add("mine_infile", self.blast.outfile)
