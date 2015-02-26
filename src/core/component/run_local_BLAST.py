@@ -10,6 +10,7 @@ import warnings
 
 from core.component.run_component import RunComponent
 from core.run_ext_prog import runExtProg
+from core.go_blast.extract_go_terms import extract
 
 BLASTX = './blastx'
 BLASTX_OUTFMT = "10 std stitle"
@@ -103,8 +104,7 @@ class RunBlast(RunComponent):
 
         print 'Running blastx'
         self.blastx.run(debug)
-        # TODO: extract csv from intermediate file
-
+        extract(self.intermediate_file, self.outfile)
         # Should be complete now.
         if not self.is_complete(debug):
             raise(StandardError("Blast did not complete, output file does not exist"))
