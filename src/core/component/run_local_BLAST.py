@@ -13,7 +13,8 @@ from core.run_ext_prog import runExtProg
 
 BLASTX = './blastx'
 BLASTX_OUTFMT = "10 std stitle"
-ALL_EXTS = [".csv"]
+INT_FILE_EXT = '.tmp.csv'
+ALL_EXTS = ['.csv']
 
 DB_SWITCH_POSITION = 1          # -db
 DB_FILE_POSITION = 2
@@ -46,6 +47,7 @@ class RunBlast(RunComponent):
         self.all_exts = ALL_EXTS
         self.e_value = e_value
         self.blast_db = blast_db
+        self.intermediate_file = self.infile + INT_FILE_EXT
         self.parameter_check(pdir, wdir, infile, outfile, check_exist, ".csv")
         self.blastx = runExtProg(BLASTX, pdir=self.pdir, length=10, check_OS=True)
         # step 2 is a python script.
@@ -82,8 +84,7 @@ class RunBlast(RunComponent):
         self.blastx.set_param_at('-query', QUERY_SWITCH_POSITION)
         self.blastx.set_param_at(self.infile, INFILE_POSITION)
         self.blastx.set_param_at('-out', OUT_SWITCH_POSITION)
-        # TODO make a temp file for blast output
-        self.blastx.set_param_at(self.outfile, OUTFILE_POSITION)
+        self.blastx.set_param_at(self.intermediate_file, OUTFILE_POSITION)
         self.blastx.set_param_at('-evalue', EVALUE_SWITCH_POSITION)
         self.blastx.set_param_at(self.e_value, EVALUE_POSITION)
         self.blastx.set_param_at('-outfmt', OUTFMT_SWITCH_POSITION)
@@ -102,9 +103,9 @@ class RunBlast(RunComponent):
 
         print 'Running blastx'
         self.blastx.run(debug)
-        # TODO: extract csv
+        # TODO: extract csv from intermediate file
 
-        # Should be compelte now.
+        # Should be complete now.
         if not self.is_complete(debug):
             raise(StandardError("Blast did not complete, output file does not exist"))
 
