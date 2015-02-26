@@ -11,6 +11,7 @@ Required package
 Required software
 * **Genovo** v0.4: http://cs.stanford.edu/group/genovo/
 * **Glimmer** v3.02: https://ccb.jhu.edu/software/glimmer/
+  * requires **ELPH** v1.0.1:  http://cbcb.umd.edu/software/ELPH/
 * **MINE.jar** v1.0.1: http://www.exploredata.net/
 
 Note: These software distributed here might not work with your OS!  

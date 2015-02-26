@@ -25,9 +25,9 @@ class RunComponent(object):
         self.check_file_exist(self.infile, check_exist)
 
 
-    def check_file_exist(self, file, check_exist):
+    def check_file_exist(self, filename, check_exist):
         if check_exist:
-            if not self.is_file_exist("", file):
+            if not self.is_file_exist(filename):
                 raise IOError("Error: file does not exist. %s" % (file))
 
     def check_dirs(self, pdir, wdir, check_exist):
@@ -39,12 +39,6 @@ class RunComponent(object):
         self.wdir = check_dir_ending(self.wdir)
         self._check_dir_exist(check_exist)
 
-    def _check_dir_exist(self, check_exist):
-        if check_exist:
-            if not os.path.exists(self.wdir):
-                raise(IOError("Error: invalid working directory: %s" % self.wdir))
-            if not os.path.exists(self.pdir):
-                raise(IOError("Error: invalid program directory: %s" % self.pdir))
 
 
     def check_valid_value(self, s, convert):
@@ -101,28 +95,17 @@ class RunComponent(object):
         """
         check with default exts for each program
         """
-        is_exist = self.is_multi_files_exist(outfile_tag, self.all_exts, debug=debug)
-        return is_exist
+        is_exist, missing_list = self._is_multi_files_exist(outfile_tag, self.all_exts, debug=debug)
+        return is_exist, missing_list
 
-    def is_multi_files_exist(self, file_tag, all_exts, is_exist=True, debug=True):
-        """
-        check multiple files exists
-        must provide all_exts as []
-        return boolean
-        """
-        all_files_exist = True
-        for ext in all_exts:
-            is_exist = self.is_file_exist(file_tag, ext, debug)
-            all_files_exist = all_files_exist and is_exist
-        return all_files_exist
 
-    def is_file_exist(self, file_tag, ext="", debug=True):
+
+    def is_file_exist(self, test_file, debug=True):
         """
         check if one file exist
         return boolean
         """
-        test_file = file_tag + ext
-#         print "%%is_file_exist%%%%%%%%%%%", test_file
+
         if os.path.exists(test_file):
             is_exist = True
         else:
@@ -132,3 +115,27 @@ class RunComponent(object):
 
         return is_exist
 
+
+
+    def _is_multi_files_exist(self, file_tag, all_exts, is_exist=True, debug=True):
+        """
+        check multiple files exists
+        must provide all_exts as []
+        return boolean
+        """
+        all_files_exist = True
+        missing_file_list = []
+        for ext in all_exts:
+            filename = file_tag + ext
+            is_exist = self.is_file_exist(filename, debug)
+            all_files_exist = all_files_exist and is_exist
+            if not is_exist:
+                missing_file_list.append(filename)
+        return all_files_exist, missing_file_list
+
+    def _check_dir_exist(self, check_exist):
+        if check_exist:
+            if not os.path.exists(self.wdir):
+                raise(IOError("Error: invalid working directory: %s" % self.wdir))
+            if not os.path.exists(self.pdir):
+                raise(IOError("Error: invalid program directory: %s" % self.pdir))
