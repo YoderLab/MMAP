@@ -135,13 +135,11 @@ class Setting(object):
 #         print args.control_file.closed, args.control_file.name
         control_file = os.path.abspath(args.control_file)  # + "A"
         infile = os.path.abspath(args.infile)  # + "A"
+        wdir = os.path.dirname(infile)
 
         try:
-
-            if not (os.path.exists(infile) and os.path.isfile(infile)):  # and os.path.isdir(wdir)):
-#                 print  os.path.exists(infile) , os.path.isfile(infile) , os.path.isdir(wdir)
-                open(infile)
-            wdir = os.path.dirname(infile)
+            path_utils.check_file(control_file)
+            path_utils.check_file(infile)
             path_utils.check_directory(wdir)
 
             all_pars = parse_control_file2(control_file)
@@ -155,20 +153,18 @@ class Setting(object):
                     csv_files=all_pars["csv_files"]
                 )
             else:
-                genovo_pdir = os.path.abspath(all_pars["genovo_pdir"])
-                glimmer_pdir = os.path.abspath(all_pars["glimmer_pdir"])
-                path_utils.check_directory(genovo_pdir)
-                path_utils.check_directory(glimmer_pdir)
 
-                if not (os.path.exists(glimmer_pdir) and os.path.isdir(glimmer_pdir)):
-                    raise IOError("glimmer_pdir does not exist %s" % glimmer_pdir)
+                genovo_pdir_full = os.path.abspath(os.path.expanduser(all_pars["genovo_pdir"]))
+                glimmer_pdir_full = os.path.abspath(os.path.expanduser(all_pars["glimmer_pdir"]))
+                path_utils.check_directory(genovo_pdir_full)
+                path_utils.check_directory(glimmer_pdir_full)
+
                 setting.add_all(
-#                     genovo_infile=all_pars["genovo_infile"],
-                    genovo_pdir=os.path.abspath(all_pars["genovo_pdir"]),
-                    glimmer_pdir=os.path.abspath(all_pars["glimmer_pdir"])
+                    genovo_pdir=genovo_pdir_full,
+                    glimmer_pdir=glimmer_pdir_full
                 )
 
-#                 setting._set_master_file_tag()
+                setting._set_master_file_tag()
 
         except KeyError as e:
 #             raise KeyError("Missing essential setting", e)

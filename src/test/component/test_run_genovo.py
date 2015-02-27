@@ -47,7 +47,7 @@ class TestRunGenovo(unittest.TestCase):
         expected = [self.working_dir + infile_var, "3"]
         self.assertEqual(genovo.assemble.get_all_switches(), expected)
 
-        genovo.set_number_of_iter(10)
+        genovo.set_assemble_number_of_iter(10)
         expected = [self.working_dir + infile_var, "10"]
         self.assertEqual(genovo.assemble.get_all_switches(), expected)
 
@@ -64,7 +64,7 @@ class TestRunGenovo(unittest.TestCase):
                     self.data_dir + infile_var + ".dump.best"]
         self.assertEqual(genovo.finalize.get_all_switches(), expected)
 
-        genovo.set_cutoff(300)
+        genovo.set_finalize_cutoff(300)
         expected = ["300", self.data_dir + "test_infile.genovo",
                     self.data_dir + infile_var + ".dump.best"]
         self.assertEqual(genovo.finalize.get_all_switches(), expected)
@@ -148,12 +148,12 @@ class TestRunGenovo(unittest.TestCase):
         infile_var = "test_infile.fasta"
         genovo = RunGenovo(infile=infile_var, pdir=self.data_dir, no_iter=3,
                            thresh=250, check_exist=False)
-        self.assertRaises(ValueError, genovo.set_number_of_iter, 1.1)
-        self.assertRaises(ValueError, genovo.set_number_of_iter, -1)
-        self.assertRaises(ValueError, genovo.set_number_of_iter, "string")
-        self.assertRaises(ValueError, genovo.set_number_of_iter, "5.9")
+        self.assertRaises(ValueError, genovo.set_assemble_number_of_iter, 1.1)
+        self.assertRaises(ValueError, genovo.set_assemble_number_of_iter, -1)
+        self.assertRaises(ValueError, genovo.set_assemble_number_of_iter, "string")
+        self.assertRaises(ValueError, genovo.set_assemble_number_of_iter, "5.9")
         try:
-            genovo.set_number_of_iter("300")
+            genovo.set_assemble_number_of_iter("300")
         except ValueError as e:
             self.fail(e)
         self.assertEqual(genovo.assemble.get_all_switches()[run_genovo.ASSEMBLE_NO_ITER_POSITION - 1], "300")
@@ -166,12 +166,12 @@ class TestRunGenovo(unittest.TestCase):
         infile_var = "test_infile.fasta"
         genovo = RunGenovo(infile=infile_var, pdir=self.data_dir, no_iter=3,
                            thresh=250, check_exist=False)
-        self.assertRaises(ValueError, genovo.set_cutoff, 1.1)
-        self.assertRaises(ValueError, genovo.set_cutoff, -1)
-        self.assertRaises(ValueError, genovo.set_cutoff, -2.5)
-        self.assertRaises(ValueError, genovo.set_cutoff, "string")
+        self.assertRaises(ValueError, genovo.set_finalize_cutoff, 1.1)
+        self.assertRaises(ValueError, genovo.set_finalize_cutoff, -1)
+        self.assertRaises(ValueError, genovo.set_finalize_cutoff, -2.5)
+        self.assertRaises(ValueError, genovo.set_finalize_cutoff, "string")
         try:
-            genovo.set_cutoff("3")
+            genovo.set_finalize_cutoff("3")
         except ValueError as e:
             self.fail(e)
 

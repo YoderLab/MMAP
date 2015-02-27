@@ -28,7 +28,7 @@ class runExtProg(object):
     self.program_name: program_name
     self._switch: [list], contain all switches required to run the program_name
         self.parameter = property(_switch)
-    self.cwd: working directory
+    self.pdir: program directory
     self.output: capture output message
     self.errors: capture error message
     '''
@@ -38,7 +38,7 @@ class runExtProg(object):
 
         self.program_name = p
         self.init_switch(length)
-        self.cwd = pdir
+        self.pdir = pdir
         self.check_platform(check_OS)
 
     def set_param_at(self, param, position):
@@ -59,17 +59,18 @@ class runExtProg(object):
     def run(self, debug=False):
         """
         Different level of debugging output
-        True Or 1: output only
-        2:    output and error messages
+
         """
         self._command = [self.program_name]
         self._command.extend(self._switch)
         if debug:
-            print("debug: _command:\t%s\t%s" % (self.cwd, self._command))
+            print("debug: _command:\t%s" % (self._command))
         p = subprocess.Popen(self._command, stdout=subprocess.PIPE,
-                             stderr=subprocess.PIPE, cwd=self.cwd)
+                             stderr=subprocess.PIPE, cwd=self.pdir)
+
         self.output, self.errors = p.communicate()
 
+        # TODO Move debug message to each individual program, since they output very different things
         if debug:
             print("debug - output message:\n%s\n===end===\n" % (self.output))
         elif debug is 2:
@@ -82,15 +83,18 @@ class runExtProg(object):
         Check platform, only check program_name start with "./". so `ls` still work
         ALWAYS append "_platform" to program_name
         """
-        if self.cwd is None and check_OS:
-            raise TypeError("Error: no value assigned to self.cwd. Current value = %s" % self.cwd)
+        if self.pdir is None and check_OS:
+            raise TypeError("Error: no value assigned to self.pdir. Current value = %s" % self.pdir)
 
         if check_OS or self.program_name.find("./") is 0:
             self.name_only = self.program_name[2:len(self.program_name)]
             self.name_only = self.name_only + "_" + runExtProg.platform
-
-            if os.path.exists(self.cwd + self.name_only):
-                self.program_name = "./" + self.name_only
+#             print check_OS, self.program_name, self.name_only, self.pdir + self.name_only
+#             print os.path.join(self.pdir, self.name_only)
+            if os.path.exists(os.path.join(self.pdir, self.name_only)):
+#                 self.program_name = "./" + self.name_only
+                self.program_name = os.path.join(self.pdir, self.name_only)
+#                 self.program_name = "/" + self.name_only
 #            else:
 #                print "ignore platform"
 

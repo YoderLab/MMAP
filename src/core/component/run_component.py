@@ -105,14 +105,17 @@ class RunComponent(object):
                 missing_file_list.append(filename)
         return all_files_exist, missing_file_list
 
+
+#===============================================================================
+# Deprecated methods
+#===============================================================================
     def _check_dir_exist(self, check_exist):
+        warnings.warn("Deprecated method ", DeprecationWarning)
         if check_exist:
             if not os.path.exists(self.wdir):
                 raise(IOError("Error: invalid working directory: %s" % self.wdir))
             if not os.path.exists(self.pdir):
                 raise(IOError("Error: invalid program directory: %s" % self.pdir))
-
-
 
 
     def parameter_check(self, outfile, outfile_tag):
