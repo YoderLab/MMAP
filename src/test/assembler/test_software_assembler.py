@@ -14,7 +14,6 @@ class TestSoftwareAssembler(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.list_all_parameters = []
-        cls.list_all_parameters.extend(core.setting.list_essential_shared)
         cls.list_all_parameters.extend(core.setting.list_essential_genovo_only)
         cls.list_all_parameters.extend(core.setting.list_essential_glimmer_only)
         cls.list_all_parameters.extend(core.setting.list_essential_blast_only)
@@ -57,8 +56,8 @@ class TestSoftwareAssembler(unittest.TestCase):
     def test_init_program(self):
         setting = Setting();
         setting.add_all(genovo_infile="wdir_all_reads.fa",
-                                genovo_pdir=self.genovo_dir,
-                                parent_directory="main_pdir")
+                        genovo_pdir=self.genovo_dir)
+
         setting.add_all(glimmer_pdir=self.glimmer_dir)
         setting.add_all(wdir=self.working_dir)
 #        setting.add_all(metasim_model_infile="ErrorModelSolexa36bp.mconf", metasim_no_reads=10, metasim_pdir=self.metasim_dir,

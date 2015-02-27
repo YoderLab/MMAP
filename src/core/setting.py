@@ -9,12 +9,7 @@ from core.utils.path_utils import check_program_dir
 
 
 __author__ = 'erinmckenney'
-# infile, pdir, wdir, comparison, cv=0, c=15, outfile, check_exist=True
-list_essential_shared = ["parent_directory", "wdir"]
-# parent directory points to the program
-# wdir points to the data,
-# TODO: FIXME: these path should be able to take relative path with
-# respect to the control file
+
 list_essential_metasim_only = [
     "metasim_pdir", "metasim_model_infile", "metasim_taxon_infile", "metasim_no_reads"]
 list_essential_genovo_only = ["genovo_infile", "genovo_pdir"]
@@ -23,14 +18,13 @@ list_essential_blast_only = []
 list_essential_mine_only = ["mine_pdir", "mine_infile", "csv_files"]
 
 list_all_essentials = []
-list_all_essentials.extend(list_essential_shared)
 # list_all_essentials.extend(list_essential_metasim_only)
 list_all_essentials.extend(list_essential_genovo_only)
 list_all_essentials.extend(list_essential_glimmer_only)
 list_all_essentials.extend(list_essential_blast_only)
 # list_all_essentials.extend(list_essential_mine_only)
 
-list_optional_shared = ["checkExist"]
+list_optional_shared = ["check_exist"]
 list_optional_metasim_only = ["metasim_outfile"]
 list_optional_genovo_only = ["genovo_outfile", "genovo_noI", "genovo_thresh"]
 list_optional_glimmer_only = ["glimmer_infile", "glimmer_outfile"]
@@ -50,7 +44,6 @@ list_all_optionals.extend(list_optional_mine_only)
 
 
 list_ess_par = {
-    "shared": list_essential_shared,
     "metasim": list_essential_metasim_only,
     "genovo": list_essential_genovo_only,
     "glimmer": list_essential_glimmer_only,
@@ -83,10 +76,12 @@ def parse_control_file2(control_file):
 #         a = config_parser.readfp(lines)
 
     config = StringIO.StringIO()
+
     with open(control_file) as cf:
         inconf = cf.read()
         if not (inconf.find("[") is 0 and inconf.find("]") > 0):
             config.write('[Parameters]\n')
+
 
     config.write(inconf)
     config.seek(0, os.SEEK_SET)
@@ -98,7 +93,6 @@ def parse_control_file2(control_file):
         #         print s, config_parser.items(s)
         for kv in config_parser.items(s):
             all_arguments[kv[0]] = kv[1]
-            print kv
 
 #     print all_arguments
     return all_arguments
@@ -131,7 +125,7 @@ class Setting(object):
         self.run_mine = False
 
     @classmethod
-    def create_setting_from_file(cls, filepath):
+    def create_setting_from_file(cls, args):
         """
         TODO: switch between genovo+glimmer+blast and MINE
 
@@ -140,28 +134,32 @@ class Setting(object):
 
         FIXME: check filename name for wdir path before adding wdir to self.filename
         """
-        all_pars = parse_control_file2(filepath)
+#         print type(args.control_file), dir(args.control_file)
+#         print args.control_file.closed, args.control_file.name
+        control_file = os.path.abspath(args.control_file)
+        all_pars = parse_control_file2(control_file)
+#         print "Z:", os.getcwd(), os.path.normpath(os.path.join(os.getcwd(), control_file))
+        working_dir = os.path.dirname(args.infile)
 
         try:
-            pdir = check_program_dir(all_pars["parent_directory"])
-            wdir = check_program_dir(pdir, all_pars["wdir"])
-            setting = cls(parent_directory=pdir, wdir=wdir)
+
+            wdir = path_utils.guess_full_dir(all_pars["wdir"], parent_dir=working_dir)
+            setting = cls(wdir=wdir)
 
             if "mine_pdir" in all_pars:
                 setting.run_mine = True
                 setting.add_all(
-                    mine_pdir=check_program_dir(pdir, all_pars["mine_pdir"]),
+                    mine_pdir=os.path.abspath(all_pars["mine_pdir"]),
                     mine_infile=all_pars["mine_infile"],
                     csv_files=all_pars["csv_files"]
                 )
             else:
                 setting.add_all(
-                    genovo_infile=all_pars["genovo_infile"],
-                    genovo_pdir=check_program_dir(
-                        pdir, all_pars["genovo_pdir"]),
-                    glimmer_pdir=check_program_dir(
-                        pdir, all_pars["glimmer_pdir"])
+#                     genovo_infile=all_pars["genovo_infile"],
+                    genovo_pdir=os.path.abspath(all_pars["genovo_pdir"]),
+                    glimmer_pdir=os.path.abspath(all_pars["glimmer_pdir"])
                 )
+
                 setting._set_master_file_tag()
 
         except KeyError as err:
@@ -174,20 +172,8 @@ class Setting(object):
             if parameter in all_pars.keys():
                 setting.add(parameter, all_pars[parameter])
 
-            #            wdir=controlfile.get("wdir"),
-#            checkExist=controlfile.get("checkExist"),
-#            metasim_outfile=controlfile.get("metasim_outfile"),
-#            genovo_outfile=controlfile.get("genovo_outfile"),
-#            glimmer_infile=controlfile.get("glimmer_infile"),
-#            glimmer_outfile=controlfile.get("glimmer_outfile"),
-
-#            blast_infile=controlfile.get("blast_infile"),
-#            blast_e_value=controlfile.get("blast_e_value"),
-#            blast_outfile=controlfile.get("blast_outfile"),
-#            mine_infile=controlfile.get("mine_infile"),
-#            mine_cv=controlfile.get("mine_cv"),
-#            mine_clumps=controlfile.get("mine_clumps"),
-#            mine_jobID=controlfile.get("mine_jobID"))
+        for k, v in setting.all_setting.items():
+            print k, v
         return setting
 
     def add_all(self, **kwargs):
@@ -220,7 +206,7 @@ class Setting(object):
         self._set_master_file_tag()
 
     def _check_essential_keys(self, program_name):
-        par = list_ess_par[program_name] + list_ess_par["shared"]
+        par = list_ess_par[program_name]
         for v in par:
             isExist = self._check_variables_exist(v)
             if not isExist:
@@ -233,7 +219,7 @@ class Setting(object):
     def _check_all_optional_keys(self, program_name):
         """
         default glimmer_infile = genove_outfile
-        default checkExist = Ture (not None)
+        default check_exist = Ture (not None)
         """
         optional = list_optional_par[program_name] + list_optional_shared
         for c in optional:
@@ -270,7 +256,7 @@ class Setting(object):
             self._replace_none_with_defalut("mine_exp", run_MINE.DEFAULT_EXP)
             self._replace_none_with_defalut(
                 "mine_clumps", run_MINE.DEFAULT_CLUMPS)
-        self._replace_none_with_defalut("checkExist", True)
+        self._replace_none_with_defalut("check_exist", True)
 
     def _replace_none_with_defalut(self, check_key, default_value):
         if self.get(check_key) is None:
@@ -305,8 +291,6 @@ class Setting(object):
 
 
 """
-#list_essential_shared
-parent_directory:
 #list_essential_metasim_only
 metasim_pdir:
 metasim_model_infile:
@@ -326,7 +310,7 @@ mine_pdir:
 mine_comparison_style:
 #list_optional_shared
 wdir:
-checkExist:
+check_exist:
 #list_optional_metasim_only
 metasim_outfile:
 #list_optional_genovo_only

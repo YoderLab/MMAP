@@ -72,3 +72,13 @@ class PathUtils(object):
         Constructor
         '''
 
+
+def guess_full_dir(current_dir, parent_dir):
+    if not os.path.exists(current_dir):
+        full_dir = os.path.join(parent_dir, current_dir)
+        print "Guess working directory: %s or %s" % (current_dir, full_dir)
+        if not os.path.exists(full_dir):
+            raise(IOError("Error: invalid working directory: %s or %s" % (current_dir, full_dir)))
+    pass
+
+

@@ -29,22 +29,21 @@ class TestSetting(unittest.TestCase):
     def test_Setting_get_metasim(self):  # "metasim_pdir", "metasim_model_infile", "metasim_taxon_infile", "metasim_no_reads"
         setting = Setting()
         setting.add_all(metasim_model_infile="mmInfile",
-            filename="mOutfile", metasim_no_reads=200)
+                        filename="mOutfile", metasim_no_reads=200)
         #        setting.print_all()
         self.assertRaises(KeyError, setting.get_pars, "metasim")
 
         setting = Setting()
         setting.add_all(metasim_model_infile="mmInfile",
-            filename="mOutfile", metasim_taxon_infile="tInfile")
+                        filename="mOutfile", metasim_taxon_infile="tInfile")
         self.assertRaises(KeyError, setting.get_pars, "metasim")
 
         setting.add("metasim_pdir", "m_p_dir")
-        setting.add_all(metasim_no_reads=250, parent_directory="main_pdir",
-                        wdir=self.wdir)
+        setting.add_all(metasim_no_reads=250, wdir=self.wdir)
         expected = {"metasim_model_infile": "mmInfile", "filename": "mOutfile",
                     "metasim_taxon_infile": "tInfile", "metasim_pdir": "m_p_dir",
-                    "parent_directory": "main_pdir", "metasim_no_reads":250,
-                    "wdir":self.wdir, "checkExist": True,
+                    "metasim_no_reads": 250,
+                    "wdir": self.wdir, "check_exist": True,
                     "metasim_outfile": None}
         setting.debug = 0
         self.assertEqual(expected, setting.get_pars("metasim"))
@@ -55,8 +54,7 @@ class TestSetting(unittest.TestCase):
 
         setting = Setting()
         setting.add_all(metasim_model_infile="mmInfile", metasim_no_reads=250,
-            metasim_taxon_infile="tInfile", metasim_pdir="m_p_dir",
-            parent_directory="main_pdir")
+                        metasim_taxon_infile="tInfile", metasim_pdir="m_p_dir")
         setting.add("wdir", "otherdir")
         expected.pop("filename")
         self.assertEqual(expected, setting.get_pars("metasim"))
@@ -75,12 +73,11 @@ class TestSetting(unittest.TestCase):
         self.assertRaises(KeyError, setting.get_pars, "genovo")
 
         setting.add("genovo_thresh", 10)
-        setting.add_all(genovo_thresh=14, genovo_pdir="g_p_dir", parent_directory="main_pdir",
-                        wdir=self.wdir)
+        setting.add_all(genovo_thresh=14, genovo_pdir="g_p_dir", wdir=self.wdir)
         expected = {"genovo_infile": "gInfile", "filename": "gOutfile",
                     "genovo_noI": 2, "genovo_thresh": 14,
-                    "genovo_pdir": "g_p_dir", "parent_directory": "main_pdir",
-                    "wdir": self.wdir, "checkExist": True,
+                    "genovo_pdir": "g_p_dir",
+                    "wdir": self.wdir, "check_exist": True,
                     "genovo_outfile": None}
         self.assertEqual(expected, setting.get_pars("genovo"))
 
@@ -90,8 +87,7 @@ class TestSetting(unittest.TestCase):
 
         setting = Setting()
         setting.add_all(genovo_infile="gInfile", genovo_thresh=14,
-                        genovo_pdir="g_p_dir", genovo_noI=2,
-                        parent_directory="main_pdir")
+                        genovo_pdir="g_p_dir", genovo_noI=2)
         setting.add("wdir", "otherdir")
         expected.pop("filename")
         self.assertEqual(expected, setting.get_pars("genovo"))
@@ -104,12 +100,11 @@ class TestSetting(unittest.TestCase):
 
 
         setting.add_all(genovo_outfile="infile", glimmer_outfile="glimOut",
-            glimmer_pdir="glimp_dir", parent_directory="main_pdir", wdir=self.wdir)
+            glimmer_pdir="glimp_dir", wdir=self.wdir)
         expected = {"glimmer_infile": "infile", "genovo_outfile": "infile",
                     "filename": "Outfile", "glimmer_outfile": "glimOut",
                     "glimmer_pdir": "glimp_dir",
-                    "wdir": self.wdir, "checkExist": True,
-                    "parent_directory": "main_pdir"}
+                    "wdir": self.wdir, "check_exist": True}
         self.assertEqual(expected, setting.get_pars("glimmer"))
 
         setting.add_all(glimmer_infile="glInfile")
@@ -123,12 +118,11 @@ class TestSetting(unittest.TestCase):
         with self.assertRaises(KeyError):
             setting.get_pars("blast")
 
-        setting.add_all(blast_e_value=1e-15, parent_directory="main_pdir",
-                        wdir="working_dir", checkExist=True)
+        setting.add_all(blast_e_value=1e-15,
+                        wdir="working_dir", check_exist=True)
         expected = {"blast_infile": "bInfile", "blast_outfile": "bOutfile",
-                    "blast_e_value": 1e-15, "blast_batch_size":20,
-                    "parent_directory": "main_pdir",
-                    "wdir": "working_dir", "checkExist": True
+                    "blast_e_value": 1e-15, "blast_batch_size": 20,
+                    "wdir": "working_dir", "check_exist": True
                     }
         setting.debug = True
         self.assertEqual(expected, setting.get_pars("blast"))
@@ -139,7 +133,7 @@ class TestSetting(unittest.TestCase):
         self.assertEqual(expected, setting.get_pars("blast"))
 
         setting = Setting()
-        setting.add_all(blast_infile="bInfile", parent_directory="main_pdir")
+        setting.add_all(blast_infile="bInfile")
         setting.add("wdir", "otherdir")
         setting.add("blast_e_value", 1e-15)
         setting.add("blast_outfile", "bOutfile")
@@ -156,17 +150,17 @@ class TestSetting(unittest.TestCase):
 #        self.assertRaises(KeyError, setting._get_mine())
 
         setting.add_all(mine_outfile="mineOut",
-            mine_pdir="mine_pdir", mine_comparison_style="-allPairs", parent_directory="main_pdir")
+                        mine_pdir="mine_pdir", mine_comparison_style="-allPairs")
         setting.add("mine_infile", "infile")
         setting.add("wdir", "working_dir")
         setting.add("csv_files", "file1,file2,file3")
 
         expected = {"mine_infile": "infile",
                     "filename": "Outfile", "mine_outfile": "mineOut",
-                    "mine_pdir": "mine_pdir", "mine_comparison_style":"-allPairs",
-                    "wdir": "working_dir", "checkExist": True,
-                    "parent_directory": "main_pdir",
-                    "mine_cv": 0.0, "mine_exp":0.6, "mine_clumps":15, "mine_jobID": None,
+                    "mine_pdir": "mine_pdir", "mine_comparison_style": "-allPairs",
+                    "wdir": "working_dir", "check_exist": True,
+                    "mine_cv": 0.0, "mine_exp": 0.6,
+                    "mine_clumps": 15, "mine_jobID": None,
                     "csv_files": ["file1", "file2", "file3"]}
 
         self.assertEqual(expected, setting.get_pars("mine"))
@@ -176,14 +170,12 @@ class TestSetting(unittest.TestCase):
 
     def test_Setting_get_pars(self):
         setting = Setting(genovo_infile="gInfile", genovo_thresh=14)
-        setting.add_all(
-                        genovo_pdir="g_p_dir", genovo_noI=2,
-                        parent_directory="main_pdir", wdir="otherdir",
-                        checkExist=True)
+        setting.add_all(genovo_pdir="g_p_dir", genovo_noI=2,
+                        wdir="otherdir", check_exist=True)
         expected = {"genovo_infile": "gInfile", "genovo_noI": 2,
                     "genovo_thresh": 14, "genovo_pdir": "g_p_dir",
-                    "checkExist": True, "genovo_outfile": None,
-                    "parent_directory": "main_pdir", "wdir": "otherdir"}
+                    "check_exist": True, "genovo_outfile": None,
+                    "wdir": "otherdir"}
         print "W", setting.get_pars("genovo")
         self.assertEqual(expected, setting.get_pars("genovo"))
 
@@ -191,13 +183,12 @@ class TestSetting(unittest.TestCase):
         setting = Setting()
         setting.add_all(filename="Outfile", genovo_outfile="infile",
                         glimmer_outfile="glimOut", glimmer_pdir="glimp_dir",
-                        parent_directory="main_pdir", wdir="working_dir")
+                        wdir="working_dir")
 
         expected = {"glimmer_infile": "infile", "genovo_outfile": "infile",
                     "filename": "Outfile", "glimmer_outfile": "glimOut",
                     "glimmer_pdir": "glimp_dir",
-                    "wdir": "working_dir", "checkExist": True,
-                    "parent_directory": "main_pdir",
+                    "wdir": "working_dir", "check_exist": True
                     }
         print setting.get_pars("glimmer")
         self.assertEqual(expected, setting.get_pars("glimmer"))
@@ -211,8 +202,7 @@ class TestSetting(unittest.TestCase):
 #    When not all essential parameters exist but no optional parameters exist, should pass.
         file = self.data_dir + "testControlFileOp1"
         setting = Setting.create_setting_from_file(file)
-        expected = {"parent_directory":"/someDir/subDir",
-                    "wdir" :"/someDir/subDir/workingDir",
+        expected = {"wdir" :"/someDir/subDir/workingDir",
                     "master_tag": "genovoInfile",
 
                     "genovo_infile": "genovoInfile",
@@ -251,7 +241,6 @@ class TestSetting(unittest.TestCase):
         file = self.data_dir + "testControlFileMINE"
         setting = Setting.create_setting_from_file(file)
         expected = {
-                    "parent_directory":"/someDir/subDir",
                     "wdir" :"/someDir/subDir/workingDir",
                     "mine_pdir":"/someDir/subDir/MINE",
                     "mine_cv":"20",

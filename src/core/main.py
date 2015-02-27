@@ -25,6 +25,47 @@ import scipy
 
 from core.assembler.software_assembler import SoftwareAssembler
 from core.utils import path_utils
+from argparse import HelpFormatter
+from _ast import TryExcept
+import warnings
+
+
+class CustomSingleMetavarFormatter(argparse.HelpFormatter):
+
+    def __init__(self, prog,
+                 indent_increment=2,
+                 max_help_position=50,
+                 width=None):
+        super(CustomSingleMetavarFormatter, self).__init__(prog, indent_increment, max_help_position, width)
+
+#     self._max_help_position = 50
+    def _format_action_invocation(self, action):
+        if not action.option_strings:
+            metavar, = self._metavar_formatter(action, action.dest)(1)
+            return metavar
+        else:
+            parts = []
+            # if the Optional doesn't take a value, format is:
+            #    -s, --long
+            if action.nargs == 0:
+                parts.extend(action.option_strings)
+
+            # if the Optional takes a value, format is:
+            #    -s ARGS, --long ARGS
+            # change to
+            #    -s, --long ARGS
+            else:
+                default = action.dest.upper()
+                args_string = self._format_args(action, default)
+                for option_string in action.option_strings:
+                    # parts.append('%s %s' % (option_string, args_string))
+                    parts.append('%s' % option_string)
+                parts[-1] += ' %s' % args_string
+            return ', '.join(parts)
+
+
+
+
 
 
 # print "data dir:\t", data_dir
@@ -33,15 +74,20 @@ def main():
 
 
 if __name__ == "__main__":
-    #     webpage = "aoeuaoeuoe\!-- session_id = 1231amigo122 --aoeu"
-    #     wb = WebSession(webpage, "10")
-    #     wb.query_page = webpage
-    #     a = wb.get_session_id()
-    #     print a
 
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "controlFile", help="Control File contains all settings")
+
+
+    parser = argparse.ArgumentParser(prog="MMAP", formatter_class=CustomSingleMetavarFormatter)
+#                                     usage='%(prog)s -i INFILE -c CONTROL [OPTIONS]'
+
+    group1 = parser.add_argument_group('required arguments')
+    group1.add_argument(
+        "-i", "--infile", metavar="INFILE", dest="infile",
+        required=True, help="Infile for genovo")
+    group1.add_argument(
+        "-c", "--control", metavar="CONTROL", dest="control_file",
+        required=True, help="Control File contains all settings")
+
     parser.add_argument("-d", "--debug", action="count", default=0,
                         help="increase debugging level")
     # debug level 1 - external program output only
@@ -56,14 +102,12 @@ if __name__ == "__main__":
 #     cFile = "/home/steven/Postdoc/Project_Lemur/MMAP/data/BenchMark10/10k_0/control"
 
 
-#    args = parser.parse_args(["-h"])
-#     args = parser.parse_args([cFile, "-d"])
-    args = parser.parse_args()
-
-    print "NumPy version %s" % numpy.__version__
-    print "SciPy version %s" % scipy.__version__
-    print "Bio version %s at %s" % (Bio.__version__, Bio.__path__)
-
+    try:
+        args = parser.parse_args()
+    except IOError as e:
+        print e
+#         warnings.warn(e)
+        sys.exit(8)
 
     CWD = os.getcwd()
     data_dir = path_utils.get_data_dir(CWD)
@@ -73,13 +117,15 @@ if __name__ == "__main__":
 
     if args.debug >= 2:
         print "Debug level 2"
-    elif args.debug == 1:
-        pass
-#        print "v==1"
+    if args.debug >= 1:
+        print "NumPy version %s" % numpy.__version__
+        print "SciPy version %s" % scipy.__version__
+        print "Bio version %s at %s" % (Bio.__version__, Bio.__path__)
+
     else:
         pass
 #        print "v==0"
-
+    args.debug = 1
     assembler = SoftwareAssembler.create_from_args(args)
 #     sys.exit(12)
     assembler.run()
@@ -91,3 +137,4 @@ if __name__ == "__main__":
 #    assembler = SoftwareAssembler.create_from_args(args)
 #    assembler.run()
 #    print "=== END MAIN ==="
+

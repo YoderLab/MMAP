@@ -1,12 +1,10 @@
 ##### list_essential_parameters
 
-genovo_pdir= Genovo/
-glimmer_pdir=Glimmer/
+#python -i infile -c[s] control/setting_file
+genovo_pdir= /home/steven/Postdoc/Project_Lemur/MMAP/data/Genovo/
+glimmer_pdir=/home/steven/Postdoc/Project_Lemur/MMAP/data/Glimmer/
+glimmer_pdir=../../data/Glimmer/
 
-parent_directory=/home/steven/Postdoc/Project_Lemur/MMAP/data/
-wdir=example
-
-genovo_infile= MMAP_example.fasta
 
 
 
@@ -17,14 +15,14 @@ genovo_infile= MMAP_example.fasta
 
 
 ##### list_optional_shared
-checkExist=True
+#check_exist=True
 
-## list_optional_genovo_only
+## list_of_genovo_options
 genovo_outfile=genovoOut
 genovo_noI= 10
 genovo_thresh= 250
 
-# list_optional_glimmer_only
+# list_of_glimmer_options
 # glimmer_infile=MMAP_example.genovo
 glimmer_outfile=glimmerOut
 extract_outfile=extractOut

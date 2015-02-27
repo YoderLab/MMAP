@@ -35,6 +35,7 @@ class RunGenovo(RunComponent):
         Constructor
         """
         self.all_exts = ALL_EXTS
+
         self.parameter_check(pdir, wdir, infile, outfile, check_exist, ".genovo")
 
         self.assemble = runExtProg(ASSEMBLE, pdir=self.pdir, length=2, check_OS=True)

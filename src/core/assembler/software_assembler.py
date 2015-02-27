@@ -39,7 +39,7 @@ class SoftwareAssembler(object):
 
     @classmethod
     def create_from_args(cls, args):
-        setting = Setting.create_setting_from_file(args.controlFile)
+        setting = Setting.create_setting_from_file(args)
         assembler = cls(setting, args.debug)
         return assembler
 

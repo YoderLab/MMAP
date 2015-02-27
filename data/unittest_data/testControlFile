@@ -1,19 +1,18 @@
 # comment line
 # don't read this line start with #
-parent_directory=\someDir\subDir\
 wdir = workingDir
-metasim_pdir=\metaSim
+metasim_pdir=/someDir/subDir/metaSim
 metasim_model_infile= metaSimInfile
 metasim_taxon_infile = metasim_taxon_infiles
   metasim_no_reads= 20
 genovo_infile= genovoInfile
-genovo_pdir= genevo\
+genovo_pdir=/someDir/subDir/genevo/
 genovo_noI= 10
 genovo_thresh= 300
 #list_essential_glimmer_only
-glimmer_pdir=   \glimmer\
+glimmer_pdir=/someDir/subDir/glimmer/
 #list_essential_mine_only
-mine_pdir=\MINE\
+mine_pdir=/someDir/subDir/MINE/
 mine_comparison_style=-allPairs
 
 
