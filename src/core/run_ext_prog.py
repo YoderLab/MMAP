@@ -65,7 +65,7 @@ class runExtProg(object):
         self._command = [self.program_name]
         self._command.extend(self._switch)
         if debug:
-            print("debug: _command:\t%s" % (self._command))
+            print("debug: _command:\t%s\t%s" % (self.cwd, self._command))
         p = subprocess.Popen(self._command, stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE, cwd=self.cwd)
         self.output, self.errors = p.communicate()

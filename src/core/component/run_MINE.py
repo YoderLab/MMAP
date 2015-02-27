@@ -47,19 +47,20 @@ class RunMINE(RunComponent):
     classdocs
     """
 
-    def __init__(self, infile, pdir, wdir, comparison='-allPairs',
+    def __init__(self, pdir, wdir, infile, comparison='-allPairs',
                  cv=DEFAULT_CV, exp=DEFAULT_EXP, clumps=DEFAULT_CLUMPS,
-                 jobID="out", check_exist=True,
-                 csv_files=None):
+                 jobID="out",
+                 csv_files=None,
+                 check_exist=True):
         """
         Constructor
         """
-#        self.infile = wdir + infile
-#        self.outfile = jobID
+        super(RunMINE, self).__init__(pdir, wdir, infile, check_exist)
         if jobID is None:
             self.jobID = "out"
         else:
             self.jobID = jobID
+
         self.all_exts = ALL_EXTS
         self.parameter_check(pdir, wdir, infile, infile, False, "")
 

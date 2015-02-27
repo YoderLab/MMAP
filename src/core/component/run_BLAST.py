@@ -38,12 +38,13 @@ class RunBlast(RunComponent):
         merged_file = merged result
         """
 #        print "weNFASMDN",outfile, wdir
+        super(RunBlast, self).__init__("", wdir, infile)
         self.results = dict()
         self.wdir = wdir
         self.e_threshold = e_value
 
         self.record_index = records
-        self.check_filenames(infile, records, outfile)
+        self.check_outfile_filename(infile, records, outfile)
         self.batch_size = self.check_valid_value(batch_size, int)
         self.debug = 1  # debug
 #        if comparison_file is not None:
@@ -223,7 +224,7 @@ class RunBlast(RunComponent):
 
 
 
-    def check_filenames(self, infile, records, outfile):
+    def check_outfile_filename(self, infile, records, outfile):
         """
         infile name
             check if it exist

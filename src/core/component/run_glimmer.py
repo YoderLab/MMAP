@@ -26,13 +26,15 @@ class RunGlimmer(RunComponent):
     """
 
 
-    def __init__(self, infile, pdir, wdir=None, outfile=None, check_exist=True):
+    def __init__(self, pdir, wdir, infile, outfile=None, check_exist=True):
         """
         Constructor
         """
-
+        super(RunGlimmer, self).__init__(pdir, wdir, infile, check_exist)
         self.all_exts = ALL_EXTS
-        self.parameter_check(pdir, wdir, infile, outfile, check_exist, ".glimmer")
+#         self.parameter_check(pdir, wdir, infile, outfile, check_exist, ".glimmer")
+        self.outfile = self.check_outfile_filename(outfile, ".glimmer")
+
         self.glimmer = runExtProg(GLIMMER, pdir=self.pdir, length=2, check_OS=True)
         self.extract = runExtProg(EXTRACT, pdir=self.pdir, length=2, check_OS=True)
         self.init_prog()

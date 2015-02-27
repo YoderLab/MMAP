@@ -4,6 +4,7 @@ Created on Nov 30, 2011
 @author: Steven Wu
 '''
 import os
+from gnome_abrt import directory_problems
 
 
 
@@ -46,9 +47,10 @@ def remove_ext(name):
 
 
 def check_wdir_prefix(wdir, filename):
-    if filename.find(wdir) is -1:
-        filename = wdir + filename
-    return filename
+
+#     if filename.find(wdir) is -1:
+#         filename = wdir + filename
+    return os.path.join(wdir, filename)
 
 
 def check_program_dir(dir_prefix, pdir=""):
@@ -62,15 +64,6 @@ def check_program_dir(dir_prefix, pdir=""):
     return new_path
 
 
-class PathUtils(object):
-    '''
-    classdocs
-    '''
-
-    def __init__(self):
-        '''
-        Constructor
-        '''
 
 
 def guess_full_dir(current_dir, parent_dir):
@@ -81,4 +74,21 @@ def guess_full_dir(current_dir, parent_dir):
             raise(IOError("Error: invalid working directory: %s or %s" % (current_dir, full_dir)))
     pass
 
+
+
+
+def check_directory(directory):
+    if not os.path.exists(directory):
+        raise IOError("Directory does not exist %s" % directory)
+    if not os.path.isdir(directory):
+        raise IOError("Input is not a directory %s" % directory)
+
+
+def check_file(test_file):
+    if not os.path.exists(test_file):
+        raise IOError("File does not exist %s" % test_file)
+    if not os.path.isfile(test_file):
+        raise IOError("Input is not a test_file %s" % test_file)
+    with open(test_file):
+        pass
 

@@ -76,7 +76,7 @@ class RunMetaSim(RunComponent):
     def parameter_check(self, pdir, wdir, model_file, taxon_infile, filename, check_exist):
         # TODO: check outdir exist
         self.check_dirs(pdir, wdir, check_exist)
-        self.check_filenames(taxon_infile, filename, error_model="-454" or "-Sanger" or "-Empirical")
+        self.check_outfile_filename(taxon_infile, filename, error_model="-454" or "-Sanger" or "-Empirical")
         self.model_infile = self.wdir + model_file
         self.taxon_infile = self.wdir + taxon_infile
 
@@ -138,7 +138,7 @@ class RunMetaSim(RunComponent):
         directory = "-d%s" % self.wdir
         self.metasim.set_param_at(directory, OUTFILE_DIRECTORY_POSITION)
 
-    def check_filenames(self, infile, filename, error_model):
+    def check_outfile_filename(self, infile, filename, error_model):
         """
         infile name
             check if it exist

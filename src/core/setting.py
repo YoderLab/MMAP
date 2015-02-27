@@ -5,14 +5,13 @@ import os
 from core.amigo import go_connector
 from core.component import run_genovo, run_MINE
 from core.utils import path_utils
-from core.utils.path_utils import check_program_dir
 
 
 __author__ = 'erinmckenney'
 
 list_essential_metasim_only = [
     "metasim_pdir", "metasim_model_infile", "metasim_taxon_infile", "metasim_no_reads"]
-list_essential_genovo_only = ["genovo_infile", "genovo_pdir"]
+list_essential_genovo_only = ["genovo_pdir"]
 list_essential_glimmer_only = ["glimmer_pdir"]  # dont need outfile
 list_essential_blast_only = []
 list_essential_mine_only = ["mine_pdir", "mine_infile", "csv_files"]
@@ -26,7 +25,7 @@ list_all_essentials.extend(list_essential_blast_only)
 
 list_optional_shared = ["check_exist"]
 list_optional_metasim_only = ["metasim_outfile"]
-list_optional_genovo_only = ["genovo_outfile", "genovo_noI", "genovo_thresh"]
+list_optional_genovo_only = ["genovo_infile", "genovo_outfile", "genovo_noI", "genovo_thresh"]
 list_optional_glimmer_only = ["glimmer_infile", "glimmer_outfile"]
 list_optional_blast_only = [
     "blast_infile", "blast_batch_size", "blast_e_value", "blast_outfile"]
@@ -131,22 +130,24 @@ class Setting(object):
 
         ignore metasim for now
         do we need genovo+glimmer+blast+MINE?
-
-        FIXME: check filename name for wdir path before adding wdir to self.filename
         """
 #         print type(args.control_file), dir(args.control_file)
 #         print args.control_file.closed, args.control_file.name
-        control_file = os.path.abspath(args.control_file)
-        all_pars = parse_control_file2(control_file)
-#         print "Z:", os.getcwd(), os.path.normpath(os.path.join(os.getcwd(), control_file))
-        working_dir = os.path.dirname(args.infile)
+        control_file = os.path.abspath(args.control_file)  # + "A"
+        infile = os.path.abspath(args.infile)  # + "A"
 
         try:
 
-            wdir = path_utils.guess_full_dir(all_pars["wdir"], parent_dir=working_dir)
-            setting = cls(wdir=wdir)
+            if not (os.path.exists(infile) and os.path.isfile(infile)):  # and os.path.isdir(wdir)):
+#                 print  os.path.exists(infile) , os.path.isfile(infile) , os.path.isdir(wdir)
+                open(infile)
+            wdir = os.path.dirname(infile)
+            path_utils.check_directory(wdir)
 
-            if "mine_pdir" in all_pars:
+            all_pars = parse_control_file2(control_file)
+            setting = cls(wdir=wdir, genovo_infile=infile)
+
+            if "mine_pdir" in all_pars:  # TODO fix MINE later
                 setting.run_mine = True
                 setting.add_all(
                     mine_pdir=os.path.abspath(all_pars["mine_pdir"]),
@@ -154,16 +155,28 @@ class Setting(object):
                     csv_files=all_pars["csv_files"]
                 )
             else:
+                genovo_pdir = os.path.abspath(all_pars["genovo_pdir"])
+                glimmer_pdir = os.path.abspath(all_pars["glimmer_pdir"])
+                path_utils.check_directory(genovo_pdir)
+                path_utils.check_directory(glimmer_pdir)
+
+                if not (os.path.exists(glimmer_pdir) and os.path.isdir(glimmer_pdir)):
+                    raise IOError("glimmer_pdir does not exist %s" % glimmer_pdir)
                 setting.add_all(
 #                     genovo_infile=all_pars["genovo_infile"],
                     genovo_pdir=os.path.abspath(all_pars["genovo_pdir"]),
                     glimmer_pdir=os.path.abspath(all_pars["glimmer_pdir"])
                 )
 
-                setting._set_master_file_tag()
+#                 setting._set_master_file_tag()
 
-        except KeyError as err:
-            raise KeyError("Missing essential setting", err)
+        except KeyError as e:
+#             raise KeyError("Missing essential setting", e)
+            print "Missing essential setting %s" % e
+            raise
+        except IOError as e:
+            print e
+            raise
 
 
 #        keys = controlfile.all_arguments.keys()

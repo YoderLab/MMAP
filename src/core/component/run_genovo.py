@@ -29,14 +29,17 @@ class RunGenovo(RunComponent):
 
     """
 
-    def __init__(self, infile, pdir, no_iter=DEFAULT_GENOVO_NO_ITER, thresh=DEFAULT_GENOVO_THRESH, wdir=None,
+    def __init__(self, pdir, wdir, infile, no_iter=DEFAULT_GENOVO_NO_ITER, thresh=DEFAULT_GENOVO_THRESH,
                  outfile=None, check_exist=True):
         """
         Constructor
         """
+        super(RunGenovo, self).__init__(pdir, wdir, infile, check_exist)
         self.all_exts = ALL_EXTS
 
-        self.parameter_check(pdir, wdir, infile, outfile, check_exist, ".genovo")
+
+        self.outfile = self.check_outfile_filename(outfile, ".genovo")
+#         self.parameter_check(self.pdir, self.wdir, infile, outfile, check_exist, ".genovo")
 
         self.assemble = runExtProg(ASSEMBLE, pdir=self.pdir, length=2, check_OS=True)
         self.finalize = runExtProg(FINALIZE, pdir=self.pdir, length=3, check_OS=True)
@@ -45,11 +48,11 @@ class RunGenovo(RunComponent):
 
     @classmethod
     def create_genovo(cls, setting):
-        genovo = cls(infile=setting.get("genovo_infile"),
+        genovo = cls(pdir=setting.get("genovo_pdir"),
+                     wdir=setting.get("wdir"),
+                     infile=setting.get("genovo_infile"),
                      no_iter=setting.get("genovo_noI"),
                      thresh=setting.get("genovo_thresh"),
-                     pdir=setting.get("genovo_pdir"),
-                     wdir=setting.get("wdir"),
                      outfile=setting.get("genovo_outfile"),
                      check_exist=setting.get("check_exist"))
         return genovo

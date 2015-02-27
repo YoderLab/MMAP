@@ -1,5 +1,6 @@
 import os
 from core.utils import path_utils
+import warnings
 
 __author__ = 'erinmckenney'
 
@@ -13,32 +14,16 @@ def check_dir_ending(tdir):
 
 
 class RunComponent(object):
-    def __init__(self):
-        self.debug = False
-        pass
+
+    def __init__(self, pdir, wdir, infile, check_exist=True):
+        self.pdir = pdir
+        self.wdir = wdir
+        self.infile = infile
+        self.check_exist = check_exist
+
+
 
 #        self.all_exts=[]
-
-    def parameter_check(self, pdir, wdir, infile, outfile, check_exist, outfile_tag):
-        self.check_dirs(pdir, wdir, check_exist)
-        self.check_filenames(infile, outfile, outfile_tag)
-        self.check_file_exist(self.infile, check_exist)
-
-
-    def check_file_exist(self, filename, check_exist):
-        if check_exist:
-            if not self.is_file_exist(filename):
-                raise IOError("Error: file does not exist. %s" % (file))
-
-    def check_dirs(self, pdir, wdir, check_exist):
-        self.pdir = check_dir_ending(pdir)
-        if wdir is None:
-            self.wdir = self.pdir
-        else:
-            self.wdir = wdir
-        self.wdir = check_dir_ending(self.wdir)
-        self._check_dir_exist(check_exist)
-
 
 
     def check_valid_value(self, s, convert):
@@ -58,7 +43,7 @@ class RunComponent(object):
 #                raise(ValueError("ValueError: %s%s " % (e, s)))
         return v
 
-    def check_filenames(self, infile, outfile, outfile_tag):
+    def check_outfile_filename(self, outfile, outfile_tag):
         """
         infile name
             check if it exist
@@ -67,27 +52,12 @@ class RunComponent(object):
         if os.path.exists(  full_file_path  ):
         """
 
-
-#        if infile.find(self.wdir) > -1:
-#            self.infile = infile
-#        else:
-#            self.infile = self.wdir + infile
-
-
         if outfile is None:
-            prefix = path_utils.remove_ext(infile)
-            if outfile_tag is not None:
-                outfile = prefix + outfile_tag
-#            print "mm", self.filename
+            prefix = path_utils.remove_ext(self.infile)
+            outfile = prefix + outfile_tag
 
-
-#        if filename.find(self.wdir) > -1:
-#            self.filename = filename
-#        else:
-#            self.filename = self.wdir + filename
-
-        self.infile = path_utils.check_wdir_prefix(self.wdir, infile)
-        self.outfile = path_utils.check_wdir_prefix(self.wdir, outfile)
+        outfile = path_utils.check_wdir_prefix(self.wdir, outfile)
+        return outfile
 
 
 
@@ -141,3 +111,29 @@ class RunComponent(object):
                 raise(IOError("Error: invalid working directory: %s" % self.wdir))
             if not os.path.exists(self.pdir):
                 raise(IOError("Error: invalid program directory: %s" % self.pdir))
+
+
+
+
+    def parameter_check(self, outfile, outfile_tag):
+        warnings.warn("Deprecated method ", DeprecationWarning)
+#         self.check_dirs(pdir, wdir, check_exist)
+        self.check_outfile_filename(outfile, outfile_tag)
+#         self.check_file_exist(self.infile, check_exist)
+
+
+    def check_file_exist(self, filename, check_exist):
+        warnings.warn("Deprecated method ", DeprecationWarning)
+        if check_exist:
+            path_utils.check_file(filename)
+
+    def check_dirs(self, pdir, wdir, check_exist):
+        warnings.warn("Deprecated method. New setting check all folders first before pares it ", DeprecationWarning)
+        self.pdir = check_dir_ending(pdir)
+        if wdir is None:
+            self.wdir = self.pdir
+        else:
+            self.wdir = wdir
+        self.wdir = check_dir_ending(self.wdir)
+        self._check_dir_exist(check_exist)
+
