@@ -15,8 +15,8 @@ COORDS_POSITION = 2
 SYMBOL_POSITION = 3
 OUTFILE_POSITION = 4
 
-ALL_EXTS = [".coords", ".icm", ".longorfs", ".motif",
-            ".run1.detail", ".run1.predict", ".train", ".upstream"]  # , ".orfs"]
+ALL_EXTS = [".coords", ".detail", ".icm", ".longorfs", ".motif",
+            ".predict", ".run1.detail", ".run1.predict", ".train", ".upstream"]  # , ".orfs"]
 
 
 class RunGlimmer(RunComponent):
