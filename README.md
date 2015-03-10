@@ -32,14 +32,22 @@ This structure is used in default control file. If Genovo/Glimmer/MINE/BLAST are
  * core 
  * test
 
-### Generate local blast database
+### Generating local blast database
 
-The BLAST component is designed to query the Gene Ontology sequences from http://geneontology.org. Prior to running, you must create a local BLAST+ formatted database and include its path in the control file
+The BLAST component queries annotated Gene Ontology sequences downloaded from http://geneontology.org. Prior to running an analysis, you must download the sequences and convert them to a BLAST+ formatted database.
+
+A bash script is provided that does this automatically: [src/scripts/makeblastdb-go.sh]. It uses [curl](http://curl.haxx.se) and [makeblastdb](http://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Web&PAGE_TYPE=BlastDocs&DOC_TYPE=Download) to download a FASTA-formatted protein sequence and convert it to NCBI BLAST+ format.
+
+It accepts one argument - the output directory for the GO Sequence Database.
+
+    $ ./makeblastdb-go.sh /data/go-seqdb
+
+After generating the local database, add its path to the control file, so that the pipeline knows where to find it.
 
 ## USAGE
 
 ```
-#edit the control file "data/example/control"; Update "parent_directory=" and point that to the data/ directory 
+#edit the control file "data/example/control"; Update "parent_directory=" and point that to the data/ directory. Update "go_blastdb=" to point to the converted BLAST DB directory
 cd MMAP;
 python src/core/main.py data/example/control
 ```
@@ -48,6 +56,7 @@ python src/core/main.py data/example/control
 ### Directory list
 * data
  * example - testing dataset
+* scripts - utilities
 * src - source code
  * core 
  * test - use unittest in Python
