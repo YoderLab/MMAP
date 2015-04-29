@@ -11,6 +11,7 @@ import warnings
 from core.component.run_component import RunComponent
 from core.run_ext_prog import runExtProg
 from core.go_blast.extract_go_terms import extract
+from core.utils import path_utils
 
 BLASTX = './blastx'
 BLASTX_OUTFMT = "10 std stitle"
@@ -45,13 +46,15 @@ class RunBlast(RunComponent):
         :param blast_db: the local NCBI formatted blast databae
         :return: an initialized RunBlast
         """
-        super(RunBlast, self).__init__("", wdir, infile)
+        super(RunBlast, self).__init__(pdir, wdir, infile)
         self.all_exts = ALL_EXTS
         self.e_value = e_value
         self.blast_db = blast_db
 #         self.parameter_check(pdir, wdir, infile, outfile, check_exist, ".csv")
-        self.check_outfile_filename(infile, ".csv")
+#         self.check_outfile_filename(infile, ".csv")
+        self.check_outfile_filename(infile, None, outfile)
         self.intermediate_file = infile + INT_FILE_EXT
+        print "BLAST Setting", self.blast_db, self.infile, self.outfile, self.pdir
         self.blastx = runExtProg(BLASTX, pdir=self.pdir, length=10 + 2, check_OS=True)
         # step 2 is a python script.
         self.init_prog()
@@ -113,4 +116,51 @@ class RunBlast(RunComponent):
         # Should be complete now.
         if not self.is_complete(debug):
             raise(StandardError("Blast did not complete, output file does not exist"))
+
+
+
+
+    def check_outfile_filename(self, infile, records, outfile):
+        """
+        infile name
+            check if it exist
+            if yes, append <namebase>.#
+        if os.path.exists(  self.cwd+self.name_only  ):
+        if os.path.exists(  full_file_path  ):
+        """
+
+        if infile == None and records == None:
+            raise TypeError("Neither Blast infile nor records variable exists!!! ")
+
+        elif infile is None:
+            now = datetime.datetime.now()
+            namebase = now.strftime("%Y.%m.%d_%H.%M")
+
+        elif records is None:
+            self.infile = path_utils.check_wdir_prefix(self.wdir, infile)
+            namebase = None
+        else:
+            raise TypeError("Blast infile and records both exist! Pick one!")
+
+
+        if outfile is not None:
+            if outfile.endswith(".csv"):
+                location = outfile.rfind(".")
+                outfile = outfile[0:location]
+            self.outfile = path_utils.check_wdir_prefix(self.wdir, outfile)
+        elif namebase is None:
+            self.outfile = path_utils.remove_ext(self.infile) + ".blast"
+        else:
+            self.outfile = self.wdir + namebase
+        self.header = os.path.basename(self.outfile)
+
+        if not os.path.exists(self.outfile + ".csv"):
+            self.outfile = self.outfile + ".csv"
+        else:
+            version = 1
+            while os.path.exists(self.outfile + ".%s.csv" % version):
+                version = version + 1
+#            print "#####",self.outfile, location
+            self.outfile = self.outfile + ".%s.csv" % version
+
 

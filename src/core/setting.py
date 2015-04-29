@@ -162,7 +162,7 @@ class Setting(object):
                 path_utils.check_directory(genovo_pdir_full)
                 path_utils.check_directory(glimmer_pdir_full)
                 path_utils.check_directory(blast_pdir_full)
-                path_utils.check_directory(blast_db_full)
+#                 path_utils.check_directory(blast_db_full)
 
                 setting.add_all(
                     genovo_pdir=genovo_pdir_full,

@@ -105,7 +105,7 @@ class SoftwareAssembler(object):
 
     def _update_blast_setting(self):
         self.setting.add("blast_infile", self.glimmer.outfile)
-#         self.setting.add("blast_outfile", self.blast.outfile)
+        self.setting.add("blast_outfile", self.blast.outfile)
 
     def _update_mine_setting(self):
         self.setting.add("mine_infile", self.blast.outfile)
