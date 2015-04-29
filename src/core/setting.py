@@ -180,9 +180,9 @@ class Setting(object):
         for parameter in list_all_optionals:
             if parameter in all_pars.keys():
                 setting.add(parameter, all_pars[parameter])
-
+        print "Setting Summary\n"
         for k, v in setting.all_setting.items():
-            print k, v
+            print "Key: %s\t Value:%s" % (k, v)
         return setting
 
     def add_all(self, **kwargs):

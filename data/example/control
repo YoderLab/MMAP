@@ -1,10 +1,11 @@
 ##### list_essential_parameters
 
 #python -i infile -c[s] control/setting_file
-genovo_pdir= ~/Postdoc/Project_Lemur/MMAP/data/Genovo
-glimmer_pdir=/home/steven/Postdoc/Project_Lemur/MMAP/data/Glimmer/
-glimmer_pdir=./data/Glimmer/
+#genovo_pdir= ~/Postdoc/Project_Lemur/MMAP/data/Genovo
+#glimmer_pdir=/home/steven/Postdoc/Project_Lemur/MMAP/data/Glimmer/
 
+glimmer_pdir=./data/Glimmer/
+genovo_pdir= ./data/Genovo
 
 
 
