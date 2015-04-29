@@ -45,10 +45,12 @@ class RunBlast(RunComponent):
         :param blast_db: the local NCBI formatted blast databae
         :return: an initialized RunBlast
         """
+        super(RunBlast, self).__init__("", wdir, infile)
         self.all_exts = ALL_EXTS
         self.e_value = e_value
         self.blast_db = blast_db
-        self.parameter_check(pdir, wdir, infile, outfile, check_exist, ".csv")
+#         self.parameter_check(pdir, wdir, infile, outfile, check_exist, ".csv")
+        self.check_outfile_filename(infile, ".csv")
         self.intermediate_file = infile + INT_FILE_EXT
         self.blastx = runExtProg(BLASTX, pdir=self.pdir, length=10 + 2, check_OS=True)
         # step 2 is a python script.
@@ -91,7 +93,7 @@ class RunBlast(RunComponent):
         self.blastx.set_param_at('-outfmt', OUTFMT_SWITCH_POSITION)
         self.blastx.set_param_at(BLASTX_OUTFMT, OUTFMT_POSITION)
         self.blastx.set_param_at('-num_threads', OUTFMT_POSITION + 1)
-        self.blastx.set_param_at(3, OUTFMT_POSITION + 2)
+        self.blastx.set_param_at(1, OUTFMT_POSITION + 2)
 
     def is_complete(self, debug):
         return self.is_file_exist(self.outfile, debug=debug)

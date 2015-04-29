@@ -6,6 +6,7 @@ Created on April 16, 2012
 from core.component.run_MetaSim import RunMetaSim
 from core.component.run_genovo import RunGenovo
 from core.component.run_glimmer import RunGlimmer
+# from core.component.run_BLAST import RunBlast #TODO at some stage, it should be able to run both versions
 from core.component.run_local_BLAST import RunBlast
 from core.component.run_MINE import RunMINE
 from core.setting import Setting
@@ -104,7 +105,7 @@ class SoftwareAssembler(object):
 
     def _update_blast_setting(self):
         self.setting.add("blast_infile", self.glimmer.outfile)
-        self.setting.add("blast_outfile", self.blast.outfile)
+#         self.setting.add("blast_outfile", self.blast.outfile)
 
     def _update_mine_setting(self):
         self.setting.add("mine_infile", self.blast.outfile)

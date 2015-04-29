@@ -156,14 +156,19 @@ class Setting(object):
 
                 genovo_pdir_full = os.path.abspath(os.path.expanduser(all_pars["genovo_pdir"]))
                 glimmer_pdir_full = os.path.abspath(os.path.expanduser(all_pars["glimmer_pdir"]))
+                blast_pdir_full = os.path.abspath(os.path.expanduser(all_pars["blast_pdir"]))
+                blast_db_full = os.path.abspath(os.path.expanduser(all_pars["blast_db"]))
+
                 path_utils.check_directory(genovo_pdir_full)
                 path_utils.check_directory(glimmer_pdir_full)
+                path_utils.check_directory(blast_pdir_full)
+                path_utils.check_directory(blast_db_full)
 
                 setting.add_all(
                     genovo_pdir=genovo_pdir_full,
-                    glimmer_pdir=glimmer_pdir_full
-                                blast_pdir=check_program_dir(pdir, all_pars["blast_pdir"]),
-                                blast_db=all_pars["blast_db"]
+                    glimmer_pdir=glimmer_pdir_full,
+                    blast_pdir=blast_pdir_full,
+                    blast_db=blast_db_full
                 )
 
                 setting._set_master_file_tag()

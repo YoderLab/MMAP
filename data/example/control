@@ -6,9 +6,9 @@
 
 glimmer_pdir=./data/Glimmer/
 genovo_pdir= ./data/Genovo
-blast_pdir=BLAST/
+blast_pdir=./data/BLAST/
 # blast_db should be full path to the directory containing the BLAST+ formatted sequence DB
-blast_db=/go-blastdb
+blast_db=/home/steven/Desktop/BLAST/go-seqdb
 
 ##### list_essential_mine_only
 #mine_pdir=MINE/
@@ -20,18 +20,18 @@ blast_db=/go-blastdb
 #check_exist=True
 
 ## list_of_genovo_options
-genovo_outfile=genovoOut
+genovo_outfile=genovoOut3
 genovo_noI= 10
 genovo_thresh= 250
 
 # list_of_glimmer_options
 # glimmer_infile=MMAP_example.genovo
-glimmer_outfile=glimmerOut
-extract_outfile=extractOut
+glimmer_outfile=glimmerOut3
+extract_outfile=extractOut3
 
 # blast_infile=1k_out_out.orfs
 blast_e_value=1e-1
-blast_outfile=blastOut
+blast_outfile=blastOut3
 blast_comparison_file=1stRun_out_out.orfs.csv
 
 ##### list_optional_mine_only

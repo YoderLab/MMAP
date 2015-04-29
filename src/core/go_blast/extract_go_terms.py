@@ -46,6 +46,6 @@ if __name__ == '__main__':
     if go_terms_csv_file_name is None:
       raise Exception('Error: The CONT_OUTPUT_GOTERMS_FILE variable must be set')
     extract(blast_csv_file_name, go_terms_csv_file_name)
-  except e:
+  except Exception as e:
     print e.message
     exit(1)
