@@ -17,15 +17,15 @@ BLASTX_OUTFMT = "10 std stitle"
 INT_FILE_EXT = '.tmp.csv'
 ALL_EXTS = ['.csv']
 
-DB_SWITCH_POSITION = 1          # -db
+DB_SWITCH_POSITION = 1  # -db
 DB_FILE_POSITION = 2
-QUERY_SWITCH_POSITION = 3       # -query
+QUERY_SWITCH_POSITION = 3  # -query
 INFILE_POSITION = 4
-OUT_SWITCH_POSITION = 5         # -out
+OUT_SWITCH_POSITION = 5  # -out
 OUTFILE_POSITION = 6
-EVALUE_SWITCH_POSITION = 7      # -evalue
+EVALUE_SWITCH_POSITION = 7  # -evalue
 EVALUE_POSITION = 8
-OUTFMT_SWITCH_POSITION = 9      # -outfmt
+OUTFMT_SWITCH_POSITION = 9  # -outfmt
 OUTFMT_POSITION = 10
 
 class RunBlast(RunComponent):
@@ -50,7 +50,7 @@ class RunBlast(RunComponent):
         self.blast_db = blast_db
         self.parameter_check(pdir, wdir, infile, outfile, check_exist, ".csv")
         self.intermediate_file = infile + INT_FILE_EXT
-        self.blastx = runExtProg(BLASTX, pdir=self.pdir, length=10, check_OS=True)
+        self.blastx = runExtProg(BLASTX, pdir=self.pdir, length=10 + 2, check_OS=True)
         # step 2 is a python script.
         self.init_prog()
 
@@ -90,6 +90,8 @@ class RunBlast(RunComponent):
         self.blastx.set_param_at(self.e_value, EVALUE_POSITION)
         self.blastx.set_param_at('-outfmt', OUTFMT_SWITCH_POSITION)
         self.blastx.set_param_at(BLASTX_OUTFMT, OUTFMT_POSITION)
+        self.blastx.set_param_at('-num_threads', OUTFMT_POSITION + 1)
+        self.blastx.set_param_at(3, OUTFMT_POSITION + 2)
 
     def is_complete(self, debug):
         return self.is_file_exist(self.outfile, debug=debug)
