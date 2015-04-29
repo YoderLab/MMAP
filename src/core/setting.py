@@ -13,7 +13,7 @@ list_essential_metasim_only = [
     "metasim_pdir", "metasim_model_infile", "metasim_taxon_infile", "metasim_no_reads"]
 list_essential_genovo_only = ["genovo_pdir"]
 list_essential_glimmer_only = ["glimmer_pdir"]  # dont need outfile
-list_essential_blast_only = []
+list_essential_blast_only = ["blast_pdir", "blast_db"]
 list_essential_mine_only = ["mine_pdir", "mine_infile", "csv_files"]
 
 list_all_essentials = []
@@ -162,6 +162,8 @@ class Setting(object):
                 setting.add_all(
                     genovo_pdir=genovo_pdir_full,
                     glimmer_pdir=glimmer_pdir_full
+                                blast_pdir=check_program_dir(pdir, all_pars["blast_pdir"]),
+                                blast_db=all_pars["blast_db"]
                 )
 
                 setting._set_master_file_tag()

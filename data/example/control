@@ -6,8 +6,9 @@
 
 glimmer_pdir=./data/Glimmer/
 genovo_pdir= ./data/Genovo
-
-
+blast_pdir=BLAST/
+# blast_db should be full path to the directory containing the BLAST+ formatted sequence DB
+blast_db=/go-blastdb
 
 ##### list_essential_mine_only
 #mine_pdir=MINE/
