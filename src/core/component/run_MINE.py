@@ -102,7 +102,7 @@ class RunMINE(RunComponent):
         Class method
         Create RunMINE from Setting class
         """
-        setting = setting_class.get_pars("mine")
+        setting = setting_class.check_parameters_program("mine")
 #         print "C: ", setting.get("mine_clumps")
         mine = cls(infile=setting.get("mine_infile"),
                    pdir=setting.get("mine_pdir"),

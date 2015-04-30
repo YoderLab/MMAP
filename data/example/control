@@ -20,19 +20,19 @@ blast_db=/home/steven/Desktop/BLAST/go-seqdb/go-seqdb
 #check_exist=True
 
 ## list_of_genovo_options
-genovo_outfile=genovoOut3
+#genovo_outfile=genovoOut3
 genovo_noI= 10
 genovo_thresh= 250
 
 # list_of_glimmer_options
-# glimmer_infile=MMAP_example.genovo
-glimmer_outfile=glimmerOut3
-extract_outfile=extractOut3
+## glimmer_infile=MMAP_example.genovo
+#glimmer_outfile=glimmerOut3
+#extract_outfile=extractOut3
 
 # blast_infile=1k_out_out.orfs
 blast_e_value=1e-15
-blast_outfile=blastOut3
-blast_comparison_file=1stRun_out_out.orfs.csv
+#blast_outfile=blastOut3
+#blast_comparison_file=1stRun_out_out.orfs.csv
 
 ##### list_optional_mine_only
 # mine_infile=MinIn

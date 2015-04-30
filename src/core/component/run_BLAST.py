@@ -80,7 +80,7 @@ class RunBlast(RunComponent):
     @classmethod
     def create_blast_from_setting(cls, setting_class):
 
-        setting = setting_class.get_pars("blast")
+        setting = setting_class.all_setting  # TODO: unchecked
 
         blast = cls(
             wdir=setting.get("wdir"),
@@ -88,6 +88,7 @@ class RunBlast(RunComponent):
             batch_size=setting.get("blast_batch_size"),
             infile=setting.get("blast_infile"),
             outfile=setting.get("blast_outfile"))
+
         return blast
 
 

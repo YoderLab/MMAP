@@ -31,12 +31,12 @@ class TestSetting(unittest.TestCase):
         setting.add_all(metasim_model_infile="mmInfile",
                         filename="mOutfile", metasim_no_reads=200)
         #        setting.print_all()
-        self.assertRaises(KeyError, setting.get_pars, "metasim")
+        self.assertRaises(KeyError, setting.check_parameters_program, "metasim")
 
         setting = Setting()
         setting.add_all(metasim_model_infile="mmInfile",
                         filename="mOutfile", metasim_taxon_infile="tInfile")
-        self.assertRaises(KeyError, setting.get_pars, "metasim")
+        self.assertRaises(KeyError, setting.check_parameters_program, "metasim")
 
         setting.add("metasim_pdir", "m_p_dir")
         setting.add_all(metasim_no_reads=250, wdir=self.wdir)
@@ -46,18 +46,18 @@ class TestSetting(unittest.TestCase):
                     "wdir": self.wdir, "check_exist": True,
                     "metasim_outfile": None}
         setting.debug = 0
-        self.assertEqual(expected, setting.get_pars("metasim"))
+        self.assertEqual(expected, setting.check_parameters_program("metasim"))
 
         setting.add("wdir", "otherdir")
         expected["wdir"] = "otherdir"
-        self.assertEqual(expected, setting.get_pars("metasim"))
+        self.assertEqual(expected, setting.check_parameters_program("metasim"))
 
         setting = Setting()
         setting.add_all(metasim_model_infile="mmInfile", metasim_no_reads=250,
                         metasim_taxon_infile="tInfile", metasim_pdir="m_p_dir")
         setting.add("wdir", "otherdir")
         expected.pop("filename")
-        self.assertEqual(expected, setting.get_pars("metasim"))
+        self.assertEqual(expected, setting.check_parameters_program("metasim"))
 
     def test_Setting_get_genovo(self):
 
@@ -65,12 +65,12 @@ class TestSetting(unittest.TestCase):
         setting.add_all(genovo_infile="gInfile",
                         filename="gOutfile", genovo_thresh=2)
 #        setting.print_all()
-        self.assertRaises(KeyError, setting.get_pars, "genovo")
+        self.assertRaises(KeyError, setting.check_parameters_program, "genovo")
 
         setting = Setting()
         setting.add_all(genovo_infile="gInfile",
                         filename="gOutfile", genovo_noI=2)
-        self.assertRaises(KeyError, setting.get_pars, "genovo")
+        self.assertRaises(KeyError, setting.check_parameters_program, "genovo")
 
         setting.add("genovo_thresh", 10)
         setting.add_all(genovo_thresh=14, genovo_pdir="g_p_dir", wdir=self.wdir)
@@ -79,24 +79,24 @@ class TestSetting(unittest.TestCase):
                     "genovo_pdir": "g_p_dir",
                     "wdir": self.wdir, "check_exist": True,
                     "genovo_outfile": None}
-        self.assertEqual(expected, setting.get_pars("genovo"))
+        self.assertEqual(expected, setting.check_parameters_program("genovo"))
 
         setting.add("wdir", "otherdir")
         expected["wdir"] = "otherdir"
-        self.assertEqual(expected, setting.get_pars("genovo"))
+        self.assertEqual(expected, setting.check_parameters_program("genovo"))
 
         setting = Setting()
         setting.add_all(genovo_infile="gInfile", genovo_thresh=14,
                         genovo_pdir="g_p_dir", genovo_noI=2)
         setting.add("wdir", "otherdir")
         expected.pop("filename")
-        self.assertEqual(expected, setting.get_pars("genovo"))
+        self.assertEqual(expected, setting.check_parameters_program("genovo"))
 
     def test_Setting_get_glimmer(self):
         setting = Setting()
         setting.add_all(filename="Outfile")
         #        setting.print_all()
-        self.assertRaises(KeyError, setting.get_pars, "glimmer")
+        self.assertRaises(KeyError, setting.check_parameters_program, "glimmer")
 
 
         setting.add_all(genovo_outfile="infile", glimmer_outfile="glimOut",
@@ -105,7 +105,7 @@ class TestSetting(unittest.TestCase):
                     "filename": "Outfile", "glimmer_outfile": "glimOut",
                     "glimmer_pdir": "glimp_dir",
                     "wdir": self.wdir, "check_exist": True}
-        self.assertEqual(expected, setting.get_pars("glimmer"))
+        self.assertEqual(expected, setting.check_parameters_program("glimmer"))
 
         setting.add_all(glimmer_infile="glInfile")
         expected["glimmer_infile"] = "glInfile"
@@ -116,7 +116,7 @@ class TestSetting(unittest.TestCase):
         setting.add_all(blast_infile="bInfile", blast_outfile="bOutfile")
 
         with self.assertRaises(KeyError):
-            setting.get_pars("blast")
+            setting.check_parameters_program("blast")
 
         setting.add_all(blast_e_value=1e-15,
                         wdir="working_dir", check_exist=True)
@@ -125,12 +125,12 @@ class TestSetting(unittest.TestCase):
                     "wdir": "working_dir", "check_exist": True
                     }
         setting.debug = True
-        self.assertEqual(expected, setting.get_pars("blast"))
+        self.assertEqual(expected, setting.check_parameters_program("blast"))
 
 
         setting.add("wdir", "otherdir")
         expected["wdir"] = "otherdir"
-        self.assertEqual(expected, setting.get_pars("blast"))
+        self.assertEqual(expected, setting.check_parameters_program("blast"))
 
         setting = Setting()
         setting.add_all(blast_infile="bInfile")
@@ -140,7 +140,7 @@ class TestSetting(unittest.TestCase):
 #        expected.pop("filename")
 #        TODO: debug switch
         setting.debug = True
-        self.assertEqual(expected, setting.get_pars("blast"))
+        self.assertEqual(expected, setting.check_parameters_program("blast"))
 
     def test_Setting_get_mine(self):
         setting = Setting()
@@ -163,7 +163,7 @@ class TestSetting(unittest.TestCase):
                     "mine_clumps": 15, "mine_jobID": None,
                     "csv_files": ["file1", "file2", "file3"]}
 
-        self.assertEqual(expected, setting.get_pars("mine"))
+        self.assertEqual(expected, setting.check_parameters_program("mine"))
 
         setting.add_all(mine_infile="mineInfile")
         expected["mine_infile"] = "mineInfile"
@@ -176,8 +176,8 @@ class TestSetting(unittest.TestCase):
                     "genovo_thresh": 14, "genovo_pdir": "g_p_dir",
                     "check_exist": True, "genovo_outfile": None,
                     "wdir": "otherdir"}
-        print "W", setting.get_pars("genovo")
-        self.assertEqual(expected, setting.get_pars("genovo"))
+        print "W", setting.check_parameters_program("genovo")
+        self.assertEqual(expected, setting.check_parameters_program("genovo"))
 
 
         setting = Setting()
@@ -190,12 +190,12 @@ class TestSetting(unittest.TestCase):
                     "glimmer_pdir": "glimp_dir",
                     "wdir": "working_dir", "check_exist": True
                     }
-        print setting.get_pars("glimmer")
-        self.assertEqual(expected, setting.get_pars("glimmer"))
+        print setting.check_parameters_program("glimmer")
+        self.assertEqual(expected, setting.check_parameters_program("glimmer"))
 
         setting.add("glimmer_infile", "glInfile")
         expected["glimmer_infile"] = "glInfile"
-        self.assertEqual(expected, setting.get_pars("glimmer"))
+        self.assertEqual(expected, setting.check_parameters_program("glimmer"))
 
 
     def test_create_setting_from_file(self):

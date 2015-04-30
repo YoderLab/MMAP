@@ -19,6 +19,7 @@ OUTFILE_POSITION = 4
 ALL_EXTS = [".coords", ".detail", ".icm", ".longorfs", ".motif",
             ".predict", ".run1.detail", ".run1.predict", ".train", ".upstream"]  # , ".orfs"]
 
+DEFAULT_OUTFILE_EXT = ".glimmer"
 
 class RunGlimmer(RunComponent):
     """
@@ -58,8 +59,8 @@ class RunGlimmer(RunComponent):
         Class method
         Create RunGlimmer from Setting class
         """
-        setting = setting_class.get_pars("glimmer")
-        glimmer = RunGlimmer.create_glimmer(setting)
+#         setting = setting_class.check_parameters_program("glimmer")
+        glimmer = RunGlimmer.create_glimmer(setting_class.all_setting)
         return glimmer
 
     def init_prog(self):

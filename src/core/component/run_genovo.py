@@ -21,6 +21,7 @@ ALL_EXTS = [".status", ".dump1", ".dump.best"]
 
 DEFAULT_GENOVO_NO_ITER = 10
 DEFAULT_GENOVO_THRESH = 250
+DEFAULT_OUTFILE_EXT = ".genovo"
 
 
 class RunGenovo(RunComponent):
@@ -58,8 +59,8 @@ class RunGenovo(RunComponent):
 
     @classmethod
     def create_genovo_from_setting(cls, setting_class):
-        setting = setting_class.get_pars("genovo")
-        genovo = RunGenovo.create_genovo(setting)
+#         setting = setting_class.check_parameters_program("genovo")
+        genovo = RunGenovo.create_genovo(setting_class.all_setting)
         return genovo
 
 

@@ -3,7 +3,7 @@ import StringIO
 import os
 
 from core.amigo import go_connector
-from core.component import run_genovo, run_MINE
+from core.component import run_genovo, run_MINE, run_glimmer, run_local_BLAST
 from core.utils import path_utils
 
 
@@ -152,6 +152,7 @@ class Setting(object):
                     mine_infile=all_pars["mine_infile"],
                     csv_files=all_pars["csv_files"]
                 )
+                setting.check_parameters_program("mine")
             else:
 
                 genovo_pdir_full = os.path.abspath(os.path.expanduser(all_pars["genovo_pdir"]))
@@ -170,6 +171,9 @@ class Setting(object):
                     blast_pdir=blast_pdir_full,
                     blast_db=blast_db_full
                 )
+                setting.check_parameters_program("genovo")
+                setting.check_parameters_program("glimmer")
+                setting.check_parameters_program("blast")
 
                 setting._set_master_file_tag()
 
@@ -186,10 +190,11 @@ class Setting(object):
 #        print keys
         for parameter in list_all_optionals:
             if parameter in all_pars.keys():
+                print "ADDING: ", parameter, all_pars[parameter]
                 setting.add(parameter, all_pars[parameter])
-        print "Setting Summary\n"
-        for k, v in setting.all_setting.items():
-            print "Key: %s\t Value:%s" % (k, v)
+
+
+        setting.print_all(1)
         return setting
 
     def add_all(self, **kwargs):
@@ -203,7 +208,7 @@ class Setting(object):
         self.all_setting[key] = value
 
     def print_all(self, level=0):
-        print "all_keys", self.all_setting.keys()
+        print "Setting Summary: all_keys:", self.all_setting.keys()
         if level > 0:
             for k in sorted(self.all_setting.iterkeys()):
                 print "key = %s, value = %s" % (k, self.all_setting[k])
@@ -211,7 +216,7 @@ class Setting(object):
     def get(self, key):
         return self.all_setting[key]
 
-    def get_pars(self, program):
+    def check_parameters_program(self, program):
         self._check_essential_keys(program)
         self._check_all_optional_keys(program)
         return self.all_setting
@@ -244,6 +249,8 @@ class Setting(object):
                 self.add(c, None)
 
         if program_name in "genovo":
+            outfile = self.generate_default_outfile_name(self.all_setting.get("genovo_infile"), run_genovo.DEFAULT_OUTFILE_EXT)
+            self._replace_none_with_defalut("genovo_outfile", outfile)
             self._replace_none_with_defalut(
                 "genovo_noI", run_genovo.DEFAULT_GENOVO_NO_ITER)
             self._replace_none_with_defalut(
@@ -252,6 +259,9 @@ class Setting(object):
         if program_name is "glimmer":
             self._replace_none_with_defalut_par(
                 "glimmer_infile", "genovo_outfile")
+
+            outfile = self.generate_default_outfile_name(self.all_setting.get("glimmer_infile"), run_glimmer.DEFAULT_OUTFILE_EXT)
+            self._replace_none_with_defalut("glimmer_outfile", outfile)
 #            if self.all_setting("glimmer_outfile") is None:
 # self.all_setting("glimmer_outfile") = self.get("master_tag") +
 # ".output.glimmer"
@@ -259,6 +269,10 @@ class Setting(object):
         if program_name is "blast":
             self._replace_none_with_defalut_par(
                 "blast_infile", "glimmer_outfile")
+
+            outfile = self.generate_default_outfile_name(self.all_setting.get("blast_infile"), run_local_BLAST.DEFAULT_OUTFILE_EXT)
+            self._replace_none_with_defalut("blast_outfile", outfile)
+
             self._replace_none_with_defalut(
                 "blast_e_value", go_connector.DEFAULT_E_VALUE_CUT_OFF)
             self._replace_none_with_defalut(
@@ -282,6 +296,13 @@ class Setting(object):
         if self.get(check_key) is None:
             self._set(check_key, self.get(default_par_key))
 
+
+    def generate_default_outfile_name(self, infile, outfile_tag):
+
+        prefix = path_utils.remove_ext(infile)
+        outfile = prefix + outfile_tag
+        outfile = path_utils.check_wdir_prefix(self.all_setting.get("wdir"), outfile)
+        return outfile
 
 #    def _check(self, variable):
 #        for v in variable:
@@ -307,6 +328,7 @@ class Setting(object):
 
 
 """
+## out dated. UPDATE required
 #list_essential_metasim_only
 metasim_pdir:
 metasim_model_infile:

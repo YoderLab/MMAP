@@ -16,6 +16,7 @@ from core.utils import path_utils
 BLASTX = './blastx'
 BLASTX_OUTFMT = "10 std stitle"
 INT_FILE_EXT = '.tmp.csv'
+DEFAULT_OUTFILE_EXT = ".blast.csv"
 ALL_EXTS = ['.csv']
 
 DB_SWITCH_POSITION = 1  # -db
@@ -51,8 +52,8 @@ class RunBlast(RunComponent):
         self.e_value = e_value
         self.blast_db = blast_db
 #         self.parameter_check(pdir, wdir, infile, outfile, check_exist, ".csv")
-#         self.check_outfile_filename(infile, ".csv")
-        self.check_outfile_filename(infile, None, outfile)
+        self.outfile = self.check_outfile_filename(outfile, ".blast.csv")
+#         self.check_outfile_filename(infile, None, outfile)
         self.intermediate_file = infile + INT_FILE_EXT
         print "BLAST Setting", self.blast_db, self.infile, self.outfile, self.pdir
         self.blastx = runExtProg(BLASTX, pdir=self.pdir, length=10 + 2, check_OS=True)
@@ -80,8 +81,8 @@ class RunBlast(RunComponent):
         Class method
         Create RunBlast from Setting class
         """
-        setting = setting_class.get_pars("blast")
-        blast = RunBlast.create_blast(setting)
+#         setting = setting_class.check_parameters_program("blast")
+        blast = RunBlast.create_blast(setting_class.all_setting)
         return blast
 
     def init_prog(self):
@@ -120,7 +121,7 @@ class RunBlast(RunComponent):
 
 
 
-    def check_outfile_filename(self, infile, records, outfile):
+    def check_outfile_filename_noreplace(self, infile, records, outfile):
         """
         infile name
             check if it exist
@@ -162,5 +163,7 @@ class RunBlast(RunComponent):
                 version = version + 1
 #            print "#####",self.outfile, location
             self.outfile = self.outfile + ".%s.csv" % version
+
+
 
 

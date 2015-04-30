@@ -58,21 +58,8 @@ class SoftwareAssembler(object):
             self.mine = RunMINE.create_class_from_setting(self.setting)
         else:
             self.genovo = RunGenovo.create_genovo_from_setting(self.setting)
-            self._update_genovo_setting()
-
             self.glimmer = RunGlimmer.create_glimmer_from_setting(self.setting)
-            self._update_glimmer_setting()
-
             self.blast = RunBlast.create_blast_from_setting(self.setting)
-            self._update_blast_setting()
-
-#        if self.setting.get("mine_pdir") is not None:
-
-
-#        try:
-
-#        except StandardError as e:
-#            print e
 
 
 
@@ -84,7 +71,6 @@ class SoftwareAssembler(object):
         #    use -454 error model!!
 
         if self.setting.run_mine:
-
             self.mine.run(self.debug)
         else:
             self.genovo.run(self.debug)
@@ -95,17 +81,20 @@ class SoftwareAssembler(object):
 
 
 
-    def _update_genovo_setting(self):
-        self.setting.add("genovo_outfile", self.genovo.outfile)
-
-    def _update_glimmer_setting(self):
-        self.setting.add("glimmer_infile", self.glimmer.infile)
-        self.setting.add("glimmer_outfile", self.glimmer.outfile)
-#        self.setting.add("extract_outfile", self.glimmer.orfs_file)
-
-    def _update_blast_setting(self):
-        self.setting.add("blast_infile", self.glimmer.outfile)
-        self.setting.add("blast_outfile", self.blast.outfile)
-
-    def _update_mine_setting(self):
-        self.setting.add("mine_infile", self.blast.outfile)
+#     def _update_genovo_setting(self):
+#         print "Set genevo", self.setting.get("genovo_outfile"), self.genovo.outfile
+#         self.setting.add("genovo_outfile", self.genovo.outfile)
+#
+#     def _update_glimmer_setting(self):
+#         print "Update glimmer", self.glimmer.infile, self.glimmer.outfile
+#         print "SETTING glimmer", self.setting.get("glimmer_infile"), self.setting.get("glimmer_outfile")
+#         self.setting.add("glimmer_infile", self.glimmer.infile)
+#         self.setting.add("glimmer_outfile", self.glimmer.outfile)
+# #        self.setting.add("extract_outfile", self.glimmer.orfs_file)
+#
+#     def _update_blast_setting(self):
+#         self.setting.add("blast_infile", self.glimmer.outfile)
+#         self.setting.add("blast_outfile", self.blast.outfile)
+#
+#     def _update_mine_setting(self):
+#         self.setting.add("mine_infile", self.blast.outfile)
