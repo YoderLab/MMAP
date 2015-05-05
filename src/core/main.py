@@ -80,7 +80,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(prog="MMAP", formatter_class=CustomSingleMetavarFormatter)
 #                                     usage='%(prog)s -i INFILE -c CONTROL [OPTIONS]'
 
-    group1 = parser.add_argument_group('required arguments')
+    group1 = parser.add_argument_group('Global arguments')
     group1.add_argument(
         "-i", "--infile", metavar="INFILE", dest="infile",
         required=True, help="Infile for genovo")
@@ -92,6 +92,36 @@ if __name__ == "__main__":
                         help="increase debugging level")
     # debug level 1 - external program output only
     # debug level 2 - external program output and errors
+
+#
+#     subparsers = parser.add_subparsers(
+#         title='subcommands', description='valid subcommands',
+#         help='additional help')
+#     parser_create = subparsers.add_parser('summary', help="MINE stats", formatter_class=CustomSingleMetavarFormatter)
+#     parser_create.set_defaults(which='MINE')
+#     parser_create.add_argument("-i", "--infileDir", metavar="INDIR", dest="infile_dirs",
+#         required=True, help="Infile for MINE")
+#
+#     group1 = parser_create.add_argument_group('Global arguments')
+# #     group1.add_argument(
+# #         "-i", "--infile", metavar="INFILE", dest="infile",
+# #         required=True, help="Infile for genovo")
+#     group1.add_argument(
+#         "-c", "--control", metavar="CONTROL", dest="control_file",
+#         required=True, help="Control File contains all settings")
+#
+# #         '--first_name', required=True, help='First Name')
+# #     parser_create.add_argument(
+# #         '--last_name', required=True, help='Last Name')
+#     parser_process = subparsers.add_parser('process', help="Genovo, Glimmer, Blast", formatter_class=CustomSingleMetavarFormatter)
+#     parser_process.add_argument(
+#         "-i", "--infile", metavar="INFILE", dest="infile",
+#         required=True, help="Infile for genovo")
+#     #     parser_delete = subparsers.add_parser('delete')
+# #     parser_delete.set_defaults(which='delete')
+# #     parser_delete.add_argument(
+# #         'id', help='Database ID')
+# #     args = vars(parser.parse_args())
 
 
 #     test_run_dir = path_utils.get_data_dir() + "BenchMark3/"

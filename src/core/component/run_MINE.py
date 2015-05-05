@@ -49,25 +49,29 @@ class RunMINE(RunComponent):
 
     def __init__(self, pdir, wdir, infile, comparison='-allPairs',
                  cv=DEFAULT_CV, exp=DEFAULT_EXP, clumps=DEFAULT_CLUMPS,
-                 jobID="out",
+                 jobID=None,
                  csv_files=None,
                  check_exist=True):
         """
         Constructor
         """
         super(RunMINE, self).__init__(pdir, wdir, infile, check_exist)
+
         if jobID is None:
-            self.jobID = "out"
+            self.jobID = "MINEout"
         else:
             self.jobID = jobID
 
         self.all_exts = ALL_EXTS
-        self.parameter_check(pdir, wdir, infile, infile, False, "")
+#         self.parameter_check(pdir, wdir, infile, infile, False, "")
 
-        if not self.infile.endswith(".csv"):
-            self.infile = self.infile + ".csv"
-        self.outfile = self.infile + "," + self.jobID
-        if self.check_outfiles_with_filetag_exist(self.outfile) and check_exist:
+#         if not self.infile.endswith(".csv"):
+#             self.infile = self.infile + ".csv"
+#         self.outfile = self.infile + "," + self.jobID
+        self.outfile = self.check_outfile_filename(self.infile, ".mine.csv")
+        print self.infile, self.outfile, self.pdir
+#         print self.check_outfiles_with_filetag_exist(self.outfile) //FIXME: anothre hack
+        if self.check_outfiles_with_filetag_exist(self.outfile)[0] and check_exist:
             raise IOError("Warning: outfiles exist!")
 
         self.mine = runExtProg(MINE, pdir=self.pdir, length=6 + offset, check_OS=True)
@@ -102,8 +106,9 @@ class RunMINE(RunComponent):
         Class method
         Create RunMINE from Setting class
         """
-        setting = setting_class.check_parameters_program("mine")
+#         setting = setting_class.check_parameters_program("mine")
 #         print "C: ", setting.get("mine_clumps")
+        setting = setting_class.all_setting
         mine = cls(infile=setting.get("mine_infile"),
                    pdir=setting.get("mine_pdir"),
                    wdir=setting.get("wdir"),
@@ -198,7 +203,7 @@ def merge_output_csv_to_MINE(outfile, csv_files, isMINE=True):
         with open(infile, 'rb') as f:
             reader = csv.reader(f)
             for i, row in enumerate(reader):
-                print row
+#                 print row
                 if i == 0:
 #                        zeroes = len(row) - 1
                     index = row[1].rfind(os.sep) + 1

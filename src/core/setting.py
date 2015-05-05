@@ -139,17 +139,22 @@ class Setting(object):
 
         try:
             path_utils.check_file(control_file)
-            path_utils.check_file(infile)
             path_utils.check_directory(wdir)
+            path_utils.check_file(infile)
+
+            setting = cls(wdir=wdir)
 
             all_pars = parse_control_file2(control_file)
-            setting = cls(wdir=wdir, genovo_infile=infile)
 
             if "mine_pdir" in all_pars:  # TODO fix MINE later
                 setting.run_mine = True
+                mune_pdir_full = os.path.abspath(os.path.expanduser(all_pars["mine_pdir"]))
+#                 infile = path_utils.check_wdir_prefix(all_pars["wdir"], )
+                infile = setting.generate_default_outfile_name(all_pars["mine_infile"], ".mine.csv")
+                infile = os.path.abspath(infile)  # #FIXME, should be able to do it better
                 setting.add_all(
-                    mine_pdir=os.path.abspath(all_pars["mine_pdir"]),
-                    mine_infile=all_pars["mine_infile"],
+                    mine_pdir=mune_pdir_full,
+                    mine_infile=infile,
                     csv_files=all_pars["csv_files"]
                 )
                 setting.check_parameters_program("mine")
@@ -166,6 +171,7 @@ class Setting(object):
 #                 path_utils.check_directory(blast_db_full)
 
                 setting.add_all(
+                    genovo_infile=infile,
                     genovo_pdir=genovo_pdir_full,
                     glimmer_pdir=glimmer_pdir_full,
                     blast_pdir=blast_pdir_full,
@@ -233,6 +239,7 @@ class Setting(object):
             if not isExist:
                 raise KeyError("key does not exist: %s" % v)
         if program_name is "mine":
+            print  self.get("csv_files")
             list_csv = self.get("csv_files").split(",")
             list_csv = [f.strip() for f in list_csv]
             self._set("csv_files", list_csv)
@@ -249,6 +256,7 @@ class Setting(object):
                 self.add(c, None)
 
         if program_name in "genovo":
+
             outfile = self.generate_default_outfile_name(self.all_setting.get("genovo_infile"), run_genovo.DEFAULT_OUTFILE_EXT)
             self._replace_none_with_defalut("genovo_outfile", outfile)
             self._replace_none_with_defalut(
