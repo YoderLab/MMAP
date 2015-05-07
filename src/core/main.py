@@ -155,7 +155,7 @@ if __name__ == "__main__":
     else:
         pass
 #        print "v==0"
-    args.debug = 1
+#     args.debug = 1
     assembler = SoftwareAssembler.create_from_args(args)
 #     sys.exit(12)
     assembler.run()

@@ -10,6 +10,7 @@ from core.component.run_glimmer import RunGlimmer
 from core.component.run_local_BLAST import RunBlast
 from core.component.run_MINE import RunMINE
 from core.setting import Setting
+from core.component import run_BLAST
 
 
 
@@ -59,6 +60,7 @@ class SoftwareAssembler(object):
         else:
             self.genovo = RunGenovo.create_genovo_from_setting(self.setting)
             self.glimmer = RunGlimmer.create_glimmer_from_setting(self.setting)
+#             self.blast = run_BLAST.RunBlast.create_blast_from_setting(self.setting)
             self.blast = RunBlast.create_blast_from_setting(self.setting)
 
 

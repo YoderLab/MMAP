@@ -15,6 +15,7 @@ from core.utils import path_utils
 
 BLASTX = './blastx'
 BLASTX_OUTFMT = "10 std stitle"
+BLASTX_SEG = "yes"
 INT_FILE_EXT = '.tmp.csv'
 DEFAULT_OUTFILE_EXT = ".blast.csv"
 ALL_EXTS = ['.csv']
@@ -29,6 +30,10 @@ EVALUE_SWITCH_POSITION = 7  # -evalue
 EVALUE_POSITION = 8
 OUTFMT_SWITCH_POSITION = 9  # -outfmt
 OUTFMT_POSITION = 10
+SEG_SWITCH_POSITION = 11  # -seg
+SEG_POSITION = 12
+THREAD_SWITCH_POSITION = 13  # -num_threads
+THREAD_POSITION = 14
 
 class RunBlast(RunComponent):
     """
@@ -56,7 +61,7 @@ class RunBlast(RunComponent):
 #         self.check_outfile_filename(infile, None, outfile)
         self.intermediate_file = infile + INT_FILE_EXT
         print "BLAST Setting", self.blast_db, self.infile, self.outfile, self.pdir
-        self.blastx = runExtProg(BLASTX, pdir=self.pdir, length=10 + 2, check_OS=True)
+        self.blastx = runExtProg(BLASTX, pdir=self.pdir, length=14, check_OS=True)
         # step 2 is a python script.
         self.init_prog()
 
@@ -96,8 +101,10 @@ class RunBlast(RunComponent):
         self.blastx.set_param_at(self.e_value, EVALUE_POSITION)
         self.blastx.set_param_at('-outfmt', OUTFMT_SWITCH_POSITION)
         self.blastx.set_param_at(BLASTX_OUTFMT, OUTFMT_POSITION)
-        self.blastx.set_param_at('-num_threads', OUTFMT_POSITION + 1)
-        self.blastx.set_param_at(1, OUTFMT_POSITION + 2)
+        self.blastx.set_param_at('-seg', SEG_SWITCH_POSITION)
+        self.blastx.set_param_at(BLASTX_SEG, SEG_POSITION)
+        self.blastx.set_param_at('-num_threads', THREAD_SWITCH_POSITION)
+        self.blastx.set_param_at(1, THREAD_POSITION)
 
     def is_complete(self, debug):
         return self.is_file_exist(self.outfile, debug=debug)
@@ -111,7 +118,7 @@ class RunBlast(RunComponent):
             print "===Warning!!! Blast outfiles already exists, skip Blast!!!==="
             return
 
-        print 'Running blastx'
+        print 'Running blastx.. debug', debug
         self.blastx.run(debug)
         extract(self.intermediate_file, self.outfile)
         # Should be complete now.
