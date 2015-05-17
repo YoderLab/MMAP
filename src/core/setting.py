@@ -15,7 +15,7 @@ list_essential_shared = ["parent_directory", "wdir"]
 list_essential_metasim_only = ["metasim_pdir", "metasim_model_infile", "metasim_taxon_infile", "metasim_no_reads"]
 list_essential_genovo_only = ["genovo_infile", "genovo_pdir"]
 list_essential_glimmer_only = ["glimmer_pdir"]  # dont need outfile
-list_essential_blast_only = []
+list_essential_blast_only = ["blast_pdir", "blast_db"]
 list_essential_mine_only = ["mine_pdir", "mine_infile", "csv_files"]
 
 list_all_essentials = []
@@ -30,7 +30,7 @@ list_optional_shared = ["checkExist"]
 list_optional_metasim_only = ["metasim_outfile"]
 list_optional_genovo_only = ["genovo_outfile", "genovo_noI", "genovo_thresh"]
 list_optional_glimmer_only = ["glimmer_infile", "glimmer_outfile"]
-list_optional_blast_only = ["blast_infile", "blast_batch_size", "blast_e_value", "blast_outfile"]
+list_optional_blast_only = ["blast_infile", "blast_batch_size", "blast_e_value", "blast_seg", "blast_outfile"]
 list_optional_mine_only = [ "mine_comparison_style", "mine_cv", "mine_exp", "mine_clumps", "mine_jobID"]
 list_optional_internal_only = ["master_tag"]
 
@@ -140,6 +140,8 @@ class Setting(object):
                                 genovo_infile=all_pars["genovo_infile"],
                                 genovo_pdir=check_program_dir(pdir, all_pars["genovo_pdir"]),
                                 glimmer_pdir=check_program_dir(pdir, all_pars["glimmer_pdir"]),
+                                blast_pdir=check_program_dir(pdir, all_pars["blast_pdir"]),
+                                blast_db=all_pars["blast_db"]
                                 )
                 setting._set_master_file_tag()
 

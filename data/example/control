@@ -12,8 +12,9 @@ glimmer_pdir=Glimmer/
 
 ##### list_essential_blast_only
 blast_wdir=Blast/
-
-
+blast_pdir=BLAST/
+# blast_db should be full path to the directory containing the BLAST+ formatted sequence DB
+blast_db=/go-blastdb
 
 ##### list_essential_mine_only
 #mine_pdir=MINE/

@@ -6,7 +6,7 @@ Created on April 16, 2012
 from core.component.run_MetaSim import RunMetaSim
 from core.component.run_genovo import RunGenovo
 from core.component.run_glimmer import RunGlimmer
-from core.component.run_BLAST import RunBlast
+from core.component.run_local_BLAST import RunBlast
 from core.component.run_MINE import RunMINE
 from core.setting import Setting
 
