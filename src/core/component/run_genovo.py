@@ -101,7 +101,7 @@ class RunGenovo(RunComponent):
     def run(self, debug=False):
         isComplete = self._isCompleted(False)
         if isComplete:
-            print "Warning!!! Genovo outfiles already exist, skip Genovo!!!"
+            print "==Warning: Genovo outfiles already exist, skip Genovo!!!=="
         else:
             print "Running Genovo assemble..."
             self.assemble.run(debug)

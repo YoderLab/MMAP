@@ -28,19 +28,19 @@ OUT_SWITCH_POSITION = 5  # -out
 OUTFILE_POSITION = 6
 EVALUE_SWITCH_POSITION = 7  # -evalue
 EVALUE_POSITION = 8
-OUTFMT_SWITCH_POSITION = 9  # -outfmt
-OUTFMT_POSITION = 10
-SEG_SWITCH_POSITION = 11  # -seg
-SEG_POSITION = 12
-THREAD_SWITCH_POSITION = 13  # -num_threads
-THREAD_POSITION = 14
+THREAD_SWITCH_POSITION = 9  # -num_threads
+THREAD_POSITION = 10
+OUTFMT_SWITCH_POSITION = 11  # -outfmt
+OUTFMT_POSITION = 12
+SEG_SWITCH_POSITION = 13  # -seg
+SEG_POSITION = 14
 
 class RunBlast(RunComponent):
     """
     run BLAST
 
     """
-    def __init__(self, infile, pdir, wdir=None, outfile=None, check_exist=True, e_value='1e-15', blast_db=None):
+    def __init__(self, infile, pdir, blast_db, wdir=None, outfile=None, check_exist=True, e_value='1e-15', blast_thread=1):
         """
 
         :param infile: The input sequence to blast
@@ -56,11 +56,11 @@ class RunBlast(RunComponent):
         self.all_exts = ALL_EXTS
         self.e_value = e_value
         self.blast_db = blast_db
-#         self.parameter_check(pdir, wdir, infile, outfile, check_exist, ".csv")
+        self.blast_thread = blast_thread
+
         self.outfile = self.check_outfile_filename(outfile, ".blast.csv")
-#         self.check_outfile_filename(infile, None, outfile)
         self.intermediate_file = infile + INT_FILE_EXT
-        print "BLAST Setting", self.blast_db, self.infile, self.outfile, self.pdir
+        # print "BLAST Setting", self.blast_db, self.infile, self.outfile, self.pdir
         self.blastx = runExtProg(BLASTX, pdir=self.pdir, length=14, check_OS=True)
         # step 2 is a python script.
         self.init_prog()
@@ -77,7 +77,8 @@ class RunBlast(RunComponent):
                     outfile=setting.get("blast_outfile"),
                     check_exist=setting.get("check_exist"),
                     e_value=setting.get("blast_e_value"),
-                    blast_db=setting.get("blast_db"))
+                    blast_db=setting.get("blast_db"),
+                    blast_thread=setting.get("blast_thread"))
         return blast
 
     @classmethod
@@ -99,12 +100,13 @@ class RunBlast(RunComponent):
         self.blastx.set_param_at(self.intermediate_file, OUTFILE_POSITION)
         self.blastx.set_param_at('-evalue', EVALUE_SWITCH_POSITION)
         self.blastx.set_param_at(self.e_value, EVALUE_POSITION)
+        self.blastx.set_param_at('-num_threads', THREAD_SWITCH_POSITION)
+        self.blastx.set_param_at(self.blast_thread, THREAD_POSITION)
         self.blastx.set_param_at('-outfmt', OUTFMT_SWITCH_POSITION)
         self.blastx.set_param_at(BLASTX_OUTFMT, OUTFMT_POSITION)
         self.blastx.set_param_at('-seg', SEG_SWITCH_POSITION)
         self.blastx.set_param_at(BLASTX_SEG, SEG_POSITION)
-        self.blastx.set_param_at('-num_threads', THREAD_SWITCH_POSITION)
-        self.blastx.set_param_at(1, THREAD_POSITION)
+
 
     def is_complete(self, debug):
         return self.is_file_exist(self.outfile, debug=debug)
@@ -115,7 +117,7 @@ class RunBlast(RunComponent):
         # 2. extract GO terms
 
         if self.is_complete(debug):
-            print "===Warning!!! Blast outfiles already exists, skip Blast!!!==="
+            print "==Warning: Blast outfiles exist, skip Blast!!!=="
             return
 
         print 'Running blastx.. debug', debug

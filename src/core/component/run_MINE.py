@@ -8,6 +8,7 @@ import os
 from core.component.run_component import RunComponent
 from core.run_ext_prog import runExtProg
 from core.utils import path_utils
+import sys
 
 
 # TODO: Use python wrapper??
@@ -58,7 +59,7 @@ class RunMINE(RunComponent):
         super(RunMINE, self).__init__(pdir, wdir, infile, check_exist)
 
         if jobID is None:
-            self.jobID = "MINEout"
+            self.jobID = "MineOutput"
         else:
             self.jobID = jobID
 
@@ -69,10 +70,8 @@ class RunMINE(RunComponent):
 #             self.infile = self.infile + ".csv"
 #         self.outfile = self.infile + "," + self.jobID
         self.outfile = self.check_outfile_filename(self.infile, ".mine.csv")
-        print self.infile, self.outfile, self.pdir
+        # print self.infile, self.outfile, self.pdir
 #         print self.check_outfiles_with_filetag_exist(self.outfile) //FIXME: anothre hack
-        if self.check_outfiles_with_filetag_exist(self.outfile)[0] and check_exist:
-            raise IOError("Warning: outfiles exist!")
 
         self.mine = runExtProg(MINE, pdir=self.pdir, length=6 + offset, check_OS=True)
         self.mine.set_param_at("-jar", 1)
@@ -80,10 +79,8 @@ class RunMINE(RunComponent):
         self.init_prog(comparison, cv, exp, clumps)
 
         self.csv_files = csv_files
-        if self.csv_files is not None:
-            for i, c in enumerate(self.csv_files):
-                self.csv_files[i] = path_utils.check_wdir_prefix(self.wdir, c)
-#
+        if self.csv_files is None:
+            print "TODO?"
 #    @classmethod
 #    def create_mine(cls, setting):
 #        """
@@ -179,9 +176,13 @@ class RunMINE(RunComponent):
 
     def run(self, debug=False):
 
-        if self.csv_files is not None:
-            merge_output_csv_to_MINE(self.infile, self.csv_files, True)
-        self.mine.run(debug)
+        if self.check_outfiles_with_filetag_exist(self.outfile + "," + self.jobID)[0] and self.check_exist:
+            print "==Warning: MINE outfile %s exist, skip MINE!!!==." % (self.outfile + "," + self.jobID)
+
+        else:
+            if self.csv_files is not None:
+                merge_output_csv_to_MINE(self.infile, self.csv_files, True)
+            self.mine.run(debug)
 
     def get_all_switches(self):
         return self.mine._switch
@@ -225,6 +226,7 @@ def merge_output_csv_to_MINE(outfile, csv_files, isMINE=True):
                     template[key].append(0)
     with open(outfile, 'wb') as csvfile:
         writer = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_NONE)
+        print "HH:", header
         writer.writerow(header)
         if isMINE:
             for row in template.values():

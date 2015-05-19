@@ -11,6 +11,7 @@ Example:
 change to ./src/ folder
 
 cd src/
+python src/core/main.py -h;python src/core/main.py summary -h; python src/core/main.py process -h;
 python core/main.py ../data/BenchMark3/Lac_5k_0/control
 python core/main.py ../data/BenchMark3/Lac_5k_MINE/control
 
@@ -26,9 +27,13 @@ import scipy
 from core.assembler.software_assembler import SoftwareAssembler
 from core.utils import path_utils
 from argparse import HelpFormatter
-from _ast import TryExcept
-import warnings
 
+MMAP_DESCRIPTION = "MMAP: Microbial Metagenomic Analysis Pipeline"
+MMAP_VERSION_MAJOR = 0
+MMAP_VERSION_MINOR = 2
+MMAP_VERSION = "%d.%d" % (MMAP_VERSION_MAJOR, MMAP_VERSION_MINOR)
+MMAP_AUTHOR = ""
+MMAP_COYPRIGHT = "Copyright (C) LGPL"  # ??
 
 class CustomSingleMetavarFormatter(argparse.HelpFormatter):
 
@@ -65,11 +70,9 @@ class CustomSingleMetavarFormatter(argparse.HelpFormatter):
 
 
 
-
-
-
 # print "data dir:\t", data_dir
 def main():
+    # python src/core/main.py -h;python src/core/main.py summary -h; python src/core/main.py process -h;
     print __name__
 
 
@@ -77,43 +80,74 @@ if __name__ == "__main__":
 
 
 
-    parser = argparse.ArgumentParser(prog="MMAP", formatter_class=CustomSingleMetavarFormatter)
-#                                     usage='%(prog)s -i INFILE -c CONTROL [OPTIONS]'
+    parser = argparse.ArgumentParser(
+        prog="MMAP",
+        description=MMAP_DESCRIPTION,
+        formatter_class=CustomSingleMetavarFormatter,
+#         formatter_class=argparse.RawDescriptionHelpFormatter,
+        )
+    version_string = "%(prog)s " + MMAP_VERSION
 
-    group1 = parser.add_argument_group('Global arguments')
-    group1.add_argument(
-        "-i", "--infile", metavar="INFILE", dest="infile",
-        required=True, help="Infile for genovo")
-    group1.add_argument(
-        "-c", "--control", metavar="CONTROL", dest="control_file",
-        required=True, help="Control File contains all settings")
-
-    parser.add_argument("-d", "--debug", action="count", default=0,
-                        help="increase debugging level")
-    # debug level 1 - external program output only
-    # debug level 2 - external program output and errors
-
-#
-#     subparsers = parser.add_subparsers(
-#         title='subcommands', description='valid subcommands',
-#         help='additional help')
-#     parser_create = subparsers.add_parser('summary', help="MINE stats", formatter_class=CustomSingleMetavarFormatter)
-#     parser_create.set_defaults(which='MINE')
-#     parser_create.add_argument("-i", "--infileDir", metavar="INDIR", dest="infile_dirs",
-#         required=True, help="Infile for MINE")
-#
-#     group1 = parser_create.add_argument_group('Global arguments')
+    parser.add_argument("-v", "--version",
+        action='version',
+        version=version_string,
+        help="Print MMAP version"
+        )
+#     group1 = parser.add_argument_group('Global arguments')
 # #     group1.add_argument(
 # #         "-i", "--infile", metavar="INFILE", dest="infile",
 # #         required=True, help="Infile for genovo")
 #     group1.add_argument(
-#         "-c", "--control", metavar="CONTROL", dest="control_file",
-#         required=True, help="Control File contains all settings")
+#         "-c", "--control",
+# #         metavar="CONTROL",
+#         dest="control_file",
+# #         required=True,
+#         help="Control File contains all settings [default ./control]")
 #
-# #         '--first_name', required=True, help='First Name')
-# #     parser_create.add_argument(
-# #         '--last_name', required=True, help='Last Name')
-#     parser_process = subparsers.add_parser('process', help="Genovo, Glimmer, Blast", formatter_class=CustomSingleMetavarFormatter)
+#     parser.add_argument("-d", "--debug", action="count", default=0,
+#                         help="Debugging level [0]")
+    # debug level 1 - external program output only
+    # debug level 2 - external program output and errors
+    common_parser = argparse.ArgumentParser(add_help=False)
+    common_parser.add_argument("-d", "--debug", action="count", default=0,
+                               help="Debugging level [default: 0]")
+    common_parser.add_argument(
+        "-c", "--control", metavar="",
+        dest="control_file",
+        help="Control File contains all settings [default ./control]")
+
+#
+
+    subparsers = parser.add_subparsers(
+        title='subcommands',
+        metavar="<subcommand>",
+        dest='sub_command',
+        description="Available subcommands: ",  # To view help info of a command, use '<command> -h/--help'",
+        help="To view help info of a command, use '<subcommand> -h/--help'",  # "Print usage and help info.
+#         formatter_class=CustomSingleMetavarFormatter
+        )
+
+#     help_str = "Print usage and help info. To view help info of a command, use '<command> -h/--help'"
+#     parser_help = subparsers.add_parser('help', help=help_str)
+
+    parser_summary = subparsers.add_parser(
+        'summary', parents=[common_parser],
+        help="Calculate MINE statistics",
+        formatter_class=CustomSingleMetavarFormatter)
+#     parser_summary.set_defaults(which='MINE')
+    parser_summary.add_argument("-m", "--mine_csv", metavar="", dest="csv_dir",
+        required=True, help="Folders contains *.csv files for MINE")
+    parser_summary.add_argument("-t", "--temp_mine", metavar="", dest="mine_infile",
+        help="temporary MINE input file")
+
+    parser_process = subparsers.add_parser(
+        'process', parents=[common_parser],
+        help="Run Genovo, Glimmer, Blast",
+        formatter_class=CustomSingleMetavarFormatter)
+    parser_process.add_argument(
+        "-i", "--infile", metavar="", dest="infile",
+        required=True, help="Infile for genovo (fasta format)")
+
 #     parser_process.add_argument(
 #         "-i", "--infile", metavar="INFILE", dest="infile",
 #         required=True, help="Infile for genovo")
@@ -124,13 +158,6 @@ if __name__ == "__main__":
 # #     args = vars(parser.parse_args())
 
 
-#     test_run_dir = path_utils.get_data_dir() + "BenchMark3/"
-#     cFile = test_run_dir + "Lac_5k_2/control"
-
-#     test_run_dir = path_utils.get_data_dir() + "BenchMark3/Lac_5k_0/"
-# test_run_dir = path_utils.get_data_dir() + "BenchMark2/Lac_20k_0/"
-#     cFile = "/home/steven/Postdoc/Project_Lemur/MMAP/data/BenchMark10/10k_0/control"
-
 
     try:
         args = parser.parse_args()
@@ -139,21 +166,18 @@ if __name__ == "__main__":
 #         warnings.warn(e)
         sys.exit(8)
 
-    CWD = os.getcwd()
-    data_dir = path_utils.get_data_dir(CWD)
-    print CWD
-    print data_dir
-
-
+#     data_dir = path_utils.get_data_dir(CWD)
+#     print data_dir
+    print args
     if args.debug >= 2:
         print "Debug level 2"
     if args.debug >= 1:
+        CWD = os.getcwd()
+        print "Current working directory %s" % CWD
         print "NumPy version %s" % numpy.__version__
         print "SciPy version %s" % scipy.__version__
         print "Bio version %s at %s" % (Bio.__version__, Bio.__path__)
 
-    else:
-        pass
 #        print "v==0"
 #     args.debug = 1
     assembler = SoftwareAssembler.create_from_args(args)
@@ -161,10 +185,8 @@ if __name__ == "__main__":
     assembler.run()
 
 
-#    cFile = test_run_dir + "Lac_5k_MINE/control"
-#    args = parser.parse_args([cFile])
 #
 #    assembler = SoftwareAssembler.create_from_args(args)
 #    assembler.run()
-#    print "=== END MAIN ==="
+    print "== END MAIN =="
 

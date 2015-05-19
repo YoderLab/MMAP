@@ -5,6 +5,8 @@ import os
 from core.amigo import go_connector
 from core.component import run_genovo, run_MINE, run_glimmer, run_local_BLAST
 from core.utils import path_utils
+import sys
+import glob
 
 
 __author__ = 'erinmckenney'
@@ -28,7 +30,9 @@ list_optional_metasim_only = ["metasim_outfile"]
 list_optional_genovo_only = ["genovo_infile", "genovo_outfile", "genovo_noI", "genovo_thresh"]
 list_optional_glimmer_only = ["glimmer_infile", "glimmer_outfile"]
 list_optional_blast_only = [
-    "blast_infile", "blast_batch_size", "blast_e_value", "blast_outfile"]
+    "blast_infile", "blast_batch_size", "blast_e_value", "blast_outfile",
+    "blast_thread"
+    ]
 list_optional_mine_only = [
     "mine_comparison_style", "mine_cv", "mine_exp", "mine_clumps", "mine_jobID"]
 list_optional_internal_only = ["master_tag"]
@@ -98,7 +102,7 @@ def parse_control_file2(control_file):
 
 
 def parse_control_file(filepath):
-    print("Parsing control file: %s" % filepath)
+    print("=Parsing control file: %s" % filepath)
     all_arguments = dict()
     infile = open(filepath)
     for line in infile:
@@ -116,12 +120,12 @@ def parse_control_file(filepath):
 
 class Setting(object):
 
-    def __init__(self, **kwargs):
+    def __init__(self, run_mine=False, **kwargs):
 
         self.all_setting = dict()
         self.add_all(**kwargs)
 #         self.debug = False
-        self.run_mine = False
+        self.run_mine = run_mine
 
     @classmethod
     def create_setting_from_file(cls, args):
@@ -133,32 +137,25 @@ class Setting(object):
         """
 #         print type(args.control_file), dir(args.control_file)
 #         print args.control_file.closed, args.control_file.name
-        control_file = os.path.abspath(args.control_file)  # + "A"
-        infile = os.path.abspath(args.infile)  # + "A"
-        wdir = os.path.dirname(infile)
 
         try:
+
+            if args.control_file is None:
+                print "Try default control file [./control]"
+                args.control_file = "control"
+            control_file = os.path.abspath(args.control_file)
+
             path_utils.check_file(control_file)
-            path_utils.check_directory(wdir)
-            path_utils.check_file(infile)
-
-            setting = cls(wdir=wdir)
-
             all_pars = parse_control_file2(control_file)
 
-            if "mine_pdir" in all_pars:  # TODO fix MINE later
-                setting.run_mine = True
-                mune_pdir_full = os.path.abspath(os.path.expanduser(all_pars["mine_pdir"]))
-#                 infile = path_utils.check_wdir_prefix(all_pars["wdir"], )
-                infile = setting.generate_default_outfile_name(all_pars["mine_infile"], ".mine.csv")
-                infile = os.path.abspath(infile)  # #FIXME, should be able to do it better
-                setting.add_all(
-                    mine_pdir=mune_pdir_full,
-                    mine_infile=infile,
-                    csv_files=all_pars["csv_files"]
-                )
-                setting.check_parameters_program("mine")
-            else:
+            if args.sub_command == "process":
+                print "Subcommand: process"
+                infile = os.path.abspath(args.infile)
+                wdir = os.path.dirname(infile)
+
+                path_utils.check_file(infile)
+                path_utils.check_directory(wdir)
+                setting = cls(wdir=wdir)
 
                 genovo_pdir_full = os.path.abspath(os.path.expanduser(all_pars["genovo_pdir"]))
                 glimmer_pdir_full = os.path.abspath(os.path.expanduser(all_pars["glimmer_pdir"]))
@@ -168,7 +165,7 @@ class Setting(object):
                 path_utils.check_directory(genovo_pdir_full)
                 path_utils.check_directory(glimmer_pdir_full)
                 path_utils.check_directory(blast_pdir_full)
-#                 path_utils.check_directory(blast_db_full)
+    #                 path_utils.check_directory(blast_db_full)
 
                 setting.add_all(
                     genovo_infile=infile,
@@ -183,24 +180,67 @@ class Setting(object):
 
                 setting._set_master_file_tag()
 
+            elif args.sub_command == "summary":
+                print "Subcommand: summary "
+                csv_dir = os.path.abspath(args.csv_dir)  # wdir
+                path_utils.check_directory(csv_dir)
+                wdir = csv_dir
+
+                setting = cls(wdir=wdir, run_mine=True)
+                mine_pdir_full = os.path.abspath(os.path.expanduser(all_pars["mine_pdir"]))
+#                 infile = path_utils.check_wdir_prefix(all_pars["wdir"], )
+
+                if args.mine_infile is None:
+                   args.mine_infile = "tempMineInfile"
+
+                infile = setting.generate_default_outfile_name(args.mine_infile, ".csv")
+                infile = os.path.abspath(infile)  # #FIXME, should be able to do it better
+
+                csv_list = []
+                for name in glob.glob(wdir + '/*.csv'):
+                    if name.find(args.mine_infile) > 0:
+                        continue
+                    if name.find("Results.csv") > 0 :
+                        continue
+                    if name.find("tmp.csv") > 0 :
+                        continue
+                    print "Found CSV file: ", name
+                    csv_list.append(name)
+
+                print "Total: %d CSV files in %s.\nPlease remove unwanted *.csv file and restart." % (len(csv_list), wdir)
+
+                setting.add_all(
+                    mine_pdir=mine_pdir_full,
+                    mine_infile=infile,
+                    csv_files=csv_list
+                )
+                setting.check_parameters_program("mine")
+
         except KeyError as e:
 #             raise KeyError("Missing essential setting", e)
-            print "Missing essential setting %s" % e
-            raise
+            print "ERROR: Missing essential setting %s in control file:%s" % (e, control_file)
+            if args.debug > 1:
+                raise
+            sys.exit(5)
+
         except IOError as e:
             print e
-            raise
+            if args.debug > 1:
+                raise
+
+            sys.exit(6)
 
 
 #        keys = controlfile.all_arguments.keys()
 #        print keys
         for parameter in list_all_optionals:
             if parameter in all_pars.keys():
-                print "ADDING: ", parameter, all_pars[parameter]
+                if args.debug > 0:
+                    print "ADDING: ", parameter, all_pars[parameter]
                 setting.add(parameter, all_pars[parameter])
 
 
-        setting.print_all(1)
+        setting.print_all(args.debug)
         return setting
 
     def add_all(self, **kwargs):
@@ -214,7 +254,8 @@ class Setting(object):
         self.all_setting[key] = value
 
     def print_all(self, level=0):
-        print "Setting Summary: all_keys:", self.all_setting.keys()
+        if level > 1:
+            print "Setting Summary: all_keys:", self.all_setting.keys()
         if level > 0:
             for k in sorted(self.all_setting.iterkeys()):
                 print "key = %s, value = %s" % (k, self.all_setting[k])
@@ -239,10 +280,11 @@ class Setting(object):
             if not isExist:
                 raise KeyError("key does not exist: %s" % v)
         if program_name is "mine":
-            print  self.get("csv_files")
-            list_csv = self.get("csv_files").split(",")
-            list_csv = [f.strip() for f in list_csv]
-            self._set("csv_files", list_csv)
+#             print  self.get("csv_files")
+#             list_csv = self.get("csv_files").split(",")
+#             list_csv = [f.strip() for f in list_csv]
+#             self._set("csv_files", list_csv)
+            self._set("csv_files", self.get("csv_files"))
 
     def _check_all_optional_keys(self, program_name):
         """
@@ -285,6 +327,8 @@ class Setting(object):
                 "blast_e_value", go_connector.DEFAULT_E_VALUE_CUT_OFF)
             self._replace_none_with_defalut(
                 "blast_batch_size", go_connector.DEFAULT_BATCH_SIZE)
+            self._replace_none_with_defalut(
+                "blast_thread", 1)
 
         if program_name is "mine":
 

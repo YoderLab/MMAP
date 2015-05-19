@@ -71,7 +71,7 @@ def guess_full_dir(current_dir, parent_dir):
         full_dir = os.path.join(parent_dir, current_dir)
         print "Guess working directory: %s or %s" % (current_dir, full_dir)
         if not os.path.exists(full_dir):
-            raise(IOError("Error: invalid working directory: %s or %s" % (current_dir, full_dir)))
+            raise(IOError("ERROR: Invalid working directory: %s or %s" % (current_dir, full_dir)))
     pass
 
 
@@ -79,16 +79,16 @@ def guess_full_dir(current_dir, parent_dir):
 
 def check_directory(directory):
     if not os.path.exists(directory):
-        raise IOError("Directory does not exist %s" % directory)
+        raise IOError("ERROR: Directory does not exist %s" % directory)
     if not os.path.isdir(directory):
-        raise IOError("Input is not a directory %s" % directory)
+        raise IOError("ERROR: Input is not a directory %s" % directory)
 
 
 def check_file(test_file):
     if not os.path.exists(test_file):
-        raise IOError("File does not exist %s" % test_file)
+        raise IOError("ERROR: File does not exist %s" % test_file)
     if not os.path.isfile(test_file):
-        raise IOError("Input is not a test_file %s" % test_file)
+        raise IOError("ERROR: Input is not a test_file %s" % test_file)
     with open(test_file):
         pass
 

@@ -29,6 +29,7 @@ def read_terms(input_file_name):
 def write_terms(terms_dict, output_file_name):
   with open(output_file_name, 'wb') as csvfile:
     writer = csv.writer(csvfile)
+    writer.writerow(["GoTerm", output_file_name])
     for term in terms_dict.keys():
       writer.writerow((term, terms_dict[term]))
 

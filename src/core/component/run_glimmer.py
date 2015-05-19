@@ -93,7 +93,7 @@ class RunGlimmer(RunComponent):
         """
         isComplete = self._isGlimmerCompleted(False) and self._isExtractCompleted(False)
         if isComplete:
-            print "Warning!!! Glimmer outfiles already exist, skip Glimmer!!!"
+            print "==Warning: Glimmer outfiles exist, skip Glimmer!!!=="
         else:
 
             print "Running Glimmer..."
