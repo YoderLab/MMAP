@@ -1,20 +1,20 @@
 ##### list_essential_parameters
+#python src/core/main.py -h;python src/core/main.py summary -h; python src/core/main.py process -h;
+#python src/core/main.py -h
+#python src/core/main.py summary -h
+#python src/core/main.py process -h
+#
+#python src/core/main.py process -i data/example/MMAP_example.fasta
+#python src/core/main.py summary -m data/example/
 
-#python -i infile -c[s] control/setting_file
-#genovo_pdir= ~/Postdoc/Project_Lemur/MMAP/data/Genovo
-#glimmer_pdir=/home/steven/Postdoc/Project_Lemur/MMAP/data/Glimmer/
 
 glimmer_pdir=./data/Glimmer/
 genovo_pdir= ./data/Genovo
 blast_pdir=./data/BLAST/
+mine_pdir=./data/MINE/
+
 # blast_db should be full path to the directory containing the BLAST+ formatted sequence DB
 blast_db=~/Desktop/BLAST/go-seqdb/go-seqdb
-
-##### list_essential_mine_only
-mine_pdir=./data/MINE/
-#mine_infile=mineInfile
-#csv_files=
-
 
 ##### list_optional_shared
 #check_exist=True
@@ -31,7 +31,7 @@ genovo_thresh= 250
 
 # blast_infile=1k_out_out.orfs
 #blast_e_value=1e-15
-blast_thread=3
+#blast_thread=3
 #blast_outfile=blastOut
 #blast_comparison_file=1stRun_out_out.orfs.csv
 

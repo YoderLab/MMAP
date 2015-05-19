@@ -2,20 +2,25 @@
 
 @author: Steven Wu
 
-dependency: Biopython - 1.58
-dependency: numpy - 1.6.1
-dependency: SciPy - 0.10.0
+dependency: 
+NumPy version 1.8.2
+SciPy version 0.12.1
+Bio version 1.65
 
-
-Example:
-change to ./src/ folder
+Example: change to ./src/ folder
 
 cd src/
 python src/core/main.py -h;python src/core/main.py summary -h; python src/core/main.py process -h;
-python core/main.py ../data/BenchMark3/Lac_5k_0/control
-python core/main.py ../data/BenchMark3/Lac_5k_MINE/control
+python src/core/main.py -h
+python src/core/main.py summary -h
+python src/core/main.py process -h
+
+python src/core/main.py process -i data/example/MMAP_example.fasta
+python src/core/main.py summary -m data/example/
+
 
 '''
+
 import argparse
 import os
 import sys
@@ -26,14 +31,14 @@ import scipy
 
 from core.assembler.software_assembler import SoftwareAssembler
 from core.utils import path_utils
-from argparse import HelpFormatter
+
 
 MMAP_DESCRIPTION = "MMAP: Microbial Metagenomic Analysis Pipeline"
 MMAP_VERSION_MAJOR = 0
 MMAP_VERSION_MINOR = 2
 MMAP_VERSION = "%d.%d" % (MMAP_VERSION_MAJOR, MMAP_VERSION_MINOR)
-MMAP_AUTHOR = ""
-MMAP_COYPRIGHT = "Copyright (C) LGPL"  # ??
+MMAP_AUTHOR = "Steven Wu,  Erin McKenney, Dan Leehr"
+MMAP_LICENCE = "Copyright (C) LGPL"  # ??
 
 class CustomSingleMetavarFormatter(argparse.HelpFormatter):
 
@@ -70,11 +75,8 @@ class CustomSingleMetavarFormatter(argparse.HelpFormatter):
 
 
 
-# print "data dir:\t", data_dir
 def main():
-    # python src/core/main.py -h;python src/core/main.py summary -h; python src/core/main.py process -h;
     print __name__
-
 
 if __name__ == "__main__":
 
@@ -88,32 +90,23 @@ if __name__ == "__main__":
         )
     version_string = "%(prog)s " + MMAP_VERSION
 
-    parser.add_argument("-v", "--version",
+    parser.add_argument(
+        "-v", "--version",
         action='version',
         version=version_string,
         help="Print MMAP version"
         )
-#     group1 = parser.add_argument_group('Global arguments')
-# #     group1.add_argument(
-# #         "-i", "--infile", metavar="INFILE", dest="infile",
-# #         required=True, help="Infile for genovo")
-#     group1.add_argument(
-#         "-c", "--control",
-# #         metavar="CONTROL",
-#         dest="control_file",
-# #         required=True,
-#         help="Control File contains all settings [default ./control]")
-#
-#     parser.add_argument("-d", "--debug", action="count", default=0,
-#                         help="Debugging level [0]")
+
     # debug level 1 - external program output only
     # debug level 2 - external program output and errors
     common_parser = argparse.ArgumentParser(add_help=False)
-    common_parser.add_argument("-d", "--debug", action="count", default=0,
-                               help="Debugging level [default: 0]")
+    common_parser.add_argument(
+        "-d", "--debug", action="count", default=0,
+        help="Debugging level. Available options: -d, -dd [default: 0]")
     common_parser.add_argument(
         "-c", "--control", metavar="",
         dest="control_file",
+        default="./control",
         help="Control File contains all settings [default ./control]")
 
 #
@@ -135,32 +128,34 @@ if __name__ == "__main__":
         help="Calculate MINE statistics",
         formatter_class=CustomSingleMetavarFormatter)
 #     parser_summary.set_defaults(which='MINE')
-    parser_summary.add_argument("-m", "--mine_csv", metavar="", dest="csv_dir",
-        required=True, help="Folders contains *.csv files for MINE")
-    parser_summary.add_argument("-t", "--temp_mine", metavar="", dest="mine_infile",
-        help="temporary MINE input file")
+    parser_summary_required = parser_summary.add_argument_group('Required arguments')
+    parser_summary_required.add_argument(
+        "-m", "--mine_csv", metavar="", dest="csv_dir",
+        required=True, help="Folders contains *.csv files for MINE. MINE will summarise all *.csv files (except the one produced by MINE) in this directory")
+
+    parser_summary.add_argument(
+        "-t", "--temp_mine", metavar="", dest="mine_infile",
+        help="temporary MINE input file [default tempMineInfile]", default="tempMineInfile")
+    parser_summary.add_argument(
+        "--overwrite", dest="mine_overwrite",
+        help="overwrite MINE result files", action='store_true')
+
+
 
     parser_process = subparsers.add_parser(
         'process', parents=[common_parser],
         help="Run Genovo, Glimmer, Blast",
         formatter_class=CustomSingleMetavarFormatter)
-    parser_process.add_argument(
+    parser_summary_required = parser_process.add_argument_group('Required arguments')
+    parser_summary_required.add_argument(
         "-i", "--infile", metavar="", dest="infile",
         required=True, help="Infile for genovo (fasta format)")
-
-#     parser_process.add_argument(
-#         "-i", "--infile", metavar="INFILE", dest="infile",
-#         required=True, help="Infile for genovo")
-#     #     parser_delete = subparsers.add_parser('delete')
-# #     parser_delete.set_defaults(which='delete')
-# #     parser_delete.add_argument(
-# #         'id', help='Database ID')
-# #     args = vars(parser.parse_args())
 
 
 
     try:
         args = parser.parse_args()
+        #     args = vars(parser.parse_args())
     except IOError as e:
         print e
 #         warnings.warn(e)
@@ -168,18 +163,19 @@ if __name__ == "__main__":
 
 #     data_dir = path_utils.get_data_dir(CWD)
 #     print data_dir
-    print args
-    if args.debug >= 2:
+
+    if args.debug == 2:
         print "Debug level 2"
-    if args.debug >= 1:
+        print "All args:", args
+    elif args.debug == 1:
+        print "Debug level 1"
         CWD = os.getcwd()
         print "Current working directory %s" % CWD
         print "NumPy version %s" % numpy.__version__
         print "SciPy version %s" % scipy.__version__
         print "Bio version %s at %s" % (Bio.__version__, Bio.__path__)
 
-#        print "v==0"
-#     args.debug = 1
+
     assembler = SoftwareAssembler.create_from_args(args)
 #     sys.exit(12)
     assembler.run()

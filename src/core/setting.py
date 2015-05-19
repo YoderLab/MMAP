@@ -140,9 +140,9 @@ class Setting(object):
 
         try:
 
-            if args.control_file is None:
-                print "Try default control file [./control]"
-                args.control_file = "control"
+            if args.control_file is "control":
+                print "Use control file at ./control"
+#                 args.control_file = "control"
             control_file = os.path.abspath(args.control_file)
 
             path_utils.check_file(control_file)
@@ -190,9 +190,6 @@ class Setting(object):
                 mine_pdir_full = os.path.abspath(os.path.expanduser(all_pars["mine_pdir"]))
 #                 infile = path_utils.check_wdir_prefix(all_pars["wdir"], )
 
-                if args.mine_infile is None:
-                   args.mine_infile = "tempMineInfile"
-
                 infile = setting.generate_default_outfile_name(args.mine_infile, ".csv")
                 infile = os.path.abspath(infile)  # #FIXME, should be able to do it better
 
@@ -212,7 +209,8 @@ class Setting(object):
                 setting.add_all(
                     mine_pdir=mine_pdir_full,
                     mine_infile=infile,
-                    csv_files=csv_list
+                    csv_files=csv_list,
+                    mine_overwrite=args.mine_overwrite
                 )
                 setting.check_parameters_program("mine")
 

@@ -52,18 +52,21 @@ class RunMINE(RunComponent):
                  cv=DEFAULT_CV, exp=DEFAULT_EXP, clumps=DEFAULT_CLUMPS,
                  jobID=None,
                  csv_files=None,
-                 check_exist=True):
+                 check_exist=True,
+                 overwrite=False):
         """
         Constructor
         """
         super(RunMINE, self).__init__(pdir, wdir, infile, check_exist)
+
+        self.all_exts = ALL_EXTS
 
         if jobID is None:
             self.jobID = "MineOutput"
         else:
             self.jobID = jobID
 
-        self.all_exts = ALL_EXTS
+        self.overwrite = overwrite
 #         self.parameter_check(pdir, wdir, infile, infile, False, "")
 
 #         if not self.infile.endswith(".csv"):
@@ -115,7 +118,8 @@ class RunMINE(RunComponent):
                    clumps=setting.get("mine_clumps"),
                    jobID=setting.get("mine_outfile"),
                    csv_files=setting.get("csv_files"),
-                   check_exist=setting.get("check_exist"))
+                   check_exist=setting.get("check_exist"),
+                   overwrite=setting.get("mine_overwrite"))
 
         return mine
 
@@ -176,7 +180,9 @@ class RunMINE(RunComponent):
 
     def run(self, debug=False):
 
-        if self.check_outfiles_with_filetag_exist(self.outfile + "," + self.jobID)[0] and self.check_exist:
+
+        if not self.overwrite and (self.check_outfiles_with_filetag_exist(self.outfile + "," + self.jobID)[0] and
+                self.check_exist):
             print "==Warning: MINE outfile %s exist, skip MINE!!!==." % (self.outfile + "," + self.jobID)
 
         else:
@@ -193,7 +199,8 @@ def merge_output_csv_to_MINE(outfile, csv_files, isMINE=True):
     """
     csv_files = list of csv files
     """
-    print "MINE: merging csv files to %s. From csv_list: %s" % (outfile, csv_files)
+#     print "MINE: merging csv files to %s. From csv_list: %s" % (outfile, csv_files)
+    print "MINE: merging csv files to %s from  %d csv files." % (outfile, len(csv_files))
     header = []
     if not isMINE:
         header.append("GOterm")
@@ -226,7 +233,6 @@ def merge_output_csv_to_MINE(outfile, csv_files, isMINE=True):
                     template[key].append(0)
     with open(outfile, 'wb') as csvfile:
         writer = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_NONE)
-        print "HH:", header
         writer.writerow(header)
         if isMINE:
             for row in template.values():

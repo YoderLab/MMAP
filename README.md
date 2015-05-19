@@ -46,10 +46,17 @@ After generating the local database, add its path to the control file, so that t
 
 ## USAGE
 
+* Update control file
+ * program_pdir points to the directory contains the exe
+ * blasd_db pointst to the local BLAST database
 ```
-#edit the control file "data/example/control"; Update "parent_directory=" and point that to the data/ directory. Update "go_blastdb=" to point to the converted BLAST DB directory
 cd MMAP;
-python src/core/main.py data/example/control
+python src/core/main.py -h
+python src/core/main.py summary -h
+python src/core/main.py process -h
+
+python src/core/main.py process -i data/example/MMAP_example.fasta
+python src/core/main.py summary -m data/example/
 ```
 
 

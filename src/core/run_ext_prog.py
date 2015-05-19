@@ -69,7 +69,7 @@ class runExtProg(object):
                              stderr=subprocess.PIPE, cwd=self.pdir)
 
         self.output, self.errors = p.communicate()
-        print debug
+#         print debug
         # TODO Move debug message to each individual program, since they output very different things
         if debug == 1:
             print("debug - output message:\n%s\n===end===\n" % (self.output))
