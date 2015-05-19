@@ -9,7 +9,7 @@ Bio version 1.65
 
 Example: change to ./src/ folder
 
-cd src/
+
 python src/core/main.py -h;python src/core/main.py summary -h; python src/core/main.py process -h;
 python src/core/main.py -h
 python src/core/main.py summary -h

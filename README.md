@@ -46,17 +46,24 @@ After generating the local database, add its path to the control file, so that t
 
 ## USAGE
 
-* Update control file
+* Update control file [default: MMAP/control]
  * program_pdir points to the directory contains the exe
  * blasd_db pointst to the local BLAST database
+
 ```
 cd MMAP;
 python src/core/main.py -h
 python src/core/main.py summary -h
 python src/core/main.py process -h
 
+## To run Genovo/Glimmer/Blast, use -i to provide input fasta file
 python src/core/main.py process -i data/example/MMAP_example.fasta
+
+## To run MINE, use -m to provide a directory with list of csv files
 python src/core/main.py summary -m data/example/
+
+## Custom control file can be used wit -c
+python src/core/main.py process -i data/example/MMAP_example.fasta -c path_to_custom_control_file
 ```
 
 
