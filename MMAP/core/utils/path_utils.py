@@ -4,7 +4,6 @@ Created on Nov 30, 2011
 @author: Steven Wu
 '''
 import os
-from gnome_abrt import directory_problems
 
 
 
