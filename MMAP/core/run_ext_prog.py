@@ -65,8 +65,13 @@ class runExtProg(object):
         self._command.extend(self._switch)
         if debug:
             print("debug: _command:\t%s" % (self._command))
-        p = subprocess.Popen(self._command, stdout=subprocess.PIPE,
+        try:
+            p = subprocess.Popen(self._command, stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE, cwd=self.pdir)
+        except OSError as e:
+            print("Error [%s]: _command:\t%s" % (format(e), self._command))
+            raise
+
 
         self.output, self.errors = p.communicate()
 #         print debug
@@ -81,20 +86,23 @@ class runExtProg(object):
     def check_platform(self, check_OS):
         """
         Check platform, only check program_name start with "./". so `ls` still work
-        ALWAYS append "_platform" to program_name
+        when append "_platform" to program_name?? scripts should be ok? but not compiled exe
         """
         if self.pdir is None and check_OS:
             raise TypeError("Error: no value assigned to self.pdir. Current value = %s" % self.pdir)
 
         if check_OS or self.program_name.find("./") is 0:
             self.name_only = self.program_name[2:len(self.program_name)]
+            self.program_name = os.path.join(self.pdir, self.name_only)
             self.name_only = self.name_only + "_" + runExtProg.platform
 #             print check_OS, self.program_name, self.name_only, self.pdir + self.name_only
 #             print os.path.join(self.pdir, self.name_only)
+#             print self.name_only, self.program_name
             if os.path.exists(os.path.join(self.pdir, self.name_only)):
-#                 self.program_name = "./" + self.name_only
                 self.program_name = os.path.join(self.pdir, self.name_only)
+#                 print self.name_only, self.program_name
 #                 self.program_name = "/" + self.name_only
+#                 self.program_name = "./" + self.name_only
 #            else:
 #                print "ignore platform"
 
