@@ -8,9 +8,9 @@ from core.component.run_component import RunComponent
 from core.run_ext_prog import runExtProg
 
 
-# GLIMMER = "./scripts/g3-iterated.csh"
-GLIMMER = "./g3-iterated.csh"
-EXTRACT = "./extract"
+GLIMMER = "./scripts/g3-iterated.csh"
+# GLIMMER = "./g3-iterated.csh"
+EXTRACT = "./bin/extract"
 INFILE_POSITION = 1
 TEMP_OUTFILE_TAG_POSITION = 2
 COORDS_POSITION = 2
