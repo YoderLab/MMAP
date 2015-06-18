@@ -12,27 +12,47 @@ Required software
 * **Genovo** v0.4: http://cs.stanford.edu/group/genovo/
 * **Glimmer** v3.02: https://ccb.jhu.edu/software/glimmer/
   * requires **ELPH** v1.0.1:  http://cbcb.umd.edu/software/ELPH/
-* **MINE.jar** v1.0.1: http://www.exploredata.net/
+* **MINE** v1.0.1: http://www.exploredata.net/
+  * requires **Java**: http://www.java.com/
 * **NCBI BLAST+** v2.2.28+: http://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Web&PAGE_TYPE=BlastDocs&DOC_TYPE=Download
 
-Note: These software distributed here might not work with your OS!  
+Note: Binary files distributed here might **NOT** work with your OS!  
 
 ## INSTALL
 
-### Directory list
-Default/Recommended folder structure. 
-This structure is used in default control file. If Genovo/Glimmer/MINE/BLAST are located at other destination, please update the control file.
+#### Default directory list
+The following folder structure is used in the default control file. If Genovo/Glimmer/MINE are located at other destinations, please update the control file.
 * data
- * example ## contain a basic example
+ * example ## contain basic examples
  * Genovo
  * Glimmer
  * MINE
  * BLAST # Contains `blastx`, which is a symlink to `/usr/bin/blastx`
 * src
- * core 
+ * core
  * test
 
-### Generating local blast database
+#### Setup control file
+  * The control file in MMAP have two purpose. The main purpose is allowing MMAP to locate other software (genovo, glimmer, MINE, and blast).
+  * The secondary purpose is to allow users to customize the parameters used in the pipeline. Please refer to the [Additional parameters](Additional-parameters-in-the-control-file) section.
+
+
+#### Setup Genovo
+  1. Genovo shipped with precompiled binaries. Check and run the commented demo script `DEMO.sh`.
+  2. If these precompiled binaries or the demo script fail. Recompile it from the `src` folder. The default Makefile requires `libtool`
+  3. Update control file accordingly. Make sure `genovo_pdir` points to the folder contains the following binaries `assemble` and `finalize`.
+
+#### Setup Glimmer
+  1. Glimmer often required some custom setup. Try to use full/absolute path if relative path doesn't work.
+  2. Follow the instruction in `glim302notes.pdf` and compile glimmer from the source code.
+  3. Download and install elph
+  4. Update `awkpath`, `glimmerpath`, and `elphbin` in  `glimmer/scritps/g3-iterated.csh`
+    * The awkpath should be points to the `scritps` folder
+    * The glimmerpath should point to the `bin` folder
+    * The elphbin is the full path points to the executable `elph`. Not the folder.
+  5. Update control file accordingly. Make sure `glimmer_pdir` points to the top level of the glimmer folder. MMAP is looking for `bin` and `scripts` underneath this folder.
+
+#### Generating local blast database
 
 The BLAST component queries annotated Gene Ontology sequences downloaded from http://geneontology.org. Prior to running an analysis, you must download the sequences and convert them to a BLAST+ formatted database.
 
@@ -43,6 +63,11 @@ It accepts one argument - the output directory for the GO Sequence Database.
     $ ./makeblastdb-go.sh /data/go-seqdb
 
 After generating the local database, add its path to the control file, so that the pipeline knows where to find it.
+
+#### Setup MINE
+  1. Install and make sure your java version is at least 1.7 (`java -version`)
+  2. Update control file accordingly. Make sure `mine_pdir` points to the folder contains `MINE.jar`.
+
 
 ## USAGE
 
@@ -65,13 +90,4 @@ python src/core/main.py summary -m data/example/
 ## Custom control file can be used wit -c
 python src/core/main.py process -i data/example/MMAP_example.fasta -c path_to_custom_control_file
 ```
-
-
-### Directory list
-* data
- * example - testing dataset
-* scripts - utilities
-* src - source code
- * core 
- * test - use unittest in Python
-
+### Additional parameters in the control file
