@@ -20,8 +20,12 @@ echo "Making BLASTDB at $BLASTDB"
 mkdir -p $BLASTDB
 
 # Download the fasta version of the GO seqdb
-GO_SEQDB_URL=http://archive.geneontology.org/lite/2015-02-14/go_20150214-seqdb.fasta.gz
-curl -SL -o /tmp/go-seqdb.fasta.gz $GO_SEQDB_URL
+#GO_SEQDB_URL_V=http://archive.geneontology.org/lite/latest/go_20150214-seqdb.fasta.gz
+GO_SEQDB_URL=http://archive.geneontology.org/lite/latest/
+#curl -SL -o /tmp/go-seqdb.fasta.gz $GO_SEQDB_URL
+#SEQDB_NAME=`curl --list-only http://archive.geneontology.org/lite/latest/ |  sed -n 's%.*href="\([^.]*seqdb\.fasta\.gz\)".*%\n\1%; ta; b; :a; s%.*\n%%; p'`i
+SEQDB_NAME=`curl -n --list-only http://archive.geneontology.org/lite/latest/ | grep -oE  go_[0-9]{8}-seqdb\.fasta\.gz | uniq`
+curl -SL -o /tmp/go-seqdb.fasta.gz ${GO_SEQDB_URL}${SEQDB_NAME}
 gunzip /tmp/go-seqdb.fasta.gz
 
 # Make the database
@@ -33,6 +37,6 @@ makeblastdb \
   -title go-seqdb
 
 # Cleanup
-rm /tmp/go-seqdb.fasta
+#rm /tmp/go-seqdb.fasta
 
 

@@ -11,6 +11,7 @@ from core.component.run_local_BLAST import RunBlast
 from core.component.run_MINE import RunMINE
 from core.setting import Setting
 from core.component import run_BLAST
+from core.component.run_xgenovo import RunXGenovo
 
 
 
@@ -58,7 +59,10 @@ class SoftwareAssembler(object):
         if self.setting.run_mine:
             self.mine = RunMINE.create_class_from_setting(self.setting)
         else:
-            self.genovo = RunGenovo.create_genovo_from_setting(self.setting)
+            if self.setting.get("assembler_prog") is "genovo":
+                self.assembler = RunGenovo.create_genovo_from_setting(self.setting)
+            elif self.setting.get("assembler_prog") is "xgenovo":
+                self.assembler = RunXGenovo.create_xgenovo_from_setting(self.setting)
             self.glimmer = RunGlimmer.create_glimmer_from_setting(self.setting)
 #             self.blast = run_BLAST.RunBlast.create_blast_from_setting(self.setting)
             self.blast = RunBlast.create_blast_from_setting(self.setting)
@@ -75,7 +79,7 @@ class SoftwareAssembler(object):
         if self.setting.run_mine:
             self.mine.run(self.debug)
         else:
-            self.genovo.run(self.debug)
+            self.assembler.run(self.debug)
             self.glimmer.run(self.debug)
             self.blast.run(self.debug)
         print "=== Done ==="

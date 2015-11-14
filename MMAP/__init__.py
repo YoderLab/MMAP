@@ -2,10 +2,17 @@
 # # PACKAGE METADATA
 
 __project__ = "MMAP"
-__version__ = "0.3"
 
-__author__ = "Erin McKenney, Steven Wu and Allen Rodrigo",
-__license__ = """
+MMAP_VERSION_MAJOR = 0
+MMAP_VERSION_MINOR = 3
+__version__ = "%d.%d" % (MMAP_VERSION_MAJOR, MMAP_VERSION_MINOR)
+__author__ = "Erin McKenney, Steven Wu, Dan Leehr, Allen Rodrigo",
+__description__ = "MMAP: Microbial Metagenomic Analysis Pipeline"
+
+__license__ = "GPLv3+"  # "Copyright (C) LGPL"  #
+
+
+__license_full__ = """
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or

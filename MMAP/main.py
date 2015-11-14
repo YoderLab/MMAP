@@ -30,15 +30,12 @@ import numpy
 import scipy
 
 from core.assembler.software_assembler import SoftwareAssembler
-from core.utils import path_utils
+from __init__ import __version__, __author__, __description__
 
 
-MMAP_DESCRIPTION = "MMAP: Microbial Metagenomic Analysis Pipeline"
-MMAP_VERSION_MAJOR = 0
-MMAP_VERSION_MINOR = 2
-MMAP_VERSION = "%d.%d" % (MMAP_VERSION_MAJOR, MMAP_VERSION_MINOR)
-MMAP_AUTHOR = "Steven Wu,  Erin McKenney, Dan Leehr"
-MMAP_LICENCE = "Copyright (C) LGPL"  # ??
+MMAP_DESCRIPTION = __description__
+MMAP_VERSION = __version__
+MMAP_AUTHOR = __author__
 
 class CustomSingleMetavarFormatter(argparse.HelpFormatter):
 
@@ -163,7 +160,7 @@ if __name__ == "__main__":
 
 #     data_dir = path_utils.get_data_dir(CWD)
 #     print data_dir
-
+    args.debug = 2
     if args.debug == 2:
         print "Debug level 2"
         print "All args:", args
@@ -184,5 +181,5 @@ if __name__ == "__main__":
 #
 #    assembler = SoftwareAssembler.create_from_args(args)
 #    assembler.run()
-    print "== END MAIN =="
+    print "== END MMAP=="
 

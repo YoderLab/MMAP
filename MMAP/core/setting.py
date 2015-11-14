@@ -3,7 +3,8 @@ import StringIO
 import os
 
 from core.amigo import go_connector
-from core.component import run_genovo, run_MINE, run_glimmer, run_local_BLAST
+from core.component import run_genovo, run_MINE, run_glimmer, run_local_BLAST, \
+    run_xgenovo
 from core.utils import path_utils
 import sys
 import glob
@@ -14,6 +15,7 @@ __author__ = 'erinmckenney'
 list_essential_metasim_only = [
     "metasim_pdir", "metasim_model_infile", "metasim_taxon_infile", "metasim_no_reads"]
 list_essential_genovo_only = ["genovo_pdir"]
+list_essential_xgenovo_only = ["xgenovo_pdir"]
 list_essential_glimmer_only = ["glimmer_pdir"]  # dont need outfile
 list_essential_blast_only = ["blast_pdir", "blast_db"]
 list_essential_mine_only = ["mine_pdir", "mine_infile", "csv_files"]
@@ -27,7 +29,8 @@ list_all_essentials.extend(list_essential_blast_only)
 
 list_optional_shared = ["check_exist"]
 list_optional_metasim_only = ["metasim_outfile"]
-list_optional_genovo_only = ["genovo_infile", "genovo_outfile", "genovo_noI", "genovo_thresh"]
+list_optional_genovo_only = ["assembler_infile", "assembler_outfile", "genovo_num_iter", "genovo_thresh"]  # "genovo_infile", "genovo_outfile",
+list_optional_xgenovo_only = ["assembler_infile", "assembler_outfile", "xgenovo_num_iter", "xgenovo_thresh"]  # "xgenovo_infile", "xgenovo_outfile"
 list_optional_glimmer_only = ["glimmer_infile", "glimmer_outfile"]
 list_optional_blast_only = [
     "blast_infile", "blast_batch_size", "blast_e_value", "blast_outfile",
@@ -41,6 +44,7 @@ list_all_optionals = []
 list_all_optionals.extend(list_optional_shared)
 list_all_optionals.extend(list_optional_metasim_only)
 list_all_optionals.extend(list_optional_genovo_only)
+list_all_optionals.extend(list_optional_xgenovo_only)
 list_all_optionals.extend(list_optional_glimmer_only)
 list_all_optionals.extend(list_optional_blast_only)
 list_all_optionals.extend(list_optional_mine_only)
@@ -49,22 +53,24 @@ list_all_optionals.extend(list_optional_mine_only)
 list_ess_par = {
     "metasim": list_essential_metasim_only,
     "genovo": list_essential_genovo_only,
+    "xgenovo": list_essential_xgenovo_only,
     "glimmer": list_essential_glimmer_only,
     "blast": list_essential_blast_only,
     "mine": list_essential_mine_only,
-    "all": list_all_essentials
+#     "all": list_all_essentials
 }
 
 list_optional_par = {
     "shared": list_optional_shared,
     "metasim": list_optional_metasim_only,
     "genovo": list_optional_genovo_only,
+    "xgenovo": list_optional_xgenovo_only,
     "glimmer": list_optional_glimmer_only,
     "blast": list_optional_blast_only,
     "mine": list_optional_mine_only,
-    "all": list_all_optionals
+#     "all": list_all_optionals
 }
-all_programs = ["genovo", "glimmer", "blast"]
+all_programs = ["glimmer", "blast"]
 
 
 def parse_control_file2(control_file):
@@ -130,14 +136,13 @@ class Setting(object):
     @classmethod
     def create_setting_from_file(cls, args):
         """
-        TODO: switch between genovo+glimmer+blast and MINE
+        TODO: switch between assembler(genovo/xgenovo)+glimmer+blast and MINE
 
         ignore metasim for now
-        do we need genovo+glimmer+blast+MINE?
+        do we need  assembler(genovo/xgenovo)+glimmer+blast+MINE?
         """
 #         print type(args.control_file), dir(args.control_file)
 #         print args.control_file.closed, args.control_file.name
-
         try:
 
             if args.control_file is "control":
@@ -157,24 +162,38 @@ class Setting(object):
                 path_utils.check_directory(wdir)
                 setting = cls(wdir=wdir)
 
-                genovo_pdir_full = os.path.abspath(os.path.expanduser(all_pars["genovo_pdir"]))
+                if "genovo_pdir" in all_pars and "xgenovo_pdir" in all_pars:
+                    raise NameError("Error!! both genovo_pdir and xgenovo_pdir exist in the control file.")
+                if "genovo_pdir" in all_pars:
+#                     genovo_pdir_full = os.path.abspath(os.path.expanduser(all_pars["genovo_pdir"]))
+                    assembler_pdir_full = os.path.abspath(os.path.expanduser(all_pars["genovo_pdir"]))
+                    assembler_prog = "genovo"
+                elif "xgenovo_pdir" in all_pars:
+#                     xgenovo_pdir_full = os.path.abspath(os.path.expanduser(all_pars["xgenovo_pdir"]))
+                    assembler_pdir_full = os.path.abspath(os.path.expanduser(all_pars["xgenovo_pdir"]))
+                    assembler_prog = "xgenovo"
+                else:
+                    raise NameError("Error! No assembler specified! genovo_pdir or xgenovo_pdir is required")
+
+                print("Assembler: ", assembler_pdir_full)
                 glimmer_pdir_full = os.path.abspath(os.path.expanduser(all_pars["glimmer_pdir"]))
                 blast_pdir_full = os.path.abspath(os.path.expanduser(all_pars["blast_pdir"]))
                 blast_db_full = os.path.abspath(os.path.expanduser(all_pars["blast_db"]))
 
-                path_utils.check_directory(genovo_pdir_full)
+                path_utils.check_directory(assembler_pdir_full)
                 path_utils.check_directory(glimmer_pdir_full)
                 path_utils.check_directory(blast_pdir_full)
     #                 path_utils.check_directory(blast_db_full)
 
                 setting.add_all(
-                    genovo_infile=infile,
-                    genovo_pdir=genovo_pdir_full,
+                    assembler_infile=infile,
+                    assembler_prog=assembler_prog,
+                    assembler_pdir=assembler_pdir_full,
                     glimmer_pdir=glimmer_pdir_full,
                     blast_pdir=blast_pdir_full,
                     blast_db=blast_db_full
                 )
-                setting.check_parameters_program("genovo")
+                setting.check_parameters_program(assembler_prog)
                 setting.check_parameters_program("glimmer")
                 setting.check_parameters_program("blast")
 
@@ -239,6 +258,7 @@ class Setting(object):
 
 
         setting.print_all(args.debug)
+
         return setting
 
     def add_all(self, **kwargs):
@@ -273,10 +293,11 @@ class Setting(object):
 
     def _check_essential_keys(self, program_name):
         par = list_ess_par[program_name]
-        for v in par:
-            isExist = self._check_variables_exist(v)
-            if not isExist:
-                raise KeyError("key does not exist: %s" % v)
+        if program_name in all_programs:
+            for v in par:
+                isExist = self._check_variables_exist(v)
+                if not isExist:
+                    raise KeyError("key does not exist: %s" % v)
         if program_name is "mine":
 #             print  self.get("csv_files")
 #             list_csv = self.get("csv_files").split(",")
@@ -295,18 +316,29 @@ class Setting(object):
             if not self._check_variables_exist(c):
                 self.add(c, None)
 
-        if program_name in "genovo":
+        if program_name is "genovo":
 
-            outfile = self.generate_default_outfile_name(self.all_setting.get("genovo_infile"), run_genovo.DEFAULT_OUTFILE_EXT)
-            self._replace_none_with_defalut("genovo_outfile", outfile)
+            outfile = self.generate_default_outfile_name(self.all_setting.get("assembler_infile"), run_genovo.DEFAULT_OUTFILE_EXT)
+#             self._replace_none_with_defalut("genovo_outfile", outfile)
+            self._replace_none_with_defalut("assembler_outfile", outfile)
             self._replace_none_with_defalut(
-                "genovo_noI", run_genovo.DEFAULT_GENOVO_NO_ITER)
+                "genovo_num_iter", run_genovo.DEFAULT_GENOVO_NO_ITER)
             self._replace_none_with_defalut(
                 "genovo_thresh", run_genovo.DEFAULT_GENOVO_THRESH)
 
+        if program_name is "xgenovo":
+
+            outfile = self.generate_default_outfile_name(self.all_setting.get("assembler_infile"), run_xgenovo.DEFAULT_OUTFILE_EXT)
+#             self._replace_none_with_defalut("xgenovo_outfile", outfile)
+            self._replace_none_with_defalut("assembler_outfile", outfile)
+            self._replace_none_with_defalut(
+                "xgenovo_num_iter", run_xgenovo.DEFAULT_XGENOVO_NO_ITER)
+            self._replace_none_with_defalut(
+                "xgenovo_thresh", run_xgenovo.DEFAULT_XGENOVO_THRESH)
+
         if program_name is "glimmer":
             self._replace_none_with_defalut_par(
-                "glimmer_infile", "genovo_outfile")
+                "glimmer_infile", "assembler_outfile")
 
             outfile = self.generate_default_outfile_name(self.all_setting.get("glimmer_infile"), run_glimmer.DEFAULT_OUTFILE_EXT)
             self._replace_none_with_defalut("glimmer_outfile", outfile)
@@ -348,7 +380,6 @@ class Setting(object):
 
 
     def generate_default_outfile_name(self, infile, outfile_tag):
-
         prefix = path_utils.remove_ext(infile)
         outfile = prefix + outfile_tag
         outfile = path_utils.check_wdir_prefix(self.all_setting.get("wdir"), outfile)
@@ -365,6 +396,7 @@ class Setting(object):
 #        return True
 
     def _check_variables_exist(self, v):
+
         for key in self.all_setting.iterkeys():
             if v == key:
                 return True
@@ -372,7 +404,7 @@ class Setting(object):
         return False
 
     def _set_master_file_tag(self):
-        name = self.get("genovo_infile")
+        name = self.get("assembler_infile")
         name = path_utils.remove_ext(name)
         self._set("master_tag", name)
 

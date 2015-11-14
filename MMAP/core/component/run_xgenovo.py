@@ -1,7 +1,7 @@
 """
-Created on Feb 29, 2012
+Created on Oct 1, 2015
 
-@author: Erin McKenney and Steven Wu
+@author: Steven Wu
 """
 from Bio import SeqIO
 from core.component.run_component import RunComponent
@@ -19,26 +19,26 @@ FINALIZE_INFILE_POSITION = 3
 
 ALL_EXTS = [".status", ".dump1", ".dump.best"]
 
-DEFAULT_GENOVO_NO_ITER = 10
-DEFAULT_GENOVO_THRESH = 250
-DEFAULT_OUTFILE_EXT = ".genovo"
+DEFAULT_XGENOVO_NO_ITER = 10
+DEFAULT_XGENOVO_THRESH = 250
+DEFAULT_OUTFILE_EXT = ".xgenovo"
 
 
-class RunGenovo(RunComponent):
+class RunXGenovo(RunComponent):
     """
     classdocs
 
     """
 
-    def __init__(self, pdir, wdir, infile, no_iter=DEFAULT_GENOVO_NO_ITER, thresh=DEFAULT_GENOVO_THRESH,
+    def __init__(self, pdir, wdir, infile, no_iter=DEFAULT_XGENOVO_NO_ITER, thresh=DEFAULT_XGENOVO_THRESH,
                  outfile=None, check_exist=True):
         """
         Constructor
         """
-        super(RunGenovo, self).__init__(pdir, wdir, infile, check_exist)
+        super(RunXGenovo, self).__init__(pdir, wdir, infile, check_exist)
         self.all_exts = ALL_EXTS
 
-        self.outfile = self.check_outfile_filename(outfile, ".genovo")
+        self.outfile = self.check_outfile_filename(outfile, ".xgenovo")
 #         self.parameter_check(self.pdir, self.wdir, infile, outfile, check_exist, ".genovo")
 
         self.assemble = runExtProg(ASSEMBLE, pdir=self.pdir, length=2, check_OS=True)
@@ -47,21 +47,21 @@ class RunGenovo(RunComponent):
         self.init_prog(no_iter, thresh)
 
     @classmethod
-    def create_genovo(cls, setting):
-        genovo = cls(pdir=setting.get("assembler_pdir"),
+    def create_xgenovo(cls, setting):
+        xgenovo = cls(pdir=setting.get("assembler_pdir"),
                      wdir=setting.get("wdir"),
                      infile=setting.get("assembler_infile"),
-                     no_iter=setting.get("genovo_num_iter"),
-                     thresh=setting.get("genovo_thresh"),
+                     no_iter=setting.get("xgenovo_num_iter"),
+                     thresh=setting.get("xgenovo_thresh"),
                      outfile=setting.get("assembler_outfile"),
                      check_exist=setting.get("check_exist"))
-        return genovo
+        return xgenovo
 
     @classmethod
-    def create_genovo_from_setting(cls, setting_class):
+    def create_xgenovo_from_setting(cls, setting_class):
 #         setting = setting_class.check_parameters_program("genovo")
-        genovo = RunGenovo.create_genovo(setting_class.all_setting)
-        return genovo
+        xgenovo = RunXGenovo.create_xgenovo(setting_class.all_setting)
+        return xgenovo
 
 
     def init_prog(self, no_iter, thresh):
@@ -101,11 +101,11 @@ class RunGenovo(RunComponent):
     def run(self, debug=False):
         isComplete = self._isCompleted(False)
         if isComplete:
-            print "==Warning: Genovo outfiles already exist, skip Genovo!!!=="
+            print "==Warning: XGenovo outfiles already exist, skip XGenovo!!!=="
         else:
-            print "Running Genovo assemble..."
+            print "Running XGenovo assemble..."
             self.assemble.run(debug)
-            print "Running Genovo finalize..."
+            print "Running XGenovo finalize..."
             self.finalize.run(debug)
         self._isCompleted(True)
 
@@ -124,5 +124,5 @@ class RunGenovo(RunComponent):
     def _isCompleted(self, is_raise_error):
         isComplete = self.check_outfiles_with_filetag_exist(self.infile, is_raise_error) and self.is_file_exist(self.outfile, is_raise_error)
         if is_raise_error and not isComplete:
-            raise(StandardError("Genovo did not complete, not all output files exist"))
+            raise(StandardError("XGenovo did not complete, not all output files exist"))
         return isComplete

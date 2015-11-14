@@ -62,23 +62,23 @@ class TestSetting(unittest.TestCase):
     def test_Setting_get_genovo(self):
 
         setting = Setting()
-        setting.add_all(genovo_infile="gInfile",
+        setting.add_all(assembler_infile="gInfile",
                         filename="gOutfile", genovo_thresh=2)
 #        setting.print_all()
         self.assertRaises(KeyError, setting.check_parameters_program, "genovo")
 
         setting = Setting()
-        setting.add_all(genovo_infile="gInfile",
-                        filename="gOutfile", genovo_noI=2)
+        setting.add_all(assembler_infile="gInfile",
+                        filename="gOutfile", genovo_num_iter=2)
         self.assertRaises(KeyError, setting.check_parameters_program, "genovo")
 
         setting.add("genovo_thresh", 10)
-        setting.add_all(genovo_thresh=14, genovo_pdir="g_p_dir", wdir=self.wdir)
-        expected = {"genovo_infile": "gInfile", "filename": "gOutfile",
-                    "genovo_noI": 2, "genovo_thresh": 14,
-                    "genovo_pdir": "g_p_dir",
+        setting.add_all(genovo_thresh=14, assembler_pdir="g_p_dir", wdir=self.wdir)
+        expected = {"assembler_infile": "gInfile", "filename": "gOutfile",
+                    "genovo_num_iter": 2, "genovo_thresh": 14,
+                    "assembler_pdir": "g_p_dir",
                     "wdir": self.wdir, "check_exist": True,
-                    "genovo_outfile": None}
+                    "assembler_outfile": None}
         self.assertEqual(expected, setting.check_parameters_program("genovo"))
 
         setting.add("wdir", "otherdir")
@@ -86,8 +86,8 @@ class TestSetting(unittest.TestCase):
         self.assertEqual(expected, setting.check_parameters_program("genovo"))
 
         setting = Setting()
-        setting.add_all(genovo_infile="gInfile", genovo_thresh=14,
-                        genovo_pdir="g_p_dir", genovo_noI=2)
+        setting.add_all(assembler_infile="gInfile", genovo_thresh=14,
+                        genovo_pdir="g_p_dir", genovo_num_iter=2)
         setting.add("wdir", "otherdir")
         expected.pop("filename")
         self.assertEqual(expected, setting.check_parameters_program("genovo"))
@@ -170,9 +170,9 @@ class TestSetting(unittest.TestCase):
 
     def test_Setting_get_pars(self):
         setting = Setting(genovo_infile="gInfile", genovo_thresh=14)
-        setting.add_all(genovo_pdir="g_p_dir", genovo_noI=2,
+        setting.add_all(genovo_pdir="g_p_dir", genovo_num_iter=2,
                         wdir="otherdir", check_exist=True)
-        expected = {"genovo_infile": "gInfile", "genovo_noI": 2,
+        expected = {"genovo_infile": "gInfile", "genovo_num_iter": 2,
                     "genovo_thresh": 14, "genovo_pdir": "g_p_dir",
                     "check_exist": True, "genovo_outfile": None,
                     "wdir": "otherdir"}
@@ -207,7 +207,7 @@ class TestSetting(unittest.TestCase):
 
                     "genovo_infile": "genovoInfile",
                     "genovo_pdir": "/someDir/subDir/genevo",
-                    "genovo_noI": "20",
+                    "genovo_num_iter": "20",
                     "glimmer_pdir":"/someDir/subDir/glimmer",
 
                     "blast_e_value":"1e-10",

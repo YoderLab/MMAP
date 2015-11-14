@@ -26,16 +26,18 @@ def get_platform():
 class runExtProg(object):
     '''
     self.program_name: program_name
-    self._switch: [list], contain all switches required to run the program_name
-        self.parameter = property(_switch)
     self.pdir: program directory
     self.output: capture output message
     self.errors: capture error message
+    self._switch: [list], contain all switches required to run the program_name
+        self.parameter = property(_switch)
     '''
     platform = get_platform()
 
     def __init__(self, p, pdir=None, length=0, check_OS=False):
-
+        '''
+            length: minimum length required, including positional parameters
+        '''
         self.program_name = p
         self.init_switch(length)
         self.pdir = pdir
@@ -88,6 +90,7 @@ class runExtProg(object):
         Check platform, only check program_name start with "./". so `ls` still work
         when append "_platform" to program_name?? scripts should be ok? but not compiled exe
         """
+
         if self.pdir is None and check_OS:
             raise TypeError("Error: no value assigned to self.pdir. Current value = %s" % self.pdir)
 

@@ -131,7 +131,7 @@ class TestSoftwareAssembler(unittest.TestCase):
 
         expected = set(TestSoftwareAssembler.list_all_parameters)
         self.assertEqual(expected, set(assembler.get_all_par().viewkeys()))
-        self.assertEqual(run_genovo.DEFAULT_GENOVO_NO_ITER, assembler.get("genovo_noI"))
+        self.assertEqual(run_genovo.DEFAULT_GENOVO_NO_ITER, assembler.get("genovo_num_iter"))
         self.assertEqual("1e-10", assembler.get("blast_e_value"))
 
 
