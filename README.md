@@ -10,6 +10,7 @@ Required package
 
 Required software
 * **Genovo** v0.4: http://cs.stanford.edu/group/genovo/
+* **Xgenovo** http://xgenovo.dna.bio.keio.ac.jp/
 * **Glimmer** v3.02: https://ccb.jhu.edu/software/glimmer/
   * requires **ELPH** v1.0.1:  http://cbcb.umd.edu/software/ELPH/
 * **MINE** v1.0.1: http://www.exploredata.net/
