@@ -63,6 +63,7 @@ class SoftwareAssembler(object):
                 self.assembler = RunGenovo.create_genovo_from_setting(self.setting)
             elif self.setting.get("assembler_prog") is "xgenovo":
                 self.assembler = RunXGenovo.create_xgenovo_from_setting(self.setting)
+
             self.glimmer = RunGlimmer.create_glimmer_from_setting(self.setting)
 #             self.blast = run_BLAST.RunBlast.create_blast_from_setting(self.setting)
             self.blast = RunBlast.create_blast_from_setting(self.setting)

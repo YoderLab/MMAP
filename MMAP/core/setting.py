@@ -165,17 +165,14 @@ class Setting(object):
                 if "genovo_pdir" in all_pars and "xgenovo_pdir" in all_pars:
                     raise NameError("Error!! both genovo_pdir and xgenovo_pdir exist in the control file.")
                 if "genovo_pdir" in all_pars:
-#                     genovo_pdir_full = os.path.abspath(os.path.expanduser(all_pars["genovo_pdir"]))
                     assembler_pdir_full = os.path.abspath(os.path.expanduser(all_pars["genovo_pdir"]))
                     assembler_prog = "genovo"
                 elif "xgenovo_pdir" in all_pars:
-#                     xgenovo_pdir_full = os.path.abspath(os.path.expanduser(all_pars["xgenovo_pdir"]))
                     assembler_pdir_full = os.path.abspath(os.path.expanduser(all_pars["xgenovo_pdir"]))
                     assembler_prog = "xgenovo"
                 else:
                     raise NameError("Error! No assembler specified! genovo_pdir or xgenovo_pdir is required")
 
-                print("Assembler: ", assembler_pdir_full)
                 glimmer_pdir_full = os.path.abspath(os.path.expanduser(all_pars["glimmer_pdir"]))
                 blast_pdir_full = os.path.abspath(os.path.expanduser(all_pars["blast_pdir"]))
                 blast_db_full = os.path.abspath(os.path.expanduser(all_pars["blast_db"]))
@@ -244,7 +241,6 @@ class Setting(object):
             print e
             if args.debug > 1:
                 raise
-
             sys.exit(6)
 
 

@@ -42,6 +42,9 @@ The following folder structure is used in the default control file. If Genovo/Gl
   2. If these precompiled binaries or the demo script fail. Recompile it from the `src` folder. The default Makefile requires `libtool`
   3. Update control file accordingly. Make sure `genovo_pdir` points to the folder contains the following binaries `assemble` and `finalize`.
 
+#### Setup Xgenovo
+  1. Compile Xgenovo.
+  2. Update control file accordingly. Make user 'xgenovo_pdir' points to the folder contains the following binaries `assemble` and `finalize`.
 #### Setup Glimmer
   1. Glimmer often required some custom setup. Try to use full/absolute path if relative path doesn't work.
   2. Follow the instruction in `glim302notes.pdf` and compile glimmer from the source code.
@@ -76,18 +79,19 @@ After generating the local database, add its path to the control file, so that t
  * blasd_db pointst to the local BLAST database
 
 ```
-cd MMAP;
-python src/core/main.py -h
-python src/core/main.py summary -h
-python src/core/main.py process -h
+python MMAP/main.py -h
+python MMAP/main.py summary -h
+python MMAP/main.py process -h
+
 
 ## To run Genovo/Glimmer/Blast, use -i to provide input fasta file
-python src/core/main.py process -i data/example/MMAP_example.fasta
+python MMAP/main.py process -c data/example/control -i data/example/MMAP_example.fasta
+python MMAP/main.py process -c data/example/controlX -i data/example/MMAP_paired_example.fasta
 
 ## To run MINE, use -m to provide a directory with list of csv files
-python src/core/main.py summary -m data/example/
+python MMAP/main.py summary -m data/example/
 
 ## Custom control file can be used wit -c
-python src/core/main.py process -i data/example/MMAP_example.fasta -c path_to_custom_control_file
+python MMAP/main.py process -i data/example/MMAP_example.fasta -c path_to_custom_control_file
 ```
 ### Additional parameters in the control file
