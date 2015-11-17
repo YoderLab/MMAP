@@ -46,6 +46,7 @@ The following folder structure is used in the default control file. If Genovo/Gl
 #### Setup Xgenovo
   1. Compile Xgenovo.
   2. Update control file accordingly. Make user 'xgenovo_pdir' points to the folder contains the following binaries `assemble` and `finalize`.
+
 #### Setup Glimmer
   1. Glimmer often required some custom setup. Try to use full/absolute path if relative path doesn't work.
   2. Follow the instruction in `glim302notes.pdf` and compile glimmer from the source code.
